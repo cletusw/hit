@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry kind="src" output="build" path="src"/>
+	<classpathentry kind="src" path="test-src"/>
+	<classpathentry kind="lib" path="lib/itext-5.1.0/itextpdf-5.1.0.jar"/>
+	<classpathentry kind="lib" path="lib/sqlitejdbc-v056/sqlitejdbc-v056.jar"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+	<classpathentry kind="lib" path="lib/tools.jar"/>
+	<classpathentry kind="lib" path="lib/junit-4.8.2/junit-4.8.2.jar"/>
+	<classpathentry kind="lib" path="lib/checkstyle-5.3/checkstyle-5.3-all.jar"/>
+	<classpathentry kind="lib" path="lib/cobertura-1.9.4.1/cobertura.jar"/>
+	<classpathentry kind="output" path="bin"/>
+</classpath>
