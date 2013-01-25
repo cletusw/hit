@@ -1,21 +1,20 @@
 package model;
 
 public class Product implements Comparable<Object> {
-	private String name;
+	private String barcode;
 	
-	public Product(String pName) {
-		name = pName;
+	public Product(String barcode) {
+		this.barcode = barcode;
 	}
 	
-	public String getName() {
-		return name;
+	public String getBarcode() {
+		return barcode;
 	}
-	
 
 	@Override
 	public int compareTo(Object o) {
 		Product other = (Product) o;
-		return name.compareToIgnoreCase(other.getName());
+		return barcode.compareToIgnoreCase(other.getBarcode());
 	}
 
 }

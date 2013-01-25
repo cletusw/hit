@@ -90,14 +90,14 @@ public abstract class ProductContainer {
 	
 	/** Finds and returns the requested Product object
 	 * 
-	 * @param pToFind - the name of the product to find
+	 * @param barcode - the barcode of the product to find
 	 * @return Product - the requested Product
 	 */
-	public Product getProduct(String pToFind) {
+	public Product getProduct(String barcode) {
 		Iterator<Product> it = products.iterator();
 		while(it.hasNext()) {
 			Product current = it.next();
-			if(current.getName().equals(pToFind))
+			if(current.getBarcode().equals(barcode))
 				return current;
 		}
 		
@@ -188,14 +188,14 @@ public abstract class ProductContainer {
 
 	/** Method that removes a Product object from the collection.
 	 * 
-	 * @param p - the String name of the Product object to be removed from the collection
+	 * @param barcode - the barcode of the Product object to be removed from the collection
 	 * @return True if object was removed successfully, false otherwise.
 	 */
-	public boolean removeProduct(String pToFind) {
+	public boolean removeProduct(String barcode) {
 		Iterator<Product> it = products.iterator();
 		while(it.hasNext()) {
 			Product current = it.next();
-			if(current.getName().equals(pToFind)) {
+			if(current.getBarcode().equals(barcode)) {
 				return products.remove(current);
 			}
 		}
