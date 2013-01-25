@@ -13,8 +13,16 @@ public class Product implements Comparable<Object> {
 
 	@Override
 	public int compareTo(Object o) {
-		Product other = (Product) o;
-		return barcode.compareToIgnoreCase(other.getBarcode());
+		String otherBarcode = "";
+		
+		if (o instanceof Product) {
+			otherBarcode = ((Product) o).getBarcode();
+		}
+		else {
+			otherBarcode = (String) o;
+		}
+		
+		return barcode.compareToIgnoreCase(otherBarcode);
 	}
 
 }
