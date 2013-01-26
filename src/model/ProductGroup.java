@@ -1,6 +1,6 @@
 package model;
 
-/** Class Description
+/** Product Group class. Inherits from ProductContainer.
  * 
  *  @author - Matt Hess
  *  @version 1.0 - Snell 340 Group 4 Phase 1

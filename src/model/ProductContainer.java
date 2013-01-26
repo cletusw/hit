@@ -78,10 +78,10 @@ public abstract class ProductContainer {
 	/** Finds and returns the requested Item object(s)
 	 * 
 	 * @param itemBarcode - the string name of the Item(s) to find. 
-	 * @return LinkedList<Item> - the requested Item
+	 * @return LinkedList<Item> - the requested Items
 	 * 
 	 */
-	public LinkedList<Item> getItem(String itemBarcode) {
+	public LinkedList<Item> getItems(String itemBarcode) {
 		LinkedList<Item> found = new LinkedList<Item>();
 		Iterator<Item> it = items.iterator();
 		while(it.hasNext()) {
@@ -95,15 +95,15 @@ public abstract class ProductContainer {
 	
 	/** Finds and returns the requested Product object
 	 * 
-	 * @param pToFind - the name of the product to find
+	 * @param barcode - the String barcode of the product to find
 	 * @return Product - the requested Product
 	 * 
 	 */
-	public Product getProduct(String pToFind) {
+	public Product getProduct(String barcode) {
 		Iterator<Product> it = products.iterator();
 		while(it.hasNext()) {
 			Product current = it.next();
-			if(current.getName().equals(pToFind))
+			if(current.getBarcode().equals(barcode))
 				return current;
 		}
 		
@@ -182,14 +182,14 @@ public abstract class ProductContainer {
 
 	/** Method that removes an Item object(s) from the collection.
 	 * 
-	 * @param iToFind - the String name of the Item object(s) to be removed from the collection
+	 * @param barcode - the String barcode of the Item object(s) to be removed from the collection
 	 * 
 	 */
-	public void removeItems(String iToFind) {
+	public void removeItems(String barcode) {
 		Iterator<Item> it = items.iterator();
 		while(it.hasNext()) {
 			Item current = it.next();
-			if(current.getName().equals(iToFind)) {
+			if(current.getBarcode().equals(barcode)) {
 				items.remove(current);
 				it = items.iterator();
 			}
@@ -198,7 +198,7 @@ public abstract class ProductContainer {
 
 	/** Method that removes a Product object from the collection.
 	 * 
-	 * @param p - the String name of the Product object to be removed from the collection
+	 * @param barcode - the String barcode of the Product object to be removed from the collection
 	 * @return True if object was removed successfully, false otherwise.
 	 * 
 	 */
@@ -206,7 +206,7 @@ public abstract class ProductContainer {
 		Iterator<Product> it = products.iterator();
 		while(it.hasNext()) {
 			Product current = it.next();
-			if(current.getBarcode().equals(pToFind))
+			if(current.getBarcode().equals(barcode))
 				return products.remove(current);
 		}
 		
