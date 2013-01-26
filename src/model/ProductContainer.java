@@ -78,10 +78,10 @@ public abstract class ProductContainer {
 	/** Finds and returns the requested Item object(s)
 	 * 
 	 * @param itemBarcode - the string name of the Item(s) to find. 
-	 * @return LinkedList<Item> - the requested Items
+	 * @return Collection<Item> - the requested Items
 	 * 
 	 */
-	public LinkedList<Item> getItems(String itemBarcode) {
+	public Collection<Item> getItems(String itemBarcode) {
 		LinkedList<Item> found = new LinkedList<Item>();
 		Iterator<Item> it = items.iterator();
 		while(it.hasNext()) {
