@@ -42,6 +42,7 @@ public abstract class ProductContainer {
 	/** Attribute getter - name
 	 * 
 	 * @return The String name of the ProductContainer
+	 * 
 	 */
 	public String getName() {
 		return name;
@@ -50,6 +51,7 @@ public abstract class ProductContainer {
 	/** Gets the size of the items collection.
 	 * 
 	 * @return int - the number of elements in the items collection.
+	 * 
 	 */
 	public int getItemsSize() {
 		return items.size();
@@ -58,6 +60,7 @@ public abstract class ProductContainer {
 	/** Gets the size of the products collection.
 	 * 
 	 * @return int - the number of elements in the products collection.
+	 * 
 	 */
 	public int getProductsSize() {
 		return products.size();
@@ -66,6 +69,7 @@ public abstract class ProductContainer {
 	/** Gets the size of the pGroups collection
 	 * 
 	 * @return int - the number of elements in the pGroups collection.
+	 * 
 	 */
 	public int getPGroupsSize() {
 		return pGroups.size();
@@ -73,10 +77,11 @@ public abstract class ProductContainer {
 	
 	/** Finds and returns the requested Item object(s)
 	 * 
-	 * @param iToFind - the string name of the Item(s) to find. 
+	 * @param itemBarcode - the string name of the Item(s) to find. 
 	 * @return LinkedList<Item> - the requested Item
+	 * 
 	 */
-	public LinkedList<Item> getItem(String iToFind) {
+	public LinkedList<Item> getItem(String itemBarcode) {
 		LinkedList<Item> found = new LinkedList<Item>();
 		Iterator<Item> it = items.iterator();
 		while(it.hasNext()) {
@@ -92,6 +97,7 @@ public abstract class ProductContainer {
 	 * 
 	 * @param pToFind - the name of the product to find
 	 * @return Product - the requested Product
+	 * 
 	 */
 	public Product getProduct(String pToFind) {
 		Iterator<Product> it = products.iterator();
@@ -108,6 +114,7 @@ public abstract class ProductContainer {
 	 * 
 	 * @param pgToFind - the name of the ProductGroup to find
 	 * @return ProductGroup - the requested ProductGroup
+	 * 
 	 */
 	public ProductGroup getProductGroup(String pgToFind) {
 		Iterator<ProductGroup> it = pGroups.iterator();
@@ -125,6 +132,7 @@ public abstract class ProductContainer {
 	 * 
 	 * @param p - the Product to be found
 	 * @return ProductQuantity - the current supply of the found product, or null.
+	 * 
 	 */
 	public ProductQuantity getCurrentSupply(Product p) {
 		System.out.println("Not yet implemented");
@@ -135,6 +143,7 @@ public abstract class ProductContainer {
 	 * 
 	 * @param pg - the ProductGroup to be found
 	 * @return ProductQuantity - the current supply of the found product group, or null.
+	 * 
 	 */
 	public ProductQuantity getCurrentSupply(ProductGroup pg) {
 		System.out.println("Not yet implemented");
@@ -145,11 +154,9 @@ public abstract class ProductContainer {
 	 * 
 	 * @param i - the Item object to add to the collection
 	 * @return True if object was added successfully, false otherwise.
+	 * 
 	 */
 	public boolean add(Item i) {
-		if(i == null)
-			return false;
-		
 		return items.add(i);
 	}
 
@@ -157,6 +164,7 @@ public abstract class ProductContainer {
 	 * 
 	 * @param p - the Product object to add to the collection
 	 * @return True if object was added successfully, false otherwise.
+	 * 
 	 */
 	public boolean add(Product p) {	
 		return products.add(p);
@@ -166,6 +174,7 @@ public abstract class ProductContainer {
 	 * 
 	 * @param pg - the ProductGroup object to add to the collection
 	 * @return True if object was added successfully, false otherwise.
+	 * 
 	 */
 	public boolean add(ProductGroup pg) {
 		return pGroups.add(pg);
@@ -174,6 +183,7 @@ public abstract class ProductContainer {
 	/** Method that removes an Item object(s) from the collection.
 	 * 
 	 * @param iToFind - the String name of the Item object(s) to be removed from the collection
+	 * 
 	 */
 	public void removeItems(String iToFind) {
 		Iterator<Item> it = items.iterator();
@@ -190,14 +200,14 @@ public abstract class ProductContainer {
 	 * 
 	 * @param p - the String name of the Product object to be removed from the collection
 	 * @return True if object was removed successfully, false otherwise.
+	 * 
 	 */
-	public boolean removeProduct(String pToFind) {
+	public boolean removeProduct(String barcode) {
 		Iterator<Product> it = products.iterator();
 		while(it.hasNext()) {
 			Product current = it.next();
-			if(current.getName().equals(pToFind)) {
+			if(current.getBarcode().equals(pToFind))
 				return products.remove(current);
-			}
 		}
 		
 		return false;
@@ -207,6 +217,7 @@ public abstract class ProductContainer {
 	 * 
 	 * @param pgToFind - the String name of the ProductGroup object to be removed from the collection
 	 * @return True if object was removed successfully, false otherwise.
+	 * 
 	 */
 	public boolean removeProductGroup(String pgToFind) {
 		Iterator<ProductGroup> it = pGroups.iterator();
@@ -240,10 +251,11 @@ public abstract class ProductContainer {
 		initiateProductGroups();
 	}
 	
-	/** Abstract method to be defined in each child; typical equals.
+	/** Defines equality with another ProductContainer descendant.
 	 * 
 	 * @param o - the object to be compared to.
-	 * @returns True if the objects are equal, false otherwise. 
+	 * @returns True if the objects are equal, false otherwise.
+	 *  
 	 */
 	public abstract boolean equals(Object o);
 	
