@@ -1,20 +1,21 @@
 package model;
 
 public class Item implements Comparable<Object> {
-	private String name;
+	private String barcode;
 	
-	public Item(String n) {
-		name = n;
+	public Item(String iBarcode) {
+		barcode = iBarcode;
 	}
 	
-	public String getName() {
-		return name;
-	}
-
 	@Override
 	public int compareTo(Object o) {
 		Item other = (Item) o;
-		return name.compareToIgnoreCase(other.getName());
+		
+		return -1;
+	}
+	
+	public String getBarcode() {
+		return barcode;
 	}
 	
 }
