@@ -3,14 +3,14 @@ package model;
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 /**
- * Maintain a quantity along with an enumerated unit.
+ * Maintain a quantity (volume) along with an enumerated unit.
  */
 public class ProductQuantity {
 	
 	/** Non-negative value for quantity. If units are count, must be integer.  */
 	private float quantity;
 	
-	/**  */
+	/** Enumerated unit of measure for this quantity. */
 	private Unit units;
 	
 	/**
@@ -35,7 +35,7 @@ public class ProductQuantity {
 	 * @param q - float if unit is not COUNT, integer otherwise
 	 */
 	public void setQuantity(float q){
-		
+		this.quantity = q;
 	}
 	
 	/**
