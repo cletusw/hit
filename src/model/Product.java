@@ -153,23 +153,6 @@ public class Product implements Comparable<Object>, Serializable {
 		return sl >= 0;
 	}
 	
-	/**
-	 * Adds this Product to the specified container.
-	 * The container is responsible for checking that this is a valid operation.
-	 * @param container the container to add this Product to
-	 */
-	public void addToContainer(ProductContainer container) {
-		// From the Data Dictionary: At most one ProductContainer in a StorageUnit may contain a particular Product.
-	}
-	
-	/**
-	 * Removes this Product from the specified container.
-	 * @param container the container to remove this Product from.
-	 */
-	public void removeFromContainer(ProductContainer container) {
-		// From the Data Dictionary: 
-	}
-	
 	/** 
 	 * Gets this Product's barcode
 	 * @return this Product's barcode

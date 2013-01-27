@@ -5,7 +5,7 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.TreeSet;
 
-/** Product Container class
+/** Product Container class: Represents an object that can hold various types of items, products, and product groups. 
  * 
  * @author Matt Hess
  * @version 1.0 - Snell 340 Group 4 Phase 1
