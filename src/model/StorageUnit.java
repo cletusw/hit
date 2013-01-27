@@ -23,6 +23,15 @@ public class StorageUnit extends ProductContainer {
 	public StorageUnit() {
 		super();
 	}
+	
+	/** Determines whether or not the specified Product Group can be added to this Storage Unit.
+	 * @param pGroup the Product Group to test
+	 * @return true if able to add, false otherwise
+	 */
+	public boolean canAddProductGroup(ProductGroup pGroup) {
+		// From the Data Dictionary: A Storage Unit cannot have two top-level Product Groups of the same name.
+		return (getProductGroup(pGroup.getName()) == null);
+	}
 
 	@Override
 	/** Equals override. Note that the object is explicitly

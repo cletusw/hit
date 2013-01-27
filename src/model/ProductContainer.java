@@ -179,6 +179,20 @@ public abstract class ProductContainer {
 	public boolean add(ProductGroup pg) {
 		return pGroups.add(pg);
 	}
+	
+	/** Determines whether the specified ProductGroup can be added to this ProductContainer.
+	 * 
+	 * @param pg - the ProductGroup to test
+	 * @return true if the ProductGroup can safely be added, false otherwise.
+	 * 
+	 */
+	public boolean canAddProductGroup(ProductGroup pg) {
+		// From the Data Dictionary:
+		// Must be non-empty and unique within 
+		// the parent Product Container. 
+		//TODO: Implement me! 
+		return true;
+	}
 
 	/** Method that removes an Item object(s) from the collection.
 	 * 
@@ -249,6 +263,18 @@ public abstract class ProductContainer {
 	 */
 	public void clearAllProductGroups() {
 		initiateProductGroups();
+	}
+	
+	/**
+	 * Determines whether the specified string is a valid name for the ProductGroup
+	 * 
+	 * @param name the string to test
+	 * @return true if the string is valid, false otherwise.
+	 * 
+	 */
+	public static boolean isValidName(String name) {
+		// From the Data Dictionary: Must be non-empty
+		return ((name != null) && !name.equals(""));
 	}
 	
 	/** Defines equality with another ProductContainer descendant.
