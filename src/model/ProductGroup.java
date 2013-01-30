@@ -4,6 +4,8 @@ package model;
  * 
  *  @author - Matt Hess
  *  @version 1.0 - Snell 340 Group 4 Phase 1
+ *  
+ *  @invariant container != null
  */
 public class ProductGroup extends ProductContainer {
 	private ProductQuantity threeMonthSupply;
@@ -14,6 +16,8 @@ public class ProductGroup extends ProductContainer {
 	 * @param pcName - String name of the product group.
 	 * @param tmSupply - the three-month supply (ProductQuantity) to be specified for this object
 	 * 
+	 * @pre true
+	 * @post container != null
 	 */
 	public ProductGroup(String pcName,ProductQuantity tmSupply) {
 		super(pcName);
@@ -22,6 +26,9 @@ public class ProductGroup extends ProductContainer {
 	}
 	
 	/** Default Constructor
+	 * 
+	 * @pre true
+	 * @post container != null
 	 * 
 	 */
 	public ProductGroup() {
@@ -35,6 +42,11 @@ public class ProductGroup extends ProductContainer {
 	 * 
 	 * @param o - the object to be compared to this one
 	 * 
+	 * @pre o != null
+	 * @pre o instanceof ProductGroup
+	 * @pre getName() != null
+	 * @post true
+	 * 
 	 */
 	public boolean equals(Object o) {
 		ProductGroup pg = (ProductGroup) o;
@@ -45,6 +57,10 @@ public class ProductGroup extends ProductContainer {
 	/** Attribute getter - threeMonthSupply
 	 * 
 	 * @return ProductQuantity - the three-month supply
+	 * 
+	 * @pre true
+	 * @post true
+	 * 
 	 */
 	public ProductQuantity getThreeMonthSupply() {
 		return threeMonthSupply;
@@ -53,6 +69,10 @@ public class ProductGroup extends ProductContainer {
 	/**
 	 * Gets this ProductGroup's parent container
 	 * @return this ProductGroup's container
+	 * 
+	 * @pre container != null
+	 * @post container != null
+	 * 
 	 */
 	public ProductContainer getContainer() {
 		return container;
@@ -61,6 +81,9 @@ public class ProductGroup extends ProductContainer {
 	/**
 	 * Sets this ProductGroup's parent container to the specified container.
 	 * @param container the new parent container
+	 * 
+	 * @pre container != null
+	 * @post this.container == container
 	 */
 	public void setContainer(ProductContainer container) {
 		// From the Data Dictionary: 
@@ -73,6 +96,9 @@ public class ProductGroup extends ProductContainer {
 	/**
 	 * Sets this ProductGroup's three-month supply
 	 * @param threeMonthSupply - the new quantity for the three-month supply
+	 * 
+	 * @pre true
+	 * @post this.threeMonthSupply == threeMonthSupply
 	 */
 	public void setThreeMonthSupply(ProductQuantity threeMonthSupply) {
 		this.threeMonthSupply = threeMonthSupply;
@@ -82,6 +108,9 @@ public class ProductGroup extends ProductContainer {
 	 * Determines whether a given ProductQuantity is a valid three-month supply
 	 * @param threeMonthSupply - the ProductQuantity to test
 	 * @return true if the ProductQuantity is valid, false otherwise.
+	 * 
+	 * @pre threeMonthSupply != null
+	 * @post true
 	 */
 	public boolean isValidThreeMonthSupply(ProductQuantity threeMonthSupply) {
 		// From the Data Dictionary:

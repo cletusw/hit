@@ -10,6 +10,12 @@ import java.util.TreeSet;
  * @author Matt Hess
  * @version 1.0 - Snell 340 Group 4 Phase 1
  *
+ * @invariant name != null
+ * @invariant !name.equals("")
+ * @invariant items != null
+ * @invariant products != null
+ * @invariant pGroups != null
+ * 
  */
 public abstract class ProductContainer {
 	private String name;
@@ -23,6 +29,13 @@ public abstract class ProductContainer {
 	 * 
 	 * @param pcName - the name of the Product Container
 	 *  
+	 * @pre true
+	 * @post name != null
+	 * @post !name.equals("")
+	 * @post items != null
+	 * @post products != null
+	 * @post pGroups != null 
+	 * 
 	 */
 	public ProductContainer(String pcName) {
 		name = pcName;
@@ -32,6 +45,13 @@ public abstract class ProductContainer {
 	
 	/** Default Constructor 
 	 *
+	 * @pre true
+	 * @post name != null
+	 * @post !name.equals("")
+	 * @post items != null
+	 * @post products != null
+	 * @post pGroups != null
+	 * 
 	 */
 	public ProductContainer() {
 		name = "(no name)";
@@ -43,6 +63,9 @@ public abstract class ProductContainer {
 	 * 
 	 * @return The String name of the ProductContainer
 	 * 
+	 * @pre true
+	 * @post return !name.equals("")
+	 * 
 	 */
 	public String getName() {
 		return name;
@@ -51,6 +74,9 @@ public abstract class ProductContainer {
 	/** Gets the size of the items collection.
 	 * 
 	 * @return int - the number of elements in the items collection.
+	 * 
+	 * @pre items != null
+	 * @post return >= 0 
 	 * 
 	 */
 	public int getItemsSize() {
@@ -61,6 +87,9 @@ public abstract class ProductContainer {
 	 * 
 	 * @return int - the number of elements in the products collection.
 	 * 
+	 * @pre products != null
+	 * @post return >= 0
+	 * 
 	 */
 	public int getProductsSize() {
 		return products.size();
@@ -69,6 +98,9 @@ public abstract class ProductContainer {
 	/** Gets the size of the pGroups collection
 	 * 
 	 * @return int - the number of elements in the pGroups collection.
+	 * 
+	 * @pre pGroups != null
+	 * @post return >= 0
 	 * 
 	 */
 	public int getPGroupsSize() {
@@ -79,6 +111,10 @@ public abstract class ProductContainer {
 	 * 
 	 * @param itemBarcode - the string name of the Item(s) to find. 
 	 * @return Collection<Item> - the requested Items
+	 * 
+	 * @pre items != null
+	 * @pre itemBarcode != null
+	 * @post return (Collection<Item> != null)
 	 * 
 	 */
 	public Collection<Item> getItems(String itemBarcode) {
@@ -98,16 +134,13 @@ public abstract class ProductContainer {
 	 * @param barcode - the String barcode of the product to find
 	 * @return Product - the requested Product
 	 * 
+	 * @pre products != null
+	 * @pre barcode != null
+	 * @post  
+	 * 
 	 */
 	public Product getProduct(String barcode) {
-		Iterator<Product> it = products.iterator();
-		while(it.hasNext()) {
-			Product current = it.next();
-			if(current.getBarcode().equals(barcode))
-				return current;
-		}
-		
-		return null;
+		return traverseProducts(barcode);
 	}
 	
 	/** Finds and returns the requested ProductGroup object
@@ -115,23 +148,22 @@ public abstract class ProductContainer {
 	 * @param pgToFind - the name of the ProductGroup to find
 	 * @return ProductGroup - the requested ProductGroup
 	 * 
+	 * @pre pGroups != null
+	 * @pre pgToFind != null
+	 * @post 
 	 */
 	public ProductGroup getProductGroup(String pgToFind) {
-		Iterator<ProductGroup> it = pGroups.iterator();
-		while(it.hasNext()) {
-			ProductGroup current = it.next();
-			if(current.getName().equals(pgToFind))
-				return current;
-			
-		}
-		
-		return null;
+		return traverseProductGroups(pgToFind);
 	}
 	
 	/** Method that calculates and returns the amount of a product in this container.
 	 * 
 	 * @param p - the Product to be found
 	 * @return ProductQuantity - the current supply of the found product, or null.
+	 * 
+	 * @pre products != null
+	 * @pre p != null
+	 * @post
 	 * 
 	 */
 	public ProductQuantity getCurrentSupply(Product p) {
@@ -144,6 +176,10 @@ public abstract class ProductContainer {
 	 * @param pg - the ProductGroup to be found
 	 * @return ProductQuantity - the current supply of the found product group, or null.
 	 * 
+	 * @pre pGroups != null
+	 * @pre pg != null
+	 * @post
+	 * 
 	 */
 	public ProductQuantity getCurrentSupply(ProductGroup pg) {
 		System.out.println("Not yet implemented");
@@ -155,6 +191,12 @@ public abstract class ProductContainer {
 	 * @param i - the Item object to add to the collection
 	 * @return True if object was added successfully, false otherwise.
 	 * 
+	 * @pre items != null
+	 * @pre i != null
+	 * @pre !items.contains(i)
+	 * @post items.size() == items.size()@pre + 1
+	 * @post items.contains(i)
+	 * 
 	 */
 	public boolean add(Item i) {
 		return items.add(i);
@@ -164,6 +206,12 @@ public abstract class ProductContainer {
 	 * 
 	 * @param p - the Product object to add to the collection
 	 * @return True if object was added successfully, false otherwise.
+	 * 
+	 * @pre products != null
+	 * @pre p != null
+	 * @pre !products.contains(p)
+	 * @post products.size() == products.size()@pre + 1
+	 * @post products.contains(p)
 	 * 
 	 */
 	public boolean add(Product p) {	
@@ -175,6 +223,12 @@ public abstract class ProductContainer {
 	 * @param pg - the ProductGroup object to add to the collection
 	 * @return True if object was added successfully, false otherwise.
 	 * 
+	 * @pre pGroups != null
+	 * @pre pg != null
+	 * @pre !pGroups.contains(pg)
+	 * @post pGroups.size() == pGroups.size()@pre + 1
+	 * @post pGroups.contains(pg)
+	 * 
 	 */
 	public boolean add(ProductGroup pg) {
 		return pGroups.add(pg);
@@ -185,18 +239,28 @@ public abstract class ProductContainer {
 	 * @param pg - the ProductGroup to test
 	 * @return true if the ProductGroup can safely be added, false otherwise.
 	 * 
+	 * @pre pGroups != null
+	 * @pre pg != null
+	 * @post pGroups.size()@pre == pGroups.size()
+	 * 
 	 */
 	public boolean canAddProductGroup(ProductGroup pg) {
 		// From the Data Dictionary:
 		// Must be non-empty and unique within 
 		// the parent Product Container. 
-		//TODO: Implement me! 
-		return true;
+
+		return (traverseProductGroups(pg.getName()) == null);
 	}
 
 	/** Method that removes an Item object(s) from the collection.
 	 * 
 	 * @param barcode - the String barcode of the Item object(s) to be removed from the collection
+	 *
+	 * @pre items != null
+	 * @pre barcode != null
+	 * @pre items.size() >= 0
+	 * @pre traverseItems(barcode).size() > 0
+	 * @post items.size()@pre > items.size() >= 0
 	 * 
 	 */
 	public void removeItems(String barcode) {
@@ -214,17 +278,17 @@ public abstract class ProductContainer {
 	 * 
 	 * @param barcode - the String barcode of the Product object to be removed from the collection
 	 * @return True if object was removed successfully, false otherwise.
+	 *
+	 * @pre products != null
+	 * @pre barcode != null
+	 * @pre products.size() >= 0
+	 * @pre traverseProducts(barcode) != null
+	 * @post traverseProducts(barcode) == null
+	 * @post products.size() == products.size()@pre - 1
 	 * 
 	 */
 	public boolean removeProduct(String barcode) {
-		Iterator<Product> it = products.iterator();
-		while(it.hasNext()) {
-			Product current = it.next();
-			if(current.getBarcode().equals(barcode))
-				return products.remove(current);
-		}
-		
-		return false;
+		return products.remove(traverseProducts(barcode));
 	}
 
 	/** Method that removes a ProductGroup object from the collection.
@@ -232,27 +296,35 @@ public abstract class ProductContainer {
 	 * @param pgToFind - the String name of the ProductGroup object to be removed from the collection
 	 * @return True if object was removed successfully, false otherwise.
 	 * 
+	 * @pre products != null
+	 * @pre pgTofind != null
+	 * @pre !pgToFind.equals("")
+	 * @pre pGroups.size() >= 0
+	 * @pre traverseProductGroups(pgToFind) != null
+	 * @pre traverseProductGroups(pgToFind).containerEmpty()
+	 * @post traverseProducts(pgToFind) == null
+	 * @post products.size() == products.size()@pre - 1
+	 * 
 	 */
 	public boolean removeProductGroup(String pgToFind) {
-		Iterator<ProductGroup> it = pGroups.iterator();
-		while(it.hasNext()) {
-			ProductGroup current = it.next();
-			if(current.getName().equals(pgToFind))
-				return pGroups.remove(current);
-		}
-
-		return false;
+		return pGroups.remove(traverseProducts(pgToFind));
 	}
 	
 	/** Method that clears the Items data structure.
 	 * 
+	 * @pre true
+	 * @post items != null
+	 * @post items.size() == 0
 	 */
 	public void clearAllItems() {
 		initiateItems();
 	}
 	
-	/** Method that clears the Products data structure.
+	/** Method that clears the Products data structure
 	 * 
+	 * @pre true
+	 * @post products != null
+	 * @post products.size() == 0
 	 */
 	public void clearAllProducts() {
 		initiateProducts();
@@ -260,6 +332,9 @@ public abstract class ProductContainer {
 
 	/** Method that clears the ProductGroups data structure.
 	 * 
+	 * @pre true
+	 * @post pGroups != null
+	 * @post pGroups.size() == 0
 	 */
 	public void clearAllProductGroups() {
 		initiateProductGroups();
@@ -271,6 +346,8 @@ public abstract class ProductContainer {
 	 * @param name the string to test
 	 * @return true if the string is valid, false otherwise.
 	 * 
+	 * @pre true
+	 * @post return (name != null && !name.equals(""))
 	 */
 	public static boolean isValidName(String name) {
 		// From the Data Dictionary: Must be non-empty
@@ -282,6 +359,9 @@ public abstract class ProductContainer {
 	 * @param o - the object to be compared to.
 	 * @returns True if the objects are equal, false otherwise.
 	 *  
+	 * @pre (class invariants)
+	 * @post (class invariants--no change)
+	 * 
 	 */
 	public abstract boolean equals(Object o);
 	
@@ -315,51 +395,49 @@ public abstract class ProductContainer {
 	private void initiateProducts() {
 		products = new TreeSet<Product>();
 	}
-	
+		
 	/*
-	 * Method that returns the collection associated with the collection type
-	 * 
+	 * @pre items != null, no references to null objects
+	 * @post none
 	 */
-	/*private Collection determineCollection(collectionType ct) {
-		if(ct == collectionType.ITEMS)
-			return items;
-		else if(ct == collectionType.PRODUCTS)
-			return products;
-		else if(ct == collectionType.P_GROUPS)
-			return pGroups;
-		
-		return null;
-	}*/
-	
-	/*
-	 * Method that determines which type of object should be returned. 
-	 */
-	/*private Object determineObjectType(collectionType ct,Object o) {
-		if(ct == collectionType.ITEMS)
-			return (Item) o;
-		else if(ct == collectionType.PRODUCTS)
-			return (Product) o;
-		else if(ct == collectionType.P_GROUPS)
-			return (ProductGroup) o;
-		
-		return null;
-	}*/
-	
-	/*private Object traverseCollection(collectionType ct,Object needle) {
-		Collection c = determineCollection(ct);
-		if(c == null)
-			return null;
-		
-		Iterator it = c.iterator();
+	private Item traverseItems(String barcode) {
+		Iterator<Item> it = items.iterator();
 		while(it.hasNext()) {
-			if(it.equals(needle))
-				return needle;
-			
-			it.next();
+			Item current = it.next();
+			if(current.getBarcode().equals(barcode))
+				return current;
 		}
 		
 		return null;
-	}*/
+	}
 	
+	/*
+	 * @pre products != null, no references to null objects
+	 * @post none
+	 */
+	private Product traverseProducts(String barcode) {
+		Iterator<Product> it = products.iterator();
+		while(it.hasNext()) {
+			Product current = it.next();
+			if(current.getBarcode().equals(barcode))
+				return current;
+		}
+		
+		return null;
+	}
 	
+	/*
+	 * @pre pGroups != null, no references to null objects
+	 * @post none
+	 */
+	private ProductGroup traverseProductGroups(String pgName) {
+		Iterator<ProductGroup> it = pGroups.iterator();
+		while(it.hasNext()) {
+			ProductGroup current = it.next();
+			if(current.getName().equals(pgName))
+				return current;
+		}
+		
+		return null;
+	}
 }

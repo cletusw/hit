@@ -4,6 +4,8 @@ package model;
  * 
  *  @author - Matt Hess
  *  @version 1.0 - Snell 340 Group 4 Phase 1
+ *  
+ *  @invariant 
  */
 
 public class StorageUnit extends ProductContainer {
@@ -11,6 +13,9 @@ public class StorageUnit extends ProductContainer {
 	/** Constructor
 	 * 
 	 * @param pcName - String name of the product group.
+	 * 
+	 * @pre true
+	 * @post true
 	 * 
 	 */
 	public StorageUnit(String pcName) {
@@ -27,6 +32,9 @@ public class StorageUnit extends ProductContainer {
 	/** Determines whether or not the specified Product Group can be added to this Storage Unit.
 	 * @param pGroup the Product Group to test
 	 * @return true if able to add, false otherwise
+	 * 
+	 * @pre pGroups != null
+	 * @post true
 	 */
 	public boolean canAddProductGroup(ProductGroup pGroup) {
 		// From the Data Dictionary: A Storage Unit cannot have two top-level Product Groups of the same name.
@@ -38,6 +46,11 @@ public class StorageUnit extends ProductContainer {
 	 *  cast as a ProductGroup object. 
 	 * 
 	 * @param o - the object to be compared to this one
+	 * 
+	 * @pre getName() != null
+	 * @pre o != null
+	 * @pre o instanceof StorageUnit
+	 * @post true
 	 * 
 	 */
 
