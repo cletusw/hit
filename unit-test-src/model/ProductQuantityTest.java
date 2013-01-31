@@ -15,6 +15,7 @@ import org.junit.Test;
 public class ProductQuantityTest {
 	// Test fixtures
 	private ProductQuantity fluid;
+	private ProductQuantity count;
 	
 	@Rule
     public ExpectedException thrown = ExpectedException.none();
@@ -25,6 +26,7 @@ public class ProductQuantityTest {
 	@Before
 	public void setUp() throws Exception {
 		fluid = new ProductQuantity(3.2f, Unit.FLUID_OUNCES);
+		count = new ProductQuantity(0, Unit.COUNT);
 	}
 
 	/**
@@ -63,7 +65,6 @@ public class ProductQuantityTest {
 		fluid.setQuantity(0f);
 		assertTrue(fluid.getQuantity() == 0f);
 		
-		ProductQuantity count = new ProductQuantity(0, Unit.COUNT);
 		count.setQuantity(1);
 		assertTrue(count.getQuantity() == 1);
 		
@@ -92,7 +93,8 @@ public class ProductQuantityTest {
 	 */
 	@Test
 	public void testToString() {
-		fail("Not yet implemented");
+		assertTrue(fluid.toString().equals("3.2 Fluid_ounces"));
+		assertTrue(count.toString().equals("0 Count"));
 	}
 
 }
