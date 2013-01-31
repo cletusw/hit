@@ -13,6 +13,9 @@ import org.junit.Test;
  *
  */
 public class ProductQuantityTest {
+	// Test fixtures
+	private ProductQuantity fluid;
+	
 	@Rule
     public ExpectedException thrown = ExpectedException.none();
 
@@ -21,6 +24,7 @@ public class ProductQuantityTest {
 	 */
 	@Before
 	public void setUp() throws Exception {
+		fluid = new ProductQuantity(3.2f, Unit.FLUID_OUNCES);
 	}
 
 	/**
@@ -35,9 +39,8 @@ public class ProductQuantityTest {
 	 */
 	@Test
 	public void testProductQuantity() {
-		ProductQuantity pq = new ProductQuantity(3.2f, Unit.FLUID_OUNCES);
-		assertTrue(pq.getQuantity() == 3.2f);
-		assertTrue(pq.getUnits() == Unit.FLUID_OUNCES);
+		assertTrue(fluid.getQuantity() == 3.2f);
+		assertTrue(fluid.getUnits() == Unit.FLUID_OUNCES);
 	}
 
 	/**
@@ -57,16 +60,15 @@ public class ProductQuantityTest {
 	 */
 	@Test
 	public void testSetQuantity() {
-		ProductQuantity pq = new ProductQuantity(3.2f, Unit.FLUID_OUNCES);
-		pq.setQuantity(0f);
-		assertTrue(pq.getQuantity() == 0f);
+		fluid.setQuantity(0f);
+		assertTrue(fluid.getQuantity() == 0f);
 		
-		pq = new ProductQuantity(0, Unit.COUNT);
-		pq.setQuantity(1);
-		assertTrue(pq.getQuantity() == 1);
+		ProductQuantity count = new ProductQuantity(0, Unit.COUNT);
+		count.setQuantity(1);
+		assertTrue(count.getQuantity() == 1);
 		
 		thrown.expect(IllegalArgumentException.class);
-		pq.setQuantity(1.2f);
+		count.setQuantity(1.2f);
 	}
 
 	/**
