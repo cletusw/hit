@@ -15,29 +15,30 @@ public class ProductQuantity {
 	private Unit units;
 	
 	/** Constructor
-	 * @param q Quantity, must be non-negative. If Unit is COUNT, must be integer.
-	 * @param u Unit
+	 * @param quantity Quantity, must be non-negative. If Unit is COUNT, must be integer.
+	 * @param units Unit
 	 */
-	public ProductQuantity(float q, Unit u){
-		throw new NotImplementedException();
+	public ProductQuantity(float quantity, Unit units){
+		this.units = units;
+		setQuantity(quantity);
 	}
 	
 	/** Checks if float q and Unit u can be combined to create a valid
 	 * Product Group. q must be non-negative. If u is COUNT, q must be
 	 * an integer.
 	 * 
-	 * @param q float quantity to test.
-	 * @param u Unit to test.
-	 * @return true if q, u can be combined to make a valid ProductQuantity,
+	 * @param quantity float quantity to test.
+	 * @param units Unit to test.
+	 * @return true if quantity, units can be combined to make a valid ProductQuantity,
 	 * false otherwise 
 	 * 
 	 */
-	public static boolean isValidProductQuantity(float q, Unit u){
-		if(q < 0){
+	public static boolean isValidProductQuantity(float quantity, Unit units){
+		if(quantity < 0){
 			return false;
 		}
 		
-		if(u == Unit.COUNT && q != Math.round(q)){
+		if(units == Unit.COUNT && quantity != Math.round(quantity)){
 			return false;
 		}
 		
@@ -55,14 +56,14 @@ public class ProductQuantity {
 	/** Attribute setter for quantity. This setter enforces that if the units
 	 * are COUNT, the quantity must be
 	 *  
-	 * @param q Float if unit is not COUNT, integer otherwise
-	 * @throws IllegalArgumentException If Unit is COUNT and q is not an integer 
+	 * @param quantity Float if units is not COUNT, integer otherwise
+	 * @throws IllegalArgumentException If units are COUNT and quantity is not an integer 
 	 */
-	public void setQuantity(float q) throws IllegalArgumentException{
-		if(this.units == Unit.COUNT && q != Math.round(q)){
-			throw new IllegalArgumentException("Units are COUNT so quantity must be integer. Given " + q);
+	public void setQuantity(float quantity) throws IllegalArgumentException{
+		if(!isValidProductQuantity(quantity, this.units)){
+			throw new IllegalArgumentException("Units are COUNT so quantity must be integer. Given " + quantity);
 		}
-		this.quantity = q;
+		this.quantity = quantity;
 	}
 	
 	/** Attribute getter for Unit associated with this quantity
