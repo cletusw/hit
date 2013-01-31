@@ -113,6 +113,11 @@ public class ProductQuantity {
 	 * @return String representation of ProductQuantity
 	 */
 	public String toString(){
-		return this.quantity + " " + this.units.toString();
+		if (units == Unit.COUNT) {
+			return Math.round(quantity) + " " + units.toString();
+		}
+		else {
+			return quantity + " " + units.toString();
+		}
 	}
 }
