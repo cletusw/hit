@@ -14,10 +14,8 @@ public class ItemManager {
 		items = new ArrayList<Item>();
 	}
 	
-	/** Constructs a new Item with the specified barcode, product, and container
-	 * @param barcode the Item's barcode
-	 * @param product this Item's corresponding Product
-	 * @param container the ProductContainer this Item is to be stored in
+	/** Adds the given item to this Manager's indexes
+	 * @param item Item to manage
 	 */
 	public void manage(Item item) {
 		items.add(item);
