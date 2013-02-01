@@ -10,7 +10,7 @@ package model;
  */
 public class Barcode {
 	private String barcode;
-	
+
 	/** Constructor
 	 * 
 	 * @param s
@@ -25,19 +25,19 @@ public class Barcode {
 	public Barcode(String s) throws IllegalArgumentException {
 		if(!isValidBarcode(s))
 			throw new IllegalArgumentException("Invalid barcode: " + s);
-		
+
 		barcode = s;
 	}
-	
+
 	/** Default constructor -- shouldn't be used.
 	 * 
 	 * @pre true
 	 * @post true
 	 */
 	protected Barcode() {
-		
+
 	}
-	
+
 	/** Returns the string value of the barcode. 
 	 * 
 	 * @return String representation of the barcode.
@@ -49,22 +49,46 @@ public class Barcode {
 	public String getValue() {
 		return barcode;
 	}
-	
+
 	/** Checks to see if a given barcode string is valid.
 	 *
 	 * @param s String barcode to check
 	 * @return true if barcode is valid, false otherwise
 	 * 
-	 * @pre s!=null
+	 * @pre s != null
 	 * @pre !s.equals("")
-	 * 
+	 * @pre s.length() == 12
+	 * @pre s.charAt(0) == '4'
+	 * @pre for(char in s) Character.isDigit(char)
 	 * @post true
+	 * 
 	 */
-	private boolean isValidBarcode(String s) {
-		if(s == null || s.equals(""))
+	public static boolean isValidBarcode(String s) {
+		if(s == null || s.equals("") || s.length() != 12 || s.charAt(0) != '4')
 			return false;
-		
-		return false;
-	}
 
+		int total = 0;
+		for(int i=0; i<=10; i+=2) {
+			if(!Character.isDigit(s.charAt(i)))
+				return false;
+			
+			total += Integer.parseInt(Character.toString(s.charAt(i)));
+		}
+		
+		total *= 3;
+		
+		for(int i=1; i<=9; i+=2) {
+			if(!Character.isDigit(s.charAt(i)))
+				return false;
+			
+			total += Integer.parseInt(Character.toString(s.charAt(i)));
+		}
+		
+		total %= 10;
+		
+		if(total != 0)
+			total = 10 - total;
+		
+		return (total == Integer.parseInt(Character.toString(s.charAt(11))));
+	}
 }
