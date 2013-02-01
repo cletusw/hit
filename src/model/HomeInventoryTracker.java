@@ -13,74 +13,38 @@ import java.io.*;
  * @version 1.0
  */
 public class HomeInventoryTracker implements Serializable {
-	private static final long serialVersionUID = 0;
 	private Collection<StorageUnit> rootStorageUnits;
 	private Collection<Item> removedItems;
-	private static final String defaultSerializedFileName = "HomeInventoryTracker.ser";
-	private String serializedFileName;
-	private static HomeInventoryTracker instance;
-	
-	/** Singleton access method: Returns the instance of the HomeInventoryTracker.
-	 * 
-	 * @return 			the instance of HomeInventoryTracker
-	 */
-	public static HomeInventoryTracker getInstance() {
-		if (instance == null)
-			instance = new HomeInventoryTracker();
-		return instance;
-	}
-	
+
 	/** Initializes the HomeInventoryTracker. */
 	private HomeInventoryTracker() {
-		serializedFileName = defaultSerializedFileName;
+		rootStorageUnits = new ArrayList<StorageUnit>();
+		removedItems = new TreeSet<Item>();		
+	}
+
+	/** Creates a new HomeInventoryTracker, reading it from persistent storage if available. Otherwise, it creates a new empty instance of the class. 
+	 * @return a new instance of HomeInventoryTracker
+	 *  
+	 */
+	public static HomeInventoryTracker create() {
+		HomeInventoryTracker tracker;
+		PersistentStorageManager persistentStorageManager = new SerializationManager();
 		try {
-			deserialize();
+			tracker = persistentStorageManager.readObject();
 		}
 		catch(IOException e) {
-			rootStorageUnits = new ArrayList<StorageUnit>();
-			removedItems = new TreeSet<Item>();
+			tracker = new HomeInventoryTracker();
 		}
+		return tracker;
 	}
 	
-	/** Deserializes the Home Inventory Tracker from a file.
-	 * @throws 	IOException if an error occurred reading from the serialized file.
+	/**
+	 * Writes this instance of HomeInventoryTracker to persistent storage.
+	 * @throws IOException if the write failed.
 	 */
-	public void deserialize() throws IOException {
-		try {
-			FileInputStream fileInputStream = new FileInputStream(serializedFileName);
-			ObjectInputStream objectReader = new ObjectInputStream(fileInputStream);
-			//instance = (HomeInventoryTracker) objectReader.readObject(); // Static object cannot be written or read
-			rootStorageUnits = (Collection<StorageUnit>) objectReader.readObject();
-			removedItems = (Collection<Item>) objectReader.readObject();
-			objectReader.close();
-		}
-		//catch (IOException e) {
-		//	System.err.println("Could not open the serialized file " + serializedFileName + " for reading");
-		//	e.printStackTrace();
-		//}
-		catch (ClassNotFoundException e) {
-			System.err.println("Could not locate class for deserialization");
-			e.printStackTrace();
-		}
-	}
-	
-	/** Serializes the Home Inventory Tracker to a file.
-	 * @throws 	IOException if an error occurred writing to the serialized file.
-	 */
-	public void serialize() throws IOException {
-		//try {
-			FileOutputStream fileOutputStream = new FileOutputStream(serializedFileName);
-			ObjectOutputStream objectWriter = new ObjectOutputStream(fileOutputStream);
-			//objectWriter.writeObject(instance);
-			objectWriter.writeObject(rootStorageUnits);
-			objectWriter.writeObject(removedItems);
-			objectWriter.flush();
-			objectWriter.close();
-		//}
-		//catch (IOException e) {
-		//	System.err.println("Error writing to serialization file " + serializedFileName);
-		//	e.printStackTrace();
-		//}
+	public void write() throws IOException {
+		PersistentStorageManager persistentStorageManager = new SerializationManager();
+		persistentStorageManager.writeObject(this);
 	}
 	
 	/** Determines whether the specified Storage Unit name is valid for adding a new Storage Unit.
@@ -143,6 +107,32 @@ public class HomeInventoryTracker implements Serializable {
 	public boolean addProductToContainer(ProductContainer source, Product product) {
 		// @TODO: Implement me!
 		return false;
+	}
+	
+	public void remove(Item item) {
+		
+	}
+	
+	public void remove(Product product) {
+		
+	}
+	
+	public void remove(ProductContainer container) {
+	
+	}
+	
+	// DO we need these? (And for Items?)
+	public boolean canRemoveProduct(Product product) {
+		return true;
+	}
+	
+	public boolean canDeleteProductContainer(ProductContainer container) {
+		return true;
+	}
+	
+	public boolean canAddStorageUnit(String storageUnitName) {
+		// Must be unique
+		return true;
 	}
 	
 }
