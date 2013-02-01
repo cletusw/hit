@@ -7,6 +7,7 @@ import java.util.Date;
  * Represents a physical item in the Home Inventory System.
  *
  */
+@SuppressWarnings("serial")
 public class Item implements Comparable<Object>, Serializable {
 	private Product product;
 	private String barcode;
