@@ -30,8 +30,8 @@ public class HomeInventoryTracker implements Serializable {
 	public HomeInventoryTracker() {
 		rootStorageUnits = new ArrayList<StorageUnit>();
 		removedItems = new TreeSet<Item>();
-		itemManager = new ItemManager();
-		productManager = new ProductManager();
+		itemManager = new ConreteItemManager();
+		productManager = new ConcreteProductManager();
 	}
 	
 	/**

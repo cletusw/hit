@@ -18,8 +18,8 @@ import org.junit.Test;
 public class ItemTest {
 
 	private final String validUPCABarcode = "411111111111";
-	private final ItemManager itemManager = new ItemManager();
-	private final ProductManager productManager = new ProductManager();
+	private final ItemManager itemManager = new MockItemManager();
+	private final ProductManager productManager = new MockProductManager();
 	private final Product product = new Product("validBarcode", "A product", productManager);
 	private final ProductGroup productGroup = new ProductGroup();
 	
