@@ -22,10 +22,8 @@ public class HomeInventoryTracker implements Serializable {
 	
 	/** Initializes the HomeInventoryTracker. 
 	 * @pre true
-	 * @post removedItems != null && removedItems.size() == 0
-	 * @post rootStorageUnits != null && rootStorageUnits.size() == 0
-	 * @post itemManager != null
-	 * @post productManager != null
+	 * @post removedItems.size() == 0
+	 * @post rootStorageUnits.size() == 0
 	 */
 	public HomeInventoryTracker() {
 		rootStorageUnits = new ArrayList<StorageUnit>();
