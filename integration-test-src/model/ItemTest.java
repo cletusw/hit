@@ -18,9 +18,11 @@ import org.junit.Test;
 public class ItemTest {
 
 	private final String validUPCABarcode = "411111111111";
-	private final Product product = new Product("validBarcode", "A product");
-	private final ProductGroup productGroup = new ProductGroup();
 	private final ItemManager itemManager = new ItemManager();
+	private final ProductManager productManager = new ProductManager();
+	private final Product product = new Product("validBarcode", "A product", productManager);
+	private final ProductGroup productGroup = new ProductGroup();
+	
 	private Item item;
 	
 	/**
@@ -75,7 +77,7 @@ public class ItemTest {
 	 */
 	@Test
 	public void testSetProduct() {
-		Product newProduct = new Product("newBarcode", "newDescription");
+		Product newProduct = new Product("newBarcode", "newDescription", productManager);
 		item.setProduct(newProduct);
 		assertTrue(item.getProduct().compareTo(newProduct) == 0);
 		assertFalse(item.getProduct().compareTo(product) == 0);
@@ -148,7 +150,7 @@ public class ItemTest {
 	@Test
 	public void testCompareTo() {
 		Item sameItem = new Item(validUPCABarcode, product, productGroup, itemManager);
-		Item newItem = new Item("422222222222", new Product("abc", "abcd"), new ProductGroup(), itemManager);
+		Item newItem = new Item("422222222222", new Product("abc", "abcd", productManager), new ProductGroup(), itemManager);
 		assertTrue(item.compareTo(sameItem) == 0);
 		assertTrue(item.compareTo(newItem) != 0);
 	}

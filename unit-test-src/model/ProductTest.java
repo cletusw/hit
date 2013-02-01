@@ -19,6 +19,7 @@ public class ProductTest {
 
 	private final String validBarcode = "testBarcode";
 	private final String validDescription = "testDescription";
+	private final ProductManager productManager = new ProductManager();
 	private Product product;
 	
 	/**
@@ -26,7 +27,7 @@ public class ProductTest {
 	 */
 	@Before
 	public void setUp() throws Exception {
-		product = new Product(validBarcode, validDescription);
+		product = new Product(validBarcode, validDescription, productManager);
 	}
 
 	/**
@@ -50,7 +51,7 @@ public class ProductTest {
 	 */
 	@Test (expected=IllegalArgumentException.class)
 	public void testProductInvalidBarcode() {
-		new Product("", validDescription);
+		new Product("", validDescription, productManager);
 	}
 	
 	/**
@@ -58,7 +59,7 @@ public class ProductTest {
 	 */
 	@Test (expected=IllegalArgumentException.class)
 	public void testProductInvalidDescription() {
-		new Product(validBarcode, "");
+		new Product(validBarcode, "", productManager);
 	}
 
 	/**
@@ -234,8 +235,8 @@ public class ProductTest {
 	 */
 	@Test
 	public void testCompareTo() {
-		Product sameProduct = new Product(product.getBarcode(), product.getDescription());
-		Product differentProduct = new Product("DifferentBarcode", "DifferentDescription");
+		Product sameProduct = new Product(product.getBarcode(), product.getDescription(), productManager);
+		Product differentProduct = new Product("DifferentBarcode", "DifferentDescription", productManager);
 		
 		assertTrue(product.compareTo(sameProduct) == 0);
 		assertTrue(product.compareTo(differentProduct) != 0);
