@@ -20,7 +20,7 @@ public class BarcodeTest {
 	@After
 	public void tearDown() throws Exception {
 	}
-
+	// worthless comment
 	@Test
 	public void test() {
 		// test null string
