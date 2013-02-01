@@ -76,7 +76,7 @@ public class ProductQuantity {
 	 */
 	public void setQuantity(float q) throws IllegalArgumentException{
 		if(!isValidProductQuantity(q, this.units)){
-			throw new IllegalArgumentException("Units are COUNT so quantity must be integer. Given " + quantity);
+			throw new IllegalArgumentException("Invalid quantity: " + quantity);
 		}
 		this.quantity = q;
 	}
