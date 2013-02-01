@@ -4,6 +4,9 @@ package model;
  * 
  *  @author Matt Hess
  *  @version 1.0 -- Snell CS 340 Phase 1.0
+ *  
+ *  @invariant s != null
+ *  @invariant s.length() > 0
  */
 public class Barcode {
 	private String barcode;
@@ -21,20 +24,18 @@ public class Barcode {
 	 */
 	public Barcode(String s) throws IllegalArgumentException {
 		if(!isValidBarcode(s))
-			throw new IllegalArgumentException("Barcode constructor error: null or empty string given.");
+			throw new IllegalArgumentException("Invalid barcode: " + s);
 		
 		barcode = s;
 	}
 	
 	/** Default constructor -- shouldn't be used.
 	 * 
-	 * @throws IllegalArgumentException
 	 * @pre true
-	 * @post false
-	 * 
+	 * @post true
 	 */
-	public Barcode() throws IllegalArgumentException {
-		throw new IllegalArgumentException("Barcode constructor error: null string given.\n");
+	protected Barcode() {
+		
 	}
 	
 	/** Returns the string value of the barcode. 
@@ -49,8 +50,15 @@ public class Barcode {
 		return barcode;
 	}
 	
-	/* Checks to see if a given barcode string is valid.
+	/** Checks to see if a given barcode string is valid.
+	 *
+	 * @param s String barcode to check
+	 * @return true if barcode is valid, false otherwise
 	 * 
+	 * @pre s!=null
+	 * @pre !s.equals("")
+	 * 
+	 * @post true
 	 */
 	private boolean isValidBarcode(String s) {
 		if(s == null || s.equals(""))
