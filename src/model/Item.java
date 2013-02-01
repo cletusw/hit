@@ -99,7 +99,7 @@ public class Item implements Comparable<Object>, Serializable {
 	 * 
 	 * @return the Item's expiration date
 	 */
-	public Date getExpirationdate() {
+	public Date getExpirationDate() {
 		// This attribute is defined only if the 
 		// Product’s Shelf Life attribute has been 
 		// specified. 

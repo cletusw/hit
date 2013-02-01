@@ -53,7 +53,7 @@ public class ItemTest {
 		assertTrue(item.getExitTime() == null);
 		
 		Date now = new Date();
-		Date expiration = item.getExpirationdate();
+		Date expiration = item.getExpirationDate();
 		Date entry = item.getEntryDate();
 		assertTrue(expiration != null);
 		assertTrue(entry != null);
