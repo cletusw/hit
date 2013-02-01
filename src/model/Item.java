@@ -19,8 +19,9 @@ public class Item implements Comparable<Object>, Serializable {
 	 * @param product this Item's corresponding Product
 	 * @param container the ProductContainer this Item is to be stored in
 	 */
-	public Item(String barcode, Product product, ProductContainer container) {
+	public Item(String barcode, Product product, ProductContainer container, ItemManager manager) {
 		setBarcode(barcode);
+		manager.manage(this);
 	}
 	
 	/** Sets this item's Product using the given Product

@@ -20,6 +20,7 @@ public class ItemTest {
 	private final String validUPCABarcode = "411111111111";
 	private final Product product = new Product("validBarcode", "A product");
 	private final ProductGroup productGroup = new ProductGroup();
+	private final ItemManager itemManager = new ItemManager();
 	private Item item;
 	
 	/**
@@ -27,7 +28,7 @@ public class ItemTest {
 	 */
 	@Before
 	public void setUp() throws Exception {
-		item = new Item(validUPCABarcode, product, productGroup);
+		item = new Item(validUPCABarcode, product, productGroup, itemManager);
 	}
 
 	/**
@@ -146,8 +147,8 @@ public class ItemTest {
 	 */
 	@Test
 	public void testCompareTo() {
-		Item sameItem = new Item(validUPCABarcode, product, productGroup);
-		Item newItem = new Item("422222222222", new Product("abc", "abcd"), new ProductGroup());
+		Item sameItem = new Item(validUPCABarcode, product, productGroup, itemManager);
+		Item newItem = new Item("422222222222", new Product("abc", "abcd"), new ProductGroup(), itemManager);
 		assertTrue(item.compareTo(sameItem) == 0);
 		assertTrue(item.compareTo(newItem) != 0);
 	}

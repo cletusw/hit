@@ -11,9 +11,11 @@ import java.io.*;
 public class HomeInventoryTracker implements Serializable {
 	private Collection<StorageUnit> rootStorageUnits;
 	private Collection<Item> removedItems;
+	private ItemManager itemManager;
 	
 	/** Initializes the HomeInventoryTracker. */
 	public HomeInventoryTracker() {
+		itemManager = new ItemManager();
 	}
 	
 	/** Determines whether the specified Storage Unit name is valid for adding a new Storage Unit.
