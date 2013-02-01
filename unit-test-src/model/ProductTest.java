@@ -19,7 +19,7 @@ public class ProductTest {
 
 	private final String validBarcode = "testBarcode";
 	private final String validDescription = "testDescription";
-	private final ProductManager productManager = new ProductManager();
+	private final ProductManager productManager = new MockProductManager();
 	private Product product;
 	
 	/**

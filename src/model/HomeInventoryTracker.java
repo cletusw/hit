@@ -17,7 +17,7 @@ public class HomeInventoryTracker implements Serializable {
 	/** Initializes the HomeInventoryTracker. */
 	public HomeInventoryTracker() {
 		itemManager = new ItemManager();
-		productManager = new ProductManager();
+		productManager = new ConcreteProductManager();
 	}
 	
 	/** Determines whether the specified Storage Unit name is valid for adding a new Storage Unit.
