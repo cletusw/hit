@@ -1,12 +1,13 @@
 package model;
 
-import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 /** Maintain a quantity (volume) along with an enumerated unit.
  * 
  * @author Matt Matheson
  * @version 1.0 - Snell 340 Group 4 Phase 1
  * 
+ * @invariant quantity >= 0.0
+ * @invariant units != null
  */
 public class ProductQuantity {
 
@@ -15,12 +16,18 @@ public class ProductQuantity {
 	private Unit units;
 	
 	/** Constructor
-	 * @param quantity Quantity, must be non-negative. If Unit is COUNT, must be integer.
-	 * @param units Unit
+	 * @param q Quantity, must be non-negative. If Unit is COUNT, must be integer.
+	 * @param u Unit
+	 * 
+	 * @pre quantity >= 0.0
+	 * @pre IF units == Unit.COUNT, quantity is integer ELSE quantity is float
+	 * @post units.equals(u)
+	 * @post quantity.equals(q)
+	 * @post isValidProductQuantity(this.units, this.quantity)
 	 */
-	public ProductQuantity(float quantity, Unit units){
-		this.units = units;
-		setQuantity(quantity);
+	public ProductQuantity(float q, Unit u){
+		this.units = u;
+		setQuantity(q);
 	}
 	
 	/** Checks if float q and Unit u can be combined to create a valid
@@ -32,6 +39,8 @@ public class ProductQuantity {
 	 * @return true if quantity, units can be combined to make a valid ProductQuantity,
 	 * false otherwise 
 	 * 
+	 * @pre true
+	 * @post true
 	 */
 	public static boolean isValidProductQuantity(float quantity, Unit units){
 		if(quantity < 0){
@@ -48,6 +57,9 @@ public class ProductQuantity {
 	/** Attribute getter for quantity
 	 * 
 	 * @return The float quantity associated with this ProductQuantity
+	 * 
+	 * @pre true
+	 * @post true
 	 */
 	public float getQuantity(){
 		return this.quantity;
@@ -56,19 +68,25 @@ public class ProductQuantity {
 	/** Attribute setter for quantity. This setter enforces that if the units
 	 * are COUNT, the quantity must be
 	 *  
-	 * @param quantity Float if units is not COUNT, integer otherwise
-	 * @throws IllegalArgumentException If units are COUNT and quantity is not an integer 
+	 * @param q Float if units is not COUNT, integer otherwise
+	 * @throws IllegalArgumentException If units are COUNT and quantity is not an integer
+	 * 
+	 *  @pre IF this.units == Unit.COUNT quantity is int, ELSE quantity is float
+	 *  @post quantity.equals(q)
 	 */
-	public void setQuantity(float quantity) throws IllegalArgumentException{
-		if(!isValidProductQuantity(quantity, this.units)){
+	public void setQuantity(float q) throws IllegalArgumentException{
+		if(!isValidProductQuantity(q, this.units)){
 			throw new IllegalArgumentException("Units are COUNT so quantity must be integer. Given " + quantity);
 		}
-		this.quantity = quantity;
+		this.quantity = q;
 	}
 	
 	/** Attribute getter for Unit associated with this quantity
 	 * 
 	 * @return Unit Enum of this ProductQuantity
+	 * 
+	 * @pre true
+	 * @post true
 	 * 
 	 */
 	public Unit getUnits(){
@@ -83,12 +101,15 @@ public class ProductQuantity {
 	 * @throws IllegalArgumentException If this ProductQuantity's Unit does not
 	 * match incoming ProductQuantity Unit
 	 * 
+	 * @pre quantityToAdd.units.equals(units)
+	 * @post quantity.equals(quantity + quantityToAdd.quantity)
+	 * 
 	 */
 	public void add(ProductQuantity quantityToAdd) throws IllegalArgumentException{
 		if(quantityToAdd.units != this.units){
 			throw new IllegalArgumentException("Cannot add quantities with different units!");
 		}
-		throw new NotImplementedException();
+		this.quantity += quantityToAdd.quantity;
 	}
 	
 	/** Subtracts a ProductQuantity from this ProductQuantity. The two ProductQuantities
@@ -98,12 +119,20 @@ public class ProductQuantity {
 	 *  
 	 * @throws IllegalArgumentException If this ProductQuantity's Unit does not
 	 * match incoming ProductQuantity Unit
+	 * @throws IllegalArgumentException If the resulting quantity < 0
+	 * 
+	 * @pre quantityToSubtract != null
+	 * @pre quantity - quantityToSubtract.quantity >= 0.0
+	 * @post quantity.equals(quantity - quantityToSubtract.quantity)
 	 */
 	public void subtract(ProductQuantity quantityToSubtract){
 		if(quantityToSubtract.units != this.units){
 			throw new IllegalArgumentException("Cannot subtract quantities with different units!");
 		}
-		throw new NotImplementedException();
+		if(this.quantity - quantityToSubtract.quantity < 0){
+			throw new IllegalArgumentException("Resulting quantity cannot be < 0 (result = " + (this.quantity - quantityToSubtract.quantity));
+		}
+		this.quantity -= quantityToSubtract.quantity;
 	}
 	
 	
@@ -111,6 +140,8 @@ public class ProductQuantity {
 	 * in the format <quantity> <Unit>
 	 * 
 	 * @return String representation of ProductQuantity
+	 * @pre true
+	 * @post true
 	 */
 	public String toString(){
 		if (units == Unit.COUNT) {
