@@ -5,8 +5,8 @@ package model;
  *  @author Matt Hess
  *  @version 1.0 -- Snell CS 340 Phase 1.0
  *  
- *  @invariant s != null
- *  @invariant s.length() > 0
+ *  @invariant barcode != null
+ *  @invariant barcode.length() == 12
  */
 public class Barcode {
 	private String barcode;
@@ -35,7 +35,7 @@ public class Barcode {
 	 * @post true
 	 */
 	protected Barcode() {
-
+		throw new IllegalArgumentException("Invalid barcode: null string passed");
 	}
 
 	/** Returns the string value of the barcode. 
