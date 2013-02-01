@@ -21,7 +21,6 @@ public class BarcodeTest {
 	public void tearDown() throws Exception {
 	}
 
-	// add nonsensical comment
 	@Test
 	public void test() {
 		// test null string
