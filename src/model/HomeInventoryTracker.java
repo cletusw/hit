@@ -1,86 +1,19 @@
 package model;
 
 import java.util.Collection;
-import java.util.ArrayList;
-import java.util.TreeSet;
-import java.io.Serializable;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
 import java.io.*;
 
-/** HomeInventoryTracker: Home Inventory Tracker (HIT) is a system for tracking home storage inventories. 
+/** HomeInventoryTracker: Homeï¿½Inventoryï¿½Trackerï¿½(HIT)ï¿½isï¿½aï¿½systemï¿½forï¿½trackingï¿½homeï¿½storageï¿½inventories. 
  * @author Seth Stewart
  * @version 1.0
  */
+@SuppressWarnings("serial")
 public class HomeInventoryTracker implements Serializable {
-	private static final long serialVersionUID = 0;
 	private Collection<StorageUnit> rootStorageUnits;
 	private Collection<Item> removedItems;
-	private static final String defaultSerializedFileName = "HomeInventoryTracker.ser";
-	private String serializedFileName;
-	private static HomeInventoryTracker instance;
-	
-	/** Singleton access method: Returns the instance of the HomeInventoryTracker.
-	 * 
-	 * @return 			the instance of HomeInventoryTracker
-	 */
-	public static HomeInventoryTracker getInstance() {
-		if (instance == null)
-			instance = new HomeInventoryTracker();
-		return instance;
-	}
 	
 	/** Initializes the HomeInventoryTracker. */
-	private HomeInventoryTracker() {
-		serializedFileName = defaultSerializedFileName;
-		try {
-			deserialize();
-		}
-		catch(IOException e) {
-			rootStorageUnits = new ArrayList<StorageUnit>();
-			removedItems = new TreeSet<Item>();
-		}
-	}
-	
-	/** Deserializes the Home Inventory Tracker from a file.
-	 * @throws 	IOException if an error occurred reading from the serialized file.
-	 */
-	public void deserialize() throws IOException {
-		try {
-			FileInputStream fileInputStream = new FileInputStream(serializedFileName);
-			ObjectInputStream objectReader = new ObjectInputStream(fileInputStream);
-			//instance = (HomeInventoryTracker) objectReader.readObject(); // Static object cannot be written or read
-			rootStorageUnits = (Collection<StorageUnit>) objectReader.readObject();
-			removedItems = (Collection<Item>) objectReader.readObject();
-			objectReader.close();
-		}
-		//catch (IOException e) {
-		//	System.err.println("Could not open the serialized file " + serializedFileName + " for reading");
-		//	e.printStackTrace();
-		//}
-		catch (ClassNotFoundException e) {
-			System.err.println("Could not locate class for deserialization");
-			e.printStackTrace();
-		}
-	}
-	
-	/** Serializes the Home Inventory Tracker to a file.
-	 * @throws 	IOException if an error occurred writing to the serialized file.
-	 */
-	public void serialize() throws IOException {
-		//try {
-			FileOutputStream fileOutputStream = new FileOutputStream(serializedFileName);
-			ObjectOutputStream objectWriter = new ObjectOutputStream(fileOutputStream);
-			//objectWriter.writeObject(instance);
-			objectWriter.writeObject(rootStorageUnits);
-			objectWriter.writeObject(removedItems);
-			objectWriter.flush();
-			objectWriter.close();
-		//}
-		//catch (IOException e) {
-		//	System.err.println("Error writing to serialization file " + serializedFileName);
-		//	e.printStackTrace();
-		//}
+	public HomeInventoryTracker() {
 	}
 	
 	/** Determines whether the specified Storage Unit name is valid for adding a new Storage Unit.
