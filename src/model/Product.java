@@ -9,6 +9,7 @@ import java.util.Date;
  * A representation of a product within the Home Inventory System
  *
  */
+@SuppressWarnings("serial")
 public class Product implements Comparable<Object>, Serializable {
 	private String barcode;
 	private Date creationDate;
