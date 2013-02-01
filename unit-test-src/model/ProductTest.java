@@ -63,21 +63,6 @@ public class ProductTest {
 	}
 
 	/**
-	 * Test method for {@link model.Product#isValidSize(float, model.Unit)}.
-	 */
-	@Test
-	public void testIsValidSize() {
-		// valid ProductQuantities
-		assertTrue(product.isValidSize(1.2f, Unit.FLUID_OUNCES));
-		assertTrue(product.isValidSize(0f, Unit.GALLONS));
-		assertTrue(product.isValidSize(2, Unit.COUNT));
-		
-		// invalid ProductQuantities
-		assertFalse(product.isValidSize(-4.2f, Unit.GRAMS));
-		assertFalse(product.isValidSize(3.1f, Unit.COUNT));
-	}
-
-	/**
 	 * Test method for {@link model.Product#setDescription(java.lang.String)}.
 	 */
 	@Test
