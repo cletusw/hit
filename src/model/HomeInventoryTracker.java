@@ -1,46 +1,44 @@
 package model;
 
-import java.util.Collection;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.TreeSet;
-import java.io.Serializable;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
 import java.io.*;
 
 /** HomeInventoryTracker: Home Inventory Tracker (HIT) is a system for tracking home storage inventories. 
  * @author Seth Stewart
  * @version 1.0
+ * @invariant removedItems != null
+ * @invariant rootStorageUnits != null
+ * @invariant itemManager != null
+ * @invariant productManager != null
  */
+@SuppressWarnings("serial")
 public class HomeInventoryTracker implements Serializable {
 	private Collection<StorageUnit> rootStorageUnits;
 	private Collection<Item> removedItems;
-
-	/** Initializes the HomeInventoryTracker. */
-	private HomeInventoryTracker() {
-		rootStorageUnits = new ArrayList<StorageUnit>();
-		removedItems = new TreeSet<Item>();		
-	}
-
-	/** Creates a new HomeInventoryTracker, reading it from persistent storage if available. Otherwise, it creates a new empty instance of the class. 
-	 * @return a new instance of HomeInventoryTracker
-	 *  
+	private ItemManager itemManager;
+	private ProductManager productManager;
+	
+	/** Initializes the HomeInventoryTracker. 
+	 * @pre true
+	 * @post removedItems != null && removedItems.size() == 0
+	 * @post rootStorageUnits != null && rootStorageUnits.size() == 0
+	 * @post itemManager != null
+	 * @post productManager != null
 	 */
-	public static HomeInventoryTracker create() {
-		HomeInventoryTracker tracker;
-		PersistentStorageManager persistentStorageManager = new SerializationManager();
-		try {
-			tracker = persistentStorageManager.readObject();
-		}
-		catch(IOException e) {
-			tracker = new HomeInventoryTracker();
-		}
-		return tracker;
+	public HomeInventoryTracker() {
+		rootStorageUnits = new ArrayList<StorageUnit>();
+		removedItems = new TreeSet<Item>();
+		itemManager = new ItemManager();
+		productManager = new ProductManager();
 	}
 	
 	/**
 	 * Writes this instance of HomeInventoryTracker to persistent storage.
 	 * @throws IOException if the write failed.
+	 * @pre true
+	 * @post true
 	 */
 	public void write() throws IOException {
 		PersistentStorageManager persistentStorageManager = new SerializationManager();
@@ -51,6 +49,9 @@ public class HomeInventoryTracker implements Serializable {
 	 * 
 	 * @param name 	The name to be tested
 	 * @return true if name is valid, false otherwise
+	 * 
+	 * @pre true
+	 * @post 
 	 */
 	public boolean isValidStorageUnitName(String name) {
 		// From the Data Dictionary: Must be non-empty. Must be unique among all Storage Units.
@@ -60,9 +61,25 @@ public class HomeInventoryTracker implements Serializable {
 	/** Deletes the identified Product from the home inventory system.
 	 * @param product		The Product to be deleted
 	 * @return				true if the product was deleted, false otherwise.
+	 * 
+	 * @pre product != null
+	 * @post !containsProduct(product)
 	 */
 	public boolean deleteProduct(Product product) {
 		// @TODO: Implement me!
+		return false;
+	}
+	
+	/**
+	 * Checks if the identified Product exists in the home inventory system.
+	 * @param product 		The Product to check
+	 * @return				true if the product exists in the home inventory system, false otherwise.
+	 * 
+	 * @pre product != null
+	 * @post  
+	 */
+	public boolean containsProduct(Product product) {
+		// Ask the Product Manager!
 		return false;
 	}
 	
@@ -70,6 +87,9 @@ public class HomeInventoryTracker implements Serializable {
 	 * @param item			The Item to be added
 	 * @param container		The ProductContainer you are adding the Item to
 	 * @return				true if the item was added to the container, false otherwise.
+	 * 
+	 * @pre item != null && container != null
+	 * @post container.contains(item)
 	 */
 	public boolean addItem(Item item, ProductContainer container) {
 		// @TODO: Implement me!
@@ -81,6 +101,9 @@ public class HomeInventoryTracker implements Serializable {
 	 * @param item			The Item to be removed
 	 * @param container		The ProductContainer to remove the item from
 	 * @return				true if the item was removed from the container, false otherwise.
+	 * 
+	 * @pre item != null
+	 * @post !containsItem(item)
 	 */
 	public boolean removeItem(Item item) {
 		// @TODO: Implement me!

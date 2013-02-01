@@ -15,6 +15,22 @@ import java.util.Collection;
 public class SerializationManager implements PersistentStorageManager {
 	public static final String defaultSerializedFileName = "HomeInventoryTracker.ser";
 	
+	/** Creates a new HomeInventoryTracker, reading it from persistent storage if available. Otherwise, it creates a new empty instance of the class. 
+	 * @return a new instance of HomeInventoryTracker
+	 *  
+	 */
+	public static HomeInventoryTracker create() {
+		HomeInventoryTracker tracker;
+		PersistentStorageManager persistentStorageManager = new SerializationManager();
+		try {
+			tracker = persistentStorageManager.readObject();
+		}
+		catch(IOException e) {
+			tracker = new HomeInventoryTracker();
+		}
+		return tracker;
+	}
+	
 	/** Deserializes the Home Inventory Tracker from a file.
 	 * @throws 	IOException if an error occurred reading from the serialized file.
 	 */
