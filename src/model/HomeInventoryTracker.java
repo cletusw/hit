@@ -7,7 +7,8 @@ import java.io.*;
 
 /** HomeInventoryTracker: Home Inventory Tracker (HIT) is a system for tracking home storage inventories. 
  * @author Seth Stewart
- * @version 1.0
+ * @version 1.0 - Snell 340 Group 4 Phase 1
+ * 
  * @invariant removedItems != null
  * @invariant rootStorageUnits != null
  * @invariant itemManager != null
@@ -49,11 +50,45 @@ public class HomeInventoryTracker implements Serializable {
 	 * @return true if name is valid, false otherwise
 	 * 
 	 * @pre true
-	 * @post 
+	 * @post true
 	 */
 	public boolean isValidStorageUnitName(String name) {
 		// From the Data Dictionary: Must be non-empty. Must be unique among all Storage Units.
 		return true;
+	}
+	
+	/** Removes the identified Item from a given ProductContainer
+	 * @param item			The Item to be removed
+	 * @param container		The ProductContainer to remove the item from
+	 * @return				true if the item was removed from the container, false otherwise.
+	 * 
+	 * @pre item != null
+	 * @post !containsItem(item)
+	 */
+	public boolean remove(Item item) {
+		// @TODO: Implement me!
+		//container.remove(item);
+		return false;	
+	}
+	
+	/** Moves the identified Item from one ProductContainer to another
+	 * @param source		The ProductContainer you are moving the item from
+ 	 * @param destination	The ProductContainer you are moving the item to
+	 * @param item			The Item to be moved
+	 * @return				true if the item was moved from the source container to the destination, false otherwise.
+	 * 
+	 * @pre source != null && destination != null && item != null
+	 * @pre source.contains(item)
+	 * @post destination.contains(item) && !source.contains(item)
+	 */
+	public boolean move(ProductContainer source, ProductContainer destination, Item item) {
+		assert(source != null);
+		assert(destination != null);
+		assert(item != null);
+		//assert(source.contains(item));
+		
+		// @TODO: Implement me!
+		return false;
 	}
 	
 	/** Deletes the identified Product from the home inventory system.
@@ -63,7 +98,7 @@ public class HomeInventoryTracker implements Serializable {
 	 * @pre product != null
 	 * @post !containsProduct(product)
 	 */
-	public boolean deleteProduct(Product product) {
+	public boolean remove(Product product) {
 		// @TODO: Implement me!
 		return false;
 	}
@@ -74,9 +109,9 @@ public class HomeInventoryTracker implements Serializable {
 	 * @return				true if the product exists in the home inventory system, false otherwise.
 	 * 
 	 * @pre product != null
-	 * @post  
+	 * @post true
 	 */
-	public boolean containsProduct(Product product) {
+	public boolean contains(Product product) {
 		// Ask the Product Manager!
 		return false;
 	}
@@ -89,34 +124,9 @@ public class HomeInventoryTracker implements Serializable {
 	 * @pre item != null && container != null
 	 * @post container.contains(item)
 	 */
-	public boolean addItem(Item item, ProductContainer container) {
+	public boolean add(Item item, ProductContainer container) {
 		// @TODO: Implement me!
 		//container.add(item);
-		return false;
-	}
-	
-	/** Removes the identified Item from a given ProductContainer
-	 * @param item			The Item to be removed
-	 * @param container		The ProductContainer to remove the item from
-	 * @return				true if the item was removed from the container, false otherwise.
-	 * 
-	 * @pre item != null
-	 * @post !containsItem(item)
-	 */
-	public boolean removeItem(Item item) {
-		// @TODO: Implement me!
-		//container.remove(item);
-		return false;	
-	}
-	
-	/** Moves the identified Item from one ProductContainter to another
-	 * @param source		The ProductContainer you are moving the item from
- 	 * @param destination	The ProductContainer you are moving the item to
-	 * @param item			The Item to be moved
-	 * @return				true if the item was moved from the source container to the destination, false otherwise.
-	 */
-	public boolean moveItem(ProductContainer source, ProductContainer destination, Item item) {
-		// @TODO: Implement me!
 		return false;
 	}
 	
@@ -124,27 +134,24 @@ public class HomeInventoryTracker implements Serializable {
 	 * @param source			The ProductContainer to add the Product to
 	 * @param product			The Product to be added
 	 * @return					true if the item was added to the container, false otherwise.
+	 * 
+	 * @pre source != null && product != null
+	 * @post source.contains(product)
 	 */
 	public boolean addProductToContainer(ProductContainer source, Product product) {
+		assert(source != null);
+		assert(product != null);
 		// @TODO: Implement me!
 		return false;
 	}
 	
-	public void remove(Item item) {
-		
-	}
-	
-	public void remove(Product product) {
-		
+	// DO we need these? (And for Items?)
+	public boolean canRemove(Product product) {
+		return true;
 	}
 	
 	public void remove(ProductContainer container) {
 	
-	}
-	
-	// DO we need these? (And for Items?)
-	public boolean canRemoveProduct(Product product) {
-		return true;
 	}
 	
 	public boolean canDeleteProductContainer(ProductContainer container) {
