@@ -17,11 +17,12 @@ import org.junit.Test;
  */
 public class ItemTest {
 
-	private final String validUPCABarcode = "411111111111";
+	private final Barcode validUPCABarcode = new Barcode("494180175762");
 	private final ItemManager itemManager = new MockItemManager();
 	private final ProductManager productManager = new MockProductManager();
 	private final Product product = new Product("validBarcode", "A product", productManager);
 	private final ProductGroup productGroup = new ProductGroup();
+	private final Date entryDateLastMonth = new Date(113, 0, 1, 12, 45, 45);
 	
 	private Item item;
 	
@@ -30,7 +31,7 @@ public class ItemTest {
 	 */
 	@Before
 	public void setUp() throws Exception {
-		item = new Item(validUPCABarcode, product, productGroup, itemManager);
+		item = new Item(validUPCABarcode, product, productGroup, itemManager, entryDateLastMonth);
 	}
 
 	/**
@@ -58,23 +59,22 @@ public class ItemTest {
 		assertTrue(expiration != null);
 		assertTrue(entry != null);
 		
-		// TODO: Remove deprecated getters??
 		assertTrue(entry.getYear() == now.getYear());
 		assertTrue(entry.getMonth() == now.getMonth());
-		assertTrue(entry.getDate() == now.getDay());
+		assertTrue(entry.getDay() == now.getDay());
 		assertTrue(entry.getHours() == now.getHours());
 		assertTrue(entry.getMinutes() == now.getMinutes());
 		
 		assertTrue(expiration.getYear() == now.getYear());
 		assertTrue(expiration.getMonth() == now.getMonth());
-		assertTrue(expiration.getDate() == now.getDay());
+		assertTrue(expiration.getDay() == now.getDay());
 		assertTrue(expiration.getHours() == now.getHours());
 		assertTrue(expiration.getMinutes() == now.getMinutes());
 	}
 
 	/**
 	 * Test method for {@link model.Item#setProduct(model.Product)}.
-	 */
+	 *
 	@Test
 	public void testSetProduct() {
 		Product newProduct = new Product("newBarcode", "newDescription", productManager);
@@ -82,10 +82,11 @@ public class ItemTest {
 		assertTrue(item.getProduct().compareTo(newProduct) == 0);
 		assertFalse(item.getProduct().compareTo(product) == 0);
 	}
+	*/
 
 	/**
 	 * Test method for {@link model.Item#setEntryDate(java.util.Date)}.
-	 */
+	 *
 	@SuppressWarnings("deprecation")
 	@Test
 	public void testSetEntryDate() {
@@ -93,23 +94,24 @@ public class ItemTest {
 		item.setEntryDate(entryDate);
 		assertTrue(item.getEntryDate().equals(entryDate));
 	}
-	
+	*/
+
 	/**
 	 * Test method for {@link model.Item#setEntryDate(java.util.Date)}.
-	 */
+	 *
 	@SuppressWarnings("deprecation")
 	@Test (expected=IllegalArgumentException.class)
 	public void testSetBadEntryDate() {
 		item.setEntryDate(new Date(115, 10, 15, 12, 45, 45));
 	}
+	*/
 
 	/**
 	 * Test method for {@link model.Item#setExitTime(java.util.Date)}.
 	 */
-	@SuppressWarnings("deprecation")
 	@Test
 	public void testSetExitTime() {
-		Date exitTime = new Date(115, 10, 15, 12, 45, 45);
+		Date exitTime = new Date();
 		item.setExitTime(exitTime);
 		assertTrue(item.getExitTime().equals(exitTime));
 	}
@@ -119,7 +121,17 @@ public class ItemTest {
 	 */
 	@SuppressWarnings("deprecation")
 	@Test (expected=IllegalArgumentException.class)
-	public void testSetBadExitTime() {
+	public void testSetFutureExitTime() {
+		Date exitTime = new Date(115, 10, 15, 12, 45, 45);
+		item.setExitTime(exitTime);
+	}
+	
+	/**
+	 * Test method for {@link model.Item#setExitTime(java.util.Date)}.
+	 */
+	@SuppressWarnings("deprecation")
+	@Test (expected=IllegalArgumentException.class)
+	public void testSetOldExitTime() {
 		item.setExitTime(new Date(110, 10, 15, 12, 45, 45));
 	}
 
@@ -128,7 +140,7 @@ public class ItemTest {
 	 */
 	@Test
 	public void testSetContainer() {
-		ProductGroup newPG = new ProductGroup();
+		ProductGroup newPG = new ProductGroup("NewPG", new ProductQuantity(2.1f, Unit.FLUID_OUNCES));
 		item.setContainer(newPG);
 		assertTrue(item.getContainer().equals(newPG));
 		assertFalse(item.getContainer().equals(productGroup));
@@ -150,7 +162,7 @@ public class ItemTest {
 	@Test
 	public void testCompareTo() {
 		Item sameItem = new Item(validUPCABarcode, product, productGroup, itemManager);
-		Item newItem = new Item("422222222222", new Product("abc", "abcd", productManager), new ProductGroup(), itemManager);
+		Item newItem = new Item(new Barcode("412345688919"), new Product("abc", "abcd", productManager), new ProductGroup(), itemManager);
 		assertTrue(item.compareTo(sameItem) == 0);
 		assertTrue(item.compareTo(newItem) != 0);
 	}

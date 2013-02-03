@@ -6,34 +6,46 @@ import java.util.Date;
 /**
  * Represents a physical item in the Home Inventory System.
  *
+ * @invariant product != null
+ * @invariant barcode != null
+ * @invariant entryDate != null
+ * @invariant entryDate == Time of instantiation
+ * @invariant expirationDate != null
+ * @invariant container != null
+ * 
  */
 @SuppressWarnings("serial")
 public class Item implements Comparable<Object>, Serializable {
 	private Product product;
-	private String barcode;
+	private Barcode barcode;
 	private Date entryDate;
+	private Date expirationDate;
 	private Date exitTime;
 	private ProductContainer container;
 	
-	/** Constructs a new Item with the specified barcode, product, and container
+	/** Constructs a new Item with the specified barcode, product, and container. Sets entryDate to now.
 	 * @param barcode the Item's barcode
 	 * @param product this Item's corresponding Product
 	 * @param container the ProductContainer this Item is to be stored in
 	 */
-	public Item(String barcode, Product product, ProductContainer container, ItemManager manager) {
-		setBarcode(barcode);
+	public Item(Barcode barcode, Product product, ProductContainer container, ItemManager manager) {
+		this(barcode, product, container, manager, new Date());
+	}
+	
+	/** Constructs a new Item with the specified barcode, product, and container.
+	 * @param barcode the Item's barcode
+	 * @param product this Item's corresponding Product
+	 * @param container the ProductContainer this Item is to be stored in
+	 */
+	public Item(Barcode barcode, Product product, ProductContainer container, ItemManager manager, Date entryDate){
+		this.product = product;
+		this.container = container;
+		this.barcode = barcode;
+		this.setEntryDate();
+		this.setExpirationDate();
 		manager.manage(this);
 	}
 	
-	/** Sets this item's Product using the given Product
-	 * 
-	 * @param p	the Product which corresponds to this Item
-	 */
-	public void setProduct(Product p) {
-		// From the Data Dictionary: must be non-empty
-		product = p;
-	}
-
 	/** Gets this Item's Product
 	 * 
 	 * @return this Item's Product
@@ -42,29 +54,23 @@ public class Item implements Comparable<Object>, Serializable {
 		return product;
 	}
 	
-	//Sets this Item's internal barcode (assigned by HomeInventoryTracker from constructor)
-	private void setBarcode(String bc) {
-		// From the Data Dictionary: Must be a valid UPC barcode and unique among all Items. HIT assigns these barcodes.
-		barcode = bc;
-	}
-	
 	/** Gets this Item's barcode
 	 * 
 	 * @return this item's barcode
 	 */
-	public String getBarcode() {
+	public Barcode getBarcode() {
 		return barcode;
 	}
 	
-	/** Sets this Item's entry date
+	/** Sets this Item's entry date to the current time.
 	 * 
 	 * @param date the entry date of the Item
 	 */
-	public void setEntryDate(Date date) {
+	private void setEntryDate() {
 		// From the Data Dictionary:
 		// Must be non-empty.  Cannot be in the 
 		// future or prior to 1/1/2000. 
-		entryDate = date;
+		entryDate = new Date();
 	}
 	
 	/** Gets this Item's entry date
@@ -83,16 +89,29 @@ public class Item implements Comparable<Object>, Serializable {
 		return exitTime;
 	}
 	
-	/** Sets this Item's exit time
+	/** Sets this Item's exit time. Must be between the enry date and the
+	 * current time.
 	 * 
 	 * @param time the Item's exit time
 	 */
 	public void setExitTime(Date time) {
-		// From the Data Dictionary:
-		// This attribute is defined only if the Item 
-		// has been removed from storage. 
-		// Cannot be in the future or prior to 12 
-		// AM on the Item’s Entry Date. 
+		// TODO: Check if item has been removed?
+		if(time.before(this.entryDate) || time.after(new Date())){
+			throw new IllegalArgumentException(time.toString() + " is before entryDate");
+		}
+		
+		this.exitTime = time;
+	}
+	
+	/*
+	 * Set expiration date using this item's entry date and
+	 * the product's shelf life
+	 */
+	@SuppressWarnings({ "deprecation" })
+	private void setExpirationDate(){
+		Date d = this.entryDate;
+		d.setMonth(d.getMonth() + this.product.getShelfLife());
+		this.expirationDate = d;
 	}
 	
 	/** Gets this Item's expiration date
@@ -100,12 +119,7 @@ public class Item implements Comparable<Object>, Serializable {
 	 * @return the Item's expiration date
 	 */
 	public Date getExpirationDate() {
-		// This attribute is defined only if the 
-		// Product’s Shelf Life attribute has been 
-		// specified. 
-		
-		//TODO: Compute this dynamically from the Product, the current date, and the Item's creation Date.
-		return new Date();
+		return this.expirationDate;
 	}
 	
 	/** Sets this Item's parent container to c
@@ -139,7 +153,7 @@ public class Item implements Comparable<Object>, Serializable {
 	 */
 	public int compareTo(Object o) {
 		Item other = (Item) o;
-		return barcode.compareToIgnoreCase(other.getBarcode());
+		return barcode.compareTo(other.barcode);
 	}
 	
 }

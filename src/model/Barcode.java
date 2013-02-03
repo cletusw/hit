@@ -8,7 +8,6 @@ package model;
  *  @invariant barcode.length() == 12
  */
 public class Barcode extends NotNullString{
-	private String barcode;
 
 	/** Constructor
 	 * 
@@ -45,7 +44,7 @@ public class Barcode extends NotNullString{
 	 * 
 	 */
 	public String getValue() {
-		return barcode;
+		return this.value;
 	}
 
 	/** Checks to see if a given barcode string is valid.
@@ -87,5 +86,17 @@ public class Barcode extends NotNullString{
 			total = 10 - total;
 		
 		return (total == Integer.parseInt(Character.toString(s.charAt(11))));
+	}
+	
+	/**Compare this not-null string to another using String.compareTo(String other)
+	 * 
+	 * @param other NotNullString to compare
+	 * @return the value 0 if the argument string is equal to this string; 
+	 * a value less than 0 if this string is lexicographically less than 
+	 * the string argument; and a value greater than 0 if this string is 
+	 * lexicographically greater than the string argument.
+	 */
+	public int compareTo(Barcode other){
+		return this.value.compareTo(other.value);
 	}
 }
