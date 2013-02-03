@@ -5,10 +5,9 @@ package model;
  *  @author Matt Hess
  *  @version 1.0 -- Snell CS 340 Phase 1.0
  *  
- *  @invariant barcode != null
  *  @invariant barcode.length() == 12
  */
-public class Barcode {
+public class Barcode extends NotNullString{
 	private String barcode;
 
 	/** Constructor
@@ -23,10 +22,9 @@ public class Barcode {
 	 * 
 	 */
 	public Barcode(String s) throws IllegalArgumentException {
+		super(s);
 		if(!isValidBarcode(s))
 			throw new IllegalArgumentException("Invalid barcode: " + s);
-
-		barcode = s;
 	}
 
 	/** Default constructor -- shouldn't be used.
@@ -35,7 +33,7 @@ public class Barcode {
 	 * @post true
 	 */
 	protected Barcode() {
-		throw new IllegalArgumentException("Invalid barcode: null string passed");
+		throw new IllegalArgumentException("Invalid barcode: no string passed");
 	}
 
 	/** Returns the string value of the barcode. 
@@ -55,8 +53,7 @@ public class Barcode {
 	 * @param s String barcode to check
 	 * @return true if barcode is valid, false otherwise
 	 * 
-	 * @pre s != null
-	 * @pre !s.equals("")
+
 	 * @pre s.length() == 12
 	 * @pre s.charAt(0) == '4'
 	 * @pre for(char in s) Character.isDigit(char)
@@ -64,7 +61,7 @@ public class Barcode {
 	 * 
 	 */
 	public static boolean isValidBarcode(String s) {
-		if(s == null || s.equals("") || s.length() != 12 || s.charAt(0) != '4')
+		if(s == null || s.length() != 12 || s.charAt(0) != '4')
 			return false;
 
 		int total = 0;
