@@ -9,7 +9,6 @@ import java.util.Date;
  * @invariant product != null
  * @invariant barcode != null
  * @invariant entryDate != null
- * @invariant entryDate == Time of instantiation
  * @invariant expirationDate != null
  * @invariant container != null
  * 
@@ -41,7 +40,7 @@ public class Item implements Comparable<Object>, Serializable {
 		this.product = product;
 		this.container = container;
 		this.barcode = barcode;
-		this.setEntryDate();
+		this.setEntryDate(entryDate);
 		this.setExpirationDate();
 		manager.manage(this);
 	}
@@ -62,15 +61,22 @@ public class Item implements Comparable<Object>, Serializable {
 		return barcode;
 	}
 	
-	/** Sets this Item's entry date to the current time.
+	/** Sets this Item's entry date
 	 * 
 	 * @param date the entry date of the Item
 	 */
-	private void setEntryDate() {
+	private void setEntryDate(Date date) {
 		// From the Data Dictionary:
 		// Must be non-empty.  Cannot be in the 
-		// future or prior to 1/1/2000. 
-		entryDate = new Date();
+		// future or prior to 1/1/2000.
+		if(date == null){
+			this.entryDate = new Date();
+			return;
+		}
+		
+		if(date.after(new Date()) || date.before(new Date(100, 0, 0, 0, 0, 0))){
+			throw new IllegalArgumentException("Date must not be in future");
+		}
 	}
 	
 	/** Gets this Item's entry date
