@@ -31,6 +31,7 @@ public class ItemTest {
 	 */
 	@Before
 	public void setUp() throws Exception {
+		product.setShelfLife(3);
 		item = new Item(validUPCABarcode, product, productGroup, itemManager, entryDateLastMonth);
 	}
 
@@ -59,17 +60,11 @@ public class ItemTest {
 		assertTrue(expiration != null);
 		assertTrue(entry != null);
 		
-		assertTrue(entry.getYear() == now.getYear());
-		assertTrue(entry.getMonth() == now.getMonth());
-		assertTrue(entry.getDay() == now.getDay());
-		assertTrue(entry.getHours() == now.getHours());
-		assertTrue(entry.getMinutes() == now.getMinutes());
-		
-		assertTrue(expiration.getYear() == now.getYear());
-		assertTrue(expiration.getMonth() == now.getMonth());
-		assertTrue(expiration.getDay() == now.getDay());
-		assertTrue(expiration.getHours() == now.getHours());
-		assertTrue(expiration.getMinutes() == now.getMinutes());
+		assertTrue(entry.getYear() == entryDateLastMonth.getYear());
+		assertTrue(entry.getMonth() == entryDateLastMonth.getMonth());
+		assertTrue(entry.getDate() == entryDateLastMonth.getDate());
+		assertTrue(entry.getHours() == entryDateLastMonth.getHours());
+		assertTrue(entry.getMinutes() == entryDateLastMonth.getMinutes());
 	}
 
 	/**

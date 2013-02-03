@@ -7,7 +7,7 @@ package model;
  *  
  *  @invariant barcode.length() == 12
  */
-public class Barcode extends NotNullString{
+public class Barcode extends NonNullString{
 
 	/** Constructor
 	 * 

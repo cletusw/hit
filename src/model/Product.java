@@ -11,22 +11,31 @@ import java.util.Date;
  */
 @SuppressWarnings("serial")
 public class Product implements Comparable<Object>, Serializable {
-	private String barcode;
+	private NonNullString barcode;
+	private NonNullString description;
 	private Date creationDate;
-	private String description;
 	private int shelfLife;
 	private int threeMonthSupply;
 	private Collection<ProductContainer> productContainers;
 	private ProductQuantity size;
 	
 	/** 
-	 * Constructs a Product using the given barcode and description
+	 * Constructs a Product using the given barcode, description, creationDate
+	 * @param barcode
+	 */
+	public Product(String barcode, String description, ProductManager manager, Date creationDate) {
+		this.barcode = new NonNullString(barcode);
+		this.description = new NonNullString(description);
+		this.creationDate = creationDate;
+		manager.manage(this);
+	}
+	
+	/** 
+	 * Constructs a Product using the given barcode and description, setting createDate to now.
 	 * @param barcode
 	 */
 	public Product(String barcode, String description, ProductManager manager) {
-		this.barcode = barcode;
-		this.description = description;
-		manager.manage(this);
+		this(barcode, description, manager, new Date());
 	}
 	
 	/** Gets this Product's size
@@ -64,7 +73,7 @@ public class Product implements Comparable<Object>, Serializable {
 	 * @return this Product's description
 	 */
 	public String getDescription() {
-		return description;
+		return description.getValue();
 	}
 
 	/** Sets this Product's description to the specified string
@@ -72,7 +81,7 @@ public class Product implements Comparable<Object>, Serializable {
 	 * @param description the description to apply to the Product
 	 */
 	public void setDescription(String description) {
-		this.description = description;
+		this.description = new NonNullString(description);
 	}
 
 	/** Gets this Product's shelf life
@@ -88,6 +97,9 @@ public class Product implements Comparable<Object>, Serializable {
 	 * @param shelfLife this Product's shelf life
 	 */
 	public void setShelfLife(int shelfLife) {
+		if(shelfLife < 0)
+			throw new IllegalArgumentException("ShelfLife must be non-negative");
+		
 		this.shelfLife = shelfLife;
 	}
 
@@ -104,6 +116,9 @@ public class Product implements Comparable<Object>, Serializable {
 	 * @param threeMonthSupply the number (count) of this product required for a three-month supply
 	 */
 	public void setThreeMonthSupply(int threeMonthSupply) {
+		if(threeMonthSupply < 0)
+			throw new IllegalArgumentException("Three Month Supply must be non-negative");
+		
 		this.threeMonthSupply = threeMonthSupply;
 	}
 
@@ -122,7 +137,7 @@ public class Product implements Comparable<Object>, Serializable {
 	 * @param barcode the Product's barcode
 	 */
 	public void setBarcode(String barcode) {
-		this.barcode = barcode;
+		this.barcode = new NonNullString(barcode);
 	}
 	
 	/**
@@ -131,8 +146,11 @@ public class Product implements Comparable<Object>, Serializable {
 	 * @return true if the barcode is valid, false otherwise.
 	 */
 	public boolean isValidBarcode(String barcode) {
-		// From the Data Dictionary: must be non-empty
-		return (!barcode.equals(""));
+		try{
+			new NonNullString(barcode);
+			return true;
+		}catch(IllegalArgumentException ex){}
+		return false;
 	}
 	
 	/**
@@ -141,8 +159,11 @@ public class Product implements Comparable<Object>, Serializable {
 	 * @return true if the string is valid, false otherwise.
 	 */
 	public boolean isValidDescription(String desc) {
-		// From the Data Dictionary: must be non-empty
-		return (!desc.equals(""));
+		try{
+			new NonNullString(desc);
+			return true;
+		}catch(IllegalArgumentException ex){}
+		return false;
 	}
 	
 	/**
@@ -160,7 +181,7 @@ public class Product implements Comparable<Object>, Serializable {
 	 * @return this Product's barcode
 	 */
 	public String getBarcode() {
-		return barcode;
+		return barcode.getValue();
 	}
 
 	/** 
@@ -176,16 +197,16 @@ public class Product implements Comparable<Object>, Serializable {
 	 * Compares this Product to another Object.
 	 */
 	public int compareTo(Object o) {
-		String otherBarcode = "";
+		NonNullString otherBarcode;
 		
 		if (o instanceof Product) {
-			otherBarcode = ((Product) o).getBarcode();
+			otherBarcode = ((Product) o).barcode;
 		}
 		else {
-			otherBarcode = (String) o;
+			otherBarcode = (NonNullString) o;
 		}
 		
-		return barcode.compareToIgnoreCase(otherBarcode);
+		return barcode.value.compareToIgnoreCase(otherBarcode.value);
 	}
 
 }

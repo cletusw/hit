@@ -77,6 +77,7 @@ public class Item implements Comparable<Object>, Serializable {
 		if(date.after(new Date()) || date.before(new Date(100, 0, 0, 0, 0, 0))){
 			throw new IllegalArgumentException("Date must not be in future");
 		}
+		this.entryDate = date;
 	}
 	
 	/** Gets this Item's entry date
@@ -116,8 +117,7 @@ public class Item implements Comparable<Object>, Serializable {
 	@SuppressWarnings({ "deprecation" })
 	private void setExpirationDate(){
 		Date d = this.entryDate;
-		d.setMonth(d.getMonth() + this.product.getShelfLife());
-		this.expirationDate = d;
+		this.expirationDate = new Date(d.getYear(), d.getMonth() + this.product.getShelfLife(), d.getDate(), d.getHours(), d.getMinutes(), d.getSeconds());
 	}
 	
 	/** Gets this Item's expiration date

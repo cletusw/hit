@@ -6,10 +6,10 @@ package model;
  * @invariant string != null
  * @invariant !string.isEmpty()
  */
-public class NotNullString {
+public class NonNullString {
 	protected String value;
 	
-	protected NotNullString(){
+	protected NonNullString(){
 		
 	}
 	
@@ -17,7 +17,7 @@ public class NotNullString {
 	 * 
 	 * @param s non-null, non-empty string.
 	 */
-	public NotNullString(String s){
+	public NonNullString(String s){
 		if(s == null || s.isEmpty()){
 			throw new IllegalArgumentException();
 		}
@@ -44,7 +44,7 @@ public class NotNullString {
 	 * the string argument; and a value greater than 0 if this string is 
 	 * lexicographically greater than the string argument.
 	 */
-	public int compareTo(NotNullString other) {
+	public int compareTo(NonNullString other) {
 		return value.compareTo(other.getValue());
 	}
 }

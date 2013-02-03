@@ -210,7 +210,7 @@ public class ProductTest {
 		// TODO: Remove deprecated getters??
 		assertTrue(createDate.getYear() == today.getYear());
 		assertTrue(createDate.getMonth() == today.getMonth());
-		assertTrue(createDate.getDate() == today.getDay());
+		assertTrue(createDate.getDate() == today.getDate());
 		assertTrue(createDate.getHours() == today.getHours());
 		assertTrue(createDate.getMinutes() == today.getMinutes());
 	}
@@ -226,5 +226,4 @@ public class ProductTest {
 		assertTrue(product.compareTo(sameProduct) == 0);
 		assertTrue(product.compareTo(differentProduct) != 0);
 	}
-
 }
