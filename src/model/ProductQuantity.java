@@ -1,6 +1,5 @@
 package model;
 
-
 /** Maintain a quantity (volume) along with an enumerated unit.
  * 
  * @author Matt Matheson
@@ -14,6 +13,7 @@ public class ProductQuantity {
 	// Member variables
 	private float quantity;
 	private Unit units;
+	private UnitType unitType;
 	
 	/** Constructor
 	 * @param q Quantity, must be non-negative. If Unit is COUNT, must be integer.
@@ -27,6 +27,7 @@ public class ProductQuantity {
 	 */
 	public ProductQuantity(float q, Unit u){
 		this.units = u;
+		this.unitType = Unit.typeMap.get(this.units);
 		setQuantity(q);
 	}
 	
@@ -94,22 +95,27 @@ public class ProductQuantity {
 	}
 	
 	/** Adds a ProductQuantity to this ProductQuantity.
-	 * To add two ProductQuantities, their Unit must match.
+	 * If their UnitTypes don't match, no effect will take place.
+	 * If their units don't match but the UnitTypes do, the incoming 
+	 * ProductQuantity will be converted to a matching unit and added
+	 * to this product quantity. This ProductQuantity's units will not
+	 * be modified. 
 	 * 
-	 * @param quantityToAdd - ProductQuantity to add to this ProductQuantity
+	 * @param otherQuantity - ProductQuantity to add to this ProductQuantity
 	 * 
-	 * @throws IllegalArgumentException If this ProductQuantity's Unit does not
-	 * match incoming ProductQuantity Unit
+	 * @throws IllegalArgumentException If this ProductQuantity's UnitType does not
+	 * match incoming ProductQuantity UnitType
 	 * 
-	 * @pre quantityToAdd.units.equals(units)
+	 * @pre otherQuantity UnitType.equals(units.UnitType)
 	 * @post quantity.equals(quantity + quantityToAdd.quantity)
-	 * 
 	 */
-	public void add(ProductQuantity quantityToAdd) throws IllegalArgumentException{
-		if(quantityToAdd.units != this.units){
-			throw new IllegalArgumentException("Cannot add quantities with different units!");
+	public void add(ProductQuantity otherQuantity) throws IllegalArgumentException{
+		if(!this.unitType.equals(otherQuantity.unitType)){
+			throw new IllegalArgumentException("Cannot add quantities with different unit types.");
 		}
-		this.quantity += quantityToAdd.quantity;
+		
+		float conversionFactor = Unit.getConversionFactor(otherQuantity.units, this.units);
+		this.quantity += (otherQuantity.quantity * conversionFactor);
 	}
 	
 	/** Subtracts a ProductQuantity from this ProductQuantity. The two ProductQuantities
@@ -121,23 +127,26 @@ public class ProductQuantity {
 	 * match incoming ProductQuantity Unit
 	 * @throws IllegalArgumentException If the resulting quantity < 0
 	 * 
-	 * @pre quantityToSubtract != null
-	 * @pre quantity - quantityToSubtract.quantity >= 0.0
-	 * @post quantity.equals(quantity - quantityToSubtract.quantity)
+	 * @pre otherQuantity != null
+	 * @pre quantity - otherQuantity.quantity >= 0.0
+	 * @post quantity.equals(quantity - otherQuantity.quantity)
 	 */
-	public void subtract(ProductQuantity quantityToSubtract){
-		if(quantityToSubtract.units != this.units){
-			throw new IllegalArgumentException("Cannot subtract quantities with different units!");
+	public void subtract(ProductQuantity otherQuantity){
+		if(!this.unitType.equals(otherQuantity.unitType)){
+			throw new IllegalArgumentException("Cannot add quantities with different unit types.");
 		}
-		if(this.quantity - quantityToSubtract.quantity < 0){
-			throw new IllegalArgumentException("Resulting quantity cannot be < 0 (result = " + (this.quantity - quantityToSubtract.quantity));
+		
+		float conversionFactor = Unit.getConversionFactor(otherQuantity.units, this.units);
+		if(this.quantity - (otherQuantity.quantity * conversionFactor) < 0){
+			throw new IllegalArgumentException("Resulting Subtraction would be negative");
 		}
-		this.quantity -= quantityToSubtract.quantity;
+		
+		this.quantity -= (otherQuantity.quantity * conversionFactor);
 	}
 	
 	
 	/** Gets a legible string representation of this ProductQuantity 
-	 * in the format <quantity> <Unit>
+	 * in the format [quantity] [Unit]
 	 * 
 	 * @return String representation of ProductQuantity
 	 * @pre true
