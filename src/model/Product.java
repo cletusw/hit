@@ -42,13 +42,14 @@ public class Product implements Comparable<Object>, Serializable {
 	 * @param tms ThreeMonthSupply describing how many of this product are needed for three months
 	 * @param manager the ProductManager that will manage this product
 	 */
-	public Product(String barcode, String description, Date creationDate, int shelfLife, int tms, ProductManager manager) {
+	public Product(String barcode, String description, Date creationDate, int shelfLife, int tms, ProductQuantity pq, ProductManager manager) {
 		this.setBarcode(barcode);
 		this.description = new NonNullString(description);
 		this.setCreationDate(creationDate);
 		this.setShelfLife(shelfLife);
 		this.setThreeMonthSupply(tms);
 		this.productContainers = new ArrayList<ProductContainer>();
+		this.size = pq;
 		manager.manage(this);
 	}
 	
@@ -62,8 +63,8 @@ public class Product implements Comparable<Object>, Serializable {
 	 * @param tms ThreeMonthSupply describing how many of this product are needed for three months
 	 * @param manager the ProductManager that will manage this product
 	 */
-	public Product(String barcode, String description, int shelfLife, int tms, ProductManager manager) {
-		this(barcode, description, new Date(), shelfLife, tms, manager);
+	public Product(String barcode, String description, int shelfLife, int tms, ProductQuantity pq, ProductManager manager) {
+		this(barcode, description, new Date(), shelfLife, tms, pq, manager);
 	}
 	
 	// Public static validator methods to be used before creating Product

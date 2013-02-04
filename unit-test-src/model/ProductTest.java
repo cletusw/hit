@@ -20,6 +20,9 @@ public class ProductTest {
 	private final String validBarcode = "testBarcode";
 	private final String validDescription = "testDescription";
 	private final ProductManager productManager = new MockProductManager();
+	private final int shelfLife = 3;
+	private final int threeMonthSupply = 4;
+	private final ProductQuantity size = new ProductQuantity(2.3f, Unit.GALLONS);
 	private Product product;
 	
 	/**
@@ -27,7 +30,7 @@ public class ProductTest {
 	 */
 	@Before
 	public void setUp() throws Exception {
-		product = new Product(validBarcode, validDescription, productManager);
+		product = new Product(validBarcode, validDescription, shelfLife, threeMonthSupply, size, productManager);
 	}
 
 	/**
@@ -44,6 +47,10 @@ public class ProductTest {
 	public void testProduct() {
 		assertTrue(product.getBarcode().equals(validBarcode));
 		assertTrue(product.getDescription().equals(validDescription));
+		assertTrue(product.getShelfLife() == shelfLife);
+		assertTrue(product.getCreationDate().before(new Date()));
+		assertTrue(product.getSize().equals(size));
+		assertTrue(product.getThreeMonthSupply() == threeMonthSupply);
 	}
 	
 	/**
@@ -51,7 +58,7 @@ public class ProductTest {
 	 */
 	@Test (expected=IllegalArgumentException.class)
 	public void testProductInvalidBarcode() {
-		new Product("", validDescription, productManager);
+		new Product("", validDescription, 3, 3, size, productManager);
 	}
 	
 	/**
@@ -59,76 +66,34 @@ public class ProductTest {
 	 */
 	@Test (expected=IllegalArgumentException.class)
 	public void testProductInvalidDescription() {
-		new Product(validBarcode, "", productManager);
-	}
-
-	/**
-	 * Test method for {@link model.Product#setDescription(java.lang.String)}.
-	 */
-	@Test
-	public void testSetValidDescription() {
-		String newDescription = "newDescription";
-		product.setDescription(newDescription);
-		assertFalse(product.getDescription().equals(validDescription));
-		assertTrue(product.getDescription().equals(newDescription));
+		new Product(validBarcode, "", 3, 3, size, productManager);
 	}
 	
 	/**
-	 * Test method for {@link model.Product#setDescription(java.lang.String)}.
+	 * Test method for {@link model.Product#Product(java.lang.String, java.lang.String)}.
 	 */
 	@Test (expected=IllegalArgumentException.class)
-	public void testSetEmptyDescription() {
-		product.setDescription("");
+	public void testProductNullDescription() {
+		new Product(validBarcode, null, 3, 3, size, productManager);
+	}
+
+	
+	/**
+	 * Test method for {@link model.Product#Product(java.lang.String, java.lang.String)}.
+	 */
+	@Test (expected=IllegalArgumentException.class)
+	public void testProductInvalidShelflife() {
+		new Product(validBarcode, "", -1, 3, size, productManager);
 	}
 	
 	/**
-	 * Test method for {@link model.Product#setDescription(java.lang.String)}.
+	 * Test method for {@link model.Product#Product(java.lang.String, java.lang.String)}.
 	 */
 	@Test (expected=IllegalArgumentException.class)
-	public void testSetNullDescription() {
-		product.setDescription(null);
-	}
-
-	/**
-	 * Test method for {@link model.Product#setShelfLife(int)}.
-	 */
-	@Test
-	public void testSetShelfLife() {
-		assertTrue(product.getShelfLife() == 0);
-		
-		int shelfLife = 5;
-		product.setShelfLife(shelfLife);
-		assertTrue(product.getShelfLife() == shelfLife);
+	public void testProductInvalidThreeMonthSupply() {
+		new Product(validBarcode, "", 3, -1, size, productManager);
 	}
 	
-	/**
-	 * Test method for {@link model.Product#setShelfLife(int)}.
-	 */
-	@Test (expected=IllegalArgumentException.class)
-	public void testSetInvalidShelfLife() {
-		product.setShelfLife(-1);
-	}
-
-	/**
-	 * Test method for {@link model.Product#setThreeMonthSupply(int)}.
-	 */
-	@Test
-	public void testThreeMonthSupply() {
-		assertTrue(product.getThreeMonthSupply() == 0);
-		
-		int threeMonthSupply = 4;
-		product.setThreeMonthSupply(threeMonthSupply);
-		assertTrue(product.getThreeMonthSupply() == threeMonthSupply);
-	}
-	
-	/**
-	 * Test method for {@link model.Product#setThreeMonthSupply(int)}.
-	 */
-	@Test (expected=IllegalArgumentException.class)
-	public void testInvalidThreeMonthSupply() {
-		product.setThreeMonthSupply(-4);
-	}
-
 	/**
 	 * Test method for {@link model.Product#isValidThreeMonthSupply(int)}.
 	 */
@@ -173,9 +138,9 @@ public class ProductTest {
 	 */
 	@Test
 	public void testIsValidBarcode() {
-		assertTrue(product.isValidBarcode(validBarcode));
-		assertFalse(product.isValidBarcode(""));
-		assertFalse(product.isValidBarcode(null));
+		assertTrue(Product.isValidBarcode(validBarcode));
+		assertFalse(Product.isValidBarcode(""));
+		assertFalse(Product.isValidBarcode(null));
 	}
 
 	/**
@@ -183,9 +148,9 @@ public class ProductTest {
 	 */
 	@Test
 	public void testIsValidDescription() {
-		assertTrue(product.isValidDescription(validDescription));
-		assertFalse(product.isValidDescription(""));
-		assertFalse(product.isValidDescription(null));
+		assertTrue(Product.isValidDescription(validDescription));
+		assertFalse(Product.isValidDescription(""));
+		assertFalse(Product.isValidDescription(null));
 	}
 
 	/**
@@ -193,9 +158,9 @@ public class ProductTest {
 	 */
 	@Test
 	public void testIsValidShelfLife() {
-		assertTrue(product.isValidShelfLife(0));
-		assertTrue(product.isValidShelfLife(10));
-		assertFalse(product.isValidShelfLife(-5));
+		assertTrue(Product.isValidShelfLife(0));
+		assertTrue(Product.isValidShelfLife(10));
+		assertFalse(Product.isValidShelfLife(-5));
 	}
 
 	/**
@@ -220,8 +185,8 @@ public class ProductTest {
 	 */
 	@Test
 	public void testCompareTo() {
-		Product sameProduct = new Product(product.getBarcode(), product.getDescription(), productManager);
-		Product differentProduct = new Product("DifferentBarcode", "DifferentDescription", productManager);
+		Product sameProduct = new Product(product.getBarcode(), product.getDescription(), 0, 0, size, productManager);
+		Product differentProduct = new Product("DifferentBarcode", "DifferentDescription", 0, 0, size, productManager);
 		
 		assertTrue(product.compareTo(sameProduct) == 0);
 		assertTrue(product.compareTo(differentProduct) != 0);
