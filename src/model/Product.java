@@ -1,164 +1,89 @@
 package model;
 
 import java.io.Serializable;
-import java.util.Collection;
+import java.util.ArrayList;
+import java.util.List;
 
 import java.util.Date;
 
 /**
  * A representation of a product within the Home Inventory System
- *
+ * 
+ * @invariant barcode != null
+ * @invariant description != null
+ * @invariant creationDate != null
+ * @invariant shelfLife >= 0
+ * @invariant threeMonthSupply >= 0
+ * @invariant size != null
+ * @invariant productContainer != null
  */
 @SuppressWarnings("serial")
 public class Product implements Comparable<Object>, Serializable {
+	// member variables
 	private NonNullString barcode;
 	private NonNullString description;
 	private Date creationDate;
 	private int shelfLife;
 	private int threeMonthSupply;
-	private Collection<ProductContainer> productContainers;
+	private List<ProductContainer> productContainers;
 	private ProductQuantity size;
 	
-	/** 
-	 * Constructs a Product using the given barcode, description, creationDate
-	 * @param barcode
+	
+	// Constructors
+	
+	/**
+	 * Constructs a Product using the given barcode, description, shelfLife, creationDate, 
+	 * manager describing the productManager that will manage this product.
+	 *  
+	 * @param barcode NotNullString to identify this product
+	 * @param description string description of the product
+	 * @param creationDate Date this item was created in the data structure, must not be in the future
+	 * @param shelfLife integer describing how long in months before the product expires
+	 * @param tms ThreeMonthSupply describing how many of this product are needed for three months
+	 * @param manager the ProductManager that will manage this product
 	 */
-	public Product(String barcode, String description, Date creationDate, ProductManager manager) {
-		this.barcode = new NonNullString(barcode);
+	public Product(String barcode, String description, Date creationDate, int shelfLife, int tms, ProductManager manager) {
+		this.setBarcode(barcode);
 		this.description = new NonNullString(description);
-		this.creationDate = creationDate;
+		this.setCreationDate(creationDate);
+		this.setShelfLife(shelfLife);
+		this.setThreeMonthSupply(tms);
+		this.productContainers = new ArrayList<ProductContainer>();
 		manager.manage(this);
 	}
 	
-	/** 
-	 * Constructs a Product using the given barcode and description, setting createDate to now.
-	 * @param barcode
+	/**
+	 * Constructs a Product using the given barcode, description, shelfLife, manager describing
+	 * the productManager that will manage this product. The creationDate is set to now.
+	 * 
+	 * @param barcode NotNullString to identify this product
+	 * @param description string description of the product
+	 * @param shelfLife integer describing how long in months before the product expires
+	 * @param tms ThreeMonthSupply describing how many of this product are needed for three months
+	 * @param manager the ProductManager that will manage this product
 	 */
-	public Product(String barcode, String description, ProductManager manager) {
-		this(barcode, description, new Date(), manager);
+	public Product(String barcode, String description, int shelfLife, int tms, ProductManager manager) {
+		this(barcode, description, new Date(), shelfLife, tms, manager);
 	}
 	
-	/** Gets this Product's size
-	 * 
-	 * @return this Product's size
-	 */
-	public ProductQuantity getSize() {
-		return size;
-	}
-
-	/** Sets this Product's size
-	 * 
-	 * @param size the size to set for the Product
-	 */
-	public void setSize(ProductQuantity size) {
-		this.size = size;
-	}
+	// Public static validator methods to be used before creating Product
 	
-	/** Checks to determine if the given parameters constitute a valid Product size.
-	 * 
-	 * @param q	the magnitude of the Product size to check
-	 * @param u the Unit of the Product size to check
-	 * @return true if the parameters constitute a valid Product size, false otherwise.
-	 */
-	public boolean isValidSize(float q, Unit u) {
-		// From the Data Dictionary: The magnitude can be any positive float value (zero is not allowed).
-		//  if the unit of measurement is "count", the magnitude must be "1".
-		if (u.equals(Unit.COUNT) && q != 1)
-			return false;
-		return q > 0;
-	}
-
-	/** Gets this Product's description
-	 * 
-	 * @return this Product's description
-	 */
-	public String getDescription() {
-		return description.getValue();
-	}
-
-	/** Sets this Product's description to the specified string
-	 * 
-	 * @param description the description to apply to the Product
-	 */
-	public void setDescription(String description) {
-		this.description = new NonNullString(description);
-	}
-
-	/** Gets this Product's shelf life
-	 * 
-	 * @return this Product's shelf life
-	 */
-	public int getShelfLife() {
-		return shelfLife;
-	}
-
-	/** Sets this Product's shelf life
-	 * 
-	 * @param shelfLife this Product's shelf life
-	 */
-	public void setShelfLife(int shelfLife) {
-		if(shelfLife < 0)
-			throw new IllegalArgumentException("ShelfLife must be non-negative");
-		
-		this.shelfLife = shelfLife;
-	}
-
-	/**
-	 * Gets this Product's three-month supply.
-	 * @return this Product's three-month supply.
-	 */
-	public int getThreeMonthSupply() {
-		return threeMonthSupply;
-	}
-
-	/**
-	 * Sets this Product's three-month supply to the indicated amount
-	 * @param threeMonthSupply the number (count) of this product required for a three-month supply
-	 */
-	public void setThreeMonthSupply(int threeMonthSupply) {
-		if(threeMonthSupply < 0)
-			throw new IllegalArgumentException("Three Month Supply must be non-negative");
-		
-		this.threeMonthSupply = threeMonthSupply;
-	}
-
 	/**
 	 * Determines whether given integer is a valid three-month supply.
 	 * @param tms the integer to check
 	 * @return true if the integer is a valid three-month supply, false otherwise.
 	 */
-	public boolean isValidThreeMonthSupply(int tms) {
+	public static boolean isValidThreeMonthSupply(int tms) {
 		// From the Data Dictionary: Must be non-negative
 		return tms >= 0;
 	}
-	
-	/**
-	 * Sets this Product's barcode to the specified value
-	 * @param barcode the Product's barcode
-	 */
-	public void setBarcode(String barcode) {
-		this.barcode = new NonNullString(barcode);
-	}
-	
-	/**
-	 * Determines whether the given string is a valid barcode.
-	 * @param barcode the string to test
-	 * @return true if the barcode is valid, false otherwise.
-	 */
-	public boolean isValidBarcode(String barcode) {
-		try{
-			new NonNullString(barcode);
-			return true;
-		}catch(IllegalArgumentException ex){}
-		return false;
-	}
-	
+
 	/**
 	 * Determines whether the given string is a valid description
 	 * @param desc the string to test
 	 * @return true if the string is valid, false otherwise.
 	 */
-	public boolean isValidDescription(String desc) {
+	public static boolean isValidDescription(String desc) {
 		try{
 			new NonNullString(desc);
 			return true;
@@ -171,9 +96,56 @@ public class Product implements Comparable<Object>, Serializable {
 	 * @param sl the integer to test
 	 * @return true if the shelf life is valid, false otherwise.
 	 */
-	public boolean isValidShelfLife(int sl) {
+	public static boolean isValidShelfLife(int sl) {
 		// From the Data Dictionary: Must be non-negative
 		return sl >= 0;
+	}
+	
+	/**
+	 * Determines whether the given string is a valid barcode.
+	 * @param barcode the string to test
+	 * @return true if the barcode is valid, false otherwise.
+	 */
+	public static boolean isValidBarcode(String barcode) {
+		try{
+			new NonNullString(barcode);
+			return true;
+		}catch(IllegalArgumentException ex){}
+		return false;
+	}
+	
+	// public getters
+	
+	/** Gets this Product's size
+	 * 
+	 * @return this Product's size
+	 */
+	public ProductQuantity getSize() {
+		return size;
+	}
+	
+	/** Gets this Product's description
+	 * 
+	 * @return this Product's description
+	 */
+	public String getDescription() {
+		return description.getValue();
+	}
+
+	/** Gets this Product's shelf life
+	 * 
+	 * @return this Product's shelf life
+	 */
+	public int getShelfLife() {
+		return shelfLife;
+	}
+
+	/**
+	 * Gets this Product's three-month supply.
+	 * @return this Product's three-month supply.
+	 */
+	public int getThreeMonthSupply() {
+		return threeMonthSupply;
 	}
 	
 	/** 
@@ -192,6 +164,30 @@ public class Product implements Comparable<Object>, Serializable {
 		return creationDate;
 	}
 	
+	/**
+	 * Tries to add a ProductContainer to this Products containers. If the
+	 * given ProductContainer is in the list already, it is not added. Adding
+	 * a ProductContainer 
+	 * 
+	 * @param pc ProductContainer to add.
+	 */
+	public void addContainer(ProductContainer pc){
+		if(!this.productContainers.contains(pc))
+			this.productContainers.add(pc);
+	}
+	
+	/**
+	 * Compare 2 Products to see if their barcodes are equal. Uses String.equals() on 
+	 * the product barcodes.
+	 * 
+	 * @param p Product to compare
+	 * @return true if this.barcode.equals(p.barcode), false otherwise
+	 */
+	public boolean equals(Product p){
+		return p.barcode.getValue().equals(this.barcode.getValue());
+	}
+	
+	
 	@Override
 	/**
 	 * Compares this Product to another Object.
@@ -209,4 +205,34 @@ public class Product implements Comparable<Object>, Serializable {
 		return barcode.value.compareToIgnoreCase(otherBarcode.value);
 	}
 
+	
+	// Private setters
+	
+	private void setCreationDate(Date date){
+		Date now = new Date();
+		if(!date.after(now)){
+			this.creationDate = date;
+		}
+		else{
+			throw new IllegalArgumentException("CreationDate cannot be in the future");
+		}
+	}
+	
+	private void setShelfLife(int shelfLife) {
+		if(shelfLife < 0)
+			throw new IllegalArgumentException("ShelfLife must be non-negative");
+		
+		this.shelfLife = shelfLife;
+	}
+	
+	private void setThreeMonthSupply(int threeMonthSupply) {
+		if(threeMonthSupply < 0)
+			throw new IllegalArgumentException("Three Month Supply must be non-negative");
+		
+		this.threeMonthSupply = threeMonthSupply;
+	}
+
+	private void setBarcode(String barcode) {
+		this.barcode = new NonNullString(barcode);
+	}
 }
