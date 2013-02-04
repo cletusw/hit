@@ -2,6 +2,7 @@ package model;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Iterator;
 import java.util.TreeSet;
 import java.io.*;
 
@@ -47,12 +48,23 @@ public class HomeInventoryTracker implements Serializable {
 	 * @param name 	The name to be tested
 	 * @return true if name is valid, false otherwise
 	 * 
-	 * @pre true
+	 * @pre name != null
 	 * @post true
 	 */
 	public boolean isValidStorageUnitName(String name) {
 		// From the Data Dictionary: Must be non-empty. Must be unique among all Storage Units.
-		return !name.equals("") && !rootStorageUnits.contains(new StorageUnit(name));
+		
+		if(name == null || name.equals(""))
+			return false;
+		
+		Iterator<StorageUnit> it = rootStorageUnits.iterator();
+		while(it.hasNext()) {
+			String suName = it.next().getName();
+			if(name.equals(suName))
+				return false;
+		}
+
+		return true;
 	}
 	
 	/** Adds the identified Item to a given ProductContainer

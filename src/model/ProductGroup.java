@@ -10,7 +10,6 @@ package model;
 public class ProductGroup extends ProductContainer {
 	private ProductQuantity threeMonthSupply;
 	private ProductContainer container;
-	private Unit groupUnit;
 	
 	/** Constructor
 	 * 
@@ -22,10 +21,9 @@ public class ProductGroup extends ProductContainer {
 	 * 
 	 */
 	public ProductGroup(String pcName,ProductQuantity tmSupply,Unit groupUnit) {
-		super(pcName);
+		super(pcName,groupUnit);
 		
 		threeMonthSupply = tmSupply;
-		this.groupUnit= groupUnit; 
 	}
 	
 	@Override
@@ -113,5 +111,4 @@ public class ProductGroup extends ProductContainer {
 		// measurement is “count”, the magnitude must be an integer (i.e., no fraction). 
 		return ProductQuantity.isValidProductQuantity(threeMonthSupply.getQuantity(),threeMonthSupply.getUnits());
 	}
-
 }

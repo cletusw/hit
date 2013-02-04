@@ -12,21 +12,15 @@ public class StorageUnit extends ProductContainer {
 	
 	/** Constructor
 	 * 
-	 * @param pcName - String name of the product group.
+	 * @param pcName - String name of the storage unit.
+	 * @param unit - Unit for counting in this storage unit.
 	 * 
 	 * @pre true
 	 * @post true
 	 * 
 	 */
-	public StorageUnit(String pcName) {
-		super(pcName);
-	}
-	
-	/** Default Constructor
-	 * 
-	 */
-	public StorageUnit() {
-		super();
+	public StorageUnit(String pcName,Unit unit) {
+		super(pcName,unit);
 	}
 	
 	/** Determines whether or not the specified Product Group can be added to this Storage Unit.

@@ -109,7 +109,7 @@ public class ProductQuantity {
 	 * @pre otherQuantity UnitType.equals(units.UnitType)
 	 * @post quantity.equals(quantity + quantityToAdd.quantity)
 	 */
-	public void add(ProductQuantity otherQuantity) throws IllegalArgumentException{
+	public void add(ProductQuantity otherQuantity) throws IllegalArgumentException {
 		if(!this.unitType.equals(otherQuantity.unitType)){
 			throw new IllegalArgumentException("Cannot add quantities with different unit types.");
 		}
