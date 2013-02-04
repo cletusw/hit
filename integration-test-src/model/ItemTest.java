@@ -112,16 +112,6 @@ public class ItemTest {
 		assertTrue(item.getExitTime().equals(exitTime));
 	}
 	
-	@Test
-	public void testSetExpirationDate(){
-		fail("Item.setExpirationDate not yet implemented");
-	}
-	
-	@Test
-	public void testSetBadExpirationDate(){
-		fail("Item.setExpirationDate not yet implemented");
-	}
-
 	/**
 	 * Test method for {@link model.Item#compareTo(java.lang.Object)}.
 	 */
