@@ -64,7 +64,7 @@ public abstract class ProductContainer {
 	 * @return The String name of the ProductContainer
 	 * 
 	 * @pre true
-	 * @post return !name.equals("")
+	 * @post true
 	 * 
 	 */
 	public String getName() {
@@ -75,8 +75,8 @@ public abstract class ProductContainer {
 	 * 
 	 * @return int - the number of elements in the items collection.
 	 * 
-	 * @pre items != null
-	 * @post return >= 0 
+	 * @pre true
+	 * @post true 
 	 * 
 	 */
 	public int getItemsSize() {
@@ -87,8 +87,8 @@ public abstract class ProductContainer {
 	 * 
 	 * @return int - the number of elements in the products collection.
 	 * 
-	 * @pre products != null
-	 * @post return >= 0
+	 * @pre true
+	 * @post true
 	 * 
 	 */
 	public int getProductsSize() {
@@ -99,8 +99,8 @@ public abstract class ProductContainer {
 	 * 
 	 * @return int - the number of elements in the pGroups collection.
 	 * 
-	 * @pre pGroups != null
-	 * @post return >= 0
+	 * @pre true
+	 * @post true
 	 * 
 	 */
 	public int getPGroupsSize() {
@@ -109,10 +109,9 @@ public abstract class ProductContainer {
 	
 	/** Finds and returns the requested Item object(s)
 	 * 
-	 * @param itemBarcode - the string name of the Item(s) to find. 
+	 * @param itemBarcode - the (String) Product barcode of the Item(s) to find. 
 	 * @return Collection<Item> - the requested Items
 	 * 
-	 * @pre items != null
 	 * @pre itemBarcode != null
 	 * @post return (Collection<Item> != null)
 	 * 
@@ -122,7 +121,7 @@ public abstract class ProductContainer {
 		Iterator<Item> it = items.iterator();
 		while(it.hasNext()) {
 			Item current = it.next();
-			if(it.equals(current))
+			if(current.getProductBarcode().equals(itemBarcode))
 				found.add(current);
 		}
 		
@@ -134,9 +133,8 @@ public abstract class ProductContainer {
 	 * @param barcode - the String barcode of the product to find
 	 * @return Product - the requested Product
 	 * 
-	 * @pre products != null
 	 * @pre barcode != null
-	 * @post  
+	 * @post true  
 	 * 
 	 */
 	public Product getProduct(String barcode) {
@@ -148,27 +146,39 @@ public abstract class ProductContainer {
 	 * @param pgToFind - the name of the ProductGroup to find
 	 * @return ProductGroup - the requested ProductGroup
 	 * 
-	 * @pre pGroups != null
 	 * @pre pgToFind != null
-	 * @post 
+	 * @post true
 	 */
 	public ProductGroup getProductGroup(String pgToFind) {
 		return traverseProductGroups(pgToFind);
 	}
-	
+		
 	/** Method that calculates and returns the amount of a product in this container.
 	 * 
 	 * @param p - the Product to be found
 	 * @return ProductQuantity - the current supply of the found product, or null.
 	 * 
-	 * @pre products != null
 	 * @pre p != null
-	 * @post
+	 * @pre p.getBarcode() != null
+	 * @pre p.getSize() != null
+	 * @post true
 	 * 
 	 */
 	public ProductQuantity getCurrentSupply(Product p) {
-		System.out.println("Not yet implemented");
-		return null;
+		ProductQuantity pSize = p.getSize();
+		
+		// Get sum of all pGroup product quantities
+		Iterator<ProductGroup> it = pGroups.iterator();
+		ProductQuantity total = new ProductQuantity(0,p.getSize().getUnits());
+		while(it.hasNext()) {
+			ProductGroup current = it.next();
+			total.add(current.getCurrentSupply(p));
+		}
+		
+		// add product quantity of items in this container
+		total.add(new ProductQuantity(getItems(p.getBarcode()).size(),pSize.getUnits()));
+		
+		return total;
 	}
 
 	/** Method that calculates and returns the amount of a product group in this container.
@@ -176,7 +186,6 @@ public abstract class ProductContainer {
 	 * @param pg - the ProductGroup to be found
 	 * @return ProductQuantity - the current supply of the found product group, or null.
 	 * 
-	 * @pre pGroups != null
 	 * @pre pg != null
 	 * @post
 	 * 

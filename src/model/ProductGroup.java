@@ -10,6 +10,7 @@ package model;
 public class ProductGroup extends ProductContainer {
 	private ProductQuantity threeMonthSupply;
 	private ProductContainer container;
+	private Unit groupUnit;
 	
 	/** Constructor
 	 * 
@@ -17,23 +18,14 @@ public class ProductGroup extends ProductContainer {
 	 * @param tmSupply - the three-month supply (ProductQuantity) to be specified for this object
 	 * 
 	 * @pre true
-	 * @post container != null
+	 * @post true
+	 * 
 	 */
-	public ProductGroup(String pcName,ProductQuantity tmSupply) {
+	public ProductGroup(String pcName,ProductQuantity tmSupply,Unit groupUnit) {
 		super(pcName);
 		
 		threeMonthSupply = tmSupply;
-	}
-	
-	/** Default Constructor
-	 * 
-	 * @pre true
-	 * @post container != null
-	 * 
-	 */
-	public ProductGroup() {
-		super();
-		threeMonthSupply = null;
+		this.groupUnit= groupUnit; 
 	}
 	
 	@Override
@@ -98,7 +90,7 @@ public class ProductGroup extends ProductContainer {
 	 * @param threeMonthSupply - the new quantity for the three-month supply
 	 * 
 	 * @pre true
-	 * @post this.threeMonthSupply == threeMonthSupply
+	 * @post this.threeMonthSupply.equals(threeMonthSupply)
 	 */
 	public void setThreeMonthSupply(ProductQuantity threeMonthSupply) {
 		this.threeMonthSupply = threeMonthSupply;
@@ -111,6 +103,7 @@ public class ProductGroup extends ProductContainer {
 	 * 
 	 * @pre threeMonthSupply != null
 	 * @post true
+	 * 
 	 */
 	public boolean isValidThreeMonthSupply(ProductQuantity threeMonthSupply) {
 		// From the Data Dictionary:
@@ -118,7 +111,7 @@ public class ProductGroup extends ProductContainer {
 		// The unit of measurement can be any of the following: count, pounds, ounces, 
 		// grams, kilograms, gallons, quarts, pints, fluid ounces, liters.  If the unit of 
 		// measurement is “count”, the magnitude must be an integer (i.e., no fraction). 
-		return true;
+		return ProductQuantity.isValidProductQuantity(threeMonthSupply.getQuantity(),threeMonthSupply.getUnits());
 	}
 
 }

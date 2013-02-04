@@ -26,6 +26,10 @@ public class Item implements Comparable<Object>, Serializable {
 	 * @param barcode the Item's barcode
 	 * @param product this Item's corresponding Product
 	 * @param container the ProductContainer this Item is to be stored in
+	 * 
+	 * @pre true
+	 * @post (invariants)
+	 * 
 	 */
 	public Item(Barcode barcode, Product product, ProductContainer container, ItemManager manager) {
 		this(barcode, product, container, manager, new Date());
@@ -35,6 +39,10 @@ public class Item implements Comparable<Object>, Serializable {
 	 * @param barcode the Item's barcode
 	 * @param product this Item's corresponding Product
 	 * @param container the ProductContainer this Item is to be stored in
+	 * 
+	 * @pre
+	 * @post (invariants)
+	 * 
 	 */
 	public Item(Barcode barcode, Product product, ProductContainer container, ItemManager manager, Date entryDate){
 		this.product = product;
@@ -48,14 +56,34 @@ public class Item implements Comparable<Object>, Serializable {
 	/** Gets this Item's Product
 	 * 
 	 * @return this Item's Product
+	 * 
+	 * @pre true
+	 * @post true
+	 * 
 	 */
 	public Product getProduct() {
 		return product;
 	}
 	
+	/** Gets this Item's Product barcode
+	 * 
+	 * @return Product (String) barcode
+	 * 
+	 * @pre true
+	 * @post true
+	 * 
+	 */
+	public String getProductBarcode() {
+		return product.getBarcode();
+	}
+	
 	/** Gets this Item's barcode
 	 * 
 	 * @return this item's barcode
+	 * 
+	 * @pre true
+	 * @post true
+	 * 
 	 */
 	public Barcode getBarcode() {
 		return barcode;
@@ -83,6 +111,10 @@ public class Item implements Comparable<Object>, Serializable {
 	/** Gets this Item's entry date
 	 * 
 	 * @return this item's entry date
+	 * 
+	 * @pre true
+	 * @post true
+	 * 
 	 */
 	public Date getEntryDate() {
 		return entryDate;
@@ -91,6 +123,10 @@ public class Item implements Comparable<Object>, Serializable {
 	/** Gets this Item's exit time
 	 * 
 	 * @return the Item's exit time
+	 * 
+	 * @pre true
+	 * @post true
+	 * 
 	 */
 	public Date getExitTime() {
 		return exitTime;
@@ -123,6 +159,10 @@ public class Item implements Comparable<Object>, Serializable {
 	/** Gets this Item's expiration date
 	 * 
 	 * @return the Item's expiration date
+	 * 
+	 * @pre true
+	 * @post true
+	 * 
 	 */
 	public Date getExpirationDate() {
 		return this.expirationDate;
@@ -139,6 +179,10 @@ public class Item implements Comparable<Object>, Serializable {
 	/** Gets this Item's parent container
 	 * 
 	 * @return this Item's parent ProductContainer
+	 * 
+	 * @pre true
+	 * @post true
+	 * 
 	 */
 	public ProductContainer getContainer() {
 		// From the Data Dictionary: 
