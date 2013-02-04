@@ -37,7 +37,7 @@ public class ConcreteItemManager implements ItemManager {
 	@Override
 	public void unmanage(Item item) {
 		assert(item != null);
-		item.setExitTime(new Date());
+		item.remove();
 		removedItems.add(item);
 	}	
 
