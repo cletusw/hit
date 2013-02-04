@@ -20,8 +20,9 @@ public class ItemTest {
 	private final Barcode validUPCABarcode = new Barcode("494180175762");
 	private final ItemManager itemManager = new MockItemManager();
 	private final ProductManager productManager = new MockProductManager();
-	private final Product product = new Product("validBarcode", "A product", 3, 3, productManager);
-	private final ProductGroup productGroup = new ProductGroup();
+	private final ProductQuantity pq = new ProductQuantity(2.2f, Unit.FLUID_OUNCES);
+	private final Product product = new Product("validBarcode", "A product", 3, 3, pq, productManager);
+	private final ProductGroup productGroup = new ProductGroup("Test product group", pq, Unit.GALLONS);
 	private final Date entryDateLastMonth = new Date(113, 0, 1, 12, 45, 45);
 	
 	private Item item;
@@ -104,40 +105,11 @@ public class ItemTest {
 	 * Test method for {@link model.Item#setExitTime(java.util.Date)}.
 	 */
 	@Test
-	public void testSetExitTime() {
+	public void testRemove() {
 		Date exitTime = new Date();
-		item.setExitTime(exitTime);
+		item.remove();
+		assertTrue(item.getContainer() == null);
 		assertTrue(item.getExitTime().equals(exitTime));
-	}
-	
-	/**
-	 * Test method for {@link model.Item#setExitTime(java.util.Date)}.
-	 */
-	@SuppressWarnings("deprecation")
-	@Test (expected=IllegalArgumentException.class)
-	public void testSetFutureExitTime() {
-		Date exitTime = new Date(115, 10, 15, 12, 45, 45);
-		item.setExitTime(exitTime);
-	}
-	
-	/**
-	 * Test method for {@link model.Item#setExitTime(java.util.Date)}.
-	 */
-	@SuppressWarnings("deprecation")
-	@Test (expected=IllegalArgumentException.class)
-	public void testSetOldExitTime() {
-		item.setExitTime(new Date(110, 10, 15, 12, 45, 45));
-	}
-
-	/**
-	 * Test method for {@link model.Item#setContainer(model.ProductContainer)}.
-	 */
-	@Test
-	public void testSetContainer() {
-		ProductGroup newPG = new ProductGroup("NewPG", new ProductQuantity(2.1f, Unit.FLUID_OUNCES));
-		item.setContainer(newPG);
-		assertTrue(item.getContainer().equals(newPG));
-		assertFalse(item.getContainer().equals(productGroup));
 	}
 	
 	@Test
@@ -156,7 +128,7 @@ public class ItemTest {
 	@Test
 	public void testCompareTo() {
 		Item sameItem = new Item(validUPCABarcode, product, productGroup, itemManager);
-		Item newItem = new Item(new Barcode("412345688919"), new Product("abc", "abcd", 3, 3, productManager), new ProductGroup(), itemManager);
+		Item newItem = new Item(new Barcode("412345688919"), new Product("abc", "abcd", 3, 3, pq, productManager), productGroup, itemManager);
 		assertTrue(item.compareTo(sameItem) == 0);
 		assertTrue(item.compareTo(newItem) != 0);
 	}

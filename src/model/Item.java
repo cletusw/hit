@@ -10,7 +10,6 @@ import java.util.Date;
  * @invariant barcode != null
  * @invariant entryDate != null
  * @invariant expirationDate != null
- * @invariant container != null
  * 
  */
 @SuppressWarnings("serial")
@@ -89,25 +88,6 @@ public class Item implements Comparable<Object>, Serializable {
 		return barcode;
 	}
 	
-	/** Sets this Item's entry date
-	 * 
-	 * @param date the entry date of the Item
-	 */
-	private void setEntryDate(Date date) {
-		// From the Data Dictionary:
-		// Must be non-empty.  Cannot be in the 
-		// future or prior to 1/1/2000.
-		if(date == null){
-			this.entryDate = new Date();
-			return;
-		}
-		
-		if(date.after(new Date()) || date.before(new Date(100, 0, 0, 0, 0, 0))){
-			throw new IllegalArgumentException("Date must not be in future");
-		}
-		this.entryDate = date;
-	}
-	
 	/** Gets this Item's entry date
 	 * 
 	 * @return this item's entry date
@@ -124,7 +104,7 @@ public class Item implements Comparable<Object>, Serializable {
 	 * 
 	 * @return the Item's exit time
 	 * 
-	 * @pre true
+	 * @pre Item has been removed
 	 * @post true
 	 * 
 	 */
@@ -132,28 +112,16 @@ public class Item implements Comparable<Object>, Serializable {
 		return exitTime;
 	}
 	
-	/** Sets this Item's exit time. Must be between the enry date and the
-	 * current time.
+	/**
+	 * Sets exit time to now, container to null
 	 * 
-	 * @param time the Item's exit time
+	 * @pre true
+	 * @post exitTime != null
+	 * @post container != null
 	 */
-	public void setExitTime(Date time) {
-		// TODO: Check if item has been removed?
-		if(time.before(this.entryDate) || time.after(new Date())){
-			throw new IllegalArgumentException(time.toString() + " is before entryDate");
-		}
-		
-		this.exitTime = time;
-	}
-	
-	/*
-	 * Set expiration date using this item's entry date and
-	 * the product's shelf life
-	 */
-	@SuppressWarnings({ "deprecation" })
-	private void setExpirationDate(){
-		Date d = this.entryDate;
-		this.expirationDate = new Date(d.getYear(), d.getMonth() + this.product.getShelfLife(), d.getDate(), d.getHours(), d.getMinutes(), d.getSeconds());
+	public void remove(){
+		this.exitTime = new Date();
+		this.container = null;
 	}
 	
 	/** Gets this Item's expiration date
@@ -168,14 +136,6 @@ public class Item implements Comparable<Object>, Serializable {
 		return this.expirationDate;
 	}
 	
-	/** Sets this Item's parent container to c
-	 * 
-	 * @param c the Item's parent ProductContainer
-	 */
-	public void setContainer(ProductContainer c) {
-		container = c;
-	}
-	
 	/** Gets this Item's parent container
 	 * 
 	 * @return this Item's parent ProductContainer
@@ -185,14 +145,6 @@ public class Item implements Comparable<Object>, Serializable {
 	 * 
 	 */
 	public ProductContainer getContainer() {
-		// From the Data Dictionary: 
-		// Empty if the Item has been removed 
-		// from storage.  Non-empty if the Item has 
-		// not been removed from storage.  
-		// (Before it is removed, an Item is 
-		// contained in one Product Container.  
-		// After it is removed, it is contained in no 
-		// Product Containers.) 
 		return container;
 	}
 	
@@ -206,4 +158,29 @@ public class Item implements Comparable<Object>, Serializable {
 		return barcode.compareTo(other.barcode);
 	}
 	
+	
+	// private setters
+	private void setEntryDate(Date date) {
+		// From the Data Dictionary:
+		// Must be non-empty.  Cannot be in the 
+		// future or prior to 1/1/2000.
+		if(date == null){
+			this.entryDate = new Date();
+			return;
+		}
+		
+		if(date.after(new Date()) || date.before(new Date(100, 0, 0, 0, 0, 0))){
+			throw new IllegalArgumentException("Date must not be in future");
+		}
+		this.entryDate = date;
+	}
+	
+	private void setExpirationDate(){
+		Date d = this.entryDate;
+		this.expirationDate = new Date(d.getYear(), d.getMonth() + this.product.getShelfLife(), d.getDate(), d.getHours(), d.getMinutes(), d.getSeconds());
+	}
+	
+	private void setContainer(ProductContainer c) {
+		container = c;
+	}
 }
