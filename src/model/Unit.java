@@ -267,4 +267,16 @@ public enum Unit {
 			throw new NotImplementedException();
 		}
 	}
+	
+	/**
+	 * Determines whether a specified integer is a valid count.
+	 * @param toTest	the integer to test
+	 * @return 			true if toTest is a valid count, false otherwise.
+	 * 
+	 * @pre true
+	 * @post true
+	 */
+	public static boolean isValidCount(int toTest) {
+		return toTest >= 0;
+	}
 }
