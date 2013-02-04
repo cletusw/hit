@@ -3,7 +3,10 @@ package model;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.LinkedList;
+import java.util.TreeMap;
 import java.util.TreeSet;
+import java.util.Map;
+import java.util.Set;
 
 /** Product Container class: Represents an object that can hold various types of items, products, and product groups. 
  * 
@@ -24,6 +27,8 @@ public abstract class ProductContainer {
 	private Collection<Item> items;
 	private Collection<Product> products;
 	private Collection<ProductGroup> pGroups;
+	//TODO: Implement this map for all descendant nodes
+	private Map<Product, Set<Item>> productsToItems; 
 	
 	/** Constructor 
 	 * 
@@ -41,6 +46,7 @@ public abstract class ProductContainer {
 		name = pcName;
 		
 		createDataStructures();
+		productsToItems = new TreeMap<Product, Set<Item>>();
 	}
 	
 	/** Default Constructor 
@@ -251,44 +257,61 @@ public abstract class ProductContainer {
 
 		return (traverseProductGroups(pg.getName()) == null);
 	}
-
-	/** Method that removes an Item object(s) from the collection.
+	
+	/** Removes the specified item from this ProductContainer.
 	 * 
-	 * @param barcode - the String barcode of the Item object(s) to be removed from the collection
-	 *
-	 * @pre items != null
-	 * @pre barcode != null
-	 * @pre items.size() >= 0
-	 * @pre traverseItems(barcode).size() > 0
-	 * @post items.size()@pre > items.size() >= 0
-	 * 
+	 * @param item		the Item to be removed
+	 * @param manager 	the ItemManager to notify of the removal
 	 */
-	public void removeItems(String barcode) {
-		Iterator<Item> it = items.iterator();
-		while(it.hasNext()) {
-			Item current = it.next();
-			if(current.getBarcode().equals(barcode)) {
-				items.remove(current);
-				it = items.iterator();
-			}
-		}
+	public void remove(Item item, ItemManager manager) {
+		items.remove(item);
+		manager.unmanage(item);
+	}
+	
+	/** Removes the specified item from this ProductContainer.
+	 *  Use this only 
+	 * 
+	 * @param item			the Item to be moved
+	 * @param destination 	the ProductContainer to move the item to
+	 * 
+	 * @pre item != null
+	 * @pre destination != null
+	 * @pre contains(item)
+	 * @post !contains(item)
+	 * @post destination.contains(item)
+	 */
+	public void moveIntoContainer(Item item, ProductContainer destination) {
+		assert(item != null);
+		assert(destination != null);
+		items.remove(item);
+		destination.add(item);
+	}
+	
+	/** Determines whether this Product Container contains a specific Item
+	 * 
+	 * @param item		the Item to check
+	 * @return			true if this Product Container contains the Item, false otherwise
+	 */
+	public boolean contains(Item item) {
+		return items.contains(item);
 	}
 
 	/** Method that removes a Product object from the collection.
 	 * 
 	 * @param barcode - the String barcode of the Product object to be removed from the collection
-	 * @return True if object was removed successfully, false otherwise.
 	 *
-	 * @pre products != null
-	 * @pre barcode != null
-	 * @pre products.size() >= 0
-	 * @pre traverseProducts(barcode) != null
-	 * @post traverseProducts(barcode) == null
-	 * @post products.size() == products.size()@pre - 1
-	 * 
+	 * @pre product != null
+	 * @post !contains(product)
+	 * @throws IllegalStateException	if the product cannot be removed
 	 */
-	public boolean removeProduct(String barcode) {
-		return products.remove(traverseProducts(barcode));
+	public void remove(Product product) throws IllegalStateException {
+		if (!canRemove(product))
+			throw new IllegalStateException("Cannot remove product; product container still has items that refer to it");
+		products.remove(product);
+	}
+
+	public boolean canRemove(Product product) {
+		return (productsToItems.get(product).isEmpty());
 	}
 
 	/** Method that removes a ProductGroup object from the collection.

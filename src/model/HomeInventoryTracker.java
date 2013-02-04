@@ -17,7 +17,6 @@ import java.io.*;
 @SuppressWarnings("serial")
 public class HomeInventoryTracker implements Serializable {
 	private Collection<StorageUnit> rootStorageUnits;
-	private Collection<Item> removedItems;
 	private ItemManager itemManager;
 	private ProductManager productManager;
 	
@@ -28,8 +27,7 @@ public class HomeInventoryTracker implements Serializable {
 	 */
 	public HomeInventoryTracker() {
 		rootStorageUnits = new ArrayList<StorageUnit>();
-		removedItems = new TreeSet<Item>();
-		itemManager = new ConreteItemManager();
+		itemManager = new ConcreteItemManager();
 		productManager = new ConcreteProductManager();
 	}
 	
@@ -54,53 +52,89 @@ public class HomeInventoryTracker implements Serializable {
 	 */
 	public boolean isValidStorageUnitName(String name) {
 		// From the Data Dictionary: Must be non-empty. Must be unique among all Storage Units.
-		return true;
+		return !name.equals("") && !rootStorageUnits.contains(new StorageUnit(name));
+	}
+	
+	/** Adds the identified Item to a given ProductContainer
+	 * @param item			The Item to be added
+	 * @param container		The ProductContainer you are adding the Item to
+	 * 
+	 * @pre item != null && container != null
+	 * @post container.contains(item)
+	 */
+	public void add(Item item, ProductContainer container) {
+		container.add(item);
 	}
 	
 	/** Removes the identified Item from a given ProductContainer
 	 * @param item			The Item to be removed
 	 * @param container		The ProductContainer to remove the item from
-	 * @return				true if the item was removed from the container, false otherwise.
 	 * 
-	 * @pre item != null
+	 * @pre item != null && container != null
 	 * @post !containsItem(item)
 	 */
-	public boolean remove(Item item) {
-		// @TODO: Implement me!
-		//container.remove(item);
-		return false;	
+	public void remove(Item item, ProductContainer container) {
+		container.remove(item, itemManager);
 	}
 	
 	/** Moves the identified Item from one ProductContainer to another
 	 * @param source		The ProductContainer you are moving the item from
  	 * @param destination	The ProductContainer you are moving the item to
 	 * @param item			The Item to be moved
-	 * @return				true if the item was moved from the source container to the destination, false otherwise.
 	 * 
 	 * @pre source != null && destination != null && item != null
 	 * @pre source.contains(item)
 	 * @post destination.contains(item) && !source.contains(item)
 	 */
-	public boolean move(ProductContainer source, ProductContainer destination, Item item) {
+	public void move(ProductContainer source, ProductContainer destination, Item item) {
 		assert(source != null);
 		assert(destination != null);
 		assert(item != null);
-		//assert(source.contains(item));
-		
-		// @TODO: Implement me!
-		return false;
+		assert(source.contains(item));
+		source.remove(item, null);
+		destination.add(item);
 	}
 	
 	/** Deletes the identified Product from the home inventory system.
 	 * @param product		The Product to be deleted
-	 * @return				true if the product was deleted, false otherwise.
 	 * 
 	 * @pre product != null
-	 * @post !containsProduct(product)
+	 * @post !contains(product)
 	 */
-	public boolean remove(Product product) {
-		// @TODO: Implement me!
-		return false;
+	public void remove(Product product) throws IllegalStateException {
+		if (!canRemove(product))
+			throw new IllegalStateException("Cannot remove product from the system; it still has items that refer to it");
+		productManager.unmanage(product);
+		for (StorageUnit storageUnit:rootStorageUnits) {
+			storageUnit.remove(product);
+		}
+	}
+	
+	/** Deletes the identified Product from the home inventory system.
+	 * @param product		The Product to be deleted
+	 * 
+	 * @pre product != null
+	 * @post !contains(product)
+	 */
+	public void removeFromContainer(Product product, ProductContainer container) throws IllegalStateException {
+		if (!canRemove(product))
+			throw new IllegalStateException("Cannot remove product from the system; it still has items that refer to it");
+		//TODO
+		//productManager.remove(product);
+	}
+	
+	/**
+	 * Determines whether the specified product can be removed.
+	 * @param product		The Product to test
+	 * @return				true if the Product can be safely removed, false otherwise.
+	 * 
+	 * @pre product != null
+	 * @post true
+	 */
+	public boolean canRemove(Product product) {
+		// From the Data Dictionary: A Product can be removed from the system only if
+		//    the system contains no Items of the Product
+		return !itemManager.productHasItems(product);
 	}
 	
 	/**
@@ -112,22 +146,7 @@ public class HomeInventoryTracker implements Serializable {
 	 * @post true
 	 */
 	public boolean contains(Product product) {
-		// Ask the Product Manager!
-		return false;
-	}
-	
-	/** Adds the identified Item to a given ProductContainer
-	 * @param item			The Item to be added
-	 * @param container		The ProductContainer you are adding the Item to
-	 * @return				true if the item was added to the container, false otherwise.
-	 * 
-	 * @pre item != null && container != null
-	 * @post container.contains(item)
-	 */
-	public boolean add(Item item, ProductContainer container) {
-		// @TODO: Implement me!
-		//container.add(item);
-		return false;
+		return productManager.contains(product);
 	}
 	
 	/** Adds the identified Product to a given ProductContainer
@@ -145,19 +164,36 @@ public class HomeInventoryTracker implements Serializable {
 		return false;
 	}
 	
-	// DO we need these? (And for Items?)
-	public boolean canRemove(Product product) {
-		return true;
-	}
-	
+	/**
+	 * Removes the specified ProductContainer.
+	 * @param container		The ProductContainer to remove
+	 * @pre container != null
+	 * @post !contains(container)
+	 */
 	public void remove(ProductContainer container) {
 	
 	}
 	
-	public boolean canDeleteProductContainer(ProductContainer container) {
-		return true;
+	/**
+	 * Determines whether the specified ProductContainer can be removed.
+	 * @param container		The ProductContainer to test
+	 * @return				true if it is safe to remove the container, false otherwise.
+	 * 
+	 * @pre container != null
+	 * @post true
+	 */
+	public boolean canRemove(ProductContainer container) {
+		return container.getItemsSize() == 0;
 	}
 	
+	/**
+	 * Determines whether a storage unit with the given name can be added to the system.
+	 * @param storageUnitName	the name of the storage unit to test
+	 * @return	 				true if it can be added, false otherwise
+	 * 
+	 * @pre storageUnitName != null
+	 * @post true
+	 */
 	public boolean canAddStorageUnit(String storageUnitName) {
 		// Must be unique
 		return true;
