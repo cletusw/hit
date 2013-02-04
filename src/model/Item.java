@@ -32,7 +32,7 @@ public class Item implements Comparable<Object>, Serializable {
 	 * 
 	 */
 	public Item(Barcode barcode, Product product, ProductContainer container, ItemManager manager) {
-		this(barcode, product, container, manager, new Date());
+		this(barcode, product, container, new Date(), manager);
 	}
 	
 	/** Constructs a new Item with the specified barcode, product, and container.
@@ -44,7 +44,7 @@ public class Item implements Comparable<Object>, Serializable {
 	 * @post (invariants)
 	 * 
 	 */
-	public Item(Barcode barcode, Product product, ProductContainer container, ItemManager manager, Date entryDate){
+	public Item(Barcode barcode, Product product, ProductContainer container, Date entryDate, ItemManager manager){
 		this.product = product;
 		this.container = container;
 		this.barcode = barcode;

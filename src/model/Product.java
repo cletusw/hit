@@ -23,7 +23,7 @@ public class Product implements Comparable<Object>, Serializable {
 	 * Constructs a Product using the given barcode, description, creationDate
 	 * @param barcode
 	 */
-	public Product(String barcode, String description, ProductManager manager, Date creationDate) {
+	public Product(String barcode, String description, Date creationDate, ProductManager manager) {
 		this.barcode = new NonNullString(barcode);
 		this.description = new NonNullString(description);
 		this.creationDate = creationDate;
@@ -35,7 +35,7 @@ public class Product implements Comparable<Object>, Serializable {
 	 * @param barcode
 	 */
 	public Product(String barcode, String description, ProductManager manager) {
-		this(barcode, description, manager, new Date());
+		this(barcode, description, new Date(), manager);
 	}
 	
 	/** Gets this Product's size

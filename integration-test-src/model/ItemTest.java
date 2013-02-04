@@ -32,7 +32,7 @@ public class ItemTest {
 	@Before
 	public void setUp() throws Exception {
 		product.setShelfLife(3);
-		item = new Item(validUPCABarcode, product, productGroup, itemManager, entryDateLastMonth);
+		item = new Item(validUPCABarcode, product, productGroup, entryDateLastMonth, itemManager);
 	}
 
 	/**
