@@ -48,7 +48,7 @@ public class ProductTest {
 		assertTrue(product.getBarcode().equals(validBarcode));
 		assertTrue(product.getDescription().equals(validDescription));
 		assertTrue(product.getShelfLife() == shelfLife);
-		assertTrue(product.getCreationDate().before(new Date()));
+		assertTrue(product.getCreationDate().equals(new Date()));
 		assertTrue(product.getSize().equals(size));
 		assertTrue(product.getThreeMonthSupply() == threeMonthSupply);
 	}
@@ -59,6 +59,14 @@ public class ProductTest {
 	@Test (expected=IllegalArgumentException.class)
 	public void testProductInvalidBarcode() {
 		new Product("", validDescription, 3, 3, size, productManager);
+	}
+
+	/**
+	 * Test method for {@link model.Product#Product(java.lang.String, java.lang.String)}.
+	 */
+	@Test (expected=IllegalArgumentException.class)
+	public void testProductNullBarcode() {
+		new Product(null, "", 3, -1, size, productManager);
 	}
 	
 	/**
@@ -104,35 +112,6 @@ public class ProductTest {
 		assertFalse(product.isValidThreeMonthSupply(-1));
 	}
 
-	/**
-	 * Test method for {@link model.Product#setBarcode(java.lang.String)}.
-	 */
-	@Test
-	public void testSetBarcode() {
-		String newBarcode = "newBarcode";
-		product.setBarcode(newBarcode);
-		assertFalse(product.getBarcode().equals(validBarcode));
-		assertTrue(product.getBarcode().equals(newBarcode));
-	}
-	
-	/**
-	 * Test method for {@link model.Product#setBarcode(java.lang.String)}.
-	 */
-	@Test (expected=IllegalArgumentException.class)
-	public void testSetEmptyBarcode() {
-		String newBarcode = "";
-		product.setBarcode(newBarcode);
-	}
-	
-	/**
-	 * Test method for {@link model.Product#setBarcode(java.lang.String)}.
-	 */
-	@Test (expected=IllegalArgumentException.class)
-	public void testSetNullBarcode() {
-		String newBarcode = null;
-		product.setBarcode(newBarcode);
-	}
-	
 	/**
 	 * Test method for {@link model.Product#isValidBarcode(java.lang.String)}.
 	 */
