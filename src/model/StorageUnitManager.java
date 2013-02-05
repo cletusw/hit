@@ -1,10 +1,11 @@
 package model;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
 
-public class StorageUnitManager {
+public class StorageUnitManager implements Serializable {
 	private Collection<StorageUnit> rootStorageUnits;
 	
 	/** Constructor

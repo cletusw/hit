@@ -1,8 +1,8 @@
 package model;
 
-import java.util.TreeMap;
+import java.io.Serializable;
 
-public enum UnitType {
+public enum UnitType implements Serializable {
 	VOLUME, WEIGHT, COUNT;
 	
 	/**

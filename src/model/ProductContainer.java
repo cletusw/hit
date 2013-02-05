@@ -1,5 +1,6 @@
 package model;
 
+import java.io.Serializable;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.LinkedList;
@@ -20,7 +21,7 @@ import java.util.Set;
  * @invariant pGroups != null
  * 
  */
-public abstract class ProductContainer implements Comparable<ProductContainer> {
+public abstract class ProductContainer implements Comparable<ProductContainer>, Serializable {
 	protected String name;
 	private Unit unit;
 

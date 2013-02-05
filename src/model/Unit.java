@@ -1,4 +1,5 @@
 package model;
+import java.io.Serializable;
 import java.util.TreeMap;
 import java.util.Map;
 
@@ -8,7 +9,7 @@ import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 /**
  * Definition of acceptable units.
  */
-public enum Unit {
+public enum Unit implements Serializable {
 	COUNT, POUNDS, OUNCES, GRAMS, KILOGRAMS, GALLONS, QUARTS, PINTS, FLUID_OUNCES, LITERS;
 	
 	public static final Map<Unit, UnitType> typeMap = new TreeMap<Unit, UnitType>();

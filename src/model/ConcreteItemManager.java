@@ -1,5 +1,6 @@
 package model;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
@@ -8,7 +9,7 @@ import java.util.Map;
 import java.util.TreeMap;
 import java.util.TreeSet;
 
-public class ConcreteItemManager implements ItemManager {
+public class ConcreteItemManager implements ItemManager, Serializable {
 	private Collection<Item> items;
 	private Collection<Item> removedItems;
 	private Map<Product, Collection<Item>> productsToItems;

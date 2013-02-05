@@ -1,5 +1,7 @@
 package model;
 
+import java.io.Serializable;
+
 /** Maintain a quantity (volume) along with an enumerated unit.
  * 
  * @author Matt Matheson
@@ -8,7 +10,7 @@ package model;
  * @invariant quantity >= 0.0
  * @invariant units != null
  */
-public class ProductQuantity {
+public class ProductQuantity implements Serializable {
 
 	// Member variables
 	private float quantity;

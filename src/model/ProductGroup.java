@@ -1,5 +1,7 @@
 package model;
 
+import java.io.Serializable;
+
 /** Product Group class. Inherits from ProductContainer.
  * 
  *  @author - Matt Hess

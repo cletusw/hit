@@ -1,5 +1,6 @@
 package model;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Map;
 import java.util.TreeMap;
@@ -9,7 +10,7 @@ import java.util.Collection;
  * @author Clayton Watts
  *
  */
-public class ConcreteProductManager implements ProductManager {
+public class ConcreteProductManager implements ProductManager, Serializable {
 	private Collection<Product> products;
 	private Map<String, Product> barcodesToProducts;
 	

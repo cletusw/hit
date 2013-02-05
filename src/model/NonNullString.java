@@ -1,12 +1,14 @@
 package model;
 
+import java.io.Serializable;
+
 /** Wrapper class to guarantee a string is not null and not empty
  * 
  * @author Matthew Matheson
  * @invariant value != null
  * @invariant !value.isEmpty()
  */
-public class NonNullString {
+public class NonNullString implements Serializable {
 	protected String value;
 	
 	protected NonNullString(){
