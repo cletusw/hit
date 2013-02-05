@@ -51,6 +51,31 @@ public abstract class ProductContainer implements Comparable<ProductContainer>, 
 		productsToItems = new TreeMap<Product, Set<Item>>();
 	}
 	
+	/**
+	 * Determines if this ProductContainer can be removed from the system.
+	 * 
+	 * @return true, if this ProductContainer and its descendants contain no Items. false, otherwise.
+	 */
+	public boolean canRemove() {
+		if (!items.isEmpty()) {
+			return false;
+		}
+		
+		for (Product product : products) {
+			if (!product.canRemove()) {
+				return false;
+			}
+		}
+		
+		for (ProductGroup productGroup : pGroups) {
+			if (!productGroup.canRemove()) {
+				return false;
+			}
+		}
+		
+		return true;
+	}
+	
 	/** Attribute getter - name
 	 * 
 	 * @return The String name of the ProductContainer

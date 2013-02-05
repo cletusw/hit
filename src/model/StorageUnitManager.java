@@ -51,22 +51,35 @@ public class StorageUnitManager implements Serializable {
 		}
 	}
 	
-	/** Removes a given ProductContainer from the system
+	/** Removes a ProductGroup from the system
 	 * 
-	 * @param container		the ProductContainer to remove
-	 * @pre container != null
-	 * @post !contains(container)
+	 * @param productGroup the ProductGroup to remove
+	 * 
+	 * @pre productGroup != null
+	 * @pre productGroup.canRemove()
 	 */
-	public void remove(ProductContainer container) {
+	public void remove(ProductGroup productGroup) {
+		assert(productGroup != null);
+		assert(productGroup.canRemove());
+		
 		for (StorageUnit storageUnit : rootStorageUnits) {
-			if (storageUnit.equals(container)) {
-				rootStorageUnits.remove(storageUnit);
-				return;
-			}
+			storageUnit.remove(productGroup);
 		}
-		for (StorageUnit storageUnit : rootStorageUnits) {
-			storageUnit.remove(container);
-		}
+	}
+	
+	/**
+	 * Removes a Storage Unit from the system
+	 * 
+	 * @param storageUnit The Storage Unit to remove
+	 * 
+	 * @pre storageUnit != null
+	 * @pre storageUnit.canRemove()
+	 */
+	public void remove(StorageUnit storageUnit) {
+		assert(storageUnit != null);
+		assert(storageUnit.canRemove());
+		
+		rootStorageUnits.remove(storageUnit);
 	}
 	
 	/** Returns an Iterator over the Storage Units.

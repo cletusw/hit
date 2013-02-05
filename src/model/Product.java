@@ -186,6 +186,15 @@ public class Product implements Comparable<Object>, Serializable {
 	}
 	
 	/**
+	 * Determines if this Product can be removed from the system.
+	 * 
+	 * @return true, if this Product contains no items. false, otherwise.
+	 */
+	public boolean canRemove() {
+		return items.isEmpty();
+	}
+	
+	/**
 	 * Compare 2 Products to see if their barcodes are equal. Uses String.equals() on 
 	 * the product barcodes.
 	 * 

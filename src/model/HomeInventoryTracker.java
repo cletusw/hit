@@ -161,26 +161,27 @@ public class HomeInventoryTracker implements Serializable {
 		container.add(product);
 	}
 	
-	/**
-	 * Removes the specified ProductContainer from the system.
-	 * @param container		The ProductContainer to remove
-	 * @pre container != null
-	 * @post !contains(container)
-	 */
-	public void remove(ProductContainer container) {
-		storageUnitManager.remove(container);
-	}
-
-	/**
-	 * Determines whether the specified ProductContainer can be removed.
-	 * @param container		The ProductContainer to test
-	 * @return				true if it is safe to remove the container, false otherwise.
+	/** Removes a ProductGroup from the system
 	 * 
-	 * @pre container != null
-	 * @post true
+	 * @param productGroup the ProductGroup to remove
+	 * 
+	 * @pre productGroup != null
+	 * @pre productGroup.canRemove()
 	 */
-	public boolean canRemove(ProductContainer container) {
-		return container.getItemsSize() == 0;
+	public void remove(ProductGroup productGroup) {
+		storageUnitManager.remove(productGroup);
+	}
+	
+	/**
+	 * Removes a Storage Unit from the system
+	 * 
+	 * @param storageUnit The Storage Unit to remove
+	 * 
+	 * @pre storageUnit != null
+	 * @pre storageUnit.canRemove()
+	 */
+	public void remove(StorageUnit storageUnit) {
+		storageUnitManager.remove(storageUnit);
 	}
 	
 	/**
