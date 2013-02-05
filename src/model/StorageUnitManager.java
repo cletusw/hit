@@ -91,4 +91,22 @@ public class StorageUnitManager implements Serializable {
 	public Iterator<StorageUnit> getStorageUnitsIterator() {
 		return rootStorageUnits.iterator();
 	}
+
+	/**
+	 * Rename a Storage Unit
+	 * @param storageUnitName Name of the Storage Unit to rename
+	 * @param newStorageUnitName New name to be given to Storage Unit
+	 * 
+	 * @pre rootStorageUnits.contains(storageUnitName)
+	 * @pre isValidStorageUnitName(newStorageUnitName)
+	 * @post !rootStorageUnits.contains(storageUnitName)
+	 * @post rootStorageUnits.contains(newStorageUnitName)
+	 */
+	public void renameStorageUnit(String storageUnitName, String newStorageUnitName) {
+		assert(rootStorageUnits.contains(storageUnitName));
+		assert(isValidStorageUnitName(newStorageUnitName));
+		
+		rootStorageUnits.remove(storageUnitName);
+		rootStorageUnits.add(new StorageUnit(newStorageUnitName));
+	}
 }

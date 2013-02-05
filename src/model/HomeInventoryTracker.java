@@ -196,13 +196,31 @@ public class HomeInventoryTracker implements Serializable {
 		return storageUnitManager.isValidStorageUnitName(storageUnitName);
 	}
 
+	/**
+	 * Add a Storage Unit to the system with the specified name
+	 * @param storageUnitName Name of the Storage Unit to create
+	 * 
+	 * @pre canAddStorageUnit(storageUnitName)
+	 * @post true
+	 */
 	public void addStorageUnit(String storageUnitName) {
+		assert(canAddStorageUnit(storageUnitName));
+		
 		storageUnitManager.add(storageUnitName);
 	}
 
+	/**
+	 * Rename a Storage Unit
+	 * @param storageUnitName Name of the Storage Unit to rename
+	 * @param newStorageUnitName New name to be given to Storage Unit
+	 * 
+	 * @pre canAddStorageUnit(newStorageUnitName)
+	 * @post true
+	 */
 	public void renameStorageUnit(String storageUnitName, String newStorageUnitName) {
-		// TODO Auto-generated method stub
+		assert(canAddStorageUnit(newStorageUnitName));
 		
+		storageUnitManager.renameStorageUnit(storageUnitName, newStorageUnitName);
 	}
 
 	public Product getProductByBarcode(String barcodeScanned) {
