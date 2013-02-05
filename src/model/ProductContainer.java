@@ -391,12 +391,22 @@ public abstract class ProductContainer implements Comparable<ProductContainer>, 
 	 * 
 	 * @param o - the object to be compared to.
 	 * @returns True if the objects are equal, false otherwise.
-	 *  
-	 * @pre true
-	 * @post true
 	 * 
+	 * @pre o != null
+	 * @post true
 	 */
-	public abstract boolean equals(Object o);
+	public boolean equals(Object o) {
+		String otherName;
+		
+		if (o instanceof ProductContainer) {
+			otherName = ((ProductContainer) o).getName();
+		}
+		else {
+			otherName = o.toString();
+		}
+		
+		return getName().equals(otherName);
+	}
 	
 	/*
 	 * Method that initializes the ProductContainer's data structures.

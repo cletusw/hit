@@ -36,30 +36,4 @@ public class StorageUnit extends ProductContainer {
 		return (getProductGroup(pGroup.getName()) == null);
 	}
 
-	@Override
-	/** Equals override. Note that the object is explicitly
-	 *  cast as a ProductGroup object. 
-	 * 
-	 * @param o - the object to be compared to this one
-	 * 
-	 * @pre getName() != null
-	 * @pre o != null
-	 * @pre o instanceof StorageUnit
-	 * @post true
-	 * 
-	 */
-
-	public boolean equals(Object o) {
-		String otherName;
-		
-		if (o instanceof StorageUnit) {
-			otherName = ((StorageUnit) o).getName();
-		}
-		else {
-			otherName = o.toString();
-		}
-		
-		return getName().equals(otherName);
-	}
-
 }

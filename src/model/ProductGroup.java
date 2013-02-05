@@ -54,24 +54,6 @@ public class ProductGroup extends ProductContainer {
 		return total;
 	}
 	
-	@Override
-	/** Equals override. Note that the object is explicitly
-	 *  cast as a ProductGroup object. 
-	 * 
-	 * @param o - the object to be compared to this one
-	 * 
-	 * @pre o != null
-	 * @pre o instanceof ProductGroup
-	 * @pre getName() != null
-	 * @post true
-	 * 
-	 */
-	public boolean equals(Object o) {
-		ProductGroup pg = (ProductGroup) o;
-		
-		return getName().equals(pg.getName());
-	}
-	
 	/** Attribute getter - threeMonthSupply
 	 * 
 	 * @return ProductQuantity - the three-month supply
