@@ -21,6 +21,21 @@ public class Item implements Comparable<Object>, Serializable {
 	private Date exitTime;
 	private ProductContainer container;
 	
+	/** Constructs a new Item with the specified data.
+	 * 
+	 * @param product This Item's Product
+	 * @param entryDate The date this Item was entered into the system
+	 * @param container The ProductContainer this Item is to be stored in
+	 * @param manager The ItemManager to optimize accesses to this item
+	 * 
+	 * @pre true
+	 * @post true
+	 * 
+	 */
+	public Item(Product product, Date entryDate, ProductContainer container, ItemManager manager) {
+		this(new Barcode(), product, container, entryDate, manager);
+	}
+	
 	/** Constructs a new Item with the specified barcode, product, and container. Sets entryDate to now.
 	 * @param barcode the Item's barcode
 	 * @param product this Item's corresponding Product
@@ -162,8 +177,8 @@ public class Item implements Comparable<Object>, Serializable {
 	// private setters
 	private void setEntryDate(Date date) {
 		// From the Data Dictionary:
-		// Must be non-empty.  Cannot be in the 
-		// future or prior to 1/1/2000.
+		// Mustï¿½beï¿½non-empty.ï¿½ï¿½Cannotï¿½beï¿½inï¿½theï¿½
+		// futureï¿½orï¿½priorï¿½toï¿½1/1/2000.
 		if(date == null){
 			this.entryDate = new Date();
 			return;
