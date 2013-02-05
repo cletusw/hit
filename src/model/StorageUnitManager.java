@@ -38,14 +38,20 @@ public class StorageUnitManager implements Serializable {
 	 *  @post true
 	 */
 	public void add(String storageUnitName) {
+		assert(isValidStorageUnitName(storageUnitName));
+		
 		rootStorageUnits.add(new StorageUnit(storageUnitName));
 	}
 	
 	/** Removes a given Product from all Storage Units.
 	 * 
-	 * @param product		the Product to remove
+	 * @param product The Product to remove
+	 * 
+	 * @pre product.canRemove()
 	 */
 	public void remove(Product product) {
+		assert(product.canRemove());
+		
 		for (StorageUnit storageUnit : rootStorageUnits) {
 			storageUnit.remove(product);
 		}
