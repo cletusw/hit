@@ -167,6 +167,10 @@ public class Item implements Comparable<Object>, Serializable {
 	/** Compares this Item to another object
 	 * @param o the object to compare this Item to
 	 * @return zero if the items are equal, otherwise a number greater than or less than zero
+	 * 
+	 * @pre o != null
+	 * @pre (o instanceof Item)
+	 * @post true
 	 */
 	public int compareTo(Object o) {
 		Item other = (Item) o;

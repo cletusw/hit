@@ -2,9 +2,9 @@ package model;
 
 /** Wrapper class to guarantee a string is not null and not empty
  * 
- * @author Matthew
- * @invariant string != null
- * @invariant !string.isEmpty()
+ * @author Matthew Matheson
+ * @invariant value != null
+ * @invariant !value.isEmpty()
  */
 public class NonNullString {
 	protected String value;
