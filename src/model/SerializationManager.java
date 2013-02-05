@@ -21,11 +21,13 @@ public class SerializationManager implements PersistentStorageManager {
 	 * @pre true
 	 * @post true
 	 */
-	public static HomeInventoryTracker create() {
+	public static HomeInventoryTracker create(String filename) {
+		String target = assignTargetFilename(filename);
+		
 		HomeInventoryTracker tracker;
 		PersistentStorageManager persistentStorageManager = new SerializationManager();
 		try {
-			tracker = persistentStorageManager.readObject();
+			tracker = persistentStorageManager.readObject(target);
 		}
 		catch(IOException e) {
 			tracker = new HomeInventoryTracker();
@@ -38,10 +40,12 @@ public class SerializationManager implements PersistentStorageManager {
 	 * @pre true
 	 * @post true
 	 */
-	public HomeInventoryTracker readObject() throws IOException {
+	public HomeInventoryTracker readObject(String filename) throws IOException {
+		String target = assignTargetFilename(filename);
+		
 		HomeInventoryTracker hit;
 		try {
-			FileInputStream fileInputStream = new FileInputStream(defaultSerializedFileName);
+			FileInputStream fileInputStream = new FileInputStream(target);
 			ObjectInputStream objectReader = new ObjectInputStream(fileInputStream);
 			hit = (HomeInventoryTracker) objectReader.readObject();
 			objectReader.close();
@@ -61,17 +65,24 @@ public class SerializationManager implements PersistentStorageManager {
 	 */
 	public void writeObject(HomeInventoryTracker hit,String filename) throws IOException {
 		assert(hit != null);
-		String target = null;
-		if(filename == null || filename.equals(""))
-			target = defaultSerializedFileName;
-		else
-			target = filename;
 		
+		String target = assignTargetFilename(filename);
+
 		FileOutputStream fileOutputStream = new FileOutputStream(target);
 		ObjectOutputStream objectWriter = new ObjectOutputStream(fileOutputStream);
 		
 		objectWriter.writeObject(hit);
 		objectWriter.flush();
 		objectWriter.close();
+	}
+	
+	private static String assignTargetFilename(String filename) {
+		String target = null;
+		if(filename == null || filename.equals(""))
+			target = defaultSerializedFileName;
+		else
+			target = filename;
+		
+		return target;
 	}
 }

@@ -18,8 +18,9 @@ public interface PersistentStorageManager {
 	
 	/**
 	 * Reads a HomeInventoryTracker from persistent storage.
+	 * @param filename The filename of the file to read.
 	 * @return an instance of the HomeInventoryTracker class
 	 * @throws IOException if the read failed.
 	 */
-	public HomeInventoryTracker readObject() throws IOException;
+	public HomeInventoryTracker readObject(String filename) throws IOException;
 }
