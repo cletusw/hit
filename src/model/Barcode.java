@@ -1,5 +1,7 @@
 package model;
 
+import java.util.Date;
+
 /** Barcode class -- represents a product barcode.
  * 
  *  @author Matt Hess
@@ -26,13 +28,14 @@ public class Barcode extends NonNullString{
 			throw new IllegalArgumentException("Invalid barcode: " + s);
 	}
 
-	/** Default constructor -- shouldn't be used.
+	/** Default constructor - generates a new, unique UPC-A barcode
 	 * 
 	 * @pre true
-	 * @post true
+	 * @post getValue() != null
 	 */
-	protected Barcode() {
-		throw new IllegalArgumentException("Invalid barcode: no string passed");
+	public Barcode() {
+		// TODO: Don't just use timestamp
+		super(Long.toString((new Date()).getTime()));
 	}
 
 	/** Returns the string value of the barcode. 
