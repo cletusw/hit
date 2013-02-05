@@ -59,9 +59,15 @@ public class SerializationManager implements PersistentStorageManager {
 	 * @pre hit != null
 	 * @post true
 	 */
-	public void writeObject(HomeInventoryTracker hit) throws IOException {
+	public void writeObject(HomeInventoryTracker hit,String filename) throws IOException {
 		assert(hit != null);
-		FileOutputStream fileOutputStream = new FileOutputStream(defaultSerializedFileName);
+		String target = null;
+		if(filename == null || filename.equals(""))
+			target = defaultSerializedFileName;
+		else
+			target = filename;
+		
+		FileOutputStream fileOutputStream = new FileOutputStream(target);
 		ObjectOutputStream objectWriter = new ObjectOutputStream(fileOutputStream);
 		
 		objectWriter.writeObject(hit);

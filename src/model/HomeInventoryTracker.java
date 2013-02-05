@@ -35,13 +35,17 @@ public class HomeInventoryTracker implements Serializable {
 	
 	/**
 	 * Writes this instance of HomeInventoryTracker to persistent storage.
+	 * 
+	 * @param filename The filename to write to.
 	 * @throws IOException if the write failed.
-	 * @pre true
-	 * @post true
+	 * 
+	 * @pre filename != null
+	 * @pre !filename.equals("")
+	 * @post File f(filename).exists()
 	 */
-	public void write() throws IOException {
+	public void write(String filename) throws IOException {
 		PersistentStorageManager persistentStorageManager = new SerializationManager();
-		persistentStorageManager.writeObject(this);
+		persistentStorageManager.writeObject(this,filename);
 	}
 	
 	/** Determines whether the specified Storage Unit name is valid for adding a new Storage Unit.

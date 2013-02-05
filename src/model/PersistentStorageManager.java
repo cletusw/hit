@@ -11,9 +11,10 @@ public interface PersistentStorageManager {
 	/**
 	 * Writes the specified HomeInventoryTracker to persistent storage.
 	 * @param hit the instance of HomeInventoryTracker to store
+	 * @param filename the String filename to write to
 	 * @throw IOException if the write failed.
 	 */
-	public void writeObject(HomeInventoryTracker hit) throws IOException;
+	public void writeObject(HomeInventoryTracker hit,String filename) throws IOException;
 	
 	/**
 	 * Reads a HomeInventoryTracker from persistent storage.
