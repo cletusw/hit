@@ -33,7 +33,7 @@ public class HomeInventoryTrackerTest {
 			String description = "description " + 1;
 			int shelfLife = 1;
 			int threeMonthSupply = 1;
-			ProductQuantity productQuantity = new ProductQuantity(0, Unit.COUNT);
+			ProductQuantity productQuantity = new ProductQuantity(1, Unit.COUNT);
 			product = tracker.createProduct(barcodeScanned, description, shelfLife, threeMonthSupply, productQuantity);
 		}
 		
