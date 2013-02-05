@@ -151,7 +151,6 @@ public class ProductTest {
 		Date createDate = product.getCreationDate();
 		Date today = new Date();
 		
-		// TODO: Remove deprecated getters??
 		assertTrue(createDate.getYear() == today.getYear());
 		assertTrue(createDate.getMonth() == today.getMonth());
 		assertTrue(createDate.getDate() == today.getDate());
