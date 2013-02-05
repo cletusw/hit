@@ -182,8 +182,8 @@ public class Item implements Comparable<Object>, Serializable {
 	@SuppressWarnings("deprecation")
 	private void setEntryDate(Date date) {
 		// From the Data Dictionary:
-		// Must�be�non-empty.��Cannot�be�in�the�
-		// future�or�prior�to�1/1/2000.
+		// Must be non-empty. Cannot be in the
+		// future or prior to 1/1/2000.
 		if(date == null){
 			this.entryDate = new Date();
 			return;

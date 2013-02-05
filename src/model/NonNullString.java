@@ -41,13 +41,19 @@ public class NonNullString implements Serializable {
 
 	/**Compare this not-null string to another using String.compareTo(String other)
 	 * 
-	 * @param other NotNullString to compare
+	 * @param other NotNullString to compare, or String
 	 * @return the value 0 if the argument string is equal to this string; 
 	 * a value less than 0 if this string is lexicographically less than 
 	 * the string argument; and a value greater than 0 if this string is 
 	 * lexicographically greater than the string argument.
 	 */
-	public int compareTo(NonNullString other) {
-		return value.compareTo(other.getValue());
+	public int compareTo(Object other) {
+		if(other instanceof NonNullString){
+			return this.value.compareTo(((NonNullString) other).getValue());
+		}
+		else if(other instanceof String){
+			return this.value.compareTo((String)other);
+		}
+		return -1;
 	}
 }
