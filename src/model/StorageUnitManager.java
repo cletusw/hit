@@ -1,19 +1,19 @@
 package model;
 
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.Collection;
+import java.util.TreeSet;
+import java.util.Set;
 import java.util.Iterator;
 
 @SuppressWarnings("serial")
 public class StorageUnitManager implements Serializable {
-	private Collection<StorageUnit> rootStorageUnits;
-	
+	private Set<StorageUnit> rootStorageUnits;
+
 	/** Constructor
 	 * 
 	 */
 	public StorageUnitManager() {
-		rootStorageUnits = new ArrayList<StorageUnit>();	
+		rootStorageUnits = new TreeSet<StorageUnit>();	
 	}
 	
 	/** Determines whether the specified Storage Unit name is valid for adding a new Storage Unit.
