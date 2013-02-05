@@ -44,7 +44,7 @@ public class ItemTest {
 	}
 
 	/**
-	 * Test method for {@link model.Item#Item(java.lang.String, model.Product, model.ProductContainer)}.
+	 * Test method for {@link model.Item#Item(model.Barcode, model.Product, model.ProductContainer, Date entryDate, ItemManager itemManager)}.
 	 */
 	@Test
 	public void testItem() {
@@ -64,48 +64,58 @@ public class ItemTest {
 		assertTrue(entry.getDate() == entryDateLastMonth.getDate());
 		assertTrue(entry.getHours() == entryDateLastMonth.getHours());
 		assertTrue(entry.getMinutes() == entryDateLastMonth.getMinutes());
+		
+		assertTrue(expiration.getYear() == entryDateLastMonth.getYear());
+		assertTrue(expiration.getMonth() == entryDateLastMonth.getMonth() + product.getShelfLife());
+		assertTrue(expiration.getDate() == entryDateLastMonth.getDate());
+		assertTrue(expiration.getHours() == entryDateLastMonth.getHours());
+		assertTrue(expiration.getMinutes() == entryDateLastMonth.getMinutes());
 	}
-
+	
 	/**
-	 * Test method for {@link model.Item#setProduct(model.Product)}.
-	 *
+	 * Test method for {@link model.Item#Item(model.Product, model.ProductContainer, ItemManager itemManager)}.
+	 */
 	@Test
-	public void testSetProduct() {
-		Product newProduct = new Product("newBarcode", "newDescription", productManager);
-		item.setProduct(newProduct);
-		assertTrue(item.getProduct().compareTo(newProduct) == 0);
-		assertFalse(item.getProduct().compareTo(product) == 0);
-	}
-	*/
+	public void testItemNoDateNoBarcode() {
+		item = new Item(product, productGroup, itemManager);
+		assertTrue(!item.getBarcode().equals(validUPCABarcode));
+		assertTrue(item.getProduct().compareTo(product) == 0);
+		assertTrue(item.getContainer().equals(productGroup));
+		
+		assertTrue(item.getExitTime() == null);
+		
+		Date expiration = item.getExpirationDate();
+		Date entry = item.getEntryDate();
+		assertTrue(expiration != null);
+		assertTrue(entry != null);
+		
+		assertTrue(entry.after(entryDateLastMonth));
 
+		assertTrue(expiration.getYear() == entry.getYear());
+		assertTrue(expiration.getMonth() == entry.getMonth() + product.getShelfLife());
+		assertTrue(expiration.getDate() == entry.getDate());
+		assertTrue(expiration.getHours() == entry.getHours());
+		assertTrue(expiration.getMinutes() == entry.getMinutes());
+	}
+	
 	/**
-	 * Test method for {@link model.Item#setEntryDate(java.util.Date)}.
-	 *
-	@SuppressWarnings("deprecation")
+	 * Test method for {@link model.Item#Item(java.lang.String, model.Product, model.ProductContainer)}.
+	 */
 	@Test
-	public void testSetEntryDate() {
-		Date entryDate = new Date(110, 10, 15, 12, 45, 45);
-		item.setEntryDate(entryDate);
-		assertTrue(item.getEntryDate().equals(entryDate));
+	public void testItemInvalidBarcode() {
+		item = new Item(validUPCABarcode, product, productGroup, entryDateLastMonth, itemManager);
 	}
-	*/
 
 	/**
-	 * Test method for {@link model.Item#setEntryDate(java.util.Date)}.
-	 *
-	@SuppressWarnings("deprecation")
-	@Test (expected=IllegalArgumentException.class)
-	public void testSetBadEntryDate() {
-		item.setEntryDate(new Date(115, 10, 15, 12, 45, 45));
-	}
-	*/
-
-	/**
-	 * Test method for {@link model.Item#setExitTime(java.util.Date)}.
+	 * Test method for {@link model.Item#remove()}.
 	 */
 	@Test
 	public void testRemove() {
 		Date exitTime = new Date();
+		item.remove();
+		assertTrue(item.getContainer() == null);
+		assertTrue(item.getExitTime().equals(exitTime));
+
 		item.remove();
 		assertTrue(item.getContainer() == null);
 		assertTrue(item.getExitTime().equals(exitTime));

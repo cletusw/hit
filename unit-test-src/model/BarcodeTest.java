@@ -55,5 +55,4 @@ public class BarcodeTest {
 	public void TestBarcodeConstructor(){
 		new Barcode();
 	}
-
 }

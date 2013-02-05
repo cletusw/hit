@@ -24,6 +24,20 @@ public class Item implements Comparable<Object>, Serializable {
 	/** Constructs a new Item with the specified data.
 	 * 
 	 * @param product This Item's Product
+	 * @param container The ProductContainer this Item is to be stored in
+	 * @param manager The ItemManager to optimize accesses to this item
+	 * 
+	 * @pre true
+	 * @post true
+	 * 
+	 */
+	public Item(Product product, ProductContainer container, ItemManager manager) {
+		this(new Barcode(), product, container, new Date(), manager);
+	}
+	
+	/** Constructs a new Item with the specified data.
+	 * 
+	 * @param product This Item's Product
 	 * @param entryDate The date this Item was entered into the system
 	 * @param container The ProductContainer this Item is to be stored in
 	 * @param manager The ItemManager to optimize accesses to this item
