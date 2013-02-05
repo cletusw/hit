@@ -29,7 +29,7 @@ public class StorageUnitManager implements Serializable {
 			return false;
 		
 		// From the Data Dictionary: Must be non-empty. Must be unique among all Storage Units.
-		return !name.equals("") && !rootStorageUnits.contains(new StorageUnit(name, Unit.COUNT));
+		return !name.equals("") && !rootStorageUnits.contains(name);
 	}
 	
 	/** Removes a given Product from all Storage Units.

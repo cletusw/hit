@@ -1,5 +1,7 @@
 package model;
 
+import java.util.Iterator;
+
 /** Product Group class. Inherits from ProductContainer.
  * 
  *  @author - Matt Hess
@@ -11,6 +13,7 @@ package model;
 public class ProductGroup extends ProductContainer {
 	private ProductQuantity threeMonthSupply;
 	private ProductContainer container;
+	private Unit groupUnit;
 	
 	/** Constructor
 	 * 
@@ -21,10 +24,34 @@ public class ProductGroup extends ProductContainer {
 	 * @post true
 	 * 
 	 */
-	public ProductGroup(String pcName,ProductQuantity tmSupply,Unit groupUnit) {
-		super(pcName,groupUnit);
+	public ProductGroup(String pcName, ProductQuantity tmSupply, Unit groupUnit) {
+		super(pcName);
 		
 		threeMonthSupply = tmSupply;
+		this.groupUnit = groupUnit;
+	}
+	
+	/** Method that calculates and returns the amount of a product group in this container.
+	 * 
+	 * @return ProductQuantity - the current supply of this container
+	 * 
+	 * @pre true
+	 * @post true
+	 * 
+	 */
+	public ProductQuantity getCurrentSupply() {
+		Iterator<Product> it = getProductsIterator();
+		ProductQuantity total = new ProductQuantity(0, groupUnit);
+		while(it.hasNext()) {
+			try {
+				ProductQuantity pSupply = getCurrentSupply(it.next());
+				total.add(pSupply);
+			} catch(IllegalArgumentException e) {
+				continue;
+			}
+		}
+		
+		return total;
 	}
 	
 	@Override

@@ -24,7 +24,6 @@ import java.util.Set;
 @SuppressWarnings("serial")
 public abstract class ProductContainer implements Comparable<ProductContainer>, Serializable {
 	protected String name;
-	private Unit unit;
 
 	// Data Structures
 	private Collection<Item> items;
@@ -35,20 +34,18 @@ public abstract class ProductContainer implements Comparable<ProductContainer>, 
 	
 	/** Constructor 
 	 * 
-	 * @param pcName - the name of the Product Container
-	 * @param unit - Unit for summing in this Product Container.
+	 * @param name - the name of the Product Container
 	 *   
 	 * @pre name != null
 	 * @pre !name.equals("")
 	 * @post true
 	 * 
 	 */
-	public ProductContainer(String name,Unit unit) {
-		if(name == null || unit == null)
+	public ProductContainer(String name) {
+		if(name == null)
 			throw new IllegalArgumentException("ProductContainer constructor parameter(s) is invalid.");
 		
 		this.name = name;
-		this.unit = unit;
 		
 		createDataStructures();
 		productsToItems = new TreeMap<Product, Set<Item>>();
@@ -64,18 +61,6 @@ public abstract class ProductContainer implements Comparable<ProductContainer>, 
 	 */
 	public String getName() {
 		return name;
-	}
-	
-	/** Attribute getter - unit
-	 * 
-	 * @return The Unit of the ProductContainer
-	 * 
-	 * @pre true
-	 * @post true
-	 * 
-	 */
-	public Unit getUnit() {
-		return unit;
 	}
 	
 	/** Gets the size of the items collection.
@@ -112,6 +97,18 @@ public abstract class ProductContainer implements Comparable<ProductContainer>, 
 	 */
 	public int getPGroupsSize() {
 		return pGroups.size();
+	}
+	
+	/** Gets an iterator over this Container's Products
+	 * 
+	 * @return Iterator<Product> this Container's Products iterator
+	 * 
+	 * @pre true
+	 * @post true
+	 * 
+	 */
+	public Iterator<Product> getProductsIterator() {
+		return products.iterator();
 	}
 	
 	/** Finds and returns the requested Item object(s)
@@ -185,29 +182,6 @@ public abstract class ProductContainer implements Comparable<ProductContainer>, 
 		
 		// add product quantity of items in this container
 		total.add(new ProductQuantity(getItems(p.getBarcode()).size() * pSize.getQuantity(),pSize.getUnits()));
-		
-		return total;
-	}
-	
-	/** Method that calculates and returns the amount of a product group in this container.
-	 * 
-	 * @return ProductQuantity - the current supply of this container
-	 * 
-	 * @pre true
-	 * @post true
-	 * 
-	 */
-	public ProductQuantity getCurrentSupply() {
-		Iterator<Product> it = products.iterator();
-		ProductQuantity total = new ProductQuantity(0,unit);
-		while(it.hasNext()) {
-			try {
-				ProductQuantity pSupply = getCurrentSupply(it.next());
-				total.add(pSupply);
-			} catch(IllegalArgumentException e) {
-				continue;
-			}
-		}
 		
 		return total;
 	}
