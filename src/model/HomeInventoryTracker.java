@@ -17,19 +17,19 @@ import java.io.*;
  */
 @SuppressWarnings("serial")
 public class HomeInventoryTracker implements Serializable {
-	private Collection<StorageUnit> rootStorageUnits;
 	private ItemManager itemManager;
 	private ProductManager productManager;
+	private StorageUnitManager storageUnitManager;
 	
 	/** Initializes the HomeInventoryTracker. 
 	 * @pre true
-	 * @post removedItems.size() == 0
-	 * @post rootStorageUnits.size() == 0
+	 * @post itemManager != null
+	 * @post productManager != null
 	 */
 	public HomeInventoryTracker() {
-		rootStorageUnits = new ArrayList<StorageUnit>();
 		itemManager = new ConcreteItemManager();
 		productManager = new ConcreteProductManager();
+		storageUnitManager = new StorageUnitManager();
 	}
 	
 	/**
@@ -52,19 +52,7 @@ public class HomeInventoryTracker implements Serializable {
 	 * @post true
 	 */
 	public boolean isValidStorageUnitName(String name) {
-		// From the Data Dictionary: Must be non-empty. Must be unique among all Storage Units.
-		
-		if(name == null || name.equals(""))
-			return false;
-		
-		Iterator<StorageUnit> it = rootStorageUnits.iterator();
-		while(it.hasNext()) {
-			String suName = it.next().getName();
-			if(name.equals(suName))
-				return false;
-		}
-
-		return true;
+		return storageUnitManager.isValidStorageUnitName(name);
 	}
 	
 	/** Adds the identified Item to a given ProductContainer
@@ -85,7 +73,7 @@ public class HomeInventoryTracker implements Serializable {
 	 * @pre item != null && container != null
 	 * @post !containsItem(item)
 	 */
-	public void remove(Item item, ProductContainer container) {
+	public void remove(Item item, ProductContainer container) throws IllegalStateException {
 		container.remove(item, itemManager);
 	}
 	
@@ -117,22 +105,18 @@ public class HomeInventoryTracker implements Serializable {
 		if (!canRemove(product))
 			throw new IllegalStateException("Cannot remove product from the system; it still has items that refer to it");
 		productManager.unmanage(product);
-		for (StorageUnit storageUnit:rootStorageUnits) {
-			storageUnit.remove(product);
-		}
+		storageUnitManager.remove(product);
 	}
 	
-	/** Deletes the identified Product from the home inventory system.
-	 * @param product		The Product to be deleted
+	/** Removes the identified Product from the specified ProductContainer
+	 * @param product		The Product to be removed
+	 * @param container		The ProductContainer to remove the Product from
 	 * 
 	 * @pre product != null
 	 * @post !contains(product)
 	 */
 	public void removeFromContainer(Product product, ProductContainer container) throws IllegalStateException {
-		if (!canRemove(product))
-			throw new IllegalStateException("Cannot remove product from the system; it still has items that refer to it");
-		//TODO
-		//productManager.remove(product);
+		container.remove(product);
 	}
 	
 	/**
@@ -162,30 +146,30 @@ public class HomeInventoryTracker implements Serializable {
 	}
 	
 	/** Adds the identified Product to a given ProductContainer
-	 * @param source			The ProductContainer to add the Product to
+	 * @param container			The ProductContainer to add the Product to
 	 * @param product			The Product to be added
 	 * @return					true if the item was added to the container, false otherwise.
 	 * 
-	 * @pre source != null && product != null
-	 * @post source.contains(product)
+	 * @pre container != null
+	 * @pre product != null
+	 * @post container.contains(product)
 	 */
-	public boolean addProductToContainer(ProductContainer source, Product product) {
-		assert(source != null);
+	public void addProductToContainer(Product product, ProductContainer container) {
+		assert(container != null);
 		assert(product != null);
-		// @TODO: Implement me!
-		return false;
+		container.add(product);
 	}
 	
 	/**
-	 * Removes the specified ProductContainer.
+	 * Removes the specified ProductContainer from the system.
 	 * @param container		The ProductContainer to remove
 	 * @pre container != null
 	 * @post !contains(container)
 	 */
 	public void remove(ProductContainer container) {
-	
+		storageUnitManager.remove(container);
 	}
-	
+
 	/**
 	 * Determines whether the specified ProductContainer can be removed.
 	 * @param container		The ProductContainer to test

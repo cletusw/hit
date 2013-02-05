@@ -20,8 +20,8 @@ import java.util.Set;
  * @invariant pGroups != null
  * 
  */
-public abstract class ProductContainer {
-	private String name;
+public abstract class ProductContainer implements Comparable<ProductContainer> {
+	protected String name;
 	private Unit unit;
 
 	// Data Structures
@@ -154,7 +154,8 @@ public abstract class ProductContainer {
 	public ProductGroup getProductGroup(String pgToFind) {
 		return traverseProductGroups(pgToFind);
 	}
-		
+
+
 	/** Method that calculates and returns the amount of a product in this container.
 	 * 
 	 * @param p - the Product to be found
@@ -311,6 +312,24 @@ public abstract class ProductContainer {
 		return items.contains(item);
 	}
 
+	/** Removes a specified ProductContainer from this container and its children.
+	 * 
+	 * @param container 		The ProductContainer to remove
+	 * 
+	 * @pre container != null
+	 * @post !contains(container)
+	 */
+	public void remove(ProductContainer container) {
+		assert (container != null);
+		
+		for (ProductGroup child : pGroups) {
+			if (child.equals(container)) {
+				pGroups.remove(child);
+				return;
+			}
+		}
+	}
+	
 	/** Method that removes a Product object from the collection.
 	 * 
 	 * @param barcode - the String barcode of the Product object to be removed from the collection
@@ -481,5 +500,18 @@ public abstract class ProductContainer {
 		}
 		
 		return null;
+	}
+	
+	/** Compares this ProductContainer to another
+	 * 
+	 * @param su
+	 * @return		0 if equal, some other integer representing the comparison otherwise
+	 * @pre pc != null
+	 * @post true
+	 */
+	@Override
+	public int compareTo(ProductContainer pc) {
+		assert(pc != null);
+		return name.compareTo(pc.name);
 	}
 }
