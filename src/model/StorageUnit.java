@@ -19,8 +19,8 @@ public class StorageUnit extends ProductContainer {
 	 * @post true
 	 * 
 	 */
-	public StorageUnit(String pcName,Unit unit) {
-		super(pcName,unit);
+	public StorageUnit(String pcName, Unit unit) {
+		super(pcName, unit);
 	}
 	
 	/** Determines whether or not the specified Product Group can be added to this Storage Unit.
@@ -52,5 +52,7 @@ public class StorageUnit extends ProductContainer {
 		StorageUnit sUnit = (StorageUnit) o;
 		
 		return getName().equals(sUnit.getName());
+	
 	}
+
 }
