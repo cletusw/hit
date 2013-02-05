@@ -107,9 +107,9 @@ public class ProductTest {
 	 */
 	@Test
 	public void testIsValidThreeMonthSupply() {
-		assertTrue(product.isValidThreeMonthSupply(0));
-		assertTrue(product.isValidThreeMonthSupply(10));
-		assertFalse(product.isValidThreeMonthSupply(-1));
+		assertTrue(Product.isValidThreeMonthSupply(0));
+		assertTrue(Product.isValidThreeMonthSupply(10));
+		assertFalse(Product.isValidThreeMonthSupply(-1));
 	}
 
 	/**

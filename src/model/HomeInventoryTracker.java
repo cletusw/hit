@@ -1,10 +1,6 @@
 package model;
 
-import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Date;
-import java.util.Iterator;
-import java.util.TreeSet;
 import java.io.*;
 
 /** HomeInventoryTracker: Home Inventory Tracker (HIT) is a system for tracking home storage inventories. 

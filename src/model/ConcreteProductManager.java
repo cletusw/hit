@@ -10,6 +10,7 @@ import java.util.Collection;
  * @author Clayton Watts
  *
  */
+@SuppressWarnings("serial")
 public class ConcreteProductManager implements ProductManager, Serializable {
 	private Collection<Product> products;
 	private Map<String, Product> barcodesToProducts;

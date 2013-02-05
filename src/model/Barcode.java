@@ -9,6 +9,7 @@ import java.util.Date;
  *  
  *  @invariant barcode.length() == 12
  */
+@SuppressWarnings("serial")
 public class Barcode extends NonNullString{
 
 	/** Constructor

@@ -8,6 +8,7 @@ package model;
  *  @invariant 
  */
 
+@SuppressWarnings("serial")
 public class StorageUnit extends ProductContainer {
 	
 	/** Constructor

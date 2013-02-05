@@ -8,6 +8,7 @@ import java.io.Serializable;
  * @invariant value != null
  * @invariant !value.isEmpty()
  */
+@SuppressWarnings("serial")
 public class NonNullString implements Serializable {
 	protected String value;
 	

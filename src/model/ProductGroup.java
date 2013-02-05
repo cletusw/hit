@@ -1,7 +1,5 @@
 package model;
 
-import java.io.Serializable;
-
 /** Product Group class. Inherits from ProductContainer.
  * 
  *  @author - Matt Hess
@@ -9,6 +7,7 @@ import java.io.Serializable;
  *  
  *  @invariant container != null
  */
+@SuppressWarnings("serial")
 public class ProductGroup extends ProductContainer {
 	private ProductQuantity threeMonthSupply;
 	private ProductContainer container;
@@ -79,9 +78,9 @@ public class ProductGroup extends ProductContainer {
 	 */
 	public void setContainer(ProductContainer container) {
 		// From the Data Dictionary: 
-		// Must be non-empty.  A Product Group is 
-		// always contained within one Product 
-		// Container. 
+		// Mustï¿½beï¿½non-empty.ï¿½ï¿½Aï¿½Productï¿½Groupï¿½isï¿½
+		// alwaysï¿½containedï¿½withinï¿½oneï¿½Productï¿½
+		// Container.ï¿½
 		this.container = container;
 	}
 	
@@ -107,10 +106,10 @@ public class ProductGroup extends ProductContainer {
 	 */
 	public boolean isValidThreeMonthSupply(ProductQuantity threeMonthSupply) {
 		// From the Data Dictionary:
-		// The magnitude can be any non-negative float value.  Zero means "unspecified".  
-		// The unit of measurement can be any of the following: count, pounds, ounces, 
-		// grams, kilograms, gallons, quarts, pints, fluid ounces, liters.  If the unit of 
-		// measurement is “count”, the magnitude must be an integer (i.e., no fraction). 
+		// Theï¿½magnitudeï¿½canï¿½beï¿½anyï¿½non-negativeï¿½floatï¿½value.ï¿½ï¿½Zeroï¿½meansï¿½"unspecified".ï¿½ï¿½
+		// Theï¿½unitï¿½ofï¿½measurementï¿½canï¿½beï¿½anyï¿½ofï¿½theï¿½following:ï¿½count,ï¿½pounds,ï¿½ounces,ï¿½
+		// grams,ï¿½kilograms,ï¿½gallons,ï¿½quarts,ï¿½pints,ï¿½fluidï¿½ounces,ï¿½liters.ï¿½ï¿½Ifï¿½theï¿½unitï¿½ofï¿½
+		// measurementï¿½isï¿½ï¿½countï¿½,ï¿½theï¿½magnitudeï¿½mustï¿½beï¿½anï¿½integerï¿½(i.e.,ï¿½noï¿½fraction).ï¿½
 		return ProductQuantity.isValidProductQuantity(threeMonthSupply.getQuantity(),threeMonthSupply.getUnits());
 	}
 }

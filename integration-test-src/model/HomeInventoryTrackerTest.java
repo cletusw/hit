@@ -39,6 +39,8 @@ public class HomeInventoryTrackerTest {
 		
 		Date entryDate = new Date();
 		tracker.addItem(product, entryDate, newStorageUnitName);
+		
+		assertTrue(true);
 	}
 
 }

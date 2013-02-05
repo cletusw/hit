@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
 
+@SuppressWarnings("serial")
 public class StorageUnitManager implements Serializable {
 	private Collection<StorageUnit> rootStorageUnits;
 	

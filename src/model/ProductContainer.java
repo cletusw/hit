@@ -21,6 +21,7 @@ import java.util.Set;
  * @invariant pGroups != null
  * 
  */
+@SuppressWarnings("serial")
 public abstract class ProductContainer implements Comparable<ProductContainer>, Serializable {
 	protected String name;
 	private Unit unit;
@@ -267,8 +268,8 @@ public abstract class ProductContainer implements Comparable<ProductContainer>, 
 	 */
 	public boolean canAddProductGroup(ProductGroup pg) {
 		// From the Data Dictionary:
-		// Must be non-empty and unique within 
-		// the parent Product Container. 
+		// Mustï¿½beï¿½non-emptyï¿½andï¿½uniqueï¿½withinï¿½
+		// theï¿½parentï¿½Productï¿½Container.ï¿½
 
 		return (traverseProductGroups(pg.getName()) == null);
 	}

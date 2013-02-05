@@ -15,6 +15,7 @@ import org.junit.Test;
  * @author Matthew
  *
  */
+@SuppressWarnings("deprecation")
 public class ItemTest {
 
 	private final Barcode validUPCABarcode = new Barcode("494180175762");
@@ -45,7 +46,6 @@ public class ItemTest {
 	/**
 	 * Test method for {@link model.Item#Item(java.lang.String, model.Product, model.ProductContainer)}.
 	 */
-	@SuppressWarnings("deprecation")
 	@Test
 	public void testItem() {
 		assertTrue(item.getBarcode().equals(validUPCABarcode));
@@ -54,7 +54,6 @@ public class ItemTest {
 		
 		assertTrue(item.getExitTime() == null);
 		
-		Date now = new Date();
 		Date expiration = item.getExpirationDate();
 		Date entry = item.getEntryDate();
 		assertTrue(expiration != null);

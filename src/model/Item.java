@@ -179,6 +179,7 @@ public class Item implements Comparable<Object>, Serializable {
 	
 	
 	// private setters
+	@SuppressWarnings("deprecation")
 	private void setEntryDate(Date date) {
 		// From the Data Dictionary:
 		// Must�be�non-empty.��Cannot�be�in�the�
@@ -194,12 +195,9 @@ public class Item implements Comparable<Object>, Serializable {
 		this.entryDate = date;
 	}
 	
+	@SuppressWarnings("deprecation")
 	private void setExpirationDate(){
 		Date d = this.entryDate;
 		this.expirationDate = new Date(d.getYear(), d.getMonth() + this.product.getShelfLife(), d.getDate(), d.getHours(), d.getMinutes(), d.getSeconds());
-	}
-	
-	private void setContainer(ProductContainer c) {
-		container = c;
 	}
 }

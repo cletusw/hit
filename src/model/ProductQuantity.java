@@ -10,6 +10,7 @@ import java.io.Serializable;
  * @invariant quantity >= 0.0
  * @invariant units != null
  */
+@SuppressWarnings("serial")
 public class ProductQuantity implements Serializable {
 
 	// Member variables

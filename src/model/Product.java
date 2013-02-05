@@ -177,6 +177,15 @@ public class Product implements Comparable<Object>, Serializable {
 	}
 	
 	/**
+	 * Add an Item to this Product's set of items.
+	 * 
+	 * @param item Item to add.
+	 */
+	public void addItem(Item item){
+		items.add(item);
+	}
+	
+	/**
 	 * Compare 2 Products to see if their barcodes are equal. Uses String.equals() on 
 	 * the product barcodes.
 	 * 
