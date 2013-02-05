@@ -2,11 +2,12 @@ package model;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Date;
 import java.util.Iterator;
 import java.util.TreeSet;
 import java.io.*;
 
-/** HomeInventoryTracker: Home Inventory Tracker (HIT) is a system for tracking home storage inventories. 
+/** HomeInventoryTracker: Home Inventory Tracker (HIT) is a system for tracking home storage inventories. 
  * @author Seth Stewart
  * @version 1.0 - Snell 340 Group 4 Phase 1
  * 
@@ -193,6 +194,31 @@ public class HomeInventoryTracker implements Serializable {
 	public boolean canAddStorageUnit(String storageUnitName) {
 		// Must be unique
 		return true;
+	}
+
+	public void addStorageUnit(String storageUnitName) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public void renameStorageUnit(String storageUnitName, String newStorageUnitName) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public Product getProductByBarcode(String barcodeScanned) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public Product createProduct(String barcode, String description, int shelfLife, int threeMonthSupply, ProductQuantity productQuantity) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public void addItem(Product product, Date entryDate, String newStorageUnitName) {
+		// TODO Auto-generated method stub
+		
 	}
 	
 }
