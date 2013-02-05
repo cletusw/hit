@@ -50,5 +50,10 @@ public class BarcodeTest {
 		assertEquals(Barcode.isValidBarcode("421322231000"),true);
 		assertEquals(Barcode.isValidBarcode("433211114523"),true);
 	}
+	
+	@Test
+	public void TestBarcodeConstructor(){
+		new Barcode();
+	}
 
 }

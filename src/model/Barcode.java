@@ -35,8 +35,35 @@ public class Barcode extends NonNullString{
 	 * @post getValue() != null
 	 */
 	public Barcode() {
-		// TODO: Don't just use timestamp
-		super(Long.toString((new Date()).getTime()));
+		this(generateBarcode());
+	}
+	
+	private static String generateBarcode(){
+		String code = String.valueOf((new Date()).getTime());
+		code = code.substring(3, code.length());
+		code = "4" + code;
+		
+		int oddDigits = 3 * (Character.getNumericValue(code.charAt(0)) + 
+				Character.getNumericValue(code.charAt(2)) + 
+				Character.getNumericValue(code.charAt(4)) + 
+				Character.getNumericValue(code.charAt(6)) + 
+				Character.getNumericValue(code.charAt(8)) + 
+				Character.getNumericValue(code.charAt(10)));
+		
+		int evenDigits = (Character.getNumericValue(code.charAt(1)) + 
+				Character.getNumericValue(code.charAt(3)) + 
+				Character.getNumericValue(code.charAt(5)) + 
+				Character.getNumericValue(code.charAt(7)) +
+				Character.getNumericValue(code.charAt(9)));
+		
+		int total = oddDigits + evenDigits;
+		total = total % 10;
+		int checkDigit = 10 - total;
+		code = code + checkDigit;
+		
+		if(isValidBarcode(String.valueOf(code)))
+			return String.valueOf(code);
+		throw new IllegalArgumentException("Unable to create valid barcode");
 	}
 
 	/** Returns the string value of the barcode. 
