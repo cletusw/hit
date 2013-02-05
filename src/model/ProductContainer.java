@@ -42,6 +42,9 @@ public abstract class ProductContainer {
 	 * 
 	 */
 	public ProductContainer(String name,Unit unit) {
+		if(name == null || unit == null)
+			throw new IllegalArgumentException("ProductContainer constructor parameter(s) is invalid.");
+		
 		this.name = name;
 		this.unit = unit;
 		
