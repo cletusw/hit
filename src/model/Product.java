@@ -1,8 +1,8 @@
 package model;
 
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Set;
+import java.util.TreeSet;
 
 import java.util.Date;
 
@@ -25,7 +25,8 @@ public class Product implements Comparable<Object>, Serializable {
 	private Date creationDate;
 	private int shelfLife;
 	private int threeMonthSupply;
-	private List<ProductContainer> productContainers;
+	private Set<ProductContainer> productContainers;
+	private Set<Item> items;
 	private ProductQuantity size;
 	
 	
@@ -48,7 +49,8 @@ public class Product implements Comparable<Object>, Serializable {
 		this.setCreationDate(creationDate);
 		this.setShelfLife(shelfLife);
 		this.setThreeMonthSupply(tms);
-		this.productContainers = new ArrayList<ProductContainer>();
+		this.productContainers = new TreeSet<ProductContainer>();
+		this.items = new TreeSet<Item>();
 		this.size = pq;
 		manager.manage(this);
 	}
@@ -166,15 +168,12 @@ public class Product implements Comparable<Object>, Serializable {
 	}
 	
 	/**
-	 * Tries to add a ProductContainer to this Products containers. If the
-	 * given ProductContainer is in the list already, it is not added. Adding
-	 * a ProductContainer 
+	 * Add a ProductContainer to this Product's set of containers.
 	 * 
 	 * @param pc ProductContainer to add.
 	 */
 	public void addContainer(ProductContainer pc){
-		if(!this.productContainers.contains(pc))
-			this.productContainers.add(pc);
+		this.productContainers.add(pc);
 	}
 	
 	/**
