@@ -2,6 +2,7 @@ package model;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Iterator;
 
 public class StorageUnitManager {
 	private Collection<StorageUnit> rootStorageUnits;
@@ -55,5 +56,15 @@ public class StorageUnitManager {
 		for (StorageUnit storageUnit : rootStorageUnits) {
 			storageUnit.remove(container);
 		}
+	}
+	
+	/** Returns an Iterator over the Storage Units.
+	 * @return an Iterator for accessing the root Storage Units
+	 * 
+	 *  @pre true
+	 *  @post true
+	 */
+	public Iterator<StorageUnit> getStorageUnitsIterator() {
+		return rootStorageUnits.iterator();
 	}
 }
