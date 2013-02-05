@@ -32,6 +32,15 @@ public class StorageUnitManager implements Serializable {
 		return !name.equals("") && !rootStorageUnits.contains(name);
 	}
 	
+	/** Creates a new StorageUnit and adds it to the system.
+	 * 
+	 *  @pre isValidStorageUnitName(storageUnitName)
+	 *  @post true
+	 */
+	public void add(String storageUnitName) {
+		rootStorageUnits.add(new StorageUnit(storageUnitName));
+	}
+	
 	/** Removes a given Product from all Storage Units.
 	 * 
 	 * @param product		the Product to remove

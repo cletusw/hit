@@ -188,17 +188,15 @@ public class HomeInventoryTracker implements Serializable {
 	 * @param storageUnitName	the name of the storage unit to test
 	 * @return	 				true if it can be added, false otherwise
 	 * 
-	 * @pre storageUnitName != null
+	 * @pre true
 	 * @post true
 	 */
 	public boolean canAddStorageUnit(String storageUnitName) {
-		// Must be unique
-		return true;
+		return storageUnitManager.isValidStorageUnitName(storageUnitName);
 	}
 
 	public void addStorageUnit(String storageUnitName) {
-		// TODO Auto-generated method stub
-		
+		storageUnitManager.add(storageUnitName);
 	}
 
 	public void renameStorageUnit(String storageUnitName, String newStorageUnitName) {
