@@ -1,6 +1,7 @@
 package model;
 
 import java.util.Date;
+import java.util.Random;
 
 /** Barcode class -- represents a product barcode.
  * 
@@ -40,9 +41,10 @@ public class Barcode extends NonNullString{
 	}
 	
 	private static String generateBarcode(){
-		String code = String.valueOf((new Date()).getTime());
-		code = code.substring(3, code.length());
-		code = "4" + code;
+		Random randomGenerator = new Random();
+		String code = "4";
+		for(int i=0; i<10; i++) 
+			code += Integer.toString(randomGenerator.nextInt(10));
 		
 		int oddDigits = 3 * (Character.getNumericValue(code.charAt(0)) + 
 				Character.getNumericValue(code.charAt(2)) + 
@@ -59,7 +61,11 @@ public class Barcode extends NonNullString{
 		
 		int total = oddDigits + evenDigits;
 		total = total % 10;
-		int checkDigit = 10 - total;
+		int checkDigit = -1;
+		if(total == 0)
+			checkDigit = 0;
+		else
+			checkDigit = 10 - total;
 		code = code + checkDigit;
 		
 		if(isValidBarcode(String.valueOf(code)))

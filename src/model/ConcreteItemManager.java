@@ -14,6 +14,12 @@ public class ConcreteItemManager implements ItemManager, Serializable {
 	private Collection<Item> removedItems;
 	private Map<Product, Collection<Item>> productsToItems;
 	
+	/** Constructor
+	 * 
+	 * @pre true
+	 * @post true
+	 * 
+	 */
 	public ConcreteItemManager() {
 		items = new ArrayList<Item>();
 		removedItems = new TreeSet<Item>();
@@ -22,9 +28,24 @@ public class ConcreteItemManager implements ItemManager, Serializable {
 	
 	/** Adds the given item to this Manager's indexes
 	 * @param item Item to manage
+	 * 
+	 * @pre item != null
+	 * @post items.contains(item)
+	 * @post productHasItems(item.getProduct()) != null
+	 * @post !productHasItems(item.getProduct()).isEmpty()
+	 * 
 	 */
 	@Override
 	public void manage(Item item) {
+		Collection<Item> found = productsToItems.get(item.getProduct());
+		if(found != null)
+			found.add(item);
+		else {
+			TreeSet<Item> prItems = new TreeSet<Item>();
+			prItems.add(item);
+			productsToItems.put(item.getProduct(),prItems);
+		}
+		
 		items.add(item);
 	}
 	
@@ -38,12 +59,21 @@ public class ConcreteItemManager implements ItemManager, Serializable {
 	@Override
 	public void unmanage(Item item) {
 		assert(item != null);
+		
+		Collection<Item> found = productsToItems.get(item.getProduct());
+		found.remove(item);
+		if(found.isEmpty()) 
+			productsToItems.remove(item.getProduct());
+		
 		item.remove();
 		removedItems.add(item);
 	}	
 
 	/** Returns an Iterator to access all of the removed items.
 	 * @return	an Iterator allowing access to all of the removed Items
+	 * 
+	 * @pre true
+	 * @post true
 	 */
 	public Iterator<Item> removedItemsIterator() {
 		return removedItems.iterator();
@@ -57,7 +87,11 @@ public class ConcreteItemManager implements ItemManager, Serializable {
 	 * @post true
 	 */
 	public boolean productHasItems(Product product) {
-		return productsToItems.get(product).isEmpty();
+		Collection<Item> found = productsToItems.get(product);
+		if(found == null)
+			return false;
+		
+		return !found.isEmpty();
 	}
 
 }
