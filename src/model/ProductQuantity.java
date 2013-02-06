@@ -23,13 +23,14 @@ public class ProductQuantity implements Serializable {
 	 * @param u Unit
 	 * 
 	 * @pre quantity >= 0.0
-	 * @pre IF units == Unit.COUNT, quantity is integer ELSE quantity is float
 	 * 
 	 * @post units.equals(u)
 	 * @post quantity.equals(q)
 	 * @post isValidProductQuantity(this.units, this.quantity)
 	 */
 	public ProductQuantity(float q, Unit u){
+		assert(q >= 0);
+		
 		this.units = u;
 		this.unitType = Unit.typeMap.get(this.units);
 		setQuantity(q);
@@ -76,10 +77,11 @@ public class ProductQuantity implements Serializable {
 	 * @param q Float if units is not COUNT, integer otherwise
 	 * @throws IllegalArgumentException If units are COUNT and quantity is not an integer
 	 * 
-	 *  @pre IF this.units == Unit.COUNT quantity is int, ELSE quantity is float
+	 *  @pre isValidProductQuantity(q, this.units)
 	 *  @post quantity.equals(q)
 	 */
 	public void setQuantity(float q) throws IllegalArgumentException{
+		assert(isValidProductQuantity(q, this.units));
 		if(!isValidProductQuantity(q, this.units)){
 			throw new IllegalArgumentException("Invalid quantity: " + quantity);
 		}
@@ -114,6 +116,7 @@ public class ProductQuantity implements Serializable {
 	 * @post quantity.equals(quantity + quantityToAdd.quantity)
 	 */
 	public void add(ProductQuantity otherQuantity) throws IllegalArgumentException {
+		this.unitType.equals(otherQuantity.unitType);
 		if(!this.unitType.equals(otherQuantity.unitType)){
 			throw new IllegalArgumentException("Cannot add quantities with different unit types.");
 		}
@@ -137,11 +140,13 @@ public class ProductQuantity implements Serializable {
 	 * @post quantity.equals(quantity - otherQuantity.quantity)
 	 */
 	public void subtract(ProductQuantity otherQuantity){
+		assert(otherQuantity != null);
 		if(!this.unitType.equals(otherQuantity.unitType)){
 			throw new IllegalArgumentException("Cannot add quantities with different unit types.");
 		}
 		
 		float conversionFactor = Unit.getConversionFactor(otherQuantity.units, this.units);
+		assert(!(this.quantity - (otherQuantity.quantity * conversionFactor) < 0));
 		if(this.quantity - (otherQuantity.quantity * conversionFactor) < 0){
 			throw new IllegalArgumentException("Resulting Subtraction would be negative");
 		}
