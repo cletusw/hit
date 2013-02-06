@@ -21,8 +21,7 @@ public class HomeInventoryTracker implements Serializable {
 	
 	/** Initializes the HomeInventoryTracker. 
 	 * @pre true
-	 * @post itemManager != null
-	 * @post productManager != null
+	 * @post true
 	 */
 	public HomeInventoryTracker() {
 		itemManager = new ConcreteItemManager();
@@ -60,20 +59,6 @@ public class HomeInventoryTracker implements Serializable {
 		assert(name != null);
 		
 		return storageUnitManager.isValidStorageUnitName(name);
-	}
-	
-	/** Adds the identified Item to a given ProductContainer
-	 * @param item			The Item to be added
-	 * @param container		The ProductContainer you are adding the Item to
-	 * 
-	 * @pre item != null && container != null
-	 * @post container.contains(item)
-	 */
-	public void add(Item item, ProductContainer container) {
-		assert(item != null);
-		assert(container != null);
-		
-		container.add(item);
 	}
 	
 	/** Removes the identified Item from a given ProductContainer
