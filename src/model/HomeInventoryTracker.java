@@ -226,9 +226,17 @@ public class HomeInventoryTracker implements Serializable {
 		storageUnitManager.renameStorageUnit(storageUnit, newStorageUnitName);
 	}
 
+	/** Get an existing Product from the system by its barcode
+	 * 
+	 * @param barcodeScanned The Product's barcode
+	 * @return Product with the given barcode, if it exists. null, otherwise.
+	 * 
+	 * @pre barcodeScanned != null
+	 */
 	public Product getProductByBarcode(String barcodeScanned) {
-		// TODO Auto-generated method stub
-		return null;
+		assert(barcodeScanned != null);
+		
+		return productManager.getByBarcode(barcodeScanned);
 	}
 
 	public Product createProduct(String barcode, String description, int shelfLife, 

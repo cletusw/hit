@@ -19,7 +19,7 @@ public class ConcreteProductManagerTest {
 	public void testManage() {
 		Product product = new Product(barcode, "testDescription", 10, 10, productQuantity, manager);
 		assertTrue(manager.contains(product));
-		assertTrue(manager.getBy(barcode) == product);
+		assertTrue(manager.getByBarcode(barcode) == product);
 	}
 
 	@Test
@@ -27,7 +27,7 @@ public class ConcreteProductManagerTest {
 		Product product = new Product(barcode, "testDescription", 10, 10, productQuantity, manager);
 		manager.unmanage(product);
 		assertFalse(manager.contains(product));
-		assertFalse(manager.getBy(barcode) == product);
+		assertFalse(manager.getByBarcode(barcode) == product);
 	}
 
 }
