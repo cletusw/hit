@@ -50,6 +50,8 @@ public class ConcreteStorageUnitManager implements Serializable, StorageUnitMana
 	 * @param product The Product to remove
 	 * 
 	 * @pre product.canRemove()
+	 * @post for(storageUnit in rootStorageUnits) storageUnit::products.size() == 
+	 * 		storageUnit::products.size()@pre - 1
 	 */
 	public void remove(Product product) {
 		assert(product.canRemove());
@@ -65,6 +67,8 @@ public class ConcreteStorageUnitManager implements Serializable, StorageUnitMana
 	 * 
 	 * @pre productGroup != null
 	 * @pre productGroup.canRemove()
+	 * @post for(storageUnit in rootStorageUnits) storageUnit::products.size() ==
+	 * 		storageUnit::products.size()@pre - 1
 	 */
 	public void remove(ProductGroup productGroup) {
 		assert(productGroup != null);
@@ -82,6 +86,8 @@ public class ConcreteStorageUnitManager implements Serializable, StorageUnitMana
 	 * 
 	 * @pre storageUnit != null
 	 * @pre storageUnit.canRemove()
+	 * @post rootStorageUnits.size() == rootStorageUnits.size()@post - 1
+	 * 
 	 */
 	public void remove(StorageUnit storageUnit) {
 		assert(storageUnit != null);
