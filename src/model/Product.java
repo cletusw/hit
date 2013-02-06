@@ -58,13 +58,8 @@ public class Product implements Comparable<Object>, Serializable {
 	 * @post this.threemonthSupply = tms
 	 * @post this.size = pq
 	 */
-<<<<<<< Upstream, based on branch 'master' of https://github.com/cletusw/hit.git
-	public Product(String barcode, String description, Date creationDate, int shelfLife, int tms,
-			ProductQuantity pq, ProductManager manager) {
-=======
 	public Product(String barcode, String description, Date creationDate, int shelfLife, 
 			int tms, ProductQuantity pq, ProductManager manager) {
->>>>>>> e1e93b6 Checkstyle Validation
 		this.setBarcode(barcode);
 		this.description = new NonNullString(description);
 		this.setCreationDate(creationDate);

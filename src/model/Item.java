@@ -92,13 +92,8 @@ public class Item implements Comparable<Object>, Serializable {
 	 * @post this.container != null
 	 * 
 	 */
-<<<<<<< Upstream, based on branch 'master' of https://github.com/cletusw/hit.git
-	public Item(Barcode barcode, Product product, ProductContainer container, Date entryDate, 
-			ItemManager manager){
-=======
 	public Item(Barcode barcode, Product product, ProductContainer container, 
 			Date entryDate, ItemManager manager){
->>>>>>> e1e93b6 Checkstyle Validation
 		this.product = product;
 		this.container = container;
 		this.barcode = barcode;
@@ -235,13 +230,7 @@ public class Item implements Comparable<Object>, Serializable {
 	@SuppressWarnings("deprecation")
 	private void setExpirationDate(){
 		Date d = this.entryDate;
-<<<<<<< Upstream, based on branch 'master' of https://github.com/cletusw/hit.git
-		this.expirationDate = new Date(d.getYear(), d.getMonth() 
-			+ this.product.getShelfLife(), 
-			d.getDate(), d.getHours(), d.getMinutes(), d.getSeconds());
-=======
 		this.expirationDate = new Date(d.getYear(), d.getMonth() + this.product.getShelfLife(),
 				d.getDate(), d.getHours(), d.getMinutes(), d.getSeconds());
->>>>>>> e1e93b6 Checkstyle Validation
 	}
 }
