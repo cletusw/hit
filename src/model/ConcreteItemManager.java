@@ -9,6 +9,16 @@ import java.util.TreeMap;
 import java.util.TreeSet;
 
 @SuppressWarnings("serial")
+/** Class that manages Items 
+ * 
+ * @author Clayton Watts
+ * @version 1.0 -- CS 340 Snell Phase 1
+ * 
+ * @invariant items != null
+ * @invariant removedItems != null
+ * @invariant productsToItems != null
+ *
+ */
 public class ConcreteItemManager implements ItemManager, Serializable {
 	private Collection<Item> items;
 	private Collection<Item> removedItems;
@@ -54,7 +64,9 @@ public class ConcreteItemManager implements ItemManager, Serializable {
 	 * @param container	The ProductContainer to add the Item to
 	 * 
 	 * @pre item != null
-	 * @post !container.contains(item)
+	 * @pre productsToItems.get(item.getProduct()).contains(item)
+	 * @post removedItems.contains(item)
+	 * @post productsToItems.get(item.getProduct()).size() == productsToItems.get(item.getProduct()).size@pre - 1
 	 */
 	@Override
 	public void unmanage(Item item) {
