@@ -164,4 +164,14 @@ public class ProductQuantity implements Serializable {
 			return quantity + " " + units.toString();
 		}
 	}
+	
+	/**
+	 * Determines whether this ProductQuantity is equal to another.
+	 * @param other		the Object to test for equality
+	 * @return 			true if the objects are equal, false otherwise.
+	 */
+	public boolean equals(Object other) {
+		ProductQuantity pq = (ProductQuantity) other;
+		return this.quantity == pq.quantity && this.units == pq.units;
+	}
 }
