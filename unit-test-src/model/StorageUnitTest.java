@@ -15,11 +15,6 @@ public class StorageUnitTest {
 	@After
 	public void tearDown() throws Exception {
 	}
-
-	@Test(expected=IllegalArgumentException.class)
-	public void testNullStorageUnitName() {
-		new StorageUnit(null);
-	}
 	
 	@Test
 	public void testValidStorageUnitName() {
