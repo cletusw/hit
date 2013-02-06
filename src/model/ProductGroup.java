@@ -70,8 +70,8 @@ public class ProductGroup extends ProductContainer {
 	 * Gets this ProductGroup's parent container
 	 * @return this ProductGroup's container
 	 * 
-	 * @pre container != null
-	 * @post container != null
+	 * @pre true
+	 * @post true
 	 * 
 	 */
 	public ProductContainer getContainer() {
@@ -90,6 +90,8 @@ public class ProductGroup extends ProductContainer {
 		// Must be non-empty.  A Product Group is 
 		// always contained within one Product 
 		// Container. 
+		assert(container != null);
+		
 		this.container = container;
 	}
 	
@@ -119,6 +121,8 @@ public class ProductGroup extends ProductContainer {
 		// The unit of measurement can be any of the following: count, pounds, ounces, 
 		// grams, kilograms, gallons, quarts, pints, fluid ounces, liters.  If the unit of 
 		// measurement is “count”, the magnitude must be an integer (i.e., no fraction). 
+		assert(threeMonthSupply != null);
+		
 		return ProductQuantity.isValidProductQuantity(threeMonthSupply.getQuantity(),
 				threeMonthSupply.getUnits());
 	}
