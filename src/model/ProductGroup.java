@@ -24,11 +24,33 @@ public class ProductGroup extends ProductContainer {
 	 * @post true
 	 * 
 	 */
-	public ProductGroup(String pcName, ProductQuantity tmSupply, Unit groupUnit) {
+	public ProductGroup(String pcName, ProductQuantity tmSupply, 
+			Unit groupUnit, ProductContainer parent) {
 		super(pcName);
-		
+		container = parent;
 		threeMonthSupply = tmSupply;
 		this.groupUnit = groupUnit;
+	}
+	
+	/** Determines whether the specified Product can be added to this Product Group.
+	 * @param productBarcode	the Product barcode to check
+	 * @return true if it can be added, false otherwise
+	 * @pre productBarcode != null
+	 * @post true
+	 */
+	public boolean canAddProduct(String productBarcode) {
+		assert(productBarcode != null);
+		
+		// A Product may appear at most once in a given Storage Unit.
+		if(containsProduct(productBarcode))
+			return false;
+		
+		// We need to ask daddy (the Storage Unit) if the Product exists elsewhere in his children.
+		ProductContainer parent = container;
+		while(parent instanceof ProductGroup) {
+			parent = ((ProductGroup) parent).container;
+		}
+		return !parent.hasDescendantProduct(productBarcode);
 	}
 	
 	/** Method that calculates and returns the amount of a product group in this container.

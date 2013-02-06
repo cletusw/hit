@@ -36,5 +36,42 @@ public class StorageUnit extends ProductContainer {
 		assert(pGroup != null);
 		
 		return (getProductGroup(pGroup.getName()) == null);
-	}	
+	}
+	
+	/** Method that adds an Item to the collection.
+	 * 
+	 * @param i - the Item object to add to the collection
+	 * @return true if the item was added to this container or one of its children, 
+	 * 		   false otherwise.
+	 * @pre i != null
+	 * @post items.size() == items.size()@pre + 1
+	 * @post items.contains(i)
+	 * 
+	 */
+	public boolean add(Item i) {
+		assert (i != null);
+		if (items.containsKey(i.getBarcode()))
+			throw new IllegalStateException("Cannot have two items with same barcode");
+		
+		// A new item is added to the same Product Container that contains the Item's Product
+		//    within the target Storage Unit
+		if (!contains(i.getProduct())) {
+			for (ProductGroup productGroup : productGroups.values()) {
+				if (productGroup.contains(i.getProduct())) {
+					productGroup.registerItem(i);
+					return true;
+				}
+			}
+		}
+		else {
+			// This container contains the Item's Product; add it here.
+			registerItem(i);
+			return true;
+		}
+		// Product not found anywhere else; add Item here
+		add(i.getProduct());
+		registerItem(i);
+		return true;
+	}
+
 }

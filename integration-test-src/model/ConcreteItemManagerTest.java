@@ -26,7 +26,8 @@ public class ConcreteItemManagerTest {
 		pm.manage(pOne);
 		pm.manage(pTwo);
 		
-		pg1 = new ProductGroup("Pg1",new ProductQuantity(3,Unit.COUNT),Unit.COUNT);
+		pg1 = new ProductGroup("Pg1",new ProductQuantity(3,Unit.COUNT),Unit.COUNT, 
+				new StorageUnit("Su1"));
 		
 		cm = new ConcreteItemManager();
 	}

@@ -25,7 +25,7 @@ public class ItemTest {
 	private final Product product = new Product("validBarcode", "A product", 
 			3, 3, pq, productManager);
 	private final ProductGroup productGroup = new ProductGroup("Test product group", 
-			pq, Unit.GALLONS);
+			pq, Unit.GALLONS, new StorageUnit("Test storage unit"));
 	private final Date entryDateLastMonth = new Date(113, 0, 1, 12, 45, 45);
 	
 	private Item item;

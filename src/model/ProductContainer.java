@@ -27,9 +27,9 @@ public abstract class ProductContainer implements Comparable<ProductContainer>, 
 	protected NonNullString name;
 
 	// Data Structures
-	private Map<String, Item> items;
-	private Map<String, Product> products;
-	private Map<String, ProductGroup> productGroups;
+	protected Map<String, Item> items;
+	protected Map<String, Product> products;
+	protected Map<String, ProductGroup> productGroups;
 	//TODO: Implement this map for all descendant nodes
 	private Map<Product, Set<Item>> productsToItems; 
 	
@@ -215,19 +215,9 @@ public abstract class ProductContainer implements Comparable<ProductContainer>, 
 		return total;
 	}
 	
-	/** Method that adds an Item to the collection.
-	 * 
-	 * @param i - the Item object to add to the collection
-	 * 
-	 * @pre i != null
-	 * @post items.size() == items.size()@pre + 1
-	 * @post items.contains(i)
-	 * 
-	 */
-	public void add(Item i) {
-		assert (i != null);
-		if (items.containsKey(i.getBarcode()))
-			throw new IllegalStateException("Cannot have two items with same barcode");
+	
+	// Helper method for adding items
+	protected void registerItem(Item i) {
 		items.put(i.getBarcode(),i);
 		Set<Item> newItemsForProduct;
 		if (productsToItems.containsKey(i.getProduct())) {
@@ -237,6 +227,21 @@ public abstract class ProductContainer implements Comparable<ProductContainer>, 
 			newItemsForProduct = new TreeSet<Item>();
 		}
 		newItemsForProduct.add(i);
+		productsToItems.put(i.getProduct(), newItemsForProduct);
+	}
+	
+	// Helper method for moving / removing items
+	protected void unregisterItem(Item i) {
+		items.remove(i.getBarcode());
+		
+		Set<Item> newItemsForProduct;
+		if (productsToItems.containsKey(i.getProduct())) {
+			newItemsForProduct = productsToItems.get(i.getProduct());
+		}
+		else {
+			newItemsForProduct = new TreeSet<Item>();
+		}
+		newItemsForProduct.remove(i);
 		productsToItems.put(i.getProduct(), newItemsForProduct);
 	}
 
@@ -271,10 +276,27 @@ public abstract class ProductContainer implements Comparable<ProductContainer>, 
 		if(containsProduct(productBarcode))
 			return false;
 		for (ProductGroup productGroup : productGroups.values()) {
-			if (productGroup.containsProduct(productBarcode))
+			if (!productGroup.canAddProduct(productBarcode))
 				return false;
 		}
+		// We need to ask our parents unless we are the Storage Unit to make sure this Product
+		//    does not exist elsewhere inside the StorageUnit's children.
+		if (!(this instanceof StorageUnit)) {
+			
+		}
 		return true;
+	}
+	
+	// Internal method: Used to determine whether it is possible to add a Product to this container
+	protected boolean hasDescendantProduct(String productBarcode) {
+		if (containsProduct(productBarcode)) {
+			return true;
+		}
+		for (ProductGroup productGroup : productGroups.values()) {
+			if (productGroup.hasDescendantProduct(productBarcode))
+				return true;
+		}
+		return false;
 	}
 	
 	/** Method that adds a ProductGroup object to the collection.
@@ -397,8 +419,8 @@ public abstract class ProductContainer implements Comparable<ProductContainer>, 
 			throw new IllegalStateException("Item does not exist in this container; cannot move");
 		}
 		
-		items.remove(item.getBarcode());
-		destination.add(item);
+		unregisterItem(item);
+		destination.registerItem(item);
 	}
 	
 	/** Determines whether this Product Container contains a specific Item

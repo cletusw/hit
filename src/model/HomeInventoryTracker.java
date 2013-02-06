@@ -89,8 +89,8 @@ public class HomeInventoryTracker implements Serializable {
 		assert(destination != null);
 		assert(item != null);
 		assert(source.contains(item));
-		source.remove(item, new MockItemManager());
-		destination.add(item);
+		source.unregisterItem(item);
+		destination.registerItem(item);
 	}
 	
 	/** Deletes the identified Product from the home inventory system.
