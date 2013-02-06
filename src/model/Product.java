@@ -38,7 +38,7 @@ public class Product implements Comparable<Object>, Serializable {
 	 *  
 	 * @param barcode NotNullString to identify this product
 	 * @param description string description of the product
-	 * @param creationDate Date this item was created in the data structure, must not be in the future
+	 * @param creationDate Date this item was created, must not be in the future
 	 * @param shelfLife integer describing how long in months before the product expires
 	 * @param tms ThreeMonthSupply describing how many of this product are needed for three months
 	 * @param manager the ProductManager that will manage this product
@@ -58,7 +58,8 @@ public class Product implements Comparable<Object>, Serializable {
 	 * @post this.threemonthSupply = tms
 	 * @post this.size = pq
 	 */
-	public Product(String barcode, String description, Date creationDate, int shelfLife, int tms, ProductQuantity pq, ProductManager manager) {
+	public Product(String barcode, String description, Date creationDate, int shelfLife, int tms,
+			ProductQuantity pq, ProductManager manager) {
 		this.setBarcode(barcode);
 		this.description = new NonNullString(description);
 		this.setCreationDate(creationDate);
@@ -94,7 +95,8 @@ public class Product implements Comparable<Object>, Serializable {
 	 * @post this.threemonthSupply = tms
 	 * @post this.size = pq
 	 */
-	public Product(String barcode, String description, int shelfLife, int tms, ProductQuantity pq, ProductManager manager) {
+	public Product(String barcode, String description, int shelfLife, int tms, 
+			ProductQuantity pq, ProductManager manager) {
 		this(barcode, description, new Date(), shelfLife, tms, pq, manager);
 	}
 	
