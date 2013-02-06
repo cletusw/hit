@@ -43,6 +43,11 @@ public class ProductQuantityTest {
 	public void testProductQuantity() {
 		assertTrue(fluid.getQuantity() == 3.2f);
 		assertTrue(fluid.getUnits() == Unit.FLUID_OUNCES);
+		assertTrue(ProductQuantity.isValidProductQuantity(fluid.getQuantity(), fluid.getUnits()));
+		
+		assertTrue(count.getQuantity() == 0);
+		assertTrue(count.getUnits().equals(Unit.COUNT));
+		assertTrue(ProductQuantity.isValidProductQuantity(count.getQuantity(), count.getUnits()));
 	}
 
 	/**
