@@ -57,11 +57,7 @@ public class Item implements Comparable<Object>, Serializable {
 	}
 	
 	/** Constructs a new Item with the specified barcode, product, and container. 
-<<<<<<< Upstream, based on branch 'master' of https://github.com/cletusw/hit.git
-	 *    Sets entryDate to now.
-=======
 	 *  Sets entryDate to now.
->>>>>>> e1e93b6 Checkstyle Validation
 	 * @param barcode the Item's barcode
 	 * @param product this Item's corresponding Product
 	 * @param container the ProductContainer this Item is to be stored in
@@ -94,6 +90,11 @@ public class Item implements Comparable<Object>, Serializable {
 	 */
 	public Item(Barcode barcode, Product product, ProductContainer container, 
 			Date entryDate, ItemManager manager){
+		assert(barcode != null);
+		assert(product != null);
+		assert(container != null);
+		assert(manager != null);
+		
 		this.product = product;
 		this.container = container;
 		this.barcode = barcode;
@@ -152,10 +153,11 @@ public class Item implements Comparable<Object>, Serializable {
 	 * 
 	 * @return the Item's exit time
 	 * 
-	 * @pre Item has been removed
+	 * @pre container == null (indicating item has been removed)
 	 * @post true
 	 */
 	public Date getExitTime() {
+		assert(this.container == null);
 		return exitTime;
 	}
 	
@@ -205,6 +207,8 @@ public class Item implements Comparable<Object>, Serializable {
 	 * @post true
 	 */
 	public int compareTo(Object o) {
+		assert(o != null);
+		assert(o instanceof Item);
 		Item other = (Item) o;
 		return barcode.compareTo(other.barcode);
 	}
