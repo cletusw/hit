@@ -33,12 +33,6 @@ public class ConcreteItemManagerTest {
 
 	@After
 	public void tearDown() throws Exception {
-		pm.unmanage(pOne);
-		pm.unmanage(pTwo);
-		
-		pm = null;
-		pg1 = null;
-		cm = null;
 	}
 
 	@Test
