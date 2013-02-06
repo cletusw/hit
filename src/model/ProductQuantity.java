@@ -24,6 +24,7 @@ public class ProductQuantity implements Serializable {
 	 * 
 	 * @pre quantity >= 0.0
 	 * @pre IF units == Unit.COUNT, quantity is integer ELSE quantity is float
+	 * 
 	 * @post units.equals(u)
 	 * @post quantity.equals(q)
 	 * @post isValidProductQuantity(this.units, this.quantity)
