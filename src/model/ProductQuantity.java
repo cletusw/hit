@@ -125,7 +125,8 @@ public class ProductQuantity implements Serializable {
 	/** Subtracts a ProductQuantity from this ProductQuantity. The two ProductQuantities
 	 * Must have matching units, and the result result must be non-negative.
 	 * 
-	 * @param quantityToSubtract - ProductQuantity to subtract from this ProductQuantity, must have non-negative quantity
+	 * @param quantityToSubtract - ProductQuantity to subtract from this ProductQuantity, 
+	 * 		must have non-negative quantity
 	 *  
 	 * @throws IllegalArgumentException If this ProductQuantity's Unit does not
 	 * match incoming ProductQuantity Unit

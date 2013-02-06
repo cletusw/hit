@@ -119,6 +119,7 @@ public class ProductGroup extends ProductContainer {
 		// The unit of measurement can be any of the following: count, pounds, ounces, 
 		// grams, kilograms, gallons, quarts, pints, fluid ounces, liters.  If the unit of 
 		// measurement is “count”, the magnitude must be an integer (i.e., no fraction). 
-		return ProductQuantity.isValidProductQuantity(threeMonthSupply.getQuantity(),threeMonthSupply.getUnits());
+		return ProductQuantity.isValidProductQuantity(threeMonthSupply.getQuantity(),
+				threeMonthSupply.getUnits());
 	}
 }
