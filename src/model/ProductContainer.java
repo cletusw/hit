@@ -287,8 +287,6 @@ public abstract class ProductContainer implements Comparable<ProductContainer>, 
 	 */
 	public boolean canAddProductGroup(String productGroupName) {
 		assert(productGroupName != null);
-		// From the Data Dictionary: Must�be�non-empty�and�unique�within�
-		//   the�parent�Product�Container.�
 		return !productGroupName.equals("") && !containsProductGroup(productGroupName);
 	}
 	
