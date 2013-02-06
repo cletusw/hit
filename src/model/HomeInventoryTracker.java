@@ -239,10 +239,24 @@ public class HomeInventoryTracker implements Serializable {
 		return productManager.getByBarcode(barcodeScanned);
 	}
 
+	/** Create a new Product
+	 * 
+	 * @param barcode
+	 * @param description
+	 * @param shelfLife
+	 * @param threeMonthSupply
+	 * @param productQuantity
+	 * @return
+	 * 
+	 * @pre getProductByBarcode(barcode) == null
+	 * @post getProductByBarcode(barcode) != null
+	 */
 	public Product createProduct(String barcode, String description, int shelfLife, 
 			int threeMonthSupply, ProductQuantity productQuantity) {
-		// TODO Auto-generated method stub
-		return null;
+		assert(getProductByBarcode(barcode) == null);
+		
+		return new Product(barcode, description, shelfLife,
+				threeMonthSupply, productQuantity, productManager);
 	}
 
 	public void addItem(Product product, Date entryDate, String newStorageUnitName) {
