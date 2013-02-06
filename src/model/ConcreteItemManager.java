@@ -47,6 +47,8 @@ public class ConcreteItemManager implements ItemManager, Serializable {
 	 */
 	@Override
 	public void manage(Item item) {
+		assert(item != null);
+		
 		Collection<Item> found = productsToItems.get(item.getProduct());
 		if(found != null)
 			found.add(item);
@@ -70,7 +72,8 @@ public class ConcreteItemManager implements ItemManager, Serializable {
 	 */
 	@Override
 	public void unmanage(Item item) {
-		assert(item != null);
+		if(item == null)
+			throw new IllegalArgumentException("Item to unmanage can't be null.");
 		
 		Collection<Item> found = productsToItems.get(item.getProduct());
 		found.remove(item);

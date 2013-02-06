@@ -5,7 +5,6 @@ package model;
  *  @author - Matt Hess
  *  @version 1.0 - Snell 340 Group 4 Phase 1
  *  
- *  @invariant 
  */
 
 @SuppressWarnings("serial")
