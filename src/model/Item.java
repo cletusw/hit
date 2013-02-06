@@ -10,7 +10,6 @@ import java.util.Date;
  * @invariant barcode != null
  * @invariant entryDate != null
  * @invariant expirationDate != null
- * 
  */
 @SuppressWarnings("serial")
 public class Item implements Comparable<Object>, Serializable {
@@ -27,8 +26,11 @@ public class Item implements Comparable<Object>, Serializable {
 	 * @param container The ProductContainer this Item is to be stored in
 	 * @param manager The ItemManager to optimize accesses to this item
 	 * 
-	 * @pre true
-	 * @post true
+	 * @pre product != null
+	 * @pre container != null
+	 * @pre manager != null
+	 * 
+	 * @post this.container != null
 	 * 
 	 */
 	public Item(Product product, ProductContainer container, ItemManager manager) {
@@ -42,8 +44,12 @@ public class Item implements Comparable<Object>, Serializable {
 	 * @param container The ProductContainer this Item is to be stored in
 	 * @param manager The ItemManager to optimize accesses to this item
 	 * 
-	 * @pre true
-	 * @post true
+	 * @pre product != null
+	 * @pre entryDate != null
+	 * @pre container != null
+	 * @pre manager != null
+	 * 
+	 * @post this.container != null
 	 * 
 	 */
 	public Item(Product product, Date entryDate, ProductContainer container, ItemManager manager) {
@@ -55,8 +61,12 @@ public class Item implements Comparable<Object>, Serializable {
 	 * @param product this Item's corresponding Product
 	 * @param container the ProductContainer this Item is to be stored in
 	 * 
-	 * @pre true
-	 * @post (invariants)
+	 * @pre barcode != null
+	 * @pre product != null
+	 * @pre container != null
+	 * @pre manager != null
+	 * 
+	 * @post this.container != null
 	 * 
 	 */
 	public Item(Barcode barcode, Product product, ProductContainer container, ItemManager manager) {
@@ -68,8 +78,12 @@ public class Item implements Comparable<Object>, Serializable {
 	 * @param product this Item's corresponding Product
 	 * @param container the ProductContainer this Item is to be stored in
 	 * 
-	 * @pre
-	 * @post (invariants)
+	 * @pre barcode != null
+	 * @pre product != null
+	 * @pre container != null
+	 * @pre manager != null
+	 * 
+	 * @post this.container != null
 	 * 
 	 */
 	public Item(Barcode barcode, Product product, ProductContainer container, Date entryDate, ItemManager manager){
@@ -111,7 +125,6 @@ public class Item implements Comparable<Object>, Serializable {
 	 * 
 	 * @pre true
 	 * @post true
-	 * 
 	 */
 	public String getBarcode() {
 		return barcode.getValue();
@@ -123,7 +136,6 @@ public class Item implements Comparable<Object>, Serializable {
 	 * 
 	 * @pre true
 	 * @post true
-	 * 
 	 */
 	public Date getEntryDate() {
 		return entryDate;
@@ -135,7 +147,6 @@ public class Item implements Comparable<Object>, Serializable {
 	 * 
 	 * @pre Item has been removed
 	 * @post true
-	 * 
 	 */
 	public Date getExitTime() {
 		return exitTime;
@@ -146,7 +157,7 @@ public class Item implements Comparable<Object>, Serializable {
 	 * 
 	 * @pre true
 	 * @post exitTime != null
-	 * @post container != null
+	 * @post container == null
 	 */
 	public void remove(){
 		this.exitTime = new Date();
