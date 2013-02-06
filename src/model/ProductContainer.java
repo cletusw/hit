@@ -93,13 +93,12 @@ public abstract class ProductContainer implements Comparable<ProductContainer>, 
 	 * 
 	 * @param name Name to set to
 	 * 
-	 * @pre isValidName(name)
+	 * @pre name != null
 	 * @post getName() == name
 	 */
 	public void setName(String name) {
-		assert(isValidName(name));
-		
-		this.name = name;
+		assert(name != null);
+		this.name = new NonNullString(name);
 	}
 	
 	/** Gets the size of the items collection.
