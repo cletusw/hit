@@ -90,7 +90,7 @@ public class Barcode extends NonNullString{
 	 * @param s String barcode to check
 	 * @return true if barcode is valid, false otherwise
 	 * 
-
+	 * @pre s != null
 	 * @pre s.length() == 12
 	 * @pre s.charAt(0) == '4'
 	 * @pre for(char in s) Character.isDigit(char)
@@ -98,6 +98,13 @@ public class Barcode extends NonNullString{
 	 * 
 	 */
 	public static boolean isValidBarcode(String s) {
+		assert(s != null);
+		assert(s.length() == 12);
+		assert(s.charAt(0) == '4');
+		for(int i=0; i<s.length(); i++) {
+			assert(Character.isDigit(s.charAt(i)));
+		}
+		
 		if(s == null || s.length() != 12 || s.charAt(0) != '4')
 			return false;
 
@@ -134,10 +141,12 @@ public class Barcode extends NonNullString{
 	 * the string argument; and a value greater than 0 if this string is 
 	 * lexicographically greater than the string argument.
 	 * 
-	 * @pre true
+	 * @pre other != null
 	 * @post true
 	 */
 	public int compareTo(Barcode other){
+		assert(other != null);
+		
 		return this.value.compareTo(other.value);
 	}
 }
