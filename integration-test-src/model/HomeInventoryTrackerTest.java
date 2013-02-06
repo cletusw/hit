@@ -46,8 +46,10 @@ public class HomeInventoryTrackerTest {
 		assertTrue(tracker.getProductByBarcode(barcodeScanned) != null);
 		
 		// Create new item
+		assertTrue(storageUnit.getItemsSize() == 0);
 		Date entryDate = new Date();
-		tracker.addItem(product, entryDate, newStorageUnitName);
+		Item item = tracker.addItem(product, entryDate, storageUnit);
+		assertTrue(storageUnit.contains(item));
 	}
 
 }

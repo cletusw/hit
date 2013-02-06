@@ -259,9 +259,26 @@ public class HomeInventoryTracker implements Serializable {
 				threeMonthSupply, productQuantity, productManager);
 	}
 
-	public void addItem(Product product, Date entryDate, String newStorageUnitName) {
-		// TODO Auto-generated method stub
+	/** Add a new Item to the system
+	 * 
+	 * @param product The new Item's Product
+	 * @param entryDate Date the Item was scanned
+	 * @param storageUnit The Storage Unit in which to place the item
+	 * @return the newly created Item
+	 * 
+	 * @pre product != null
+	 * @pre entryDate != null
+	 * @pre storageUnit != null
+	 */
+	public Item addItem(Product product, Date entryDate, StorageUnit storageUnit) {
+		assert(product != null);
+		assert(entryDate != null);
+		assert(storageUnit != null);
 		
+		Item newItem = new Item(product, entryDate, storageUnit, itemManager);
+		storageUnit.add(newItem);
+		
+		return newItem;
 	}
 	
 }
