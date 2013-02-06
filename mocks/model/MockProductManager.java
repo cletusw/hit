@@ -16,4 +16,10 @@ public class MockProductManager implements ProductManager {
 		// TODO Auto-generated method stub
 		return false;
 	}
+
+	@Override
+	public Product getByBarcode(String barcodeScanned) {
+		// TODO Auto-generated method stub
+		return null;
+	}
 }
