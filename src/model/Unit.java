@@ -75,8 +75,30 @@ public enum Unit implements Serializable {
 
 		// GALLONS ->
 		case GALLONS:
-			switch(convertTo){
+			return convertFromGallons(convertTo);
+				
+		// QUARTS ->	
+		case QUARTS:
+			return convertFromQuarts(convertTo);
+		
+		// PINTS ->
+		case PINTS:
+			return convertFromPints(convertTo);
 			
+		// FLUID_OUNCES ->
+		case FLUID_OUNCES:
+			return convertFromFluidOunces(convertTo);
+
+		// LITERS ->
+		case LITERS:
+			return convertFromLiters(convertTo);
+		default:
+			throw new NotImplementedException();
+		}
+	}
+	
+	private static float convertFromGallons(Unit convertTo){
+		switch(convertTo){
 			// GALLONS -> QUARTS
 			case QUARTS:
 				return 4;
@@ -94,12 +116,11 @@ public enum Unit implements Serializable {
 				return 3.78541f;
 			default:
 				throw new NotImplementedException();
-			}
-				
-		// QUARTS ->	
-		case QUARTS:
-			switch(convertTo){
-			
+		}
+	}
+	
+	private static float convertFromQuarts(Unit convertTo){
+		switch(convertTo){
 			// QUARTS -> GALLONS
 			case GALLONS:
 				return .25f;
@@ -118,12 +139,11 @@ public enum Unit implements Serializable {
 			
 			default:
 				throw new NotImplementedException();
-			}
-		
-		// PINTS ->
-		case PINTS:
-			switch(convertTo){
-			
+		}
+	}
+	
+	private static float convertFromPints(Unit convertTo){
+		switch(convertTo){
 			// PINTS -> GALLONS
 			case GALLONS:
 				return .125f;
@@ -142,12 +162,11 @@ public enum Unit implements Serializable {
 			
 			default:
 				throw new NotImplementedException();
-			}
-			
-		// FLUID_OUNCES ->
-		case FLUID_OUNCES:
-			switch(convertTo){
-			
+		}
+	}
+	
+	private static float convertFromFluidOunces(Unit convertTo){
+		switch(convertTo){
 			// FLUID_OUNCES -> GALLONS
 			case GALLONS:
 				return 0.0078125f;
@@ -166,12 +185,11 @@ public enum Unit implements Serializable {
 				
 			default:
 				throw new NotImplementedException();
-			}
-
-		// LITERS ->
-		case LITERS:
-			switch(convertTo){
-			
+		}
+	}
+	
+	private static float convertFromLiters(Unit convertTo){
+		switch(convertTo){
 			// LITERS -> GALLONS
 			case GALLONS:
 				return 0.264172f;
@@ -190,9 +208,6 @@ public enum Unit implements Serializable {
 		
 			default:
 				throw new NotImplementedException();
-			}
-		default:
-			throw new NotImplementedException();
 		}
 	}
 	
@@ -201,8 +216,26 @@ public enum Unit implements Serializable {
 		
 		// POUNDS -> 
 		case POUNDS:
-			switch(convertTo){
+			return convertFromPounds(convertTo);
 			
+		// OUNCES ->
+		case OUNCES:
+			return convertFromOunces(convertTo);
+			
+		// GRAMS -> 
+		case GRAMS:
+			return convertFromGrams(convertTo);
+			
+		// KILOGRAMS ->
+		case KILOGRAMS:
+			return convertFromKilograms(convertTo);
+		default:
+			throw new NotImplementedException();
+		}
+	}
+	
+	private static float convertFromPounds(Unit convertTo){
+		switch(convertTo){
 			// POUNDS -> OUNCES
 			case OUNCES:
 				return 16f;
@@ -216,12 +249,11 @@ public enum Unit implements Serializable {
 				return 0.453592f;
 			default:
 				throw new NotImplementedException();
-			}
-			
-		// OUNCES ->
-		case OUNCES:
-			switch(convertTo){
-			
+		}
+	}
+	
+	private static float convertFromOunces(Unit convertTo){
+		switch(convertTo){
 			// OUNCES -> POUNDS
 			case POUNDS:
 				return 0.0625f;
@@ -235,12 +267,11 @@ public enum Unit implements Serializable {
 				return 0.0283495f;
 			default:
 				throw new NotImplementedException();
-			}
-			
-		// GRAMS -> 
-		case GRAMS:
-			switch(convertTo){
-			
+		}
+	}
+	
+	private static float convertFromGrams(Unit convertTo){
+		switch(convertTo){
 			// GRAMS -> POUNDS
 			case POUNDS:
 				return 0.00220462f;
@@ -255,12 +286,11 @@ public enum Unit implements Serializable {
 				
 			default:
 				throw new NotImplementedException();
-			}
-			
-		// KILOGRAMS ->
-		case KILOGRAMS:
-			switch(convertTo){
-			
+		}
+	}
+	
+	private static float convertFromKilograms(Unit convertTo){
+		switch(convertTo){
 			// KILOGRAMS -> POUNDS
 			case POUNDS:
 				return 2.20462f;
@@ -275,12 +305,8 @@ public enum Unit implements Serializable {
 				
 			default:
 				throw new NotImplementedException();
-			}
-		default:
-			throw new NotImplementedException();
 		}
 	}
-	
 	/**
 	 * Determines whether a specified integer is a valid count.
 	 * @param toTest	the integer to test
