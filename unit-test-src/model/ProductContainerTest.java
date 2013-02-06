@@ -103,17 +103,6 @@ public class ProductContainerTest {
 	}
 	
 	@Test
-	public void testGetProductGroup() {
-		fail("Not yet implemented");
-	}
-
-	@Test
-	public void testRemoveProductGroup() {
-		fail("Not yet implemented");
-	}
-
-	
-	@Test
 	public void PGtestProductGroups() {
 		System.out.print("Testing ProductGroup ProductGroup logic...");
 		assertEquals(0, productGroup1.getPGroupsSize());

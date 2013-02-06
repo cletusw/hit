@@ -10,7 +10,8 @@ import java.util.TreeSet;
 import java.util.Map;
 import java.util.Set;
 
-/** Product Container class: Represents an object that can hold various types of items, products, and product groups. 
+/** Product Container class: Represents an object that can hold various 
+ *    types of items, products, and product groups. 
  * 
  * @author Matt Hess
  * @version 1.0 - Snell 340 Group 4 Phase 1
@@ -43,8 +44,11 @@ public abstract class ProductContainer implements Comparable<ProductContainer>, 
 	 * 
 	 */
 	public ProductContainer(String name) {
-		if(name == null)
-			throw new IllegalArgumentException("ProductContainer constructor parameter(s) is invalid.");
+		assert(name != null);
+		
+		if(name.equals(""))
+			throw new IllegalArgumentException(
+					"ProductContainer constructor parameter(s) is invalid.");
 		
 		this.name = name;
 		items = new TreeMap<String, Item>();
@@ -56,7 +60,7 @@ public abstract class ProductContainer implements Comparable<ProductContainer>, 
 	/**
 	 * Determines if this ProductContainer can be removed from the system.
 	 * 
-	 * @return true, if this ProductContainer and its descendants contain no Items. false, otherwise.
+	 * @return true if this ProductContainer can be removed, false otherwise.
 	 */
 	public boolean canRemove() {
 		if (!items.isEmpty()) {
@@ -148,6 +152,8 @@ public abstract class ProductContainer implements Comparable<ProductContainer>, 
 	 * 
 	 */
 	public Product getProduct(String barcode) {
+		assert (barcode != null);
+		
 		return products.get(barcode);
 	}
 	
@@ -160,6 +166,8 @@ public abstract class ProductContainer implements Comparable<ProductContainer>, 
 	 * @post true
 	 */
 	public ProductGroup getProductGroup(String pgToFind) {
+		assert(pgToFind != null);
+		
 		return productGroups.get(pgToFind);
 	}
 
@@ -176,6 +184,10 @@ public abstract class ProductContainer implements Comparable<ProductContainer>, 
 	 * 
 	 */
 	public ProductQuantity getCurrentSupply(Product p) {
+		assert(p != null);
+		assert(p.getBarcode() != null);
+		assert(p.getSize() != null);
+		
 		ProductQuantity pSize = p.getSize();
 		
 		// Get sum of all pGroup product quantities
@@ -187,7 +199,8 @@ public abstract class ProductContainer implements Comparable<ProductContainer>, 
 		}
 		
 		// add product quantity of items in this container
-		total.add(new ProductQuantity(productsToItems.get(p).size() * pSize.getQuantity(),pSize.getUnits()));
+		total.add(new ProductQuantity(productsToItems.get(p).size() 
+				* pSize.getQuantity(),pSize.getUnits()));
 		
 		return total;
 	}
@@ -197,12 +210,14 @@ public abstract class ProductContainer implements Comparable<ProductContainer>, 
 	 * @param i - the Item object to add to the collection
 	 * 
 	 * @pre i != null
-	 * @pre !items.contains(i)
 	 * @post items.size() == items.size()@pre + 1
 	 * @post items.contains(i)
 	 * 
 	 */
 	public void add(Item i) {
+		assert (i != null);
+		if (items.containsKey(i.getBarcode()))
+			throw new IllegalStateException("Cannot have two items with same barcode");
 		items.put(i.getBarcode(),i);
 	}
 
@@ -211,14 +226,16 @@ public abstract class ProductContainer implements Comparable<ProductContainer>, 
 	 * @param p - the Product object to add to the collection
 	 * 
 	 * @pre p != null
-	 * @pre !products.contains(p)
 	 * @post products.size() == products.size()@pre + 1
 	 * @post products.contains(p)
 	 * 
 	 */
 	public void add(Product p) {
+		assert (p != null);
+		
 		if (products.containsKey(p.getBarcode()))
-			throw new IllegalStateException("Cannot add two products of the same name into a single parent container");
+			throw new IllegalStateException(
+					"Cannot add two products of the same name into a single parent container");
 		products.put(p.getBarcode(), p);
 	}
 	
@@ -227,14 +244,16 @@ public abstract class ProductContainer implements Comparable<ProductContainer>, 
 	 * @param productGroup - the ProductGroup object to add to the collection
 	 * 
 	 * @pre productGroup != null
-	 * @pre !pGroups.contains(productGroup)
 	 * @post pGroups.size() == pGroups.size()@pre + 1
 	 * @post pGroups.contains(productGroup)
 	 * 
 	 */
 	public void add(ProductGroup productGroup) {
+		assert(productGroup != null);
+		
 		if (!canAddProductGroup(productGroup.getName()))
-			throw new IllegalStateException("Cannot add two product groups of the same name into a single parent container");
+			throw new IllegalStateException(
+				"Cannot add two product groups of the same name into a single parent container");
 		productGroups.put(productGroup.getName(), productGroup);
 	}
 	
@@ -247,9 +266,9 @@ public abstract class ProductContainer implements Comparable<ProductContainer>, 
 	 * @post productGroups.size()@pre == productGroups.size()
 	 */
 	public boolean canAddProductGroup(String productGroupName) {
+		assert(productGroupName != null);
 		// From the Data Dictionary: Must be non-empty and unique within 
 		//   the parent Product Container. 
-		
 		return !productGroupName.equals("") && !containsProductGroup(productGroupName);
 	}
 	
@@ -262,6 +281,7 @@ public abstract class ProductContainer implements Comparable<ProductContainer>, 
 	 * @post productGroups.size()@pre == productGroups.size()
 	 */
 	public boolean canAddProductGroup(ProductGroup productGroup) {
+		assert(productGroup != null);
 		return canAddProductGroup(productGroup.getName());
 	}
 	
@@ -273,6 +293,7 @@ public abstract class ProductContainer implements Comparable<ProductContainer>, 
 	 * @pre productGroupName != null 
 	 */
 	public boolean containsProductGroup(String productGroupName) {
+		assert(productGroupName != null);
 		return productGroups.containsKey(productGroupName);
 	}
 	
@@ -281,9 +302,10 @@ public abstract class ProductContainer implements Comparable<ProductContainer>, 
 	 * @param productGroupName - the ProductGroup to test
 	 * @return true if the ProductGroup exists in this ProductContainer, false otherwise.
 	 * 
-	 * @pre productGroupName != null 
+	 * @pre productGroup != null 
 	 */
 	public boolean contains(ProductGroup productGroup) {
+		assert(productGroup != null);
 		return productGroups.containsKey(productGroup.getName());
 	}
 	
@@ -299,6 +321,9 @@ public abstract class ProductContainer implements Comparable<ProductContainer>, 
 	 * @post !containsItem(item.getBarcode())
 	 */
 	public Item remove(Item item, ItemManager manager) {
+		assert(item != null);
+		assert(manager != null);
+		
 		manager.unmanage(item);
 		return items.remove(item.getBarcode());
 	}
@@ -319,6 +344,11 @@ public abstract class ProductContainer implements Comparable<ProductContainer>, 
 	public void moveIntoContainer(Item item, ProductContainer destination) {
 		assert(item != null);
 		assert(destination != null);
+		assert(items.containsKey(item.getBarcode()));
+		
+		if (destination.contains(item))
+			throw new IllegalStateException(
+					"Destination container already contains the item to be moved");
 		items.remove(item.getBarcode());
 		destination.add(item);
 	}
@@ -328,11 +358,12 @@ public abstract class ProductContainer implements Comparable<ProductContainer>, 
 	 * @param barcode		the barcode of the Item to check
 	 * @return				true if this Product Container contains the Item, false otherwise
 	 * 
-	 * @pre true
+	 * @pre barcode != null
 	 * @post true
 	 * 
 	 */
 	public boolean containsItem(String barcode) {
+		assert (barcode != null);
 		return items.containsKey(barcode);
 	}
 	
@@ -341,10 +372,11 @@ public abstract class ProductContainer implements Comparable<ProductContainer>, 
 	 * @param item			the Item to check
 	 * @return				true if this Product Container contains the Item, false otherwise
 	 * 
-	 * @pre true
+	 * @pre item != null
 	 * @post true
 	 */
 	public boolean contains(Item item) {
+		assert(item != null);
 		return items.containsKey(item.getBarcode());
 	}
 
@@ -353,11 +385,12 @@ public abstract class ProductContainer implements Comparable<ProductContainer>, 
 	 * @param productBarcode	the Product's barcode to check
 	 * @return					true if this Product Container contains the Product, false otherwise
 	 * 
-	 * @pre true
+	 * @pre productBarcode != null
 	 * @post true
 	 * 
 	 */
 	public boolean containsProduct(String productBarcode) {
+		assert(productBarcode != null);
 		return products.containsKey(productBarcode);
 	}
 	
@@ -366,20 +399,21 @@ public abstract class ProductContainer implements Comparable<ProductContainer>, 
 	 * @param product			the Product to check
 	 * @return					true if this Product Container contains the Product, false otherwise
 	 * 
-	 * @pre true
+	 * @pre product != null
 	 * @post true
 	 * 
 	 */
 	public boolean contains(Product product) {
+		assert(product != null);
 		return products.containsKey(product.getBarcode());
 	}
 	
-	/** Removes a specified ProductContainer from this container.
+	/** Removes a specified ProductGroup from this container.
 	 * 
-	 * @param container 		The ProductContainer to remove
+	 * @param productGroup 		The ProductGroup to remove
 	 * 
-	 * @pre container != null
-	 * @post !contains(container)
+	 * @pre productGroup != null
+	 * @post !contains(productGroup)
 	 */
 	public void remove(ProductGroup productGroup) {
 		assert (productGroup != null);
@@ -396,13 +430,23 @@ public abstract class ProductContainer implements Comparable<ProductContainer>, 
 	 * 
 	 */
 	public Product remove(Product product) throws IllegalStateException {
+		assert(product != null);
 		if (!canRemove(product))
-			throw new IllegalStateException("Cannot remove product; product container still has items that refer to it");
+			throw new IllegalStateException(
+					"Cannot remove product; product container still has items that refer to it");
 		productsToItems.remove(product);
 		return products.remove(product.getBarcode());
 	}
 
+	/** Determines whether we can remove a given Product from this ProductContainer.
+	 * 
+	 * @param product - the Product object to be removed from the container
+	 *
+	 * @pre product != null
+	 * @post true
+	 */
 	public boolean canRemove(Product product) {
+		assert(product != null);
 		if (productsToItems.get(product) == null)
 			return true;
 		return (productsToItems.get(product).isEmpty());
@@ -414,10 +458,11 @@ public abstract class ProductContainer implements Comparable<ProductContainer>, 
 	 * @param name the string to test
 	 * @return true if the string is valid, false otherwise.
 	 * 
-	 * @pre true
+	 * @pre name != null
 	 * @post return (name != null && !name.equals(""))
 	 */
 	public static boolean isValidName(String name) {
+		assert(name != null);
 		// From the Data Dictionary: Must be non-empty
 		return ((name != null) && !name.equals(""));
 	}
@@ -431,6 +476,8 @@ public abstract class ProductContainer implements Comparable<ProductContainer>, 
 	 * @post true
 	 */
 	public boolean equals(Object o) {
+		assert (o != null);
+		
 		String otherName;
 		
 		if (o instanceof ProductContainer) {

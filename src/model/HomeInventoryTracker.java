@@ -3,7 +3,8 @@ package model;
 import java.util.Date;
 import java.io.*;
 
-/** HomeInventoryTracker: Home Inventory Tracker (HIT) is a system for tracking home storage inventories. 
+/** HomeInventoryTracker: Home Inventory Tracker (HIT) is a system for tracking
+ * home storage inventories. 
  * @author Seth Stewart
  * @version 1.0 - Snell 340 Group 4 Phase 1
  * 
@@ -104,7 +105,8 @@ public class HomeInventoryTracker implements Serializable {
 	 */
 	public void remove(Product product) throws IllegalStateException {
 		if (!canRemove(product))
-			throw new IllegalStateException("Cannot remove product from the system; it still has items that refer to it");
+			throw new IllegalStateException(
+					"Cannot remove product from the system; it still has items that refer to it");
 		productManager.unmanage(product);
 		storageUnitManager.remove(product);
 	}
@@ -116,7 +118,8 @@ public class HomeInventoryTracker implements Serializable {
 	 * @pre product != null
 	 * @post !contains(product)
 	 */
-	public void removeFromContainer(Product product, ProductContainer container) throws IllegalStateException {
+	public void removeFromContainer(Product product, ProductContainer container) 
+			throws IllegalStateException {
 		container.remove(product);
 	}
 	
@@ -136,8 +139,8 @@ public class HomeInventoryTracker implements Serializable {
 	
 	/**
 	 * Checks if the identified Product exists in the home inventory system.
-	 * @param product 		The Product to check
-	 * @return				true if the product exists in the home inventory system, false otherwise.
+	 * @param product 	The Product to check
+	 * @return			true if the product exists in the home inventory system, false otherwise.
 	 * 
 	 * @pre product != null
 	 * @post true
@@ -228,7 +231,8 @@ public class HomeInventoryTracker implements Serializable {
 		return null;
 	}
 
-	public Product createProduct(String barcode, String description, int shelfLife, int threeMonthSupply, ProductQuantity productQuantity) {
+	public Product createProduct(String barcode, String description, int shelfLife, 
+			int threeMonthSupply, ProductQuantity productQuantity) {
 		// TODO Auto-generated method stub
 		return null;
 	}
