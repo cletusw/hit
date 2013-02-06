@@ -34,6 +34,5 @@ public class StorageUnit extends ProductContainer {
 		// From the Data Dictionary: A Storage Unit cannot have two top-level 
 		// Product Groups of the same name.
 		return (getProductGroup(pGroup.getName()) == null);
-	}
-
+	}	
 }

@@ -252,11 +252,29 @@ public abstract class ProductContainer implements Comparable<ProductContainer>, 
 	public void add(Product p) {
 		assert (p != null);
 		
-		if (products.containsKey(p.getBarcode()))
+		if (!canAddProduct(p.getBarcode()))
 			throw new IllegalStateException(
 					"Cannot add two products of the same name into a single parent container");
 		products.put(p.getBarcode(), p);
 		productsToItems.put(p, new TreeSet<Item>());
+	}
+	
+	/** Determines whether the specified Product can be added to this Storage Unit.
+	 * @param productBarcode	the Product barcode to check
+	 * @return true if it can be added, false otherwise
+	 * @pre productBarcode != null
+	 * @post true
+	 */
+	public boolean canAddProduct(String productBarcode) {
+		assert(productBarcode != null);
+		// A Product may appear at most once in a given Storage Unit.
+		if(containsProduct(productBarcode))
+			return false;
+		for (ProductGroup productGroup : productGroups.values()) {
+			if (productGroup.containsProduct(productBarcode))
+				return false;
+		}
+		return true;
 	}
 	
 	/** Method that adds a ProductGroup object to the collection.
