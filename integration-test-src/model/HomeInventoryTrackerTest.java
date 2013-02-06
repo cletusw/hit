@@ -34,7 +34,8 @@ public class HomeInventoryTrackerTest {
 			int shelfLife = 1;
 			int threeMonthSupply = 1;
 			ProductQuantity productQuantity = new ProductQuantity(1, Unit.COUNT);
-			product = tracker.createProduct(barcodeScanned, description, shelfLife, threeMonthSupply, productQuantity);
+			product = tracker.createProduct(barcodeScanned, description, shelfLife, 
+					threeMonthSupply, productQuantity);
 		}
 		
 		Date entryDate = new Date();
