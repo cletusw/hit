@@ -9,7 +9,7 @@ import java.io.Serializable;
  * @invariant !value.isEmpty()
  */
 @SuppressWarnings("serial")
-public class NonNullString implements Serializable {
+public class NonNullString implements Serializable, Comparable {
 	protected String value;
 	
 	protected NonNullString(){

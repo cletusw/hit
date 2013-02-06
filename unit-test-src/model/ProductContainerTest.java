@@ -63,18 +63,15 @@ public class ProductContainerTest {
 
 		assertEquals(0,productGroup1.getItemsSize());
 		assertFalse(productGroup1.contains(item1));
-		assertTrue(productGroup1.add(item1));
+		productGroup1.add(item1);
 		assertTrue(productGroup1.contains(item1));
-		assertTrue(productGroup1.add(item1));
-		assertTrue(productGroup1.add(item1Copy));
-		assertEquals(3,productGroup1.getItemsSize());
-		
-		assertTrue(productGroup1.remove(item1, itemManager));
+		productGroup1.add(item2);
+		productGroup1.add(item1Copy);
 		assertEquals(2,productGroup1.getItemsSize());
 		
-		productGroup1.clearAllItems();
-		assertEquals(0,productGroup1.getItemsSize());
-		
+		productGroup1.remove(item1, itemManager);
+		assertEquals(1,productGroup1.getItemsSize());
+			
 		System.out.println("done.");
 	}
 
@@ -84,37 +81,29 @@ public class ProductContainerTest {
 
 		assertEquals(0,productGroup1.getProductsSize());
 		assertFalse(productGroup1.contains(product1));
-		assertTrue(productGroup1.add(product1));
+		productGroup1.add(product1);
 		assertTrue(productGroup1.contains(product1));
-		assertTrue(productGroup1.add(product2));
+		productGroup1.add(product2);
 		assertTrue(productGroup1.contains(product2));
 		
 		// Should not allow two top-level Products of the same name
-		assertFalse(productGroup1.add(product1));
-		assertFalse(productGroup1.add(product1Copy));
+
 		assertEquals(2,productGroup1.getProductsSize());
 	
-		assertTrue(productGroup1.remove(product1));
+		productGroup1.remove(product1);
 		assertEquals(1,productGroup1.getProductsSize());
-		
-		productGroup1.clearAllProducts();
-		assertEquals(0,productGroup1.getProductsSize());
-		
+				
 		System.out.println("done.");
 	}
 	
-	@Test
-	public void testGetPGroupsSize() {
-		
+	@Test (expected= IllegalStateException.class)
+	public void testAddDuplicateProducts() {
+		productGroup1.add(product1);
+		productGroup1.add(product1Copy);
 	}
 	
 	@Test
 	public void testGetProductGroup() {
-		fail("Not yet implemented");
-	}
-
-	@Test
-	public void testClearAllProductGroups() {
 		fail("Not yet implemented");
 	}
 
@@ -127,12 +116,25 @@ public class ProductContainerTest {
 	@Test
 	public void PGtestProductGroups() {
 		System.out.print("Testing ProductGroup ProductGroup logic...");
-		assertEquals(0,productGroup1.getPGroupsSize());
-		assertTrue(productGroup1.canAddProductGroup((ProductGroup)productGroup2));
-		assertTrue(productGroup1.add((ProductGroup)productGroup2));
-		assertEquals(1,productGroup1.getPGroupsSize());
+		assertEquals(0, productGroup1.getPGroupsSize());
+		assertTrue(productGroup1.canAddProductGroup(productGroup2));
+		productGroup1.add(productGroup2);
 		assertTrue(productGroup1.contains(productGroup2));
+		assertEquals(1, productGroup1.getPGroupsSize());
+		assertFalse(productGroup1.contains(productGroup3));
+		productGroup1.add(productGroup3);
+		assertTrue(productGroup1.contains(productGroup3));
+		assertEquals(2, productGroup1.getPGroupsSize());
+		// Don't allow duplicate PGs in a PG
+		assertFalse(productGroup1.canAddProductGroup(productGroup2));
+		
 		System.out.println("done.");
+	}
+	
+	@Test (expected= IllegalStateException.class)
+	public void testAddTwoIdenticalProductGroups() {
+		productGroup1.add(productGroup2);
+		productGroup1.add(productGroup2);
 	}
 	
 	@Test
@@ -162,7 +164,7 @@ public class ProductContainerTest {
 		assertTrue(productGroup1.getName().equals("Cookies"));
 		assertTrue(storageUnit1.getName().equals("Cookie Jar"));
 	}
-
+/*
 	@Test
 	public void testGetItems() {
 		fail("Not yet implemented");
@@ -257,6 +259,7 @@ public class ProductContainerTest {
 	@Test
 	public void testCompareTo() {
 		fail("Not yet implemented");
-	}	
+	}
+	*/
 }
 

@@ -113,8 +113,8 @@ public class Item implements Comparable<Object>, Serializable {
 	 * @post true
 	 * 
 	 */
-	public Barcode getBarcode() {
-		return barcode;
+	public String getBarcode() {
+		return barcode.getValue();
 	}
 	
 	/** Gets this Item's entry date
