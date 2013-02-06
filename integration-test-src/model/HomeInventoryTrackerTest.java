@@ -23,9 +23,12 @@ public class HomeInventoryTrackerTest {
 		HomeInventoryTracker tracker = new HomeInventoryTracker();
 		
 		String storageUnitName = "Pantry";
-		tracker.addStorageUnit(storageUnitName);
+		assertTrue(tracker.canAddStorageUnit(storageUnitName));
+		StorageUnit storageUnit = new StorageUnit(storageUnitName);
+		tracker.addStorageUnit(storageUnit);
 		String newStorageUnitName = "Downstairs Pantry";
-		tracker.renameStorageUnit(storageUnitName, newStorageUnitName);
+		assertTrue(tracker.canAddStorageUnit(newStorageUnitName));
+		tracker.renameStorageUnit(storageUnit, newStorageUnitName);
 		
 		String barcodeScanned = "barcode " + 1;
 		Product product = tracker.getProductByBarcode(barcodeScanned);

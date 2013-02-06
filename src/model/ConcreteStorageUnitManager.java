@@ -29,18 +29,20 @@ public class ConcreteStorageUnitManager implements Serializable, StorageUnitMana
 			return false;
 		
 		// From the Data Dictionary: Must be non-empty. Must be unique among all Storage Units.
-		return !name.equals("") && !rootStorageUnits.contains(name);
+		return !name.equals("") && !rootStorageUnits.contains(new StorageUnit(name));
 	}
 	
 	/** Creates a new StorageUnit and adds it to the system.
 	 * 
-	 *  @pre isValidStorageUnitName(storageUnitName)
-	 *  @post true
+	 * @param storageUnit The Storage Unit to add
+	 * 
+	 * @pre isValidStorageUnitName(storageUnitName)
+	 * @post true
 	 */
-	public void add(String storageUnitName) {
-		assert(isValidStorageUnitName(storageUnitName));
+	public void add(StorageUnit storageUnit) {
+		assert(isValidStorageUnitName(storageUnit.getName()));
 		
-		rootStorageUnits.add(new StorageUnit(storageUnitName));
+		rootStorageUnits.add(storageUnit);
 	}
 	
 	/** Removes a given Product from all Storage Units.
@@ -100,7 +102,7 @@ public class ConcreteStorageUnitManager implements Serializable, StorageUnitMana
 
 	/**
 	 * Rename a Storage Unit
-	 * @param storageUnitName Name of the Storage Unit to rename
+	 * @param storageUnit The Storage Unit to rename
 	 * @param newStorageUnitName New name to be given to Storage Unit
 	 * 
 	 * @pre rootStorageUnits.contains(storageUnitName)
@@ -108,11 +110,10 @@ public class ConcreteStorageUnitManager implements Serializable, StorageUnitMana
 	 * @post !rootStorageUnits.contains(storageUnitName)
 	 * @post rootStorageUnits.contains(newStorageUnitName)
 	 */
-	public void renameStorageUnit(String storageUnitName, String newStorageUnitName) {
-		assert(rootStorageUnits.contains(storageUnitName));
+	public void renameStorageUnit(StorageUnit storageUnit, String newStorageUnitName) {
+		assert(rootStorageUnits.contains(storageUnit));
 		assert(isValidStorageUnitName(newStorageUnitName));
 		
-		rootStorageUnits.remove(storageUnitName);
-		rootStorageUnits.add(new StorageUnit(newStorageUnitName));
+		storageUnit.setName(newStorageUnitName);
 	}
 }

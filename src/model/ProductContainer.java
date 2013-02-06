@@ -94,6 +94,19 @@ public abstract class ProductContainer implements Comparable<ProductContainer>, 
 		return name;
 	}
 	
+	/** Sets this Container's name
+	 * 
+	 * @param name Name to set to
+	 * 
+	 * @pre isValidName(name)
+	 * @post getName() == name
+	 */
+	public void setName(String name) {
+		assert(isValidName(name));
+		
+		this.name = name;
+	}
+	
 	/** Gets the size of the items collection.
 	 * 
 	 * @return int - the number of elements in the items collection.
@@ -267,8 +280,8 @@ public abstract class ProductContainer implements Comparable<ProductContainer>, 
 	 */
 	public boolean canAddProductGroup(String productGroupName) {
 		assert(productGroupName != null);
-		// From the Data Dictionary: Must be non-empty and unique within 
-		//   the parent Product Container. 
+		// From the Data Dictionary: Mustï¿½beï¿½non-emptyï¿½andï¿½uniqueï¿½withinï¿½
+		//   theï¿½parentï¿½Productï¿½Container.ï¿½
 		return !productGroupName.equals("") && !containsProductGroup(productGroupName);
 	}
 	
