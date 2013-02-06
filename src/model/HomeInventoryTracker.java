@@ -41,6 +41,9 @@ public class HomeInventoryTracker implements Serializable {
 	 * @post File f(filename).exists()
 	 */
 	public void write(String filename) throws IOException {
+		assert(filename != null);
+		assert(!filename.equals(""));
+		
 		PersistentStorageManager persistentStorageManager = new SerializationManager();
 		persistentStorageManager.writeObject(this,filename);
 	}
@@ -54,6 +57,8 @@ public class HomeInventoryTracker implements Serializable {
 	 * @post true
 	 */
 	public boolean isValidStorageUnitName(String name) {
+		assert(name != null);
+		
 		return storageUnitManager.isValidStorageUnitName(name);
 	}
 	
@@ -65,6 +70,9 @@ public class HomeInventoryTracker implements Serializable {
 	 * @post container.contains(item)
 	 */
 	public void add(Item item, ProductContainer container) {
+		assert(item != null);
+		assert(container != null);
+		
 		container.add(item);
 	}
 	
@@ -76,6 +84,9 @@ public class HomeInventoryTracker implements Serializable {
 	 * @post !containsItem(item)
 	 */
 	public void remove(Item item, ProductContainer container) throws IllegalStateException {
+		assert(item != null);
+		assert(container != null);
+		
 		container.remove(item, itemManager);
 	}
 	
@@ -104,6 +115,8 @@ public class HomeInventoryTracker implements Serializable {
 	 * @post !contains(product)
 	 */
 	public void remove(Product product) throws IllegalStateException {
+		assert(product != null);
+		
 		if (!canRemove(product))
 			throw new IllegalStateException(
 					"Cannot remove product from the system; it still has items that refer to it");
@@ -120,6 +133,8 @@ public class HomeInventoryTracker implements Serializable {
 	 */
 	public void removeFromContainer(Product product, ProductContainer container) 
 			throws IllegalStateException {
+		assert(product != null);
+		
 		container.remove(product);
 	}
 	
@@ -134,6 +149,8 @@ public class HomeInventoryTracker implements Serializable {
 	public boolean canRemove(Product product) {
 		// From the Data Dictionary: A Product can be removed from the system only if
 		//    the system contains no Items of the Product
+		assert(product != null);
+		
 		return !itemManager.productHasItems(product);
 	}
 	
@@ -146,6 +163,8 @@ public class HomeInventoryTracker implements Serializable {
 	 * @post true
 	 */
 	public boolean contains(Product product) {
+		assert(product != null);
+		
 		return productManager.contains(product);
 	}
 	
@@ -172,6 +191,9 @@ public class HomeInventoryTracker implements Serializable {
 	 * @pre productGroup.canRemove()
 	 */
 	public void remove(ProductGroup productGroup) {
+		assert(productGroup != null);
+		assert(productGroup.canRemove());
+		
 		storageUnitManager.remove(productGroup);
 	}
 	
@@ -184,6 +206,9 @@ public class HomeInventoryTracker implements Serializable {
 	 * @pre storageUnit.canRemove()
 	 */
 	public void remove(StorageUnit storageUnit) {
+		assert(storageUnit != null);
+		assert(storageUnit.canRemove());
+		
 		storageUnitManager.remove(storageUnit);
 	}
 	
