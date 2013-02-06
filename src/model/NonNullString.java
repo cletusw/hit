@@ -20,11 +20,15 @@ public class NonNullString implements Serializable, Comparable {
 	 * 
 	 * @param s non-null, non-empty string.
 	 * 
-	 * @pre true
+	 * @pre s != null
+	 * @pre !s.isEmpty()
 	 * @post value == s
 	 * @post value != null
 	 */
 	public NonNullString(String s){
+		assert(s != null);
+		assert(!s.isEmpty());
+		
 		if(s == null || s.isEmpty()){
 			throw new IllegalArgumentException();
 		}
@@ -51,11 +55,12 @@ public class NonNullString implements Serializable, Comparable {
 	 * the string argument; and a value greater than 0 if this string is 
 	 * lexicographically greater than the string argument.
 	 * 
-	 * @pre other must be an instance of NonNullString of String
+	 * @pre other instanceof NonNullString || String
 	 * @post true
 	 */
 	public int compareTo(Object other) {
 		assert(other instanceof NonNullString || other instanceof String);
+		
 		if(other instanceof NonNullString){
 			return this.value.compareTo(((NonNullString) other).getValue());
 		}
