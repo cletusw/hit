@@ -53,6 +53,21 @@ public class BarcodeTest {
 	
 	@Test
 	public void TestBarcodeConstructor(){
-		new Barcode();
+		Barcode b = new Barcode();
+		assertTrue(b.getValue() != null);
+		assertTrue(b.getValue().length() == 12);
+		assertTrue(Barcode.isValidBarcode(b.getValue()));
+		
+		Barcode c = new Barcode(b.getValue());
+		assertTrue(c.getValue() != null);
+		assertTrue(c.getValue().equals(b.getValue()));
+		assertTrue(Barcode.isValidBarcode(c.getValue()));
+	}
+	
+	@Test
+	public void testCompareTo(){
+		Barcode b = new Barcode();
+		Barcode c = new Barcode(b.getValue());
+		assertTrue(b.compareTo(c) == 0);
 	}
 }

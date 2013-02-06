@@ -7,7 +7,7 @@ import java.util.Date;
  *  @author Matt Hess
  *  @version 1.0 -- Snell CS 340 Phase 1.0
  *  
- *  @invariant barcode.length() == 12
+ *  @invariant value.length() == 12
  */
 @SuppressWarnings("serial")
 public class Barcode extends NonNullString{
@@ -20,7 +20,7 @@ public class Barcode extends NonNullString{
 	 * @pre s != null
 	 * @pre !s.equals("")
 	 * @post barcode.equals(s)
-	 * @post isValidBarcode(barcode)
+	 * @post isValidBarcode(barcode) == true
 	 * 
 	 */
 	public Barcode(String s) throws IllegalArgumentException {
@@ -33,6 +33,7 @@ public class Barcode extends NonNullString{
 	 * 
 	 * @pre true
 	 * @post getValue() != null
+	 * @post isValidBarcode(barcode) == true
 	 */
 	public Barcode() {
 		this(generateBarcode());
@@ -126,6 +127,9 @@ public class Barcode extends NonNullString{
 	 * a value less than 0 if this string is lexicographically less than 
 	 * the string argument; and a value greater than 0 if this string is 
 	 * lexicographically greater than the string argument.
+	 * 
+	 * @pre true
+	 * @post true
 	 */
 	public int compareTo(Barcode other){
 		return this.value.compareTo(other.value);
