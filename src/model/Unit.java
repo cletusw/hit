@@ -30,6 +30,9 @@ public enum Unit implements Serializable {
 	 * Get the string representation of the Unit.
 	 * 
 	 * @return String representation of this Unit with first letter capitalized.
+	 * 
+	 * @pre true
+	 * @post true
 	 */
 	@Override 
 	public String toString() {
@@ -37,6 +40,15 @@ public enum Unit implements Serializable {
 		return s.substring(0, 1) + s.substring(1).toLowerCase();
 	 }
 	
+	/** Retrieves the conversion factor to convert a quantity of one type of unit to another.
+	 * 
+	 * @param convertFrom - originalUnits
+	 * @param convertTo - new units
+	 * @return float conversion factor
+	 * 
+	 * @pre true
+	 * @post true
+	 */
 	public static float getConversionFactor(Unit convertFrom, Unit convertTo){
 		if(convertFrom.equals(convertTo))
 			return 1f;
