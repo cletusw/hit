@@ -62,7 +62,7 @@ public class ItemTest {
 	 */
 	@Test
 	public void testItem() {
-		assertTrue(item.getBarcode().equals(validUPCABarcode));
+		assertTrue(item.getBarcode().equals(validUPCABarcode.getValue()));
 		assertTrue(item.getProduct().compareTo(product) == 0);
 		assertTrue(item.getContainer().equals(productGroup));
 		
