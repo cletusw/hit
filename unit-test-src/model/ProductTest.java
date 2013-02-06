@@ -31,20 +31,7 @@ public class ProductTest {
 	@Before
 	public void setUp() throws Exception {
 		product = new Product(validBarcode, validDescription, shelfLife, threeMonthSupply, size, productManager);
-	}
-
-	/**
-	 * @throws java.lang.Exception
-	 */
-	@After
-	public void tearDown() throws Exception {
-	}
-
-	/**
-	 * Test method for {@link model.Product#Product(java.lang.String, java.lang.String)}.
-	 */
-	@Test
-	public void testProduct() {
+		
 		// test invariants
 		assertTrue(product.getBarcode() != null);
 		assertTrue(product.getDescription() != null);
@@ -52,7 +39,27 @@ public class ProductTest {
 		assertTrue(product.getShelfLife() >= 0);
 		assertTrue(product.getThreeMonthSupply() >= 0);
 		assertTrue(product.getSize() != null);
-		
+	}
+
+	/**
+	 * @throws java.lang.Exception
+	 */
+	@After
+	public void tearDown() throws Exception {
+		// test invariants
+		assertTrue(product.getBarcode() != null);
+		assertTrue(product.getDescription() != null);
+		assertTrue(product.getCreationDate() != null);
+		assertTrue(product.getShelfLife() >= 0);
+		assertTrue(product.getThreeMonthSupply() >= 0);
+		assertTrue(product.getSize() != null);
+	}
+
+	/**
+	 * Test method for {@link model.Product#Product(java.lang.String, java.lang.String)}.
+	 */
+	@Test
+	public void testProduct() {		
 		// test constructor post
 		assertTrue(product.getBarcode().equals(validBarcode));
 		assertTrue(product.getDescription().equals(validDescription));
