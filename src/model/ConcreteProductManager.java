@@ -58,7 +58,7 @@ public class ConcreteProductManager implements ProductManager, Serializable {
 	 * 
 	 * @pre barcode != null
 	 */
-	public Product getBy(String barcode) {
+	public Product getByBarcode(String barcode) {
 		assert(barcode != null);
 		
 		return barcodesToProducts.get(barcode);

@@ -41,6 +41,9 @@ public class HomeInventoryTracker implements Serializable {
 	 * @post File f(filename).exists()
 	 */
 	public void write(String filename) throws IOException {
+		assert(filename != null);
+		assert(!filename.equals(""));
+		
 		PersistentStorageManager persistentStorageManager = new SerializationManager();
 		persistentStorageManager.writeObject(this,filename);
 	}
@@ -54,6 +57,8 @@ public class HomeInventoryTracker implements Serializable {
 	 * @post true
 	 */
 	public boolean isValidStorageUnitName(String name) {
+		assert(name != null);
+		
 		return storageUnitManager.isValidStorageUnitName(name);
 	}
 	
@@ -65,6 +70,9 @@ public class HomeInventoryTracker implements Serializable {
 	 * @post container.contains(item)
 	 */
 	public void add(Item item, ProductContainer container) {
+		assert(item != null);
+		assert(container != null);
+		
 		container.add(item);
 	}
 	
@@ -76,6 +84,9 @@ public class HomeInventoryTracker implements Serializable {
 	 * @post !containsItem(item)
 	 */
 	public void remove(Item item, ProductContainer container) throws IllegalStateException {
+		assert(item != null);
+		assert(container != null);
+		
 		container.remove(item, itemManager);
 	}
 	
@@ -104,6 +115,8 @@ public class HomeInventoryTracker implements Serializable {
 	 * @post !contains(product)
 	 */
 	public void remove(Product product) throws IllegalStateException {
+		assert(product != null);
+		
 		if (!canRemove(product))
 			throw new IllegalStateException(
 					"Cannot remove product from the system; it still has items that refer to it");
@@ -120,6 +133,8 @@ public class HomeInventoryTracker implements Serializable {
 	 */
 	public void removeFromContainer(Product product, ProductContainer container) 
 			throws IllegalStateException {
+		assert(product != null);
+		
 		container.remove(product);
 	}
 	
@@ -134,6 +149,8 @@ public class HomeInventoryTracker implements Serializable {
 	public boolean canRemove(Product product) {
 		// From the Data Dictionary: A Product can be removed from the system only if
 		//    the system contains no Items of the Product
+		assert(product != null);
+		
 		return !itemManager.productHasItems(product);
 	}
 	
@@ -146,6 +163,8 @@ public class HomeInventoryTracker implements Serializable {
 	 * @post true
 	 */
 	public boolean contains(Product product) {
+		assert(product != null);
+		
 		return productManager.contains(product);
 	}
 	
@@ -172,6 +191,9 @@ public class HomeInventoryTracker implements Serializable {
 	 * @pre productGroup.canRemove()
 	 */
 	public void remove(ProductGroup productGroup) {
+		assert(productGroup != null);
+		assert(productGroup.canRemove());
+		
 		storageUnitManager.remove(productGroup);
 	}
 	
@@ -184,6 +206,9 @@ public class HomeInventoryTracker implements Serializable {
 	 * @pre storageUnit.canRemove()
 	 */
 	public void remove(StorageUnit storageUnit) {
+		assert(storageUnit != null);
+		assert(storageUnit.canRemove());
+		
 		storageUnitManager.remove(storageUnit);
 	}
 	
@@ -201,45 +226,84 @@ public class HomeInventoryTracker implements Serializable {
 
 	/**
 	 * Add a Storage Unit to the system with the specified name
-	 * @param storageUnitName Name of the Storage Unit to create
+	 * @param storageUnit The Storage Unit to add to the system
 	 * 
-	 * @pre canAddStorageUnit(storageUnitName)
+	 * @pre canAddStorageUnit(storageUnit.getName())
 	 * @post true
 	 */
-	public void addStorageUnit(String storageUnitName) {
-		assert(canAddStorageUnit(storageUnitName));
+	public void addStorageUnit(StorageUnit storageUnit) {
+		assert(canAddStorageUnit(storageUnit.getName()));
 		
-		storageUnitManager.add(storageUnitName);
+		storageUnitManager.add(storageUnit);
 	}
 
 	/**
 	 * Rename a Storage Unit
-	 * @param storageUnitName Name of the Storage Unit to rename
+	 * @param storageUnit The Storage Unit to rename
 	 * @param newStorageUnitName New name to be given to Storage Unit
 	 * 
 	 * @pre canAddStorageUnit(newStorageUnitName)
 	 * @post true
 	 */
-	public void renameStorageUnit(String storageUnitName, String newStorageUnitName) {
+	public void renameStorageUnit(StorageUnit storageUnit, String newStorageUnitName) {
 		assert(canAddStorageUnit(newStorageUnitName));
 		
-		storageUnitManager.renameStorageUnit(storageUnitName, newStorageUnitName);
+		storageUnitManager.renameStorageUnit(storageUnit, newStorageUnitName);
 	}
 
+	/** Get an existing Product from the system by its barcode
+	 * 
+	 * @param barcodeScanned The Product's barcode
+	 * @return Product with the given barcode, if it exists. null, otherwise.
+	 * 
+	 * @pre barcodeScanned != null
+	 */
 	public Product getProductByBarcode(String barcodeScanned) {
-		// TODO Auto-generated method stub
-		return null;
+		assert(barcodeScanned != null);
+		
+		return productManager.getByBarcode(barcodeScanned);
 	}
 
+	/** Create a new Product
+	 * 
+	 * @param barcode
+	 * @param description
+	 * @param shelfLife
+	 * @param threeMonthSupply
+	 * @param productQuantity
+	 * @return
+	 * 
+	 * @pre getProductByBarcode(barcode) == null
+	 * @post getProductByBarcode(barcode) != null
+	 */
 	public Product createProduct(String barcode, String description, int shelfLife, 
 			int threeMonthSupply, ProductQuantity productQuantity) {
-		// TODO Auto-generated method stub
-		return null;
+		assert(getProductByBarcode(barcode) == null);
+		
+		return new Product(barcode, description, shelfLife,
+				threeMonthSupply, productQuantity, productManager);
 	}
 
-	public void addItem(Product product, Date entryDate, String newStorageUnitName) {
-		// TODO Auto-generated method stub
+	/** Add a new Item to the system
+	 * 
+	 * @param product The new Item's Product
+	 * @param entryDate Date the Item was scanned
+	 * @param storageUnit The Storage Unit in which to place the item
+	 * @return the newly created Item
+	 * 
+	 * @pre product != null
+	 * @pre entryDate != null
+	 * @pre storageUnit != null
+	 */
+	public Item addItem(Product product, Date entryDate, StorageUnit storageUnit) {
+		assert(product != null);
+		assert(entryDate != null);
+		assert(storageUnit != null);
 		
+		Item newItem = new Item(product, entryDate, storageUnit, itemManager);
+		storageUnit.add(newItem);
+		
+		return newItem;
 	}
 	
 }

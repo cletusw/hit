@@ -5,7 +5,6 @@ package model;
  *  @author - Matt Hess
  *  @version 1.0 - Snell 340 Group 4 Phase 1
  *  
- *  @invariant 
  */
 
 @SuppressWarnings("serial")
@@ -32,7 +31,8 @@ public class StorageUnit extends ProductContainer {
 	 * @post true
 	 */
 	public boolean canAddProductGroup(ProductGroup pGroup) {
-		// From the Data Dictionary: A Storage Unit cannot have two top-level Product Groups of the same name.
+		// From the Data Dictionary: A Storage Unit cannot have two top-level 
+		// Product Groups of the same name.
 		return (getProductGroup(pGroup.getName()) == null);
 	}
 

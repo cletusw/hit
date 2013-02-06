@@ -58,8 +58,8 @@ public class Product implements Comparable<Object>, Serializable {
 	 * @post this.threemonthSupply = tms
 	 * @post this.size = pq
 	 */
-	public Product(String barcode, String description, Date creationDate, int shelfLife, int tms,
-			ProductQuantity pq, ProductManager manager) {
+	public Product(String barcode, String description, Date creationDate, int shelfLife, 
+			int tms, ProductQuantity pq, ProductManager manager) {
 		this.setBarcode(barcode);
 		this.description = new NonNullString(description);
 		this.setCreationDate(creationDate);

@@ -42,13 +42,20 @@ public class ProductContainerTest {
 		itemManager = new MockItemManager();
 		productManager = new MockProductManager();
 		storageUnit1 = new StorageUnit("Cookie Jar");
-		productGroup1 = new ProductGroup("Cookies", new ProductQuantity(1, Unit.COUNT), Unit.KILOGRAMS);
-		productGroup2 = new ProductGroup("Chocolate Chip Cookies", new ProductQuantity(1, Unit.COUNT), Unit.KILOGRAMS);
-		productGroup3 = new ProductGroup("No-Bake Cookies", new ProductQuantity(1, Unit.COUNT), Unit.KILOGRAMS);
-		productGroup3Copy = new ProductGroup("No-Bake Cookies", new ProductQuantity(1, Unit.COUNT), Unit.KILOGRAMS);
-		product1 = new Product("PROD1BARCODE", "Smelly socks", 0, 4, new ProductQuantity(2, Unit.COUNT), productManager);
-		product1Copy = new Product("PROD1BARCODE", "Smelly socks", 0, 4, new ProductQuantity(2, Unit.COUNT), productManager);
-		product2 = new Product("PROD2BARCODE00", "Green Jell-O", 365, 12, new ProductQuantity(3, Unit.OUNCES), productManager);
+		productGroup1 = new ProductGroup("Cookies", 
+				new ProductQuantity(1, Unit.COUNT), Unit.KILOGRAMS);
+		productGroup2 = new ProductGroup("Chocolate Chip Cookies", 
+				new ProductQuantity(1, Unit.COUNT), Unit.KILOGRAMS);
+		productGroup3 = new ProductGroup("No-Bake Cookies", 
+				new ProductQuantity(1, Unit.COUNT), Unit.KILOGRAMS);
+		productGroup3Copy = new ProductGroup("No-Bake Cookies", 
+				new ProductQuantity(1, Unit.COUNT), Unit.KILOGRAMS);
+		product1 = new Product("PROD1BARCODE", "Smelly socks", 0, 4, 
+				new ProductQuantity(2, Unit.COUNT), productManager);
+		product1Copy = new Product("PROD1BARCODE", "Smelly socks", 0, 4, 
+				new ProductQuantity(2, Unit.COUNT), productManager);
+		product2 = new Product("PROD2BARCODE00", "Green Jell-O", 365, 12, 
+				new ProductQuantity(3, Unit.OUNCES), productManager);
 		item1 = new Item(new Barcode("400000001968"), product1, null, itemManager);
 		item1Copy = new Item(new Barcode("400000001968"), product1, null, itemManager);
 		item2 = new Item(new Barcode("400000001999"), product2, null, itemManager);

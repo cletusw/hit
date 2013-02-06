@@ -36,8 +36,8 @@ public class SerializationManagerTest {
 		
 		String name1 = "StorageUnit1";
 		String name2 = "StorageUnit2";
-		hit.addStorageUnit(name1);
-		hit.addStorageUnit(name2);
+		hit.addStorageUnit(new StorageUnit(name1));
+		hit.addStorageUnit(new StorageUnit(name2));
 		
 		try {
 			hit.write(testTarget);

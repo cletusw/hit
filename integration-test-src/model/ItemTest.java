@@ -22,8 +22,10 @@ public class ItemTest {
 	private final ItemManager itemManager = new MockItemManager();
 	private final ProductManager productManager = new MockProductManager();
 	private final ProductQuantity pq = new ProductQuantity(2.2f, Unit.FLUID_OUNCES);
-	private final Product product = new Product("validBarcode", "A product", 3, 3, pq, productManager);
-	private final ProductGroup productGroup = new ProductGroup("Test product group", pq, Unit.GALLONS);
+	private final Product product = new Product("validBarcode", "A product", 
+			3, 3, pq, productManager);
+	private final ProductGroup productGroup = new ProductGroup("Test product group", 
+			pq, Unit.GALLONS);
 	private final Date entryDateLastMonth = new Date(113, 0, 1, 12, 45, 45);
 	
 	private Item item;
@@ -55,11 +57,12 @@ public class ItemTest {
 	}
 
 	/**
-	 * Test method for {@link model.Item#Item(model.Barcode, model.Product, model.ProductContainer, Date entryDate, ItemManager itemManager)}.
+	 * Test method for {@link model.Item#Item(model.Barcode, model.Product,
+	 * model.ProductContainer, Date entryDate, ItemManager itemManager)}.
 	 */
 	@Test
 	public void testItem() {
-		assertTrue(item.getBarcode().equals(validUPCABarcode));
+		assertTrue(item.getBarcode().equals(validUPCABarcode.getValue()));
 		assertTrue(item.getProduct().compareTo(product) == 0);
 		assertTrue(item.getContainer().equals(productGroup));
 		
@@ -84,7 +87,8 @@ public class ItemTest {
 	}
 	
 	/**
-	 * Test method for {@link model.Item#Item(model.Product, model.ProductContainer, ItemManager itemManager)}.
+	 * Test method for {@link model.Item#Item(model.Product, model.ProductContainer, 
+	 * ItemManager itemManager)}.
 	 */
 	@Test
 	public void testItemNoDateNoBarcode() {
@@ -110,7 +114,8 @@ public class ItemTest {
 	}
 	
 	/**
-	 * Test method for {@link model.Item#Item(java.lang.String, model.Product, model.ProductContainer)}.
+	 * Test method for {@link model.Item#Item(java.lang.String, 
+	 * model.Product, model.ProductContainer)}.
 	 */
 	@Test
 	public void testItemInvalidBarcode() {
@@ -138,7 +143,8 @@ public class ItemTest {
 	@Test
 	public void testCompareTo() {
 		Item sameItem = new Item(validUPCABarcode, product, productGroup, itemManager);
-		Item newItem = new Item(new Barcode("412345688919"), new Product("abc", "abcd", 3, 3, pq, productManager), productGroup, itemManager);
+		Item newItem = new Item(new Barcode("412345688919"), new Product("abc", "abcd", 
+				3, 3, pq, productManager), productGroup, itemManager);
 		assertTrue(item.compareTo(sameItem) == 0);
 		assertTrue(item.compareTo(newItem) != 0);
 	}

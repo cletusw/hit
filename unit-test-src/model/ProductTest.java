@@ -30,7 +30,8 @@ public class ProductTest {
 	 */
 	@Before
 	public void setUp() throws Exception {
-		product = new Product(validBarcode, validDescription, shelfLife, threeMonthSupply, size, productManager);
+		product = new Product(validBarcode, validDescription, shelfLife, 
+				threeMonthSupply, size, productManager);
 		
 		// test invariants
 		assertTrue(product.getBarcode() != null);
@@ -61,10 +62,10 @@ public class ProductTest {
 	@Test
 	public void testProduct() {		
 		// test constructor post
+		assertTrue(!product.getCreationDate().after(new Date()));
 		assertTrue(product.getBarcode().equals(validBarcode));
 		assertTrue(product.getDescription().equals(validDescription));
 		assertTrue(product.getShelfLife() == shelfLife);
-		assertTrue(product.getCreationDate().equals(new Date()));
 		assertTrue(product.getSize().equals(size));
 		assertTrue(product.getThreeMonthSupply() == threeMonthSupply);
 	}
@@ -179,8 +180,10 @@ public class ProductTest {
 	 */
 	@Test
 	public void testCompareTo() {
-		Product sameProduct = new Product(product.getBarcode(), product.getDescription(), 0, 0, size, productManager);
-		Product differentProduct = new Product("DifferentBarcode", "DifferentDescription", 0, 0, size, productManager);
+		Product sameProduct = new Product(product.getBarcode(), product.getDescription(), 
+				0, 0, size, productManager);
+		Product differentProduct = new Product("DifferentBarcode", "DifferentDescription", 
+				0, 0, size, productManager);
 		
 		assertTrue(product.compareTo(sameProduct) == 0);
 		assertTrue(product.compareTo(differentProduct) != 0);

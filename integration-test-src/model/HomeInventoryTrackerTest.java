@@ -22,25 +22,34 @@ public class HomeInventoryTrackerTest {
 	public void test() {
 		HomeInventoryTracker tracker = new HomeInventoryTracker();
 		
+		// Mess around with some Storage Units
 		String storageUnitName = "Pantry";
-		tracker.addStorageUnit(storageUnitName);
+		assertTrue(tracker.canAddStorageUnit(storageUnitName));
+		StorageUnit storageUnit = new StorageUnit(storageUnitName);
+		tracker.addStorageUnit(storageUnit);
 		String newStorageUnitName = "Downstairs Pantry";
-		tracker.renameStorageUnit(storageUnitName, newStorageUnitName);
+		assertTrue(tracker.canAddStorageUnit(newStorageUnitName));
+		tracker.renameStorageUnit(storageUnit, newStorageUnitName);
 		
+		// "Scan" a product barcode
 		String barcodeScanned = "barcode " + 1;
 		Product product = tracker.getProductByBarcode(barcodeScanned);
-		if (product == null) {
-			String description = "description " + 1;
-			int shelfLife = 1;
-			int threeMonthSupply = 1;
-			ProductQuantity productQuantity = new ProductQuantity(1, Unit.COUNT);
-			product = tracker.createProduct(barcodeScanned, description, shelfLife, threeMonthSupply, productQuantity);
-		}
+		assertTrue(product == null);
 		
+		// Fill in new Product information
+		String description = "description " + 1;
+		int shelfLife = 1;
+		int threeMonthSupply = 1;
+		ProductQuantity productQuantity = new ProductQuantity(1, Unit.COUNT);
+		product = tracker.createProduct(barcodeScanned, description, shelfLife, 
+				threeMonthSupply, productQuantity);
+		assertTrue(tracker.getProductByBarcode(barcodeScanned) != null);
+		
+		// Create new item
+		assertTrue(storageUnit.getItemsSize() == 0);
 		Date entryDate = new Date();
-		tracker.addItem(product, entryDate, newStorageUnitName);
-		
-		assertTrue(true);
+		Item item = tracker.addItem(product, entryDate, storageUnit);
+		assertTrue(storageUnit.contains(item));
 	}
 
 }
