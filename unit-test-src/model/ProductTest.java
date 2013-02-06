@@ -45,6 +45,15 @@ public class ProductTest {
 	 */
 	@Test
 	public void testProduct() {
+		// test invariants
+		assertTrue(product.getBarcode() != null);
+		assertTrue(product.getDescription() != null);
+		assertTrue(product.getCreationDate() != null);
+		assertTrue(product.getShelfLife() >= 0);
+		assertTrue(product.getThreeMonthSupply() >= 0);
+		assertTrue(product.getSize() != null);
+		
+		// test constructor post
 		assertTrue(product.getBarcode().equals(validBarcode));
 		assertTrue(product.getDescription().equals(validDescription));
 		assertTrue(product.getShelfLife() == shelfLife);
