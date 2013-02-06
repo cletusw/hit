@@ -20,9 +20,9 @@ public class BarcodeTest {
 	@After
 	public void tearDown() throws Exception {
 	}
-	// worthless comment
+
 	@Test
-	public void test() {
+	public void testValidCodes() {
 		// test null string
 		assertEquals(Barcode.isValidBarcode(null),false);
 		
