@@ -116,6 +116,9 @@ public class ProductQuantity implements Serializable {
 	 * @post quantity.equals(quantity + quantityToAdd.quantity)
 	 */
 	public void add(ProductQuantity otherQuantity) throws IllegalArgumentException {
+		assert(otherQuantity != null);
+		assert(!this.unitType.equals(otherQuantity.unitType));
+		
 		this.unitType.equals(otherQuantity.unitType);
 		if(!this.unitType.equals(otherQuantity.unitType)){
 			throw new IllegalArgumentException("Cannot add quantities with different unit types.");
@@ -175,8 +178,16 @@ public class ProductQuantity implements Serializable {
 	 * Determines whether this ProductQuantity is equal to another.
 	 * @param other		the Object to test for equality
 	 * @return 			true if the objects are equal, false otherwise.
+	 * 
+	 * @pre other != null
+	 * @pre other instanceof ProductQuantity
+	 * @post true
+	 * 
 	 */
 	public boolean equals(Object other) {
+		assert(other != null);
+		assert(other instanceof ProductQuantity);
+		
 		ProductQuantity pq = (ProductQuantity) other;
 		return this.quantity == pq.quantity && this.units == pq.units;
 	}

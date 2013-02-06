@@ -160,9 +160,12 @@ public class ProductContainerTest {
 		storageUnit1.add(item1);
 		productGroup2.add(item3);
 		System.out.println("Supply: " + storageUnit1.getCurrentSupply(item1.getProduct()));
-		assertTrue(storageUnit1.getCurrentSupply(item1.getProduct()).equals(new ProductQuantity(4, Unit.COUNT)));
-		assertTrue(productGroup1.getCurrentSupply(item1.getProduct()).equals(new ProductQuantity(2, Unit.COUNT)));
-		assertTrue(storageUnit1.getCurrentSupply(item2.getProduct()).equals(new ProductQuantity(0, Unit.OUNCES)));
+		assertTrue(storageUnit1.getCurrentSupply(item1.getProduct()).equals(
+				new ProductQuantity(4, Unit.COUNT)));
+		assertTrue(productGroup1.getCurrentSupply(item1.getProduct()).equals(
+				new ProductQuantity(2, Unit.COUNT)));
+		assertTrue(storageUnit1.getCurrentSupply(item2.getProduct()).equals(
+				new ProductQuantity(0, Unit.OUNCES)));
 	}
 	
 	@Test

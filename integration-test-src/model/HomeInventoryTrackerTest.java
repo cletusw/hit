@@ -9,9 +9,11 @@ import org.junit.Before;
 import org.junit.Test;
 
 public class HomeInventoryTrackerTest {
+	private HomeInventoryTracker tracker;
 
 	@Before
 	public void setUp() throws Exception {
+		tracker = new HomeInventoryTracker();
 	}
 
 	@After
@@ -20,16 +22,22 @@ public class HomeInventoryTrackerTest {
 
 	@Test
 	public void test() {
-		HomeInventoryTracker tracker = new HomeInventoryTracker();
-		
 		// Mess around with some Storage Units
 		String storageUnitName = "Pantry";
 		assertTrue(tracker.canAddStorageUnit(storageUnitName));
 		StorageUnit storageUnit = new StorageUnit(storageUnitName);
 		tracker.addStorageUnit(storageUnit);
+		assertFalse(tracker.canAddStorageUnit(storageUnitName));
+		
 		String newStorageUnitName = "Downstairs Pantry";
 		assertTrue(tracker.canAddStorageUnit(newStorageUnitName));
 		tracker.renameStorageUnit(storageUnit, newStorageUnitName);
+		assertFalse(tracker.canAddStorageUnit(newStorageUnitName));
+		
+		assertTrue(tracker.canAddStorageUnit(storageUnitName));
+		StorageUnit storageUnit2 = new StorageUnit(storageUnitName);
+		tracker.addStorageUnit(storageUnit2);
+		assertFalse(tracker.canAddStorageUnit(storageUnitName));
 		
 		// "Scan" a product barcode
 		String barcodeScanned = "barcode " + 1;
@@ -50,6 +58,15 @@ public class HomeInventoryTrackerTest {
 		Date entryDate = new Date();
 		Item item = tracker.addItem(product, entryDate, storageUnit);
 		assertTrue(storageUnit.contains(item));
+		
+		// Move it
+		tracker.move(storageUnit, storageUnit2, item);
+		assertTrue(storageUnit2.contains(item));
+		assertFalse(storageUnit.contains(item));
+		
+		// Remove it
+		tracker.remove(item, storageUnit2);
+		assertFalse(storageUnit2.contains(item));
 	}
 
 }
