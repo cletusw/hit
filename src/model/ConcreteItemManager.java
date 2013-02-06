@@ -66,7 +66,7 @@ public class ConcreteItemManager implements ItemManager, Serializable {
 	 * @pre item != null
 	 * @pre productsToItems.get(item.getProduct()).contains(item)
 	 * @post removedItems.contains(item)
-	 * @post productsToItems.get(item.getProduct()).size() == productsToItems.get(item.getProduct()).size@pre - 1
+	 * 
 	 */
 	@Override
 	public void unmanage(Item item) {
@@ -99,6 +99,9 @@ public class ConcreteItemManager implements ItemManager, Serializable {
 	 * @post true
 	 */
 	public boolean productHasItems(Product product) {
+		if(product == null)
+			throw new IllegalArgumentException("Null product given to find");
+		
 		Collection<Item> found = productsToItems.get(product);
 		if(found == null)
 			return false;
