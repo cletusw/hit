@@ -26,7 +26,7 @@ public class HomeInventoryTracker implements Serializable {
 	public HomeInventoryTracker() {
 		itemManager = new ConcreteItemManager();
 		productManager = new ConcreteProductManager();
-		storageUnitManager = new StorageUnitManager();
+		storageUnitManager = new ConcreteStorageUnitManager();
 	}
 	
 	/**

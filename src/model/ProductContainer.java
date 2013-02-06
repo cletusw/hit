@@ -267,20 +267,35 @@ public abstract class ProductContainer implements Comparable<ProductContainer>, 
 	 */
 	public boolean canAddProductGroup(ProductGroup pg) {
 		// From the Data Dictionary:
-		// Mustï¿½beï¿½non-emptyï¿½andï¿½uniqueï¿½withinï¿½
-		// theï¿½parentï¿½Productï¿½Container.ï¿½
+		// Must be non-empty and unique within 
+		// the parent Product Container. 
 
 		return (traverseProductGroups(pg.getName()) == null);
+	}
+	
+	/** Determines whether the specified ProductGroup is contained in this ProductContainer.
+	 * 
+	 * @param pg - the ProductGroup to test
+	 * @return true if the ProductGroup exists in this ProductContainer, false otherwise.
+	 * 
+	 * @pre pg != null 
+	 */
+	public boolean contains(ProductGroup pg) {
+		return pGroups.contains(pg);
 	}
 	
 	/** Removes the specified item from this ProductContainer.
 	 * 
 	 * @param item		the Item to be removed
-	 * @param manager 	the ItemManager to notify of the removal
+	 * @param manager 	the ItemManager to notify of the removal. If null, no manager is notified.
+	 * 
+	 * @return true if the item was removed, false otherwise
 	 */
-	public void remove(Item item, ItemManager manager) {
-		items.remove(item);
+	public boolean remove(Item item, ItemManager manager) {
+
+
 		manager.unmanage(item);
+		return items.remove(item);
 	}
 	
 	/** Removes the specified item from this ProductContainer.
@@ -316,6 +331,19 @@ public abstract class ProductContainer implements Comparable<ProductContainer>, 
 		return items.contains(item);
 	}
 
+	/** Determines whether this Product Container contains a specific Product
+	 * 
+	 * @param product	the Product to check
+	 * @return			true if this Product Container contains the Product, false otherwise
+	 * 
+	 * @pre true
+	 * @post true
+	 * 
+	 */
+	public boolean contains(Product product) {
+		return products.contains(product);
+	}
+	
 	/** Removes a specified ProductContainer from this container and its children.
 	 * 
 	 * @param container 		The ProductContainer to remove
@@ -343,13 +371,16 @@ public abstract class ProductContainer implements Comparable<ProductContainer>, 
 	 * @throws IllegalStateException	if the product cannot be removed
 	 * 
 	 */
-	public void remove(Product product) throws IllegalStateException {
+	public boolean remove(Product product) throws IllegalStateException {
 		if (!canRemove(product))
 			throw new IllegalStateException("Cannot remove product; product container still has items that refer to it");
-		products.remove(product);
+		productsToItems.remove(product);
+		return products.remove(product);
 	}
 
 	public boolean canRemove(Product product) {
+		if (productsToItems.get(product) == null)
+			return true;
 		return (productsToItems.get(product).isEmpty());
 	}
 
