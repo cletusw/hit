@@ -17,32 +17,33 @@ public class NonNullStringTest {
 	}
 
 	@Test
-	public void test() {
-		// Test null string
-		try {
-			new NonNullString(null);
-			assert(false);
-		} catch(IllegalArgumentException e) {
-			
-		}
+	public void validConstructorTest(){
+		NonNullString one = new NonNullString("one");
+		assertTrue(one.value.equals("one"));
 		
-		// Test empty string
-		try {
-			new NonNullString("");
-			assert(false);
-		} catch(IllegalArgumentException e) {
-			
-		}
-		
-		// Test equal strings
-		NonNullString third = new NonNullString("third");
-		NonNullString fourth = new NonNullString("third");
-		assertEquals((third.compareTo(fourth) == 0),true);
-		
-		// Test unequal strings
-		NonNullString fifth = new NonNullString("fifth");
-		assertEquals(third.equals(fifth),false);
-		
+		NonNullString two = new NonNullString("two");
+		assertTrue(two.value.equals("two"));
+	}
+	
+	@Test (expected=IllegalArgumentException.class)
+	public void testNullConstructor(){
+		new NonNullString(null);
+	}
+	
+	@Test (expected=IllegalArgumentException.class)
+	public void testEmptyStringConstructor(){
+		new NonNullString("");
+	}
+	
+	@Test
+	public void testCompareTo(){
+		NonNullString one = new NonNullString("one");
+		NonNullString two = new NonNullString("two");
+		NonNullString copyOfOne = new NonNullString("one");
+		assertTrue(one.compareTo(two) != 0);
+		assertTrue(one.compareTo(two.getValue()) != 0);
+		assertTrue(one.compareTo(copyOfOne) == 0);
+		assertTrue(one.compareTo(copyOfOne.getValue()) == 0);
 	}
 
 }

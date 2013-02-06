@@ -31,6 +31,14 @@ public class ProductTest {
 	@Before
 	public void setUp() throws Exception {
 		product = new Product(validBarcode, validDescription, shelfLife, threeMonthSupply, size, productManager);
+		
+		// test invariants
+		assertTrue(product.getBarcode() != null);
+		assertTrue(product.getDescription() != null);
+		assertTrue(product.getCreationDate() != null);
+		assertTrue(product.getShelfLife() >= 0);
+		assertTrue(product.getThreeMonthSupply() >= 0);
+		assertTrue(product.getSize() != null);
 	}
 
 	/**
@@ -38,13 +46,21 @@ public class ProductTest {
 	 */
 	@After
 	public void tearDown() throws Exception {
+		// test invariants
+		assertTrue(product.getBarcode() != null);
+		assertTrue(product.getDescription() != null);
+		assertTrue(product.getCreationDate() != null);
+		assertTrue(product.getShelfLife() >= 0);
+		assertTrue(product.getThreeMonthSupply() >= 0);
+		assertTrue(product.getSize() != null);
 	}
 
 	/**
 	 * Test method for {@link model.Product#Product(java.lang.String, java.lang.String)}.
 	 */
 	@Test
-	public void testProduct() {
+	public void testProduct() {		
+		// test constructor post
 		assertTrue(product.getBarcode().equals(validBarcode));
 		assertTrue(product.getDescription().equals(validDescription));
 		assertTrue(product.getShelfLife() == shelfLife);

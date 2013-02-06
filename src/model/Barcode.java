@@ -1,13 +1,14 @@
 package model;
 
 import java.util.Date;
+import java.util.Random;
 
 /** Barcode class -- represents a product barcode.
  * 
  *  @author Matt Hess
  *  @version 1.0 -- Snell CS 340 Phase 1.0
  *  
- *  @invariant barcode.length() == 12
+ *  @invariant value.length() == 12
  */
 @SuppressWarnings("serial")
 public class Barcode extends NonNullString{
@@ -20,7 +21,7 @@ public class Barcode extends NonNullString{
 	 * @pre s != null
 	 * @pre !s.equals("")
 	 * @post barcode.equals(s)
-	 * @post isValidBarcode(barcode)
+	 * @post isValidBarcode(barcode) == true
 	 * 
 	 */
 	public Barcode(String s) throws IllegalArgumentException {
@@ -33,15 +34,17 @@ public class Barcode extends NonNullString{
 	 * 
 	 * @pre true
 	 * @post getValue() != null
+	 * @post isValidBarcode(barcode) == true
 	 */
 	public Barcode() {
 		this(generateBarcode());
 	}
 	
 	private static String generateBarcode(){
-		String code = String.valueOf((new Date()).getTime());
-		code = code.substring(3, code.length());
-		code = "4" + code;
+		Random randomGenerator = new Random();
+		String code = "4";
+		for(int i=0; i<10; i++) 
+			code += Integer.toString(randomGenerator.nextInt(10));
 		
 		int oddDigits = 3 * (Character.getNumericValue(code.charAt(0)) + 
 				Character.getNumericValue(code.charAt(2)) + 
@@ -58,7 +61,11 @@ public class Barcode extends NonNullString{
 		
 		int total = oddDigits + evenDigits;
 		total = total % 10;
-		int checkDigit = 10 - total;
+		int checkDigit = -1;
+		if(total == 0)
+			checkDigit = 0;
+		else
+			checkDigit = 10 - total;
 		code = code + checkDigit;
 		
 		if(isValidBarcode(String.valueOf(code)))
@@ -126,6 +133,9 @@ public class Barcode extends NonNullString{
 	 * a value less than 0 if this string is lexicographically less than 
 	 * the string argument; and a value greater than 0 if this string is 
 	 * lexicographically greater than the string argument.
+	 * 
+	 * @pre true
+	 * @post true
 	 */
 	public int compareTo(Barcode other){
 		return this.value.compareTo(other.value);

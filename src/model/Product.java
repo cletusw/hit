@@ -42,6 +42,21 @@ public class Product implements Comparable<Object>, Serializable {
 	 * @param shelfLife integer describing how long in months before the product expires
 	 * @param tms ThreeMonthSupply describing how many of this product are needed for three months
 	 * @param manager the ProductManager that will manage this product
+	 * 
+	 * @pre Barcode.isValidBarcode(barcode)
+	 * @pre description != null
+	 * @pre description.length() > 0
+	 * @pre creationDate != null
+	 * @pre creationDate.before(now)
+	 * @pre shelfLife >= 0
+	 * @pre tms >= 0
+	 * 
+	 * @post this.barcode = barcode
+	 * @post this.description.value = description
+	 * @post this.creationDate = creationDate
+	 * @post this.shelfLife = shelfLife
+	 * @post this.threemonthSupply = tms
+	 * @post this.size = pq
 	 */
 	public Product(String barcode, String description, Date creationDate, int shelfLife, int tms, ProductQuantity pq, ProductManager manager) {
 		this.setBarcode(barcode);
@@ -64,6 +79,20 @@ public class Product implements Comparable<Object>, Serializable {
 	 * @param shelfLife integer describing how long in months before the product expires
 	 * @param tms ThreeMonthSupply describing how many of this product are needed for three months
 	 * @param manager the ProductManager that will manage this product
+	 * 
+	 * @pre Barcode.isValidBarcode(barcode)
+	 * @pre description != null
+	 * @pre description.length() > 0
+	 * @pre shelfLife >= 0
+	 * @pre tms >= 0
+	 * 
+	 * @post this.barcode = barcode
+	 * @post this.description.value = description
+	 * @post this.creationDate != null
+	 * @post this.creationDate == now (time of instantiation)
+	 * @post this.shelfLife = shelfLife
+	 * @post this.threemonthSupply = tms
+	 * @post this.size = pq
 	 */
 	public Product(String barcode, String description, int shelfLife, int tms, ProductQuantity pq, ProductManager manager) {
 		this(barcode, description, new Date(), shelfLife, tms, pq, manager);

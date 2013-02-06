@@ -34,6 +34,12 @@ public class ItemTest {
 	@Before
 	public void setUp() throws Exception {
 		item = new Item(validUPCABarcode, product, productGroup, entryDateLastMonth, itemManager);
+		
+		// test Invariants
+		assertTrue(item.getProduct() != null);
+		assertTrue(item.getBarcode() != null);
+		assertTrue(item.getEntryDate() != null);
+		assertTrue(item.getExpirationDate() != null);
 	}
 
 	/**
@@ -41,6 +47,11 @@ public class ItemTest {
 	 */
 	@After
 	public void tearDown() throws Exception {
+		// test Invariants
+		assertTrue(item.getProduct() != null);
+		assertTrue(item.getBarcode() != null);
+		assertTrue(item.getEntryDate() != null);
+		assertTrue(item.getExpirationDate() != null);
 	}
 
 	/**
@@ -131,5 +142,4 @@ public class ItemTest {
 		assertTrue(item.compareTo(sameItem) == 0);
 		assertTrue(item.compareTo(newItem) != 0);
 	}
-
 }

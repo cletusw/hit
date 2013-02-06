@@ -27,6 +27,12 @@ public class ProductQuantityTest {
 	public void setUp() throws Exception {
 		fluid = new ProductQuantity(3.2f, Unit.FLUID_OUNCES);
 		count = new ProductQuantity(0, Unit.COUNT);
+		
+		// test invariants
+		assertTrue(fluid.getQuantity() >= 0);
+		assertTrue(fluid.getUnits() != null);
+		assertTrue(count.getQuantity() >= 0);
+		assertTrue(count.getUnits() != null);
 	}
 
 	/**
@@ -34,6 +40,11 @@ public class ProductQuantityTest {
 	 */
 	@After
 	public void tearDown() throws Exception {
+		// test invariants
+		assertTrue(fluid.getQuantity() >= 0);
+		assertTrue(fluid.getUnits() != null);
+		assertTrue(count.getQuantity() >= 0);
+		assertTrue(count.getUnits() != null);
 	}
 
 	/**
@@ -43,6 +54,11 @@ public class ProductQuantityTest {
 	public void testProductQuantity() {
 		assertTrue(fluid.getQuantity() == 3.2f);
 		assertTrue(fluid.getUnits() == Unit.FLUID_OUNCES);
+		assertTrue(ProductQuantity.isValidProductQuantity(fluid.getQuantity(), fluid.getUnits()));
+		
+		assertTrue(count.getQuantity() == 0);
+		assertTrue(count.getUnits().equals(Unit.COUNT));
+		assertTrue(ProductQuantity.isValidProductQuantity(count.getQuantity(), count.getUnits()));
 	}
 
 	/**
@@ -61,14 +77,26 @@ public class ProductQuantityTest {
 	 * Test method for {@link model.ProductQuantity#setQuantity(float)}.
 	 */
 	@Test
-	public void testSetQuantity() {
+	public void testSetValidQuantity() {
 		fluid.setQuantity(0f);
 		assertTrue(fluid.getQuantity() == 0f);
 		
+		fluid.setQuantity(200.423f);
+		assertTrue(fluid.getQuantity() == 200.423f);
+		
 		count.setQuantity(1);
 		assertTrue(count.getQuantity() == 1);
-		
-		thrown.expect(IllegalArgumentException.class);
+		count.setQuantity(200);
+		assertTrue(count.getQuantity() == 200);
+	}
+	
+	@Test (expected=IllegalArgumentException.class)
+	public void testSetNegativeQuantity(){
+		count.setQuantity(-1f);
+	}
+	
+	@Test (expected=IllegalArgumentException.class)
+	public void testSetInvalidQuantity(){
 		count.setQuantity(1.2f);
 	}
 	

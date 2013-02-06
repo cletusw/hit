@@ -19,6 +19,10 @@ public class NonNullString implements Serializable, Comparable {
 	/** Constructor. Must be given a non-null, non-empty string.
 	 * 
 	 * @param s non-null, non-empty string.
+	 * 
+	 * @pre true
+	 * @post value == s
+	 * @post value != null
 	 */
 	public NonNullString(String s){
 		if(s == null || s.isEmpty()){
@@ -46,6 +50,9 @@ public class NonNullString implements Serializable, Comparable {
 	 * a value less than 0 if this string is lexicographically less than 
 	 * the string argument; and a value greater than 0 if this string is 
 	 * lexicographically greater than the string argument.
+	 * 
+	 * @pre other must be an instane of NonNullString of String
+	 * @post true
 	 */
 	public int compareTo(Object other) {
 		if(other instanceof NonNullString){
