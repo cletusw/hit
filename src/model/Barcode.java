@@ -19,13 +19,15 @@ public class Barcode extends NonNullString{
 	 * @throws IllegalArgumentException
 	 * 
 	 * @pre s != null
-	 * @pre !s.equals("")
+	 * @pre s.length() > 0
 	 * @post barcode.equals(s)
 	 * @post isValidBarcode(barcode) == true
 	 * 
 	 */
 	public Barcode(String s) throws IllegalArgumentException {
 		super(s);
+		assert(s != null);
+		assert(s.length() > 0);
 		if(!isValidBarcode(s))
 			throw new IllegalArgumentException("Invalid barcode: " + s);
 	}
@@ -90,21 +92,13 @@ public class Barcode extends NonNullString{
 	 * @param s String barcode to check
 	 * @return true if barcode is valid, false otherwise
 	 * 
-	 * @pre s != null
-	 * @pre s.length() == 12
-	 * @pre s.charAt(0) == '4'
-	 * @pre for(char in s) Character.isDigit(char)
+	 * @pre true
 	 * @post true
 	 * 
 	 */
 	public static boolean isValidBarcode(String s) {
-		assert(s != null);
-		assert(s.length() == 12);
-		assert(s.charAt(0) == '4');
-		for(int i=0; i<s.length(); i++) {
-			assert(Character.isDigit(s.charAt(i)));
-		}
-		
+		if(s.length() != 12)
+			return false;
 		if(s == null || s.length() != 12 || s.charAt(0) != '4')
 			return false;
 

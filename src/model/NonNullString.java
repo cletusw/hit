@@ -51,10 +51,11 @@ public class NonNullString implements Serializable, Comparable {
 	 * the string argument; and a value greater than 0 if this string is 
 	 * lexicographically greater than the string argument.
 	 * 
-	 * @pre other must be an instane of NonNullString of String
+	 * @pre other must be an instance of NonNullString of String
 	 * @post true
 	 */
 	public int compareTo(Object other) {
+		assert(other instanceof NonNullString || other instanceof String);
 		if(other instanceof NonNullString){
 			return this.value.compareTo(((NonNullString) other).getValue());
 		}

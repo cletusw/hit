@@ -60,6 +60,14 @@ public class Product implements Comparable<Object>, Serializable {
 	 */
 	public Product(String barcode, String description, Date creationDate, int shelfLife, 
 			int tms, ProductQuantity pq, ProductManager manager) {
+		assert(Barcode.isValidBarcode(barcode));
+		assert(description != null);
+		assert(description.length() > 0);
+		assert(creationDate != null);
+		assert(creationDate.before(new Date()));
+		assert(shelfLife >= 0);
+		assert(tms >= 0);
+		
 		this.setBarcode(barcode);
 		this.description = new NonNullString(description);
 		this.setCreationDate(creationDate);
@@ -106,6 +114,9 @@ public class Product implements Comparable<Object>, Serializable {
 	 * Determines whether given integer is a valid three-month supply.
 	 * @param tms the integer to check
 	 * @return true if the integer is a valid three-month supply, false otherwise.
+	 * 
+	 * @pre true
+	 * @post true
 	 */
 	public static boolean isValidThreeMonthSupply(int tms) {
 		// From the Data Dictionary: Must be non-negative
@@ -116,6 +127,9 @@ public class Product implements Comparable<Object>, Serializable {
 	 * Determines whether the given string is a valid description
 	 * @param desc the string to test
 	 * @return true if the string is valid, false otherwise.
+	 * 
+	 * @pre true
+	 * @post true
 	 */
 	public static boolean isValidDescription(String desc) {
 		try{
@@ -129,6 +143,9 @@ public class Product implements Comparable<Object>, Serializable {
 	 * Determines whether the given integer is a valid shelf life.
 	 * @param sl the integer to test
 	 * @return true if the shelf life is valid, false otherwise.
+	 * 
+	 * @pre true
+	 * @post true
 	 */
 	public static boolean isValidShelfLife(int sl) {
 		// From the Data Dictionary: Must be non-negative
@@ -139,6 +156,9 @@ public class Product implements Comparable<Object>, Serializable {
 	 * Determines whether the given string is a valid barcode.
 	 * @param barcode the string to test
 	 * @return true if the barcode is valid, false otherwise.
+	 * 
+	 * @pre true
+	 * @post true
 	 */
 	public static boolean isValidBarcode(String barcode) {
 		try{
@@ -153,6 +173,9 @@ public class Product implements Comparable<Object>, Serializable {
 	/** Gets this Product's size
 	 * 
 	 * @return this Product's size
+	 * 
+	 * @pre true
+	 * @post true
 	 */
 	public ProductQuantity getSize() {
 		return size;
@@ -161,6 +184,9 @@ public class Product implements Comparable<Object>, Serializable {
 	/** Gets this Product's description
 	 * 
 	 * @return this Product's description
+	 * 
+	 * @pre true
+	 * @post true
 	 */
 	public String getDescription() {
 		return description.getValue();
@@ -169,6 +195,9 @@ public class Product implements Comparable<Object>, Serializable {
 	/** Gets this Product's shelf life
 	 * 
 	 * @return this Product's shelf life
+	 * 
+	 * @pre true
+	 * @post true
 	 */
 	public int getShelfLife() {
 		return shelfLife;
@@ -177,6 +206,9 @@ public class Product implements Comparable<Object>, Serializable {
 	/**
 	 * Gets this Product's three-month supply.
 	 * @return this Product's three-month supply.
+	 * 
+	 * @pre true
+	 * @post true
 	 */
 	public int getThreeMonthSupply() {
 		return threeMonthSupply;
@@ -185,6 +217,9 @@ public class Product implements Comparable<Object>, Serializable {
 	/** 
 	 * Gets this Product's barcode
 	 * @return this Product's barcode
+	 * 
+	 * @pre true
+	 * @post true
 	 */
 	public String getBarcode() {
 		return barcode.getValue();
@@ -193,6 +228,9 @@ public class Product implements Comparable<Object>, Serializable {
 	/** 
 	 * Gets this Product's creation date
 	 * @return this Product's creation date
+	 * 
+	 * @pre true
+	 * @post true
 	 */
 	public Date getCreationDate() {
 		return creationDate;
@@ -202,8 +240,12 @@ public class Product implements Comparable<Object>, Serializable {
 	 * Add a ProductContainer to this Product's set of containers.
 	 * 
 	 * @param pc ProductContainer to add.
+	 * 
+	 * @pre pc != null
+	 * @post true
 	 */
 	public void addContainer(ProductContainer pc){
+		assert(pc != null);
 		this.productContainers.add(pc);
 	}
 	
@@ -211,8 +253,12 @@ public class Product implements Comparable<Object>, Serializable {
 	 * Add an Item to this Product's set of items.
 	 * 
 	 * @param item Item to add.
+	 * 
+	 * @pre item != null
+	 * @post true
 	 */
 	public void addItem(Item item){
+		assert(item != null);
 		items.add(item);
 	}
 	
@@ -220,6 +266,9 @@ public class Product implements Comparable<Object>, Serializable {
 	 * Determines if this Product can be removed from the system.
 	 * 
 	 * @return true, if this Product contains no items. false, otherwise.
+	 * 
+	 * @pre true
+	 * @post true
 	 */
 	public boolean canRemove() {
 		return items.isEmpty();
@@ -231,6 +280,9 @@ public class Product implements Comparable<Object>, Serializable {
 	 * 
 	 * @param p Product to compare
 	 * @return true if this.barcode.equals(p.barcode), false otherwise
+	 * 
+	 * @pre true
+	 * @post true
 	 */
 	public boolean equals(Product p){
 		return p.barcode.getValue().equals(this.barcode.getValue());
@@ -240,8 +292,12 @@ public class Product implements Comparable<Object>, Serializable {
 	@Override
 	/**
 	 * Compares this Product to another Object.
+	 * 
+	 * @pre o instanceof Product || o instanceof Barcode
+	 * @post true
 	 */
 	public int compareTo(Object o) {
+		assert(o instanceof Product || o instanceof Barcode);
 		NonNullString otherBarcode;
 		
 		if (o instanceof Product) {
