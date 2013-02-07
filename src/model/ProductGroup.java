@@ -2,12 +2,13 @@ package model;
 
 import java.util.Iterator;
 
-/** Product Group class. Inherits from ProductContainer.
+/**
+ * Product Group class. Inherits from ProductContainer.
  * 
- *  @author - Matt Hess
- *  @version 1.0 - Snell 340 Group 4 Phase 1
+ * @author - Matt Hess
+ * @version 1.0 - Snell 340 Group 4 Phase 1
  * 
- *  @invariant container != null
+ * @invariant container != null
  */
 @SuppressWarnings("serial")
 public class ProductGroup extends ProductContainer {
@@ -15,10 +16,14 @@ public class ProductGroup extends ProductContainer {
 	private ProductContainer container;
 	private Unit groupUnit;
 
-	/** Constructor
+	/**
+	 * Constructor
 	 * 
-	 * @param pcName - String name of the product group.
-	 * @param tmSupply - the three-month supply (ProductQuantity) to be specified for this object
+	 * @param pcName
+	 *            - String name of the product group.
+	 * @param tmSupply
+	 *            - the three-month supply (ProductQuantity) to be specified for
+	 *            this object
 	 * 
 	 * @pre true
 	 * @post true
@@ -32,23 +37,28 @@ public class ProductGroup extends ProductContainer {
 		this.groupUnit = groupUnit;
 	}
 
-	/** Determines whether the specified Product can be added to this Product Group.
-	 * @param productBarcode	the Product barcode to check
+	/**
+	 * Determines whether the specified Product can be added to this Product
+	 * Group.
+	 * 
+	 * @param productBarcode
+	 *            the Product barcode to check
 	 * @return true if it can be added, false otherwise
 	 * @pre productBarcode != null
 	 * @post true
 	 */
 	@Override
 	public boolean canAddProduct(String productBarcode) {
-		assert(productBarcode != null);
+		assert (productBarcode != null);
 
 		// A Product may appear at most once in a given Storage Unit.
-		if(containsProduct(productBarcode))
+		if (containsProduct(productBarcode))
 			return false;
 
-		// We need to ask daddy (the Storage Unit) if the Product exists elsewhere in his children.
+		// We need to ask daddy (the Storage Unit) if the Product exists
+		// elsewhere in his children.
 		ProductContainer parent = container;
-		while(parent instanceof ProductGroup) {
+		while (parent instanceof ProductGroup) {
 			parent = ((ProductGroup) parent).container;
 		}
 		return !parent.hasDescendantProduct(productBarcode);
@@ -56,6 +66,7 @@ public class ProductGroup extends ProductContainer {
 
 	/**
 	 * Gets this ProductGroup's parent container
+	 * 
 	 * @return this ProductGroup's container
 	 * 
 	 * @pre true
@@ -66,7 +77,9 @@ public class ProductGroup extends ProductContainer {
 		return container;
 	}
 
-	/** Method that calculates and returns the amount of a product group in this container.
+	/**
+	 * Method that calculates and returns the amount of a product group in this
+	 * container.
 	 * 
 	 * @return ProductQuantity - the current supply of this container
 	 * 
@@ -77,11 +90,11 @@ public class ProductGroup extends ProductContainer {
 	public ProductQuantity getCurrentSupply() {
 		Iterator<Product> it = getProductsIterator();
 		ProductQuantity total = new ProductQuantity(0, groupUnit);
-		while(it.hasNext()) {
+		while (it.hasNext()) {
 			try {
 				ProductQuantity pSupply = getCurrentSupply(it.next());
 				total.add(pSupply);
-			} catch(IllegalArgumentException e) {
+			} catch (IllegalArgumentException e) {
 				continue;
 			}
 		}
@@ -89,7 +102,8 @@ public class ProductGroup extends ProductContainer {
 		return total;
 	}
 
-	/** Attribute getter - threeMonthSupply
+	/**
+	 * Attribute getter - threeMonthSupply
 	 * 
 	 * @return ProductQuantity - the three-month supply
 	 * 
@@ -103,7 +117,9 @@ public class ProductGroup extends ProductContainer {
 
 	/**
 	 * Determines whether a given ProductQuantity is a valid three-month supply
-	 * @param threeMonthSupply - the ProductQuantity to test
+	 * 
+	 * @param threeMonthSupply
+	 *            - the ProductQuantity to test
 	 * @return true if the ProductQuantity is valid, false otherwise.
 	 * 
 	 * @pre threeMonthSupply != null
@@ -112,36 +128,40 @@ public class ProductGroup extends ProductContainer {
 	 */
 	public boolean isValidThreeMonthSupply(ProductQuantity threeMonthSupply) {
 		// From the Data Dictionary:
-		// The�magnitude�can�be�any�non-negative�float�value.��Zero�means�"unspecified".��
-		// The�unit�of�measurement�can�be�any�of�the�following:�count,�pounds,�ounces,�
-		// grams,�kilograms,�gallons,�quarts,�pints,�fluid�ounces,�liters.��If�the�unit�of�
-		// measurement�is��count�,�the�magnitude�must�be�an�integer�(i.e.,�no�fraction).�
-		assert(threeMonthSupply != null);
+		// The magnitude can be any non-negative float value. Zero means
+		// "unspecified". The unit of measurement can be any of the following:
+		// count, pounds, ounces, grams, kilograms, gallons, quarts, pints,
+		// fluid ounces, liters. If the unit of measurement is count , the
+		// magnitude must be an integer (i.e., no fraction).
+		assert (threeMonthSupply != null);
 
-		return ProductQuantity.isValidProductQuantity(threeMonthSupply.getQuantity(),
-				threeMonthSupply.getUnits());
+		return ProductQuantity.isValidProductQuantity(
+				threeMonthSupply.getQuantity(), threeMonthSupply.getUnits());
 	}
 
 	/**
 	 * Sets this ProductGroup's parent container to the specified container.
-	 * @param container the new parent container
+	 * 
+	 * @param container
+	 *            the new parent container
 	 * 
 	 * @pre container != null
 	 * @post this.container == container
 	 */
 	public void setContainer(ProductContainer container) {
 		// From the Data Dictionary:
-		// Must�be�non-empty.��A�Product�Group�is�
-		// always�contained�within�one�Product�
-		// Container.�
-		assert(container != null);
+		// Must be non-empty. A Product Group is always contained within one
+		// Product Container.
+		assert (container != null);
 
 		this.container = container;
 	}
 
 	/**
 	 * Sets this ProductGroup's three-month supply
-	 * @param threeMonthSupply - the new quantity for the three-month supply
+	 * 
+	 * @param threeMonthSupply
+	 *            - the new quantity for the three-month supply
 	 * 
 	 * @pre true
 	 * @post this.threeMonthSupply.equals(threeMonthSupply)

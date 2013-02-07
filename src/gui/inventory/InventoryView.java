@@ -69,7 +69,6 @@ import javax.swing.tree.TreeSelectionModel;
 
 import common.util.DateUtils;
 
-
 @SuppressWarnings("serial")
 public class InventoryView extends View implements IInventoryView {
 
@@ -86,15 +85,14 @@ public class InventoryView extends View implements IInventoryView {
 				throws UnsupportedFlavorException, IOException {
 			if (InventoryFlavor.equals(flavor)) {
 				return _data;
-			}
-			else {
+			} else {
 				throw new UnsupportedFlavorException(flavor);
 			}
 		}
 
 		@Override
 		public DataFlavor[] getTransferDataFlavors() {
-			return new DataFlavor[]{ InventoryFlavor };
+			return new DataFlavor[] { InventoryFlavor };
 		}
 
 		@Override
@@ -103,8 +101,8 @@ public class InventoryView extends View implements IInventoryView {
 		}
 
 	}
-	private class ItemFormatter extends Tagable
-	{
+
+	private class ItemFormatter extends Tagable {
 		private int column;
 
 		public ItemFormatter(int column) {
@@ -113,22 +111,28 @@ public class InventoryView extends View implements IInventoryView {
 
 		@Override
 		public String toString() {
-			ItemData data = (ItemData)getTag();
+			ItemData data = (ItemData) getTag();
 			if (data != null) {
 				switch (column) {
-				case 0: return DateUtils.formatDate(data.getEntryDate());
-				case 1: return (data.getExpirationDate() != null ?
-						DateUtils.formatDate(data.getExpirationDate()) :
-							"");
-				case 2: return data.getBarcode();
-				case 3: return data.getStorageUnit();
-				case 4: return data.getProductGroup();
-				default: assert false;
+				case 0:
+					return DateUtils.formatDate(data.getEntryDate());
+				case 1:
+					return (data.getExpirationDate() != null ? DateUtils
+							.formatDate(data.getExpirationDate()) : "");
+				case 2:
+					return data.getBarcode();
+				case 3:
+					return data.getStorageUnit();
+				case 4:
+					return data.getProductGroup();
+				default:
+					assert false;
 				}
 			}
 			return "";
 		}
 	}
+
 	private class ItemTransferHandler extends TransferHandler {
 
 		@Override
@@ -141,18 +145,19 @@ public class InventoryView extends View implements IInventoryView {
 			ItemData data = getSelectedItem();
 			if (data != null) {
 				return new InventoryTransferable(data);
-			}
-			else {
+			} else {
 				return null;
 			}
 		}
 
 		@Override
-		protected void exportDone(JComponent component, Transferable transferable, int action) {
+		protected void exportDone(JComponent component,
+				Transferable transferable, int action) {
 			return;
 		}
 
 	}
+
 	private class ProductContainerTransferHandler extends TransferHandler {
 
 		@Override
@@ -166,8 +171,8 @@ public class InventoryView extends View implements IInventoryView {
 				return false;
 			}
 
-			javax.swing.JTree.DropLocation dropLoc =
-					(javax.swing.JTree.DropLocation)support.getDropLocation();
+			javax.swing.JTree.DropLocation dropLoc = (javax.swing.JTree.DropLocation) support
+					.getDropLocation();
 
 			if (dropLoc == null) {
 				return false;
@@ -179,8 +184,8 @@ public class InventoryView extends View implements IInventoryView {
 				return false;
 			}
 
-			ProductContainerTreeNode dropNode =
-					(ProductContainerTreeNode)path.getLastPathComponent();
+			ProductContainerTreeNode dropNode = (ProductContainerTreeNode) path
+					.getLastPathComponent();
 
 			if (dropNode == null) {
 				return false;
@@ -204,8 +209,8 @@ public class InventoryView extends View implements IInventoryView {
 				return false;
 			}
 
-			javax.swing.JTree.DropLocation dropLoc =
-					(javax.swing.JTree.DropLocation)support.getDropLocation();
+			javax.swing.JTree.DropLocation dropLoc = (javax.swing.JTree.DropLocation) support
+					.getDropLocation();
 
 			if (dropLoc == null) {
 				return false;
@@ -217,8 +222,8 @@ public class InventoryView extends View implements IInventoryView {
 				return false;
 			}
 
-			ProductContainerTreeNode dropNode =
-					(ProductContainerTreeNode)path.getLastPathComponent();
+			ProductContainerTreeNode dropNode = (ProductContainerTreeNode) path
+					.getLastPathComponent();
 
 			if (dropNode == null) {
 				return false;
@@ -237,8 +242,7 @@ public class InventoryView extends View implements IInventoryView {
 			Object data = null;
 			try {
 				data = transferable.getTransferData(InventoryFlavor);
-			}
-			catch (Exception e) {
+			} catch (Exception e) {
 			}
 
 			if (data == null) {
@@ -249,12 +253,11 @@ public class InventoryView extends View implements IInventoryView {
 			assert (container != null);
 
 			if (data instanceof ProductData) {
-				getController().addProductToContainer((ProductData)data, container);
-			}
-			else if (data instanceof ItemData) {
-				getController().moveItemToContainer((ItemData)data, container);
-			}
-			else {
+				getController().addProductToContainer((ProductData) data,
+						container);
+			} else if (data instanceof ItemData) {
+				getController().moveItemToContainer((ItemData) data, container);
+			} else {
 				return false;
 			}
 
@@ -262,8 +265,8 @@ public class InventoryView extends View implements IInventoryView {
 		}
 
 	}
-	private class ProductFormatter extends Tagable
-	{
+
+	private class ProductFormatter extends Tagable {
 		private int column;
 
 		public ProductFormatter(int column) {
@@ -272,21 +275,29 @@ public class InventoryView extends View implements IInventoryView {
 
 		@Override
 		public String toString() {
-			ProductData data = (ProductData)getTag();
+			ProductData data = (ProductData) getTag();
 			if (data != null) {
 				switch (column) {
-				case 0: return data.getDescription();
-				case 1: return data.getSize();
-				case 2: return data.getCount();
-				case 3: return data.getShelfLife();
-				case 4: return data.getSupply();
-				case 5: return data.getBarcode();
-				default: assert false;
+				case 0:
+					return data.getDescription();
+				case 1:
+					return data.getSize();
+				case 2:
+					return data.getCount();
+				case 3:
+					return data.getShelfLife();
+				case 4:
+					return data.getSupply();
+				case 5:
+					return data.getBarcode();
+				default:
+					assert false;
 				}
 			}
 			return "";
 		}
 	}
+
 	private class ProductTransferHandler extends TransferHandler {
 
 		@Override
@@ -299,21 +310,22 @@ public class InventoryView extends View implements IInventoryView {
 			ProductData data = getSelectedProduct();
 			if (data != null) {
 				return new InventoryTransferable(data);
-			}
-			else {
+			} else {
 				return null;
 			}
 		}
 
 		@Override
-		protected void exportDone(JComponent component, Transferable transferable, int action) {
+		protected void exportDone(JComponent component,
+				Transferable transferable, int action) {
 			return;
 		}
 
 	}
-	//-------------------------------
+
+	// -------------------------------
 	// Product Container Tree members
-	//-------------------------------
+	// -------------------------------
 	private DefaultTreeModel _productContainerTreeModel;
 	private JTree _productContainerTree;
 	private JScrollPane _productContainerTreeScrollPane;
@@ -331,9 +343,9 @@ public class InventoryView extends View implements IInventoryView {
 	private JMenuItem _addProductSubgroupMenuItem;
 	private JMenuItem _editProductGroupMenuItem;
 	private JMenuItem _deleteProductGroupMenuItem;
-	//--------------------------
+	// --------------------------
 	// Context Info members
-	//--------------------------
+	// --------------------------
 	private JPanel _contextInfoPanel;
 
 	private JLabel _contextInfoUnitLabel;
@@ -342,9 +354,9 @@ public class InventoryView extends View implements IInventoryView {
 	private JTextField _contextInfoGroupField;
 	private JLabel _contextInfoSupplyLabel;
 	private JTextField _contextInfoSupplyField;
-	//--------------------------
+	// --------------------------
 	// Product Table members
-	//--------------------------
+	// --------------------------
 	private JTable _productTable;
 	private DefaultTableModel _productTableModel;
 
@@ -354,9 +366,9 @@ public class InventoryView extends View implements IInventoryView {
 	private JPopupMenu _productMenu;
 	private JMenuItem _editProductMenuItem;
 	private JMenuItem _deleteProductMenuItem;
-	//--------------------------
+	// --------------------------
 	// Item Table members
-	//--------------------------
+	// --------------------------
 	private JTable _itemTable;
 	private DefaultTableModel _itemTableModel;
 
@@ -364,17 +376,15 @@ public class InventoryView extends View implements IInventoryView {
 	private JTableHeader _itemTableHeader;
 	private JScrollPane _itemTableScrollPane;
 
-
 	private JPopupMenu _itemMenu;
-
 
 	private JMenuItem _editItemMenuItem;
 
 	private JMenuItem _removeItemMenuItem;
 
-	//--------------------------
+	// --------------------------
 	// Other members
-	//--------------------------
+	// --------------------------
 	private JPanel _productPanel;
 
 	private JSplitPane _midSplitPane;
@@ -383,8 +393,8 @@ public class InventoryView extends View implements IInventoryView {
 
 	private HashMap<ProductContainerData, ProductContainerTreeNode> _productContainers;
 
-	private static DataFlavor InventoryFlavor =
-			new DataFlavor(InventoryTransferable.class, "Inventory Flavor");
+	private static DataFlavor InventoryFlavor = new DataFlavor(
+			InventoryTransferable.class, "Inventory Flavor");
 
 	public InventoryView(GUI parent) {
 		super(parent);
@@ -398,19 +408,20 @@ public class InventoryView extends View implements IInventoryView {
 	public void deleteProductContainer(ProductContainerData deletedContainer) {
 		boolean disabledEvents = disableEvents();
 		try {
-			ProductContainerTreeNode deletedNode = _productContainers.get(deletedContainer);
+			ProductContainerTreeNode deletedNode = _productContainers
+					.get(deletedContainer);
 			assert deletedNode != null;
 
 			if (deletedNode != null) {
 
-				ProductContainerTreeNode parentNode =
-						(ProductContainerTreeNode)deletedNode.getParent();
+				ProductContainerTreeNode parentNode = (ProductContainerTreeNode) deletedNode
+						.getParent();
 				assert parentNode != null;
 
 				if (parentNode != null) {
 
-					ProductContainerData parentContainer =
-							parentNode.getProductContainer();
+					ProductContainerData parentContainer = parentNode
+							.getProductContainer();
 					parentContainer.deleteChild(deletedContainer);
 
 					int childIndex = parentNode.getIndex(deletedNode);
@@ -419,13 +430,12 @@ public class InventoryView extends View implements IInventoryView {
 						parentNode.remove(childIndex);
 						// notify the tree model of the change
 						_productContainerTreeModel.nodesWereRemoved(parentNode,
-								new int[]{childIndex},
-								new Object[]{deletedNode});
+								new int[] { childIndex },
+								new Object[] { deletedNode });
 					}
 				}
 			}
-		}
-		finally {
+		} finally {
 			if (disabledEvents) {
 				enableEvents();
 			}
@@ -435,8 +445,10 @@ public class InventoryView extends View implements IInventoryView {
 	@Override
 	public void displayAddItemBatchView() {
 		ProductContainerData target = getSelectedProductContainer();
-		DialogBox dialogBox = new DialogBox(_parent, "Add Items to " + target.getName());
-		AddItemBatchView dialogView = new AddItemBatchView(_parent, dialogBox, target);
+		DialogBox dialogBox = new DialogBox(_parent, "Add Items to "
+				+ target.getName());
+		AddItemBatchView dialogView = new AddItemBatchView(_parent, dialogBox,
+				target);
 		dialogBox.display(dialogView, false);
 	}
 
@@ -444,7 +456,8 @@ public class InventoryView extends View implements IInventoryView {
 	public void displayAddProductGroupView() {
 		ProductContainerData container = getSelectedProductContainer();
 		DialogBox dialogBox = new DialogBox(_parent, "Add Product Group");
-		AddProductGroupView dialogView = new AddProductGroupView(_parent, dialogBox, container);
+		AddProductGroupView dialogView = new AddProductGroupView(_parent,
+				dialogBox, container);
 		dialogBox.display(dialogView, false);
 	}
 
@@ -466,7 +479,8 @@ public class InventoryView extends View implements IInventoryView {
 	public void displayEditProductGroupView() {
 		ProductContainerData target = getSelectedProductContainer();
 		DialogBox dialogBox = new DialogBox(_parent, "Edit Product Group");
-		EditProductGroupView dialogView = new EditProductGroupView(_parent, dialogBox, target);
+		EditProductGroupView dialogView = new EditProductGroupView(_parent,
+				dialogBox, target);
 		dialogBox.display(dialogView, false);
 	}
 
@@ -474,7 +488,8 @@ public class InventoryView extends View implements IInventoryView {
 	public void displayEditProductView() {
 		ProductData target = getSelectedProduct();
 		DialogBox dialogBox = new DialogBox(_parent, "Edit Product");
-		EditProductView dialogView = new EditProductView(_parent, dialogBox, target);
+		EditProductView dialogView = new EditProductView(_parent, dialogBox,
+				target);
 		dialogBox.display(dialogView, false);
 	}
 
@@ -482,41 +497,45 @@ public class InventoryView extends View implements IInventoryView {
 	public void displayEditStorageUnitView() {
 		ProductContainerData target = getSelectedProductContainer();
 		DialogBox dialogBox = new DialogBox(_parent, "Edit Storage Unit");
-		EditStorageUnitView dialogView = new EditStorageUnitView(_parent, dialogBox, target);
+		EditStorageUnitView dialogView = new EditStorageUnitView(_parent,
+				dialogBox, target);
 		dialogBox.display(dialogView, false);
 	}
 
 	@Override
 	public void displayRemoveItemBatchView() {
 		DialogBox dialogBox = new DialogBox(_parent, "Remove Items");
-		RemoveItemBatchView dialogView = new RemoveItemBatchView(_parent, dialogBox);
+		RemoveItemBatchView dialogView = new RemoveItemBatchView(_parent,
+				dialogBox);
 		dialogBox.display(dialogView, false);
 	}
 
-	//////////////////
+	// ////////////////
 	// Action Methods
-	//////////////////
+	// ////////////////
 
 	@Override
 	public void displayTransferItemBatchView() {
 		ProductContainerData target = getSelectedProductContainer();
-		DialogBox dialogBox = new DialogBox(_parent, "Transfer Items to " + target.getName());
-		TransferItemBatchView dialogView = new TransferItemBatchView(_parent, dialogBox, target);
+		DialogBox dialogBox = new DialogBox(_parent, "Transfer Items to "
+				+ target.getName());
+		TransferItemBatchView dialogView = new TransferItemBatchView(_parent,
+				dialogBox, target);
 		dialogBox.display(dialogView, false);
 	}
 
 	@Override
 	public IInventoryController getController() {
-		return (IInventoryController)super.getController();
+		return (IInventoryController) super.getController();
 	}
 
 	@Override
 	public ItemData getSelectedItem() {
 		int selectedIndex = _itemTable.getSelectedRow();
 		if (selectedIndex >= 0) {
-			ItemFormatter formatter =
-					(ItemFormatter)_itemTableModel.getValueAt(selectedIndex, 0);
-			return (ItemData)formatter.getTag();
+			ItemFormatter formatter = (ItemFormatter) _itemTableModel
+					.getValueAt(selectedIndex, 0);
+			return (ItemData) formatter.getTag();
 		}
 		return null;
 	}
@@ -525,9 +544,9 @@ public class InventoryView extends View implements IInventoryView {
 	public ProductData getSelectedProduct() {
 		int selectedIndex = _productTable.getSelectedRow();
 		if (selectedIndex >= 0) {
-			ProductFormatter formatter =
-					(ProductFormatter)_productTableModel.getValueAt(selectedIndex, 0);
-			return (ProductData)formatter.getTag();
+			ProductFormatter formatter = (ProductFormatter) _productTableModel
+					.getValueAt(selectedIndex, 0);
+			return (ProductData) formatter.getTag();
 		}
 		return null;
 	}
@@ -535,29 +554,31 @@ public class InventoryView extends View implements IInventoryView {
 	@Override
 	public ProductContainerData getSelectedProductContainer() {
 		ProductContainerTreeNode selectedNode = getSelectedProductContainerNode();
-		return((selectedNode != null) ? selectedNode.getProductContainer() : null);
+		return ((selectedNode != null) ? selectedNode.getProductContainer()
+				: null);
 	}
 
 	@Override
 	public void insertProductContainer(ProductContainerData parent,
-			ProductContainerData newContainer,
-			int index) {
+			ProductContainerData newContainer, int index) {
 		boolean disabledEvents = disableEvents();
 		try {
-			ProductContainerTreeNode parentNode = _productContainers.get(parent);
+			ProductContainerTreeNode parentNode = _productContainers
+					.get(parent);
 			assert parentNode != null;
 			if (parentNode != null) {
 				parent.insertChild(newContainer, index);
 
-				ProductContainerTreeNode newNode = new ProductContainerTreeNode(newContainer);
+				ProductContainerTreeNode newNode = new ProductContainerTreeNode(
+						newContainer);
 				parentNode.insert(newNode, index);
 				_productContainers.put(newContainer, newNode);
 
 				// notify the tree model of the change
-				_productContainerTreeModel.nodesWereInserted(parentNode, new int[]{index});
+				_productContainerTreeModel.nodesWereInserted(parentNode,
+						new int[] { index });
 			}
-		}
-		finally {
+		} finally {
 			if (disabledEvents) {
 				enableEvents();
 			}
@@ -565,33 +586,35 @@ public class InventoryView extends View implements IInventoryView {
 	}
 
 	@Override
-	public void renameProductContainer(ProductContainerData renamedContainer, String newName,
-			int newIndex) {
+	public void renameProductContainer(ProductContainerData renamedContainer,
+			String newName, int newIndex) {
 
 		boolean disabledEvents = disableEvents();
 		try {
-			ProductContainerTreeNode renamedNode = _productContainers.get(renamedContainer);
+			ProductContainerTreeNode renamedNode = _productContainers
+					.get(renamedContainer);
 			assert renamedNode != null;
 
 			if (renamedNode != null) {
 
-				ProductContainerTreeNode parentNode =
-						(ProductContainerTreeNode)renamedNode.getParent();
+				ProductContainerTreeNode parentNode = (ProductContainerTreeNode) renamedNode
+						.getParent();
 				assert parentNode != null;
 
 				if (parentNode != null) {
 
-					ProductContainerData parentContainer =
-							parentNode.getProductContainer();
-					parentContainer.renameChild(renamedContainer, newName, newIndex);
+					ProductContainerData parentContainer = parentNode
+							.getProductContainer();
+					parentContainer.renameChild(renamedContainer, newName,
+							newIndex);
 
 					TreePath renamedPath = new TreePath(renamedNode.getPath());
 
 					// remember which descendant nodes were expanded so they
 					// can be re-expanded after the tree is updated
 					ArrayList<TreePath> expandedList = null;
-					Enumeration<TreePath> expandedEnum =
-							_productContainerTree.getExpandedDescendants(renamedPath);
+					Enumeration<TreePath> expandedEnum = _productContainerTree
+							.getExpandedDescendants(renamedPath);
 					if (expandedEnum != null) {
 						expandedList = new ArrayList<TreePath>();
 						while (expandedEnum.hasMoreElements()) {
@@ -601,10 +624,13 @@ public class InventoryView extends View implements IInventoryView {
 					}
 
 					// update the tree
-					_productContainerTreeModel.removeNodeFromParent(renamedNode);
-					_productContainerTreeModel.insertNodeInto(renamedNode, parentNode, newIndex);
+					_productContainerTreeModel
+							.removeNodeFromParent(renamedNode);
+					_productContainerTreeModel.insertNodeInto(renamedNode,
+							parentNode, newIndex);
 
-					// re-expand descendant nodes that were expanded before the update
+					// re-expand descendant nodes that were expanded before the
+					// update
 					if (expandedList != null) {
 						for (TreePath path : expandedList) {
 							_productContainerTree.expandPath(path);
@@ -612,8 +638,7 @@ public class InventoryView extends View implements IInventoryView {
 					}
 				}
 			}
-		}
-		finally {
+		} finally {
 			if (disabledEvents) {
 				enableEvents();
 			}
@@ -625,16 +650,15 @@ public class InventoryView extends View implements IInventoryView {
 		boolean disabledEvents = disableEvents();
 		try {
 			for (int i = 0; i < _itemTableModel.getRowCount(); ++i) {
-				ItemFormatter formatter =
-						(ItemFormatter)_itemTableModel.getValueAt(i, 0);
-				ItemData id = (ItemData)formatter.getTag();
+				ItemFormatter formatter = (ItemFormatter) _itemTableModel
+						.getValueAt(i, 0);
+				ItemData id = (ItemData) formatter.getTag();
 				if (id == item) {
 					TableOperations.selectTableRow(_itemTable, i);
 					return;
 				}
 			}
-		}
-		finally {
+		} finally {
 			if (disabledEvents) {
 				enableEvents();
 			}
@@ -646,15 +670,15 @@ public class InventoryView extends View implements IInventoryView {
 		boolean disabledEvents = disableEvents();
 		try {
 			for (int i = 0; i < _productTableModel.getRowCount(); ++i) {
-				ProductFormatter formatter = (ProductFormatter)_productTableModel.getValueAt(i, 0);
-				ProductData id = (ProductData)formatter.getTag();
+				ProductFormatter formatter = (ProductFormatter) _productTableModel
+						.getValueAt(i, 0);
+				ProductData id = (ProductData) formatter.getTag();
 				if (id == product) {
 					TableOperations.selectTableRow(_productTable, i);
 					return;
 				}
 			}
-		}
-		finally {
+		} finally {
 			if (disabledEvents) {
 				enableEvents();
 			}
@@ -667,11 +691,11 @@ public class InventoryView extends View implements IInventoryView {
 		try {
 			if (container != null) {
 				if (_productContainers.containsKey(container)) {
-					selectProductContainerNode(_productContainers.get(container));
+					selectProductContainerNode(_productContainers
+							.get(container));
 				}
 			}
-		}
-		finally {
+		} finally {
 			if (disabledEvents) {
 				enableEvents();
 			}
@@ -683,8 +707,7 @@ public class InventoryView extends View implements IInventoryView {
 		boolean disabledEvents = disableEvents();
 		try {
 			_contextInfoGroupField.setText(value);
-		}
-		finally {
+		} finally {
 			if (disabledEvents) {
 				enableEvents();
 			}
@@ -696,8 +719,7 @@ public class InventoryView extends View implements IInventoryView {
 		boolean disabledEvents = disableEvents();
 		try {
 			_contextInfoSupplyField.setText(value);
-		}
-		finally {
+		} finally {
 			if (disabledEvents) {
 				enableEvents();
 			}
@@ -709,17 +731,16 @@ public class InventoryView extends View implements IInventoryView {
 		boolean disabledEvents = disableEvents();
 		try {
 			_contextInfoUnitField.setText(value);
-		}
-		finally {
+		} finally {
 			if (disabledEvents) {
 				enableEvents();
 			}
 		}
 	}
 
-	//////////////////
+	// ////////////////
 	// IInventoryView
-	//////////////////
+	// ////////////////
 
 	@Override
 	public void setItems(ItemData[] items) {
@@ -740,8 +761,7 @@ public class InventoryView extends View implements IInventoryView {
 				row[4].setTag(id);
 				_itemTableModel.addRow(row);
 			}
-		}
-		finally {
+		} finally {
 			if (disabledEvents) {
 				enableEvents();
 			}
@@ -756,14 +776,12 @@ public class InventoryView extends View implements IInventoryView {
 			DefaultMutableTreeNode rootNode = null;
 			if (rootData == null) {
 				rootNode = new ProductContainerTreeNode(null);
-			}
-			else {
+			} else {
 				rootNode = buildProductContainerTree(rootData);
 			}
 			_productContainerTreeModel = new DefaultTreeModel(rootNode);
 			_productContainerTree.setModel(_productContainerTreeModel);
-		}
-		finally {
+		} finally {
 			if (disabledEvents) {
 				enableEvents();
 			}
@@ -791,8 +809,7 @@ public class InventoryView extends View implements IInventoryView {
 				row[5].setTag(pd);
 				_productTableModel.addRow(row);
 			}
-		}
-		finally {
+		} finally {
 			if (disabledEvents) {
 				enableEvents();
 			}
@@ -814,7 +831,8 @@ public class InventoryView extends View implements IInventoryView {
 	/**
 	 * Builds the item container tree that will be displayed in the JTree.
 	 */
-	private DefaultMutableTreeNode buildProductContainerTree(ProductContainerData data) {
+	private DefaultMutableTreeNode buildProductContainerTree(
+			ProductContainerData data) {
 		ProductContainerTreeNode node = new ProductContainerTreeNode(data);
 		_productContainers.put(data, node);
 		for (int i = 0; i < data.getChildCount(); ++i) {
@@ -825,7 +843,8 @@ public class InventoryView extends View implements IInventoryView {
 
 	private void createContextInfoPanel() {
 		_contextInfoUnitLabel = new JLabel("UNIT:");
-		Font font = createFont(_contextInfoUnitLabel.getFont(), ContextInfoFontSize);
+		Font font = createFont(_contextInfoUnitLabel.getFont(),
+				ContextInfoFontSize);
 		_contextInfoUnitLabel.setFont(font);
 
 		_contextInfoUnitField = new JTextField(15);
@@ -873,20 +892,19 @@ public class InventoryView extends View implements IInventoryView {
 						enableItemMenuItems();
 						_itemMenu.show(e.getComponent(), e.getX(), e.getY());
 					}
-				}
-				else if (e.getSource() == _itemTableHeader) {
+				} else if (e.getSource() == _itemTableHeader) {
 					if (e.isPopupTrigger()) {
 						enableItemMenuItems();
 						_itemMenu.show(e.getComponent(), e.getX(), e.getY());
 					}
-					//    	    		else if (e.getButton() == MouseEvent.BUTTON1 &&
-							//    						e.getID() == MouseEvent.MOUSE_PRESSED) {
-					//    					int clickedColumnIndex =
-					//    						commentsColumnModel.getColumnIndexAtX(e.getX());
-					//    					if (clickedColumnIndex >= 0) {
-					//    						updateCommentSortOrder(clickedColumnIndex);
-					//    					}
-					//    	    		}
+					// else if (e.getButton() == MouseEvent.BUTTON1 &&
+					// e.getID() == MouseEvent.MOUSE_PRESSED) {
+					// int clickedColumnIndex =
+					// commentsColumnModel.getColumnIndexAtX(e.getX());
+					// if (clickedColumnIndex >= 0) {
+					// updateCommentSortOrder(clickedColumnIndex);
+					// }
+					// }
 				}
 			}
 		};
@@ -938,15 +956,15 @@ public class InventoryView extends View implements IInventoryView {
 				ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED,
 				ScrollPaneConstants.HORIZONTAL_SCROLLBAR_AS_NEEDED);
 		_itemTableScrollPane.setPreferredSize(new Dimension(600, 300));
-		_itemTableScrollPane.setBorder(createTitledBorder("Items", BorderFontSize));
+		_itemTableScrollPane.setBorder(createTitledBorder("Items",
+				BorderFontSize));
 
 		ActionListener actionListener = new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent evt) {
 				if (evt.getSource() == _editItemMenuItem) {
 					editItem();
-				}
-				else if (evt.getSource() == _removeItemMenuItem) {
+				} else if (evt.getSource() == _removeItemMenuItem) {
 					removeItem();
 				}
 			}
@@ -963,26 +981,31 @@ public class InventoryView extends View implements IInventoryView {
 
 	private void createProductContainerTree() {
 
-		TreeSelectionListener treeSelectionListener =
-				createProductContainerTreeSelectionListener();
+		TreeSelectionListener treeSelectionListener = createProductContainerTreeSelectionListener();
 
 		MouseListener mouseListener = createProductContainerTreeMouseListener();
 
 		_productContainerTree = new JTree();
-		_productContainerTree.setCellRenderer(new ProductContainerTreeCellRenderer());
-		_productContainerTree.setFont(createFont(_productContainerTree.getFont(), ContentFontSize));
+		_productContainerTree
+				.setCellRenderer(new ProductContainerTreeCellRenderer());
+		_productContainerTree.setFont(createFont(
+				_productContainerTree.getFont(), ContentFontSize));
 		_productContainerTree.setRootVisible(true);
 		_productContainerTree.setExpandsSelectedPaths(true);
 		_productContainerTree.getSelectionModel().setSelectionMode(
 				TreeSelectionModel.SINGLE_TREE_SELECTION);
 		_productContainerTree.setDropMode(DropMode.ON);
-		_productContainerTree.setTransferHandler(new ProductContainerTransferHandler());
+		_productContainerTree
+				.setTransferHandler(new ProductContainerTransferHandler());
 
-		_productContainerTreeScrollPane = new JScrollPane(_productContainerTree,
+		_productContainerTreeScrollPane = new JScrollPane(
+				_productContainerTree,
 				ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED,
 				ScrollPaneConstants.HORIZONTAL_SCROLLBAR_AS_NEEDED);
-		_productContainerTreeScrollPane.setPreferredSize(new Dimension(250, 175));
-		_productContainerTreeScrollPane.setBorder(createTitledBorder("", BorderFontSize));
+		_productContainerTreeScrollPane
+				.setPreferredSize(new Dimension(250, 175));
+		_productContainerTreeScrollPane.setBorder(createTitledBorder("",
+				BorderFontSize));
 		_productContainerTree.addTreeSelectionListener(treeSelectionListener);
 		_productContainerTree.addMouseListener(mouseListener);
 
@@ -1035,32 +1058,23 @@ public class InventoryView extends View implements IInventoryView {
 			public void actionPerformed(ActionEvent evt) {
 				if (evt.getSource() == _addStorageUnitMenuItem) {
 					addStorageUnit();
-				}
-				else if (evt.getSource() == _removeItemsMenuItem) {
+				} else if (evt.getSource() == _removeItemsMenuItem) {
 					removeItems();
-				}
-				else if (evt.getSource() == _addItemsMenuItem) {
+				} else if (evt.getSource() == _addItemsMenuItem) {
 					addItems();
-				}
-				else if (evt.getSource() == _transferItemsMenuItem) {
+				} else if (evt.getSource() == _transferItemsMenuItem) {
 					transferItems();
-				}
-				else if (evt.getSource() == _addProductGroupMenuItem) {
+				} else if (evt.getSource() == _addProductGroupMenuItem) {
 					addProductGroup();
-				}
-				else if (evt.getSource() == _editStorageUnitMenuItem) {
+				} else if (evt.getSource() == _editStorageUnitMenuItem) {
 					editStorageUnit();
-				}
-				else if (evt.getSource() == _deleteStorageUnitMenuItem) {
+				} else if (evt.getSource() == _deleteStorageUnitMenuItem) {
 					deleteStorageUnit();
-				}
-				else if (evt.getSource() == _addProductSubgroupMenuItem) {
+				} else if (evt.getSource() == _addProductSubgroupMenuItem) {
 					addProductGroup();
-				}
-				else if (evt.getSource() == _editProductGroupMenuItem) {
+				} else if (evt.getSource() == _editProductGroupMenuItem) {
 					editProductGroup();
-				}
-				else if (evt.getSource() == _deleteProductGroupMenuItem) {
+				} else if (evt.getSource() == _deleteProductGroupMenuItem) {
 					deleteProductGroup();
 				}
 			}
@@ -1079,32 +1093,34 @@ public class InventoryView extends View implements IInventoryView {
 			public void mouseReleased(MouseEvent e) {
 				handleMouseEvent(e);
 			}
+
 			private void handleMouseEvent(MouseEvent e) {
 				if (eventsAreDisabled()) {
 					return;
 				}
-				ProductContainerTreeNode node =
-						(ProductContainerTreeNode)TreeOperations.getSelectedTreeNode(_productContainerTree);
+				ProductContainerTreeNode node = (ProductContainerTreeNode) TreeOperations
+						.getSelectedTreeNode(_productContainerTree);
 				if (node != null) {
 					if (node.isAllStorageUnits()) {
 						if (e.isPopupTrigger()) {
 							_productContainerTree.requestFocus();
 							enableAllStorageUnitsMenuItems();
-							_allStorageUnitsMenu.show(e.getComponent(), e.getX(), e.getY());
+							_allStorageUnitsMenu.show(e.getComponent(),
+									e.getX(), e.getY());
 						}
-					}
-					else if (node.isStorageUnit()) {
+					} else if (node.isStorageUnit()) {
 						if (e.isPopupTrigger()) {
 							_productContainerTree.requestFocus();
 							enableStorageUnitMenuItems();
-							_storageUnitMenu.show(e.getComponent(), e.getX(), e.getY());
+							_storageUnitMenu.show(e.getComponent(), e.getX(),
+									e.getY());
 						}
-					}
-					else if (node.isProductGroup()) {
+					} else if (node.isProductGroup()) {
 						if (e.isPopupTrigger()) {
 							_productContainerTree.requestFocus();
 							enableProductGroupMenuItems();
-							_productGroupMenu.show(e.getComponent(), e.getX(), e.getY());
+							_productGroupMenu.show(e.getComponent(), e.getX(),
+									e.getY());
 						}
 					}
 				}
@@ -1147,26 +1163,26 @@ public class InventoryView extends View implements IInventoryView {
 						enableProductMenuItems();
 						_productMenu.show(e.getComponent(), e.getX(), e.getY());
 					}
-				}
-				else if (e.getSource() == _productTableHeader) {
+				} else if (e.getSource() == _productTableHeader) {
 					if (e.isPopupTrigger()) {
 						enableProductMenuItems();
 						_productMenu.show(e.getComponent(), e.getX(), e.getY());
 					}
-					//    	    		else if (e.getButton() == MouseEvent.BUTTON1 &&
-							//    						e.getID() == MouseEvent.MOUSE_PRESSED) {
-						//    					int clickedColumnIndex =
-					//    						commentsColumnModel.getColumnIndexAtX(e.getX());
-					//    					if (clickedColumnIndex >= 0) {
-					//    						updateCommentSortOrder(clickedColumnIndex);
-					//    					}
-					//    	    		}
+					// else if (e.getButton() == MouseEvent.BUTTON1 &&
+					// e.getID() == MouseEvent.MOUSE_PRESSED) {
+					// int clickedColumnIndex =
+					// commentsColumnModel.getColumnIndexAtX(e.getX());
+					// if (clickedColumnIndex >= 0) {
+					// updateCommentSortOrder(clickedColumnIndex);
+					// }
+					// }
 				}
 			}
 		};
 
 		_productTableColumnModel = new DefaultTableColumnModel();
-		TableColumn column = createTableColumn(0, "Description", ContentFontSize);
+		TableColumn column = createTableColumn(0, "Description",
+				ContentFontSize);
 		_productTableColumnModel.addColumn(column);
 		column = createTableColumn(1, "Size", ContentFontSize);
 		_productTableColumnModel.addColumn(column);
@@ -1190,7 +1206,8 @@ public class InventoryView extends View implements IInventoryView {
 		_productTable = new JTable(_productTableModel, _productTableColumnModel);
 		_productTable.setDragEnabled(true);
 		_productTable.setTransferHandler(new ProductTransferHandler());
-		_productTable.setFont(createFont(_productTable.getFont(), ContentFontSize));
+		_productTable.setFont(createFont(_productTable.getFont(),
+				ContentFontSize));
 		_productTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		_productTable.getSelectionModel().addListSelectionListener(
 				new ListSelectionListener() {
@@ -1215,16 +1232,16 @@ public class InventoryView extends View implements IInventoryView {
 		_productTableScrollPane = new JScrollPane(_productTable,
 				ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED,
 				ScrollPaneConstants.HORIZONTAL_SCROLLBAR_AS_NEEDED);
-		//_productTableScrollPane.setPreferredSize(new Dimension(600, 300));
-		_productTableScrollPane.setBorder(createTitledBorder("Products", BorderFontSize));
+		// _productTableScrollPane.setPreferredSize(new Dimension(600, 300));
+		_productTableScrollPane.setBorder(createTitledBorder("Products",
+				BorderFontSize));
 
 		ActionListener actionListener = new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent evt) {
 				if (evt.getSource() == _editProductMenuItem) {
 					editProduct();
-				}
-				else if (evt.getSource() == _deleteProductMenuItem) {
+				} else if (evt.getSource() == _deleteProductMenuItem) {
 					deleteProduct();
 				}
 			}
@@ -1277,9 +1294,12 @@ public class InventoryView extends View implements IInventoryView {
 	}
 
 	private void enableProductGroupMenuItems() {
-		_addProductSubgroupMenuItem.setEnabled(getController().canAddProductGroup());
-		_editProductGroupMenuItem.setEnabled(getController().canEditProductGroup());
-		_deleteProductGroupMenuItem.setEnabled(getController().canDeleteProductGroup());
+		_addProductSubgroupMenuItem.setEnabled(getController()
+				.canAddProductGroup());
+		_editProductGroupMenuItem.setEnabled(getController()
+				.canEditProductGroup());
+		_deleteProductGroupMenuItem.setEnabled(getController()
+				.canDeleteProductGroup());
 	}
 
 	private void enableProductMenuItems() {
@@ -1289,17 +1309,20 @@ public class InventoryView extends View implements IInventoryView {
 
 	private void enableStorageUnitMenuItems() {
 		_addItemsMenuItem.setEnabled(getController().canAddItems());
-		_addProductGroupMenuItem.setEnabled(getController().canAddProductGroup());
-		_editStorageUnitMenuItem.setEnabled(getController().canEditStorageUnit());
-		_deleteStorageUnitMenuItem.setEnabled(getController().canDeleteStorageUnit());
+		_addProductGroupMenuItem.setEnabled(getController()
+				.canAddProductGroup());
+		_editStorageUnitMenuItem.setEnabled(getController()
+				.canEditStorageUnit());
+		_deleteStorageUnitMenuItem.setEnabled(getController()
+				.canDeleteStorageUnit());
 	}
 
 	/**
 	 * Returns the currently selected node in the product container tree.
 	 */
 	private ProductContainerTreeNode getSelectedProductContainerNode() {
-		return (ProductContainerTreeNode)
-				TreeOperations.getSelectedTreeNode(_productContainerTree);
+		return (ProductContainerTreeNode) TreeOperations
+				.getSelectedTreeNode(_productContainerTree);
 	}
 
 	//
@@ -1310,33 +1333,30 @@ public class InventoryView extends View implements IInventoryView {
 		getController().removeItem();
 	}
 
-
 	private void removeItems() {
 		getController().removeItems();
 	}
 
-
 	/**
 	 * Selects the specified node in the product container tree.
 	 * 
-	 * @param node The node to be selected
+	 * @param node
+	 *            The node to be selected
 	 */
 	private void selectProductContainerNode(ProductContainerTreeNode node) {
 		TreeOperations.selectTreeNode(_productContainerTree, node);
 	}
 
-
 	private void setMaximumSize(JComponent c) {
 		Dimension preferred = c.getPreferredSize();
-		Dimension maximum = new Dimension(Integer.MAX_VALUE, (int)preferred.getHeight());
+		Dimension maximum = new Dimension(Integer.MAX_VALUE,
+				(int) preferred.getHeight());
 		c.setMaximumSize(maximum);
 	}
-
 
 	private void transferItems() {
 		getController().transferItems();
 	}
-
 
 	@Override
 	protected void createComponents() {
@@ -1346,7 +1366,6 @@ public class InventoryView extends View implements IInventoryView {
 		createItemTable();
 	}
 
-
 	@Override
 	protected void layoutComponents() {
 
@@ -1354,20 +1373,28 @@ public class InventoryView extends View implements IInventoryView {
 		final int FieldSpacing = 5;
 
 		_contextInfoPanel = new JPanel();
-		_contextInfoPanel.setLayout(new BoxLayout(_contextInfoPanel, BoxLayout.X_AXIS));
-		_contextInfoPanel.add(Box.createRigidArea(new Dimension(FieldSpacing, FieldSpacing)));
+		_contextInfoPanel.setLayout(new BoxLayout(_contextInfoPanel,
+				BoxLayout.X_AXIS));
+		_contextInfoPanel.add(Box.createRigidArea(new Dimension(FieldSpacing,
+				FieldSpacing)));
 		_contextInfoPanel.add(_contextInfoUnitLabel);
-		_contextInfoPanel.add(Box.createRigidArea(new Dimension(LabelSpacing, LabelSpacing)));
+		_contextInfoPanel.add(Box.createRigidArea(new Dimension(LabelSpacing,
+				LabelSpacing)));
 		_contextInfoPanel.add(_contextInfoUnitField);
-		_contextInfoPanel.add(Box.createRigidArea(new Dimension(FieldSpacing, FieldSpacing)));
+		_contextInfoPanel.add(Box.createRigidArea(new Dimension(FieldSpacing,
+				FieldSpacing)));
 		_contextInfoPanel.add(_contextInfoGroupLabel);
-		_contextInfoPanel.add(Box.createRigidArea(new Dimension(LabelSpacing, LabelSpacing)));
+		_contextInfoPanel.add(Box.createRigidArea(new Dimension(LabelSpacing,
+				LabelSpacing)));
 		_contextInfoPanel.add(_contextInfoGroupField);
-		_contextInfoPanel.add(Box.createRigidArea(new Dimension(FieldSpacing, FieldSpacing)));
+		_contextInfoPanel.add(Box.createRigidArea(new Dimension(FieldSpacing,
+				FieldSpacing)));
 		_contextInfoPanel.add(_contextInfoSupplyLabel);
-		_contextInfoPanel.add(Box.createRigidArea(new Dimension(LabelSpacing, LabelSpacing)));
+		_contextInfoPanel.add(Box.createRigidArea(new Dimension(LabelSpacing,
+				LabelSpacing)));
 		_contextInfoPanel.add(_contextInfoSupplyField);
-		_contextInfoPanel.add(Box.createRigidArea(new Dimension(FieldSpacing, FieldSpacing)));
+		_contextInfoPanel.add(Box.createRigidArea(new Dimension(FieldSpacing,
+				FieldSpacing)));
 
 		_productPanel = new JPanel();
 		_productPanel.setLayout(new BoxLayout(_productPanel, BoxLayout.Y_AXIS));
@@ -1396,30 +1423,23 @@ class ProductContainerTreeCellRenderer extends DefaultTreeCellRenderer {
 	private Icon _storageUnitIcon;
 
 	public ProductContainerTreeCellRenderer() {
-		_storageUnitIcon = new ImageIcon("images" + java.io.File.separator + "door-icon.png");
+		_storageUnitIcon = new ImageIcon("images" + java.io.File.separator
+				+ "door-icon.png");
 	}
 
 	@Override
-	public Component getTreeCellRendererComponent(
-			JTree tree,
-			Object value,
-			boolean sel,
-			boolean expanded,
-			boolean leaf,
-			int row,
+	public Component getTreeCellRendererComponent(JTree tree, Object value,
+			boolean sel, boolean expanded, boolean leaf, int row,
 			boolean hasFocus) {
 
-		super.getTreeCellRendererComponent(
-				tree, value, sel,
-				expanded, leaf, row,
-				hasFocus);
+		super.getTreeCellRendererComponent(tree, value, sel, expanded, leaf,
+				row, hasFocus);
 
 		if (value instanceof ProductContainerTreeNode) {
-			ProductContainerTreeNode node = (ProductContainerTreeNode)value;
+			ProductContainerTreeNode node = (ProductContainerTreeNode) value;
 			if (node.isAllStorageUnits() || node.isStorageUnit()) {
 				setIcon(_storageUnitIcon);
-			}
-			else {
+			} else {
 				setIcon(closedIcon);
 			}
 		}
@@ -1428,5 +1448,3 @@ class ProductContainerTreeCellRenderer extends DefaultTreeCellRenderer {
 	}
 
 }
-
-

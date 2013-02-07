@@ -7,14 +7,16 @@ import gui.inventory.ProductContainerData;
 /**
  * Controller class for the edit storage unit view.
  */
-public class EditStorageUnitController extends Controller
-implements IEditStorageUnitController {
+public class EditStorageUnitController extends Controller implements
+		IEditStorageUnitController {
 
 	/**
 	 * Constructor.
 	 * 
-	 * @param view Reference to edit storage unit view
-	 * @param target The storage unit being edited
+	 * @param view
+	 *            Reference to edit storage unit view
+	 * @param target
+	 *            The storage unit being edited
 	 */
 	public EditStorageUnitController(IView view, ProductContainerData target) {
 		super(view);
@@ -27,16 +29,16 @@ implements IEditStorageUnitController {
 	//
 
 	/**
-	 * This method is called when the user clicks the "OK"
-	 * button in the edit storage unit view.
+	 * This method is called when the user clicks the "OK" button in the edit
+	 * storage unit view.
 	 */
 	@Override
 	public void editStorageUnit() {
 	}
 
 	/**
-	 * This method is called when any of the fields in the
-	 * edit storage unit view is changed by the user.
+	 * This method is called when any of the fields in the edit storage unit
+	 * view is changed by the user.
 	 */
 	@Override
 	public void valuesChanged() {
@@ -44,13 +46,13 @@ implements IEditStorageUnitController {
 
 	/**
 	 * Sets the enable/disable state of all components in the controller's view.
-	 * A component should be enabled only if the user is currently
-	 * allowed to interact with that component.
+	 * A component should be enabled only if the user is currently allowed to
+	 * interact with that component.
 	 * 
 	 * {@pre None}
 	 * 
-	 * {@post The enable/disable state of all components in the controller's view
-	 * have been set appropriately.}
+	 * {@post The enable/disable state of all components in the controller's
+	 * view have been set appropriately.}
 	 */
 	@Override
 	protected void enableComponents() {
@@ -69,19 +71,18 @@ implements IEditStorageUnitController {
 	 */
 	@Override
 	protected IEditStorageUnitView getView() {
-		return (IEditStorageUnitView)super.getView();
+		return (IEditStorageUnitView) super.getView();
 	}
 
 	/**
 	 * Loads data into the controller's view.
 	 * 
-	 *  {@pre None}
+	 * {@pre None}
 	 * 
-	 *  {@post The controller has loaded data into its view}
+	 * {@post The controller has loaded data into its view}
 	 */
 	@Override
 	protected void loadValues() {
 	}
 
 }
-

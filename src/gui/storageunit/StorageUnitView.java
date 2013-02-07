@@ -48,8 +48,7 @@ public abstract class StorageUnitView extends DialogView {
 		boolean disabledEvents = disableEvents();
 		try {
 			_nameField.setText(value);
-		}
-		finally {
+		} finally {
 			if (disabledEvents) {
 				enableEvents();
 			}
@@ -82,26 +81,25 @@ public abstract class StorageUnitView extends DialogView {
 	}
 
 	private void createButtonsPanel() {
-		_buttonsPanel = new ButtonBankPanel(new String[]{"OK", "Cancel"},
+		_buttonsPanel = new ButtonBankPanel(new String[] { "OK", "Cancel" },
 				new ButtonBankListener() {
-			@Override
-			public void buttonPressed(int index, String label) {
-				switch (index) {
-				case 0:
-					ok();
-					_dialog.dispose();
-					break;
-				case 1:
-					cancel();
-					_dialog.dispose();
-					break;
-				default:
-					assert false;
-					break;
-				}
-			}
-		}
-				);
+					@Override
+					public void buttonPressed(int index, String label) {
+						switch (index) {
+						case 0:
+							ok();
+							_dialog.dispose();
+							break;
+						case 1:
+							cancel();
+							_dialog.dispose();
+							break;
+						default:
+							assert false;
+							break;
+						}
+					}
+				});
 
 		_okButton = _buttonsPanel.getButtons()[0];
 		_dialog.getRootPane().setDefaultButton(_okButton);
@@ -113,7 +111,7 @@ public abstract class StorageUnitView extends DialogView {
 		GridBagConstraintsExt c = new GridBagConstraintsExt();
 		c.ipadx = 2;
 		c.ipady = 2;
-		c.insets = new Insets(5,5,5,5);
+		c.insets = new Insets(5, 5, 5, 5);
 
 		c.place(0, 0, 1, 1);
 		_addPanel.add(_nameLabel, c);
@@ -123,7 +121,6 @@ public abstract class StorageUnitView extends DialogView {
 	}
 
 	protected abstract void cancel();
-
 
 	@Override
 	protected void createComponents() {
@@ -146,4 +143,3 @@ public abstract class StorageUnitView extends DialogView {
 	protected abstract void valuesChanged();
 
 }
-

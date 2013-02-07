@@ -23,7 +23,6 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
-
 @SuppressWarnings("serial")
 public abstract class ProductGroupView extends DialogView {
 
@@ -61,7 +60,7 @@ public abstract class ProductGroupView extends DialogView {
 	}
 
 	public SizeUnits getSupplyUnit() {
-		return (SizeUnits)_supplyBox.getSelectedItem();
+		return (SizeUnits) _supplyBox.getSelectedItem();
 	}
 
 	public String getSupplyValue() {
@@ -72,8 +71,7 @@ public abstract class ProductGroupView extends DialogView {
 		boolean disabledEvents = disableEvents();
 		try {
 			_nameField.setText(value);
-		}
-		finally {
+		} finally {
 			if (disabledEvents) {
 				enableEvents();
 			}
@@ -84,8 +82,7 @@ public abstract class ProductGroupView extends DialogView {
 		boolean disabledEvents = disableEvents();
 		try {
 			_supplyBox.setSelectedItem(value);
-		}
-		finally {
+		} finally {
 			if (disabledEvents) {
 				enableEvents();
 			}
@@ -96,8 +93,7 @@ public abstract class ProductGroupView extends DialogView {
 		boolean disabledEvents = disableEvents();
 		try {
 			_supplyField.setText(value);
-		}
-		finally {
+		} finally {
 			if (disabledEvents) {
 				enableEvents();
 			}
@@ -158,26 +154,25 @@ public abstract class ProductGroupView extends DialogView {
 	}
 
 	private void createButtonsPanel() {
-		_buttonsPanel = new ButtonBankPanel(new String[]{"OK", "Cancel"},
+		_buttonsPanel = new ButtonBankPanel(new String[] { "OK", "Cancel" },
 				new ButtonBankListener() {
-			@Override
-			public void buttonPressed(int index, String label) {
-				switch (index) {
-				case 0:
-					ok();
-					_dialog.dispose();
-					break;
-				case 1:
-					cancel();
-					_dialog.dispose();
-					break;
-				default:
-					assert false;
-					break;
-				}
-			}
-		}
-				);
+					@Override
+					public void buttonPressed(int index, String label) {
+						switch (index) {
+						case 0:
+							ok();
+							_dialog.dispose();
+							break;
+						case 1:
+							cancel();
+							_dialog.dispose();
+							break;
+						default:
+							assert false;
+							break;
+						}
+					}
+				});
 
 		_okButton = _buttonsPanel.getButtons()[0];
 		_dialog.getRootPane().setDefaultButton(_okButton);
@@ -189,7 +184,7 @@ public abstract class ProductGroupView extends DialogView {
 		GridBagConstraintsExt c = new GridBagConstraintsExt();
 		c.ipadx = 2;
 		c.ipady = 2;
-		c.insets = new Insets(5,5,5,5);
+		c.insets = new Insets(5, 5, 5, 5);
 
 		c.place(0, 0, 1, 1);
 		_addPanel.add(_nameLabel, c);
@@ -230,4 +225,3 @@ public abstract class ProductGroupView extends DialogView {
 	protected abstract void valuesChanged();
 
 }
-

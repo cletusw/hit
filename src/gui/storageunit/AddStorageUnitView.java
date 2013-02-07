@@ -3,9 +3,9 @@ package gui.storageunit;
 import gui.common.DialogBox;
 import gui.main.GUI;
 
-
 @SuppressWarnings("serial")
-public class AddStorageUnitView extends StorageUnitView implements IAddStorageUnitView {
+public class AddStorageUnitView extends StorageUnitView implements
+		IAddStorageUnitView {
 
 	public AddStorageUnitView(GUI parent, DialogBox dialog) {
 		super(parent, dialog);
@@ -17,7 +17,7 @@ public class AddStorageUnitView extends StorageUnitView implements IAddStorageUn
 
 	@Override
 	public IAddStorageUnitController getController() {
-		return (IAddStorageUnitController)super.getController();
+		return (IAddStorageUnitController) super.getController();
 	}
 
 	@Override
@@ -36,5 +36,3 @@ public class AddStorageUnitView extends StorageUnitView implements IAddStorageUn
 	}
 
 }
-
-

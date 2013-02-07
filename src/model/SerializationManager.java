@@ -8,6 +8,7 @@ import java.io.ObjectOutputStream;
 
 /**
  * Implements persistent storage using Java object serialization.
+ * 
  * @author Seth Stewart
  * @version 1.0 - Snell 340 Group 4 Phase 1
  * @invariant true
@@ -15,8 +16,9 @@ import java.io.ObjectOutputStream;
 public class SerializationManager implements PersistentStorageManager {
 	public static final String defaultSerializedFileName = "HomeInventoryTracker.ser";
 
-	/** Creates a new HomeInventoryTracker, reading it from persistent storage if
-	 * 		available. Otherwise, it creates a new empty instance of the class.
+	/**
+	 * Creates a new HomeInventoryTracker, reading it from persistent storage if
+	 * available. Otherwise, it creates a new empty instance of the class.
 	 * 
 	 * @return a new instance of HomeInventoryTracker
 	 * @pre true
@@ -29,8 +31,7 @@ public class SerializationManager implements PersistentStorageManager {
 		PersistentStorageManager persistentStorageManager = new SerializationManager();
 		try {
 			tracker = persistentStorageManager.readObject(target);
-		}
-		catch(IOException e) {
+		} catch (IOException e) {
 			tracker = new HomeInventoryTracker();
 		}
 		return tracker;
@@ -38,7 +39,7 @@ public class SerializationManager implements PersistentStorageManager {
 
 	private static String assignTargetFilename(String filename) {
 		String target = null;
-		if(filename == null || filename.equals(""))
+		if (filename == null || filename.equals(""))
 			target = defaultSerializedFileName;
 		else
 			target = filename;
@@ -46,8 +47,11 @@ public class SerializationManager implements PersistentStorageManager {
 		return target;
 	}
 
-	/** Deserializes the Home Inventory Tracker from a file.
-	 * @throws 	IOException if an error occurred reading from the serialized file.
+	/**
+	 * Deserializes the Home Inventory Tracker from a file.
+	 * 
+	 * @throws IOException
+	 *             if an error occurred reading from the serialized file.
 	 * @pre true
 	 * @post true
 	 */
@@ -58,11 +62,11 @@ public class SerializationManager implements PersistentStorageManager {
 		HomeInventoryTracker hit;
 		try {
 			FileInputStream fileInputStream = new FileInputStream(target);
-			ObjectInputStream objectReader = new ObjectInputStream(fileInputStream);
+			ObjectInputStream objectReader = new ObjectInputStream(
+					fileInputStream);
 			hit = (HomeInventoryTracker) objectReader.readObject();
 			objectReader.close();
-		}
-		catch (ClassNotFoundException e) {
+		} catch (ClassNotFoundException e) {
 			System.err.println("Could not locate class for deserialization");
 			e.printStackTrace();
 			return null;
@@ -70,19 +74,24 @@ public class SerializationManager implements PersistentStorageManager {
 		return hit;
 	}
 
-	/** Serializes the Home Inventory Tracker to a file.
-	 * @throws 	IOException if an error occurred writing to the serialized file.
+	/**
+	 * Serializes the Home Inventory Tracker to a file.
+	 * 
+	 * @throws IOException
+	 *             if an error occurred writing to the serialized file.
 	 * @pre hit != null
 	 * @post true
 	 */
 	@Override
-	public void writeObject(HomeInventoryTracker hit,String filename) throws IOException {
-		assert(hit != null);
+	public void writeObject(HomeInventoryTracker hit, String filename)
+			throws IOException {
+		assert (hit != null);
 
 		String target = assignTargetFilename(filename);
 
 		FileOutputStream fileOutputStream = new FileOutputStream(target);
-		ObjectOutputStream objectWriter = new ObjectOutputStream(fileOutputStream);
+		ObjectOutputStream objectWriter = new ObjectOutputStream(
+				fileOutputStream);
 
 		objectWriter.writeObject(hit);
 		objectWriter.flush();

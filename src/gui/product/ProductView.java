@@ -23,7 +23,6 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
-
 @SuppressWarnings("serial")
 public abstract class ProductView extends DialogView {
 
@@ -89,7 +88,7 @@ public abstract class ProductView extends DialogView {
 	}
 
 	public SizeUnits getSizeUnit() {
-		return (SizeUnits)_sizeBox.getSelectedItem();
+		return (SizeUnits) _sizeBox.getSelectedItem();
 	}
 
 	public String getSizeValue() {
@@ -104,8 +103,7 @@ public abstract class ProductView extends DialogView {
 		boolean disabledEvents = disableEvents();
 		try {
 			_barcodeField.setText(value);
-		}
-		finally {
+		} finally {
 			if (disabledEvents) {
 				enableEvents();
 			}
@@ -116,8 +114,7 @@ public abstract class ProductView extends DialogView {
 		boolean disabledEvents = disableEvents();
 		try {
 			_descriptionField.setText(value);
-		}
-		finally {
+		} finally {
 			if (disabledEvents) {
 				enableEvents();
 			}
@@ -128,8 +125,7 @@ public abstract class ProductView extends DialogView {
 		boolean disabledEvents = disableEvents();
 		try {
 			_shelfLifeField.setText(value);
-		}
-		finally {
+		} finally {
 			if (disabledEvents) {
 				enableEvents();
 			}
@@ -140,8 +136,7 @@ public abstract class ProductView extends DialogView {
 		boolean disabledEvents = disableEvents();
 		try {
 			_sizeBox.setSelectedItem(value);
-		}
-		finally {
+		} finally {
 			if (disabledEvents) {
 				enableEvents();
 			}
@@ -152,8 +147,7 @@ public abstract class ProductView extends DialogView {
 		boolean disabledEvents = disableEvents();
 		try {
 			_sizeField.setText(value);
-		}
-		finally {
+		} finally {
 			if (disabledEvents) {
 				enableEvents();
 			}
@@ -164,8 +158,7 @@ public abstract class ProductView extends DialogView {
 		boolean disabledEvents = disableEvents();
 		try {
 			_supplyField.setText(value);
-		}
-		finally {
+		} finally {
 			if (disabledEvents) {
 				enableEvents();
 			}
@@ -173,26 +166,25 @@ public abstract class ProductView extends DialogView {
 	}
 
 	private void createButtonsPanel() {
-		_buttonsPanel = new ButtonBankPanel(new String[]{"OK", "Cancel"},
+		_buttonsPanel = new ButtonBankPanel(new String[] { "OK", "Cancel" },
 				new ButtonBankListener() {
-			@Override
-			public void buttonPressed(int index, String label) {
-				switch (index) {
-				case 0:
-					ok();
-					_dialog.dispose();
-					break;
-				case 1:
-					cancel();
-					_dialog.dispose();
-					break;
-				default:
-					assert false;
-					break;
-				}
-			}
-		}
-				);
+					@Override
+					public void buttonPressed(int index, String label) {
+						switch (index) {
+						case 0:
+							ok();
+							_dialog.dispose();
+							break;
+						case 1:
+							cancel();
+							_dialog.dispose();
+							break;
+						default:
+							assert false;
+							break;
+						}
+					}
+				});
 
 		_okButton = _buttonsPanel.getButtons()[0];
 		_dialog.getRootPane().setDefaultButton(_okButton);
@@ -276,7 +268,7 @@ public abstract class ProductView extends DialogView {
 		GridBagConstraintsExt c = new GridBagConstraintsExt();
 		c.ipadx = 2;
 		c.ipady = 2;
-		c.insets = new Insets(5,5,5,5);
+		c.insets = new Insets(5, 5, 5, 5);
 
 		c.place(0, 0, 1, 1);
 		_valuesPanel.add(_barcodeLabel, c);
@@ -341,4 +333,3 @@ public abstract class ProductView extends DialogView {
 	protected abstract void valuesChanged();
 
 }
-

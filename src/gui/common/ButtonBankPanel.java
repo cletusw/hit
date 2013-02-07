@@ -1,4 +1,3 @@
-
 package gui.common;
 
 import java.awt.event.ActionEvent;
@@ -9,7 +8,6 @@ import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JPanel;
-
 
 /**
  * ButtonBankPanel can be used to easily create a horizontal bank of buttons,
@@ -37,23 +35,25 @@ public class ButtonBankPanel extends JPanel {
 	 * Constructs a new ButtonBankPanel with the specified buttons and listener,
 	 * and lays the buttons out horizontally.
 	 * 
-	 * @param labels list of labels for the buttons to be created
-	 * @param listener listener object to be notified when one of the
-	 * 	buttons is pressed
+	 * @param labels
+	 *            list of labels for the buttons to be created
+	 * @param listener
+	 *            listener object to be notified when one of the buttons is
+	 *            pressed
 	 * 
-	 * {@pre labels != null AND labels.length > 0}
-	 * {@pre listener != null}
+	 *            {@pre labels != null AND labels.length > 0} {@pre listener !=
+	 *            null}
 	 * 
-	 * {@post ButtonBankPanel with the specified buttons and listener has been
-	 *  initialized}
-	 * {@post Buttons have been lain out horizontally}
-	 * {@post labels array has been cloned to avoid sharing with the caller}
+	 *            {@post ButtonBankPanel with the specified buttons and listener
+	 *            has been initialized} {@post Buttons have been lain out
+	 *            horizontally} {@post labels array has been cloned to avoid
+	 *            sharing with the caller}
 	 */
 	public ButtonBankPanel(String[] labels, ButtonBankListener listener) {
 		_labels = labels.clone();
 		_listener = listener;
 
-		setBorder(BorderFactory.createEmptyBorder(5,5,5,5));
+		setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
 
 		createComponents();
 		layoutComponents();
@@ -73,7 +73,7 @@ public class ButtonBankPanel extends JPanel {
 		ActionListener actionListener = new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent evt) {
-				for (int i=0; i < _buttons.length; ++i) {
+				for (int i = 0; i < _buttons.length; ++i) {
 					if (evt.getSource() == _buttons[i]) {
 						_listener.buttonPressed(i, _labels[i]);
 						break;
@@ -82,7 +82,7 @@ public class ButtonBankPanel extends JPanel {
 			}
 		};
 		_buttons = new JButton[_labels.length];
-		for (int i=0; i < _labels.length; ++i) {
+		for (int i = 0; i < _labels.length; ++i) {
 			_buttons[i] = new JButton(_labels[i]);
 			_buttons[i].addActionListener(actionListener);
 		}
@@ -96,7 +96,7 @@ public class ButtonBankPanel extends JPanel {
 
 		add(Box.createHorizontalGlue());
 
-		for (int i=0; i < _buttons.length; ++i) {
+		for (int i = 0; i < _buttons.length; ++i) {
 			if (i > 0) {
 				add(Box.createHorizontalStrut(5));
 			}
@@ -107,6 +107,3 @@ public class ButtonBankPanel extends JPanel {
 	}
 
 }
-
-
-

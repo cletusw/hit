@@ -8,16 +8,15 @@ import gui.common.IController;
 public interface INoticesReportController extends IController {
 
 	/**
-	 * This method is called when the user clicks the "OK"
-	 * button in the notices report view.
+	 * This method is called when the user clicks the "OK" button in the notices
+	 * report view.
 	 */
 	void display();
 
 	/**
-	 * This method is called when any of the fields in the
-	 * notices report view is changed by the user.
+	 * This method is called when any of the fields in the notices report view
+	 * is changed by the user.
 	 */
 	void valuesChanged();
 
 }
-

@@ -47,11 +47,9 @@ import javax.swing.table.TableColumn;
 
 import common.util.DateUtils;
 
-
 public abstract class ItemBatchView extends DialogView {
 
-	private class ItemFormatter extends Tagable
-	{
+	private class ItemFormatter extends Tagable {
 		private int column;
 
 		public ItemFormatter(int column) {
@@ -60,24 +58,29 @@ public abstract class ItemBatchView extends DialogView {
 
 		@Override
 		public String toString() {
-			ItemData data = (ItemData)getTag();
+			ItemData data = (ItemData) getTag();
 			if (data != null) {
 				switch (column) {
-				case 0: return DateUtils.formatDate(data.getEntryDate());
-				case 1: return (data.getExpirationDate() != null ?
-						DateUtils.formatDate(data.getExpirationDate()) :
-							"");
-				case 2: return data.getBarcode();
-				case 3: return data.getStorageUnit();
-				case 4: return data.getProductGroup();
-				default: assert false;
+				case 0:
+					return DateUtils.formatDate(data.getEntryDate());
+				case 1:
+					return (data.getExpirationDate() != null ? DateUtils
+							.formatDate(data.getExpirationDate()) : "");
+				case 2:
+					return data.getBarcode();
+				case 3:
+					return data.getStorageUnit();
+				case 4:
+					return data.getProductGroup();
+				default:
+					assert false;
 				}
 			}
 			return "";
 		}
 	}
-	private class ProductFormatter extends Tagable
-	{
+
+	private class ProductFormatter extends Tagable {
 		private int column;
 
 		public ProductFormatter(int column) {
@@ -86,24 +89,32 @@ public abstract class ItemBatchView extends DialogView {
 
 		@Override
 		public String toString() {
-			ProductData data = (ProductData)getTag();
+			ProductData data = (ProductData) getTag();
 			if (data != null) {
 				switch (column) {
-				case 0: return data.getDescription();
-				case 1: return data.getSize();
-				case 2: return data.getCount();
-				case 3: return data.getShelfLife();
-				case 4: return data.getSupply();
-				case 5: return data.getBarcode();
-				default: assert false;
+				case 0:
+					return data.getDescription();
+				case 1:
+					return data.getSize();
+				case 2:
+					return data.getCount();
+				case 3:
+					return data.getShelfLife();
+				case 4:
+					return data.getSupply();
+				case 5:
+					return data.getBarcode();
+				default:
+					assert false;
 				}
 			}
 			return "";
 		}
 	}
-	//--------------------------
+
+	// --------------------------
 	// Item Batch members
-	//--------------------------
+	// --------------------------
 	protected JPanel batchPanel;
 	protected JLabel barcodeLabel;
 	protected JTextField barcodeField;
@@ -113,18 +124,18 @@ public abstract class ItemBatchView extends DialogView {
 
 	protected JButton undoButton;
 	protected JButton redoButton;
-	//--------------------------
+	// --------------------------
 	// Product Table members
-	//--------------------------
+	// --------------------------
 	protected JTable productTable;
 	protected DefaultTableModel productTableModel;
 	protected DefaultTableColumnModel productTableColumnModel;
 
 	protected JTableHeader productTableHeader;
 	protected JScrollPane productTableScrollPane;
-	//--------------------------
+	// --------------------------
 	// Item Table members
-	//--------------------------
+	// --------------------------
 	protected JTable itemTable;
 	protected DefaultTableModel itemTableModel;
 	protected DefaultTableColumnModel itemTableColumnModel;
@@ -132,11 +143,12 @@ public abstract class ItemBatchView extends DialogView {
 	protected JTableHeader itemTableHeader;
 	protected JScrollPane itemTableScrollPane;
 
-	//--------------------------
+	// --------------------------
 	// Other members
-	//--------------------------
+	// --------------------------
 	protected JPanel productPanel;
 	protected JSplitPane splitPane;
+
 	public ItemBatchView(GUI parent, final DialogBox dialog) {
 		super(parent, dialog);
 
@@ -151,40 +163,46 @@ public abstract class ItemBatchView extends DialogView {
 			}
 		});
 	}
+
 	public void close() {
 		_dialog.dispose();
 	}
+
 	public void enableItemAction(boolean value) {
 		itemActionButton.setEnabled(value);
 	}
+
 	public void enableRedo(boolean value) {
 		redoButton.setEnabled(value);
 	}
+
 	public void enableUndo(boolean value) {
 		undoButton.setEnabled(value);
 	}
+
 	public String getBarcode() {
 		return barcodeField.getText();
 	}
+
 	public ItemData getSelectedItem() {
 		int selectedIndex = itemTable.getSelectedRow();
 		if (selectedIndex >= 0) {
-			ItemFormatter formatter =
-					(ItemFormatter)itemTableModel.getValueAt(selectedIndex, 0);
-			return (ItemData)formatter.getTag();
-		}
-		return null;
-	}
-	public ProductData getSelectedProduct() {
-		int selectedIndex = productTable.getSelectedRow();
-		if (selectedIndex >= 0) {
-			ProductFormatter formatter =
-					(ProductFormatter)productTableModel.getValueAt(selectedIndex, 0);
-			return (ProductData)formatter.getTag();
+			ItemFormatter formatter = (ItemFormatter) itemTableModel
+					.getValueAt(selectedIndex, 0);
+			return (ItemData) formatter.getTag();
 		}
 		return null;
 	}
 
+	public ProductData getSelectedProduct() {
+		int selectedIndex = productTable.getSelectedRow();
+		if (selectedIndex >= 0) {
+			ProductFormatter formatter = (ProductFormatter) productTableModel
+					.getValueAt(selectedIndex, 0);
+			return (ProductData) formatter.getTag();
+		}
+		return null;
+	}
 
 	public boolean getUseScanner() {
 		return scannerBox.isSelected();
@@ -194,8 +212,7 @@ public abstract class ItemBatchView extends DialogView {
 		boolean disabledEvents = disableEvents();
 		try {
 			barcodeField.requestFocusInWindow();
-		}
-		finally {
+		} finally {
 			if (disabledEvents) {
 				enableEvents();
 			}
@@ -206,16 +223,15 @@ public abstract class ItemBatchView extends DialogView {
 		boolean disabledEvents = disableEvents();
 		try {
 			for (int i = 0; i < itemTableModel.getRowCount(); ++i) {
-				ItemFormatter formatter =
-						(ItemFormatter)itemTableModel.getValueAt(i, 0);
-				ItemData id = (ItemData)formatter.getTag();
+				ItemFormatter formatter = (ItemFormatter) itemTableModel
+						.getValueAt(i, 0);
+				ItemData id = (ItemData) formatter.getTag();
 				if (id == item) {
 					TableOperations.selectTableRow(itemTable, i);
 					return;
 				}
 			}
-		}
-		finally {
+		} finally {
 			if (disabledEvents) {
 				enableEvents();
 			}
@@ -226,15 +242,15 @@ public abstract class ItemBatchView extends DialogView {
 		boolean disabledEvents = disableEvents();
 		try {
 			for (int i = 0; i < productTableModel.getRowCount(); ++i) {
-				ProductFormatter formatter = (ProductFormatter)productTableModel.getValueAt(i, 0);
-				ProductData pd = (ProductData)formatter.getTag();
+				ProductFormatter formatter = (ProductFormatter) productTableModel
+						.getValueAt(i, 0);
+				ProductData pd = (ProductData) formatter.getTag();
 				if (pd == product) {
 					TableOperations.selectTableRow(productTable, i);
 					return;
 				}
 			}
-		}
-		finally {
+		} finally {
 			if (disabledEvents) {
 				enableEvents();
 			}
@@ -245,8 +261,7 @@ public abstract class ItemBatchView extends DialogView {
 		boolean disabledEvents = disableEvents();
 		try {
 			barcodeField.setText(barcode);
-		}
-		finally {
+		} finally {
 			if (disabledEvents) {
 				enableEvents();
 			}
@@ -271,8 +286,7 @@ public abstract class ItemBatchView extends DialogView {
 				row[4].setTag(id);
 				itemTableModel.addRow(row);
 			}
-		}
-		finally {
+		} finally {
 			if (disabledEvents) {
 				enableEvents();
 			}
@@ -299,8 +313,7 @@ public abstract class ItemBatchView extends DialogView {
 				row[5].setTag(pd);
 				productTableModel.addRow(row);
 			}
-		}
-		finally {
+		} finally {
 			if (disabledEvents) {
 				enableEvents();
 			}
@@ -315,8 +328,7 @@ public abstract class ItemBatchView extends DialogView {
 		boolean disabledEvents = disableEvents();
 		try {
 			scannerBox.setSelected(value);
-		}
-		finally {
+		} finally {
 			if (disabledEvents) {
 				enableEvents();
 			}
@@ -414,14 +426,14 @@ public abstract class ItemBatchView extends DialogView {
 					return;
 				}
 				if (e.getSource() == itemTableHeader) {
-					//    	        	if (e.getButton() == MouseEvent.BUTTON1 &&
-					//    						e.getID() == MouseEvent.MOUSE_PRESSED) {
-					//    					int clickedColumnIndex =
-					//    						commentsColumnModel.getColumnIndexAtX(e.getX());
-					//    					if (clickedColumnIndex >= 0) {
-					//    						updateCommentSortOrder(clickedColumnIndex);
-					//    					}
-					//    	    		}
+					// if (e.getButton() == MouseEvent.BUTTON1 &&
+					// e.getID() == MouseEvent.MOUSE_PRESSED) {
+					// int clickedColumnIndex =
+					// commentsColumnModel.getColumnIndexAtX(e.getX());
+					// if (clickedColumnIndex >= 0) {
+					// updateCommentSortOrder(clickedColumnIndex);
+					// }
+					// }
 				}
 			}
 		};
@@ -471,7 +483,8 @@ public abstract class ItemBatchView extends DialogView {
 				ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED,
 				ScrollPaneConstants.HORIZONTAL_SCROLLBAR_AS_NEEDED);
 		itemTableScrollPane.setPreferredSize(new Dimension(600, 300));
-		itemTableScrollPane.setBorder(createTitledBorder("Items", BorderFontSize));
+		itemTableScrollPane.setBorder(createTitledBorder("Items",
+				BorderFontSize));
 	}
 
 	@SuppressWarnings("serial")
@@ -494,20 +507,21 @@ public abstract class ItemBatchView extends DialogView {
 					return;
 				}
 				if (e.getSource() == productTableHeader) {
-					//    	    		if (e.getButton() == MouseEvent.BUTTON1 &&
-					//    						e.getID() == MouseEvent.MOUSE_PRESSED) {
-					//    					int clickedColumnIndex =
-					//    						commentsColumnModel.getColumnIndexAtX(e.getX());
-					//    					if (clickedColumnIndex >= 0) {
-					//    						updateCommentSortOrder(clickedColumnIndex);
-					//    					}
-					//    	    		}
+					// if (e.getButton() == MouseEvent.BUTTON1 &&
+					// e.getID() == MouseEvent.MOUSE_PRESSED) {
+					// int clickedColumnIndex =
+					// commentsColumnModel.getColumnIndexAtX(e.getX());
+					// if (clickedColumnIndex >= 0) {
+					// updateCommentSortOrder(clickedColumnIndex);
+					// }
+					// }
 				}
 			}
 		};
 
 		productTableColumnModel = new DefaultTableColumnModel();
-		TableColumn column = createTableColumn(0, "Description", ContentFontSize);
+		TableColumn column = createTableColumn(0, "Description",
+				ContentFontSize);
 		productTableColumnModel.addColumn(column);
 		column = createTableColumn(1, "Size", ContentFontSize);
 		productTableColumnModel.addColumn(column);
@@ -528,7 +542,8 @@ public abstract class ItemBatchView extends DialogView {
 		};
 
 		productTable = new JTable(productTableModel, productTableColumnModel);
-		productTable.setFont(createFont(productTable.getFont(), ContentFontSize));
+		productTable
+				.setFont(createFont(productTable.getFont(), ContentFontSize));
 		productTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		productTable.getSelectionModel().addListSelectionListener(
 				new ListSelectionListener() {
@@ -553,7 +568,8 @@ public abstract class ItemBatchView extends DialogView {
 				ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED,
 				ScrollPaneConstants.HORIZONTAL_SCROLLBAR_AS_NEEDED);
 		productTableScrollPane.setPreferredSize(new Dimension(600, 300));
-		productTableScrollPane.setBorder(createTitledBorder("Products", BorderFontSize));
+		productTableScrollPane.setBorder(createTitledBorder("Products",
+				BorderFontSize));
 	}
 
 	protected abstract void barcodeChanged();
@@ -567,9 +583,9 @@ public abstract class ItemBatchView extends DialogView {
 
 	protected abstract void done();
 
-	//--------------------------
+	// --------------------------
 	// Abstract method interface
-	//--------------------------
+	// --------------------------
 	protected abstract String getBarcodeLabel();
 
 	protected abstract String getItemActionName();
@@ -584,7 +600,7 @@ public abstract class ItemBatchView extends DialogView {
 		GridBagConstraintsExt c = new GridBagConstraintsExt();
 		c.ipadx = 2;
 		c.ipady = 2;
-		c.insets = new Insets(5,5,5,5);
+		c.insets = new Insets(5, 5, 5, 5);
 
 		c.place(0, 0, 1, 1);
 		batchPanel.add(barcodeLabel, c);
@@ -617,8 +633,8 @@ public abstract class ItemBatchView extends DialogView {
 		productPanel.add(Box.createRigidArea(new Dimension(10, 10)));
 		productPanel.add(productTableScrollPane);
 
-		splitPane = new JSplitPane(JSplitPane.VERTICAL_SPLIT,
-				productPanel, itemTableScrollPane);
+		splitPane = new JSplitPane(JSplitPane.VERTICAL_SPLIT, productPanel,
+				itemTableScrollPane);
 
 		setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 		this.add(splitPane);
@@ -632,7 +648,8 @@ public abstract class ItemBatchView extends DialogView {
 
 	protected void setMaximumSize(JComponent c) {
 		Dimension preferred = c.getPreferredSize();
-		Dimension maximum = new Dimension(Integer.MAX_VALUE, (int)preferred.getHeight());
+		Dimension maximum = new Dimension(Integer.MAX_VALUE,
+				(int) preferred.getHeight());
 		c.setMaximumSize(maximum);
 	}
 
@@ -642,8 +659,6 @@ public abstract class ItemBatchView extends DialogView {
 
 	protected abstract void undo();
 
-
 	protected abstract void useScannerChanged();
 
 }
-

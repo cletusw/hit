@@ -12,24 +12,24 @@ import org.junit.Before;
 import org.junit.Test;
 
 public class ConcreteItemManagerTest {
-	ConcreteProductManager pm;
-	ConcreteItemManager cm;
-	Product pOne;
-	Product pTwo;
-	ProductGroup pg1;
+	private ConcreteProductManager pm;
+	private ConcreteItemManager cm;
+	private Product pOne;
+	private Product pTwo;
+	private ProductGroup pg1;
 
 	@Before
 	public void setUp() throws Exception {
 		pm = new ConcreteProductManager();
-		pOne = new Product("barcode1","Description1",new Date(),5,3,
-				new ProductQuantity(5,Unit.GALLONS),pm);
-		pTwo = new Product("barcode2","Description2",new Date(),1,1,
-				new ProductQuantity(1,Unit.COUNT),pm);
+		pOne = new Product("barcode1", "Description1", new Date(), 5, 3,
+				new ProductQuantity(5, Unit.GALLONS), pm);
+		pTwo = new Product("barcode2", "Description2", new Date(), 1, 1,
+				new ProductQuantity(1, Unit.COUNT), pm);
 		pm.manage(pOne);
 		pm.manage(pTwo);
 
-		pg1 = new ProductGroup("Pg1",new ProductQuantity(3,Unit.COUNT),Unit.COUNT,
-				new StorageUnit("Su1"));
+		pg1 = new ProductGroup("Pg1", new ProductQuantity(3, Unit.COUNT),
+				Unit.COUNT, new StorageUnit("Su1"));
 
 		cm = new ConcreteItemManager();
 	}
@@ -41,7 +41,7 @@ public class ConcreteItemManagerTest {
 	@Test
 	public void testAddAndRemoveItems() {
 		// add item
-		Item one = new Item(pOne,pg1,cm);
+		Item one = new Item(pOne, pg1, cm);
 		assertTrue(cm.productHasItems(pOne));
 
 		// re-add same item (which shouldn't be added), then remove it
@@ -54,14 +54,14 @@ public class ConcreteItemManagerTest {
 		assertTrue(cm.productHasItems(pOne));
 
 		// add different item of the same product type
-		Item two = new Item(pOne,pg1,cm);
+		Item two = new Item(pOne, pg1, cm);
 		// add different item of different product type
-		Item three = new Item(pTwo,pg1,cm);
+		Item three = new Item(pTwo, pg1, cm);
 		assertTrue(cm.productHasItems(pTwo));
 
 		// test unmanage functions
 		cm.unmanage(one);
-		assertTrue(cm.productHasItems(pOne));	// still has one item of type pOne
+		assertTrue(cm.productHasItems(pOne)); // still has one item of type pOne
 		cm.unmanage(two);
 		assertFalse(cm.productHasItems(pOne));
 
@@ -75,14 +75,15 @@ public class ConcreteItemManagerTest {
 		// check removed items data structure
 		Iterator<Item> removed = cm.removedItemsIterator();
 		int counter = 0;
-		while(removed.hasNext()) {
+		while (removed.hasNext()) {
 			Item current = removed.next();
-			if(!current.equals(one) && !current.equals(two) && !current.equals(three))
+			if (!current.equals(one) && !current.equals(two)
+					&& !current.equals(three))
 				assertFalse(true);
 			else
 				counter++;
 		}
-		assertEquals(counter,3);
+		assertEquals(counter, 3);
 	}
 
 }

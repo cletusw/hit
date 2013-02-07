@@ -3,7 +3,6 @@ package gui.item;
 import gui.common.DialogBox;
 import gui.main.GUI;
 
-
 @SuppressWarnings("serial")
 public class EditItemView extends ItemView implements IEditItemView {
 
@@ -17,7 +16,7 @@ public class EditItemView extends ItemView implements IEditItemView {
 
 	@Override
 	public IEditItemController getController() {
-		return (IEditItemController)super.getController();
+		return (IEditItemController) super.getController();
 	}
 
 	@Override
@@ -36,4 +35,3 @@ public class EditItemView extends ItemView implements IEditItemView {
 	}
 
 }
-

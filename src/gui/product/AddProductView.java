@@ -3,7 +3,6 @@ package gui.product;
 import gui.common.DialogBox;
 import gui.main.GUI;
 
-
 @SuppressWarnings("serial")
 public class AddProductView extends ProductView implements IAddProductView {
 
@@ -17,7 +16,7 @@ public class AddProductView extends ProductView implements IAddProductView {
 
 	@Override
 	public IAddProductController getController() {
-		return (IAddProductController)super.getController();
+		return (IAddProductController) super.getController();
 	}
 
 	@Override
@@ -36,5 +35,3 @@ public class AddProductView extends ProductView implements IAddProductView {
 	}
 
 }
-
-

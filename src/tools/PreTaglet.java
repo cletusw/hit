@@ -5,7 +5,6 @@ import java.util.Map;
 import com.sun.javadoc.Tag;
 import com.sun.tools.doclets.Taglet;
 
-
 public class PreTaglet implements Taglet {
 
 	@SuppressWarnings("unchecked")
@@ -74,4 +73,3 @@ public class PreTaglet implements Taglet {
 	}
 
 }
-

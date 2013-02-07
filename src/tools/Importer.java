@@ -1,7 +1,5 @@
 package tools;
 
-
-
 public class Importer {
 
 	public static void main(String[] args) {
@@ -17,4 +15,3 @@ public class Importer {
 	}
 
 }
-

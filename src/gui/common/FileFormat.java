@@ -5,7 +5,5 @@ package gui.common;
  */
 public enum FileFormat {
 
-	HTML,
-	PDF
+	HTML, PDF
 }
-

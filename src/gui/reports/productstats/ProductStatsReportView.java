@@ -23,9 +23,9 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
-
 @SuppressWarnings("serial")
-public class ProductStatsReportView extends DialogView implements IProductStatsReportView {
+public class ProductStatsReportView extends DialogView implements
+		IProductStatsReportView {
 
 	private JPanel _valuesPanel;
 	private JLabel _formatLabel;
@@ -60,12 +60,12 @@ public class ProductStatsReportView extends DialogView implements IProductStatsR
 
 	@Override
 	public IProductStatsReportController getController() {
-		return (IProductStatsReportController)super.getController();
+		return (IProductStatsReportController) super.getController();
 	}
 
 	@Override
 	public FileFormat getFormat() {
-		return (FileFormat)_formatBox.getSelectedItem();
+		return (FileFormat) _formatBox.getSelectedItem();
 	}
 
 	@Override
@@ -78,8 +78,7 @@ public class ProductStatsReportView extends DialogView implements IProductStatsR
 		boolean disabledEvents = disableEvents();
 		try {
 			_formatBox.setSelectedItem(value);
-		}
-		finally {
+		} finally {
 			if (disabledEvents) {
 				enableEvents();
 			}
@@ -96,26 +95,25 @@ public class ProductStatsReportView extends DialogView implements IProductStatsR
 	}
 
 	private void createButtonsPanel() {
-		_buttonsPanel = new ButtonBankPanel(new String[]{"OK", "Cancel"},
+		_buttonsPanel = new ButtonBankPanel(new String[] { "OK", "Cancel" },
 				new ButtonBankListener() {
-			@Override
-			public void buttonPressed(int index, String label) {
-				switch (index) {
-				case 0:
-					ok();
-					_dialog.dispose();
-					break;
-				case 1:
-					cancel();
-					_dialog.dispose();
-					break;
-				default:
-					assert false;
-					break;
-				}
-			}
-		}
-				);
+					@Override
+					public void buttonPressed(int index, String label) {
+						switch (index) {
+						case 0:
+							ok();
+							_dialog.dispose();
+							break;
+						case 1:
+							cancel();
+							_dialog.dispose();
+							break;
+						default:
+							assert false;
+							break;
+						}
+					}
+				});
 
 		_okButton = _buttonsPanel.getButtons()[0];
 		_dialog.getRootPane().setDefaultButton(_okButton);
@@ -147,10 +145,12 @@ public class ProductStatsReportView extends DialogView implements IProductStatsR
 			public void keyPressed(KeyEvent arg0) {
 				return;
 			}
+
 			@Override
 			public void keyReleased(KeyEvent arg0) {
 				valuesChanged();
 			}
+
 			@Override
 			public void keyTyped(KeyEvent arg0) {
 				return;
@@ -164,7 +164,7 @@ public class ProductStatsReportView extends DialogView implements IProductStatsR
 		GridBagConstraintsExt c = new GridBagConstraintsExt();
 		c.ipadx = 2;
 		c.ipady = 2;
-		c.insets = new Insets(5,5,5,5);
+		c.insets = new Insets(5, 5, 5, 5);
 
 		c.place(0, 0, 1, 1);
 		_valuesPanel.add(Box.createHorizontalStrut(20), c);
@@ -212,4 +212,3 @@ public class ProductStatsReportView extends DialogView implements IProductStatsR
 	}
 
 }
-

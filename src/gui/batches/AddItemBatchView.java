@@ -31,7 +31,7 @@ import common.util.DateUtils;
 
 @SuppressWarnings("serial")
 public class AddItemBatchView extends ItemBatchView implements
-IAddItemBatchView {
+		IAddItemBatchView {
 
 	private JLabel entryDateLabel;
 	private SpinnerModel entryDateSpinnerModel;
@@ -71,7 +71,7 @@ IAddItemBatchView {
 	public Date getEntryDate() {
 
 		// return DateUtils.removeTimeFromDate((Date) entryDateSpinnerModel
-		// 		.getValue());
+		// .getValue());
 
 		String entryDateText = entryDateSpinnerEditor.getTextField().getText();
 		if (entryDateText == null) {
@@ -79,8 +79,7 @@ IAddItemBatchView {
 		}
 		try {
 			return DateUtils.parseDate(entryDateText);
-		}
-		catch (ParseException e) {
+		} catch (ParseException e) {
 			return null;
 		}
 	}
@@ -143,41 +142,41 @@ IAddItemBatchView {
 				DateUtils.DATE_FORMAT);
 		entryDateSpinner.setEditor(entryDateSpinnerEditor);
 		entryDateSpinnerEditor.getTextField().getDocument()
-		.addDocumentListener(new DocumentListener() {
+				.addDocumentListener(new DocumentListener() {
 
-			@Override
-			public void changedUpdate(DocumentEvent e) {
-				return;
-			}
+					@Override
+					public void changedUpdate(DocumentEvent e) {
+						return;
+					}
 
-			@Override
-			public void insertUpdate(DocumentEvent e) {
-				processChange(e);
-			}
+					@Override
+					public void insertUpdate(DocumentEvent e) {
+						processChange(e);
+					}
 
-			@Override
-			public void removeUpdate(DocumentEvent e) {
-				processChange(e);
-			}
+					@Override
+					public void removeUpdate(DocumentEvent e) {
+						processChange(e);
+					}
 
-			private void processChange(DocumentEvent e) {
-				if (eventsAreDisabled()) {
-					return;
-				}
-				if (entryDateSpinnerEditor.getTextField().hasFocus()) {
-					entryDateChanged();
-				}
-			}
-		});
-		//		entryDateSpinner.addChangeListener(new ChangeListener() {
-		//			@Override
-		//			public void stateChanged(ChangeEvent e) {
-		//				if (eventsAreDisabled()) {
-		//					return;
-		//				}
-		//				entryDateChanged();
-		//			}
-		//		});
+					private void processChange(DocumentEvent e) {
+						if (eventsAreDisabled()) {
+							return;
+						}
+						if (entryDateSpinnerEditor.getTextField().hasFocus()) {
+							entryDateChanged();
+						}
+					}
+				});
+		// entryDateSpinner.addChangeListener(new ChangeListener() {
+		// @Override
+		// public void stateChanged(ChangeEvent e) {
+		// if (eventsAreDisabled()) {
+		// return;
+		// }
+		// entryDateChanged();
+		// }
+		// });
 
 		countLabel = new JLabel("Count:");
 
@@ -313,4 +312,3 @@ IAddItemBatchView {
 	}
 
 }
-

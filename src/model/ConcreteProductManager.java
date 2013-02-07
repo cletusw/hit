@@ -8,14 +8,15 @@ import java.util.TreeMap;
 
 /**
  * @author Clayton Watts
- *
+ * 
  */
 @SuppressWarnings("serial")
 public class ConcreteProductManager implements ProductManager, Serializable {
 	private Collection<Product> products;
 	private Map<String, Product> barcodesToProducts;
 
-	/** Creates an empty ConcreteProductManager
+	/**
+	 * Creates an empty ConcreteProductManager
 	 */
 	public ConcreteProductManager() {
 		products = new ArrayList<Product>();
@@ -24,34 +25,42 @@ public class ConcreteProductManager implements ProductManager, Serializable {
 
 	/**
 	 * Checks if the identified Product exists in the home inventory system.
-	 * @param product The Product to check
-	 * @return true if the product exists in the home inventory system,
-	 * 		false otherwise.
+	 * 
+	 * @param product
+	 *            The Product to check
+	 * @return true if the product exists in the home inventory system, false
+	 *         otherwise.
 	 * 
 	 * @pre product != null
 	 */
 	@Override
 	public boolean contains(Product product) {
-		assert(product != null);
+		assert (product != null);
 
 		return products.contains(product);
 	}
 
-	/** Looks up a product by the given barcode
-	 * @param barcode The barcode of the product to return
+	/**
+	 * Looks up a product by the given barcode
+	 * 
+	 * @param barcode
+	 *            The barcode of the product to return
 	 * @return The product with the given barcode
 	 * 
 	 * @pre barcode != null
 	 */
 	@Override
 	public Product getByBarcode(String barcode) {
-		assert(barcode != null);
+		assert (barcode != null);
 
 		return barcodesToProducts.get(barcode);
 	}
 
-	/** Adds the given product to this Manager's indices
-	 * @param product Product to manage
+	/**
+	 * Adds the given product to this Manager's indices
+	 * 
+	 * @param product
+	 *            Product to manage
 	 * 
 	 * @pre product != null
 	 * @post contains(product) == true
@@ -59,14 +68,17 @@ public class ConcreteProductManager implements ProductManager, Serializable {
 	 */
 	@Override
 	public void manage(Product product) {
-		assert(product != null);
+		assert (product != null);
 
 		products.add(product);
 		barcodesToProducts.put(product.getBarcode(), product);
 	}
 
-	/** Removes the given product from this Manager's indices
-	 * @param product Product to unmanage
+	/**
+	 * Removes the given product from this Manager's indices
+	 * 
+	 * @param product
+	 *            Product to unmanage
 	 * 
 	 * @pre product != null
 	 * @post contains(product) == false
@@ -74,7 +86,7 @@ public class ConcreteProductManager implements ProductManager, Serializable {
 	 */
 	@Override
 	public void unmanage(Product product) {
-		assert(product != null);
+		assert (product != null);
 
 		products.remove(product);
 		barcodesToProducts.remove(product.getBarcode());

@@ -1,23 +1,17 @@
 package gui.common;
 
 /**
- * Enumeration defining all the units of measurement (including weight,
- * volume, and count) supported by the program.
+ * Enumeration defining all the units of measurement (including weight, volume,
+ * and count) supported by the program.
  */
 public enum SizeUnits {
 
 	// Weight units
-	Pounds("pounds"),
-	Ounces("ounces"),
-	Grams("grams"),
-	Kilograms("kilograms"),
+	Pounds("pounds"), Ounces("ounces"), Grams("grams"), Kilograms("kilograms"),
 
 	// Volume units
-	Gallons("gallons"),
-	Quarts("quarts"),
-	Pints("pints"),
-	FluidOunces("fluid ounces"),
-	Liters("liters"),
+	Gallons("gallons"), Quarts("quarts"), Pints("pints"), FluidOunces(
+			"fluid ounces"), Liters("liters"),
 
 	// Count units
 	Count("count");
@@ -30,11 +24,12 @@ public enum SizeUnits {
 	/**
 	 * Constructor.
 	 * 
-	 * @param s String value to be returned by toString.
+	 * @param s
+	 *            String value to be returned by toString.
 	 * 
-	 * {@pre s != null}
+	 *            {@pre s != null}
 	 * 
-	 * {@post toString() == s}
+	 *            {@post toString() == s}
 	 */
 	private SizeUnits(String s) {
 		_string = s;
@@ -46,4 +41,3 @@ public enum SizeUnits {
 	}
 
 }
-

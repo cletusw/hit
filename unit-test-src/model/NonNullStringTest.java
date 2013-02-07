@@ -17,7 +17,7 @@ public class NonNullStringTest {
 	}
 
 	@Test
-	public void testCompareTo(){
+	public void testCompareTo() {
 		NonNullString one = new NonNullString("one");
 		NonNullString two = new NonNullString("two");
 		NonNullString copyOfOne = new NonNullString("one");
@@ -27,18 +27,18 @@ public class NonNullStringTest {
 		assertTrue(one.compareTo(copyOfOne.getValue()) == 0);
 	}
 
-	@Test (expected=IllegalArgumentException.class)
-	public void testEmptyStringConstructor(){
+	@Test(expected = IllegalArgumentException.class)
+	public void testEmptyStringConstructor() {
 		new NonNullString("");
 	}
 
-	@Test (expected=IllegalArgumentException.class)
-	public void testNullConstructor(){
+	@Test(expected = IllegalArgumentException.class)
+	public void testNullConstructor() {
 		new NonNullString(null);
 	}
 
 	@Test
-	public void validConstructorTest(){
+	public void validConstructorTest() {
 		NonNullString one = new NonNullString("one");
 		assertTrue(one.value.equals("one"));
 

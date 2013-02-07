@@ -16,13 +16,15 @@ public class DialogView extends View {
 	/**
 	 * Constructor.
 	 * 
-	 * @param parent Parent GUI object.
-	 * @param dialog Dialog box that is displaying this view.
+	 * @param parent
+	 *            Parent GUI object.
+	 * @param dialog
+	 *            Dialog box that is displaying this view.
 	 * 
-	 * {@pre parent != null, dialog != null}
+	 *            {@pre parent != null, dialog != null}
 	 * 
-	 * {@post DialogView has been initialized with the specified
-	 * parent and dialog.}
+	 *            {@post DialogView has been initialized with the specified
+	 *            parent and dialog.}
 	 */
 	public DialogView(GUI parent, DialogBox dialog) {
 		super(parent);
@@ -31,4 +33,3 @@ public class DialogView extends View {
 	}
 
 }
-

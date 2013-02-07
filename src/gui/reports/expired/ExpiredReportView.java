@@ -20,7 +20,6 @@ import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
-
 @SuppressWarnings("serial")
 public class ExpiredReportView extends DialogView implements IExpiredReportView {
 
@@ -50,12 +49,12 @@ public class ExpiredReportView extends DialogView implements IExpiredReportView 
 
 	@Override
 	public IExpiredReportController getController() {
-		return (IExpiredReportController)super.getController();
+		return (IExpiredReportController) super.getController();
 	}
 
 	@Override
 	public FileFormat getFormat() {
-		return (FileFormat)_formatBox.getSelectedItem();
+		return (FileFormat) _formatBox.getSelectedItem();
 	}
 
 	@Override
@@ -63,8 +62,7 @@ public class ExpiredReportView extends DialogView implements IExpiredReportView 
 		boolean disabledEvents = disableEvents();
 		try {
 			_formatBox.setSelectedItem(value);
-		}
-		finally {
+		} finally {
 			if (disabledEvents) {
 				enableEvents();
 			}
@@ -75,28 +73,26 @@ public class ExpiredReportView extends DialogView implements IExpiredReportView 
 		return;
 	}
 
-
 	private void createButtonsPanel() {
-		_buttonsPanel = new ButtonBankPanel(new String[]{"OK", "Cancel"},
+		_buttonsPanel = new ButtonBankPanel(new String[] { "OK", "Cancel" },
 				new ButtonBankListener() {
-			@Override
-			public void buttonPressed(int index, String label) {
-				switch (index) {
-				case 0:
-					ok();
-					_dialog.dispose();
-					break;
-				case 1:
-					cancel();
-					_dialog.dispose();
-					break;
-				default:
-					assert false;
-					break;
-				}
-			}
-		}
-				);
+					@Override
+					public void buttonPressed(int index, String label) {
+						switch (index) {
+						case 0:
+							ok();
+							_dialog.dispose();
+							break;
+						case 1:
+							cancel();
+							_dialog.dispose();
+							break;
+						default:
+							assert false;
+							break;
+						}
+					}
+				});
 
 		_okButton = _buttonsPanel.getButtons()[0];
 		_dialog.getRootPane().setDefaultButton(_okButton);
@@ -127,7 +123,7 @@ public class ExpiredReportView extends DialogView implements IExpiredReportView 
 		GridBagConstraintsExt c = new GridBagConstraintsExt();
 		c.ipadx = 2;
 		c.ipady = 2;
-		c.insets = new Insets(5,5,5,5);
+		c.insets = new Insets(5, 5, 5, 5);
 
 		c.place(0, 0, 1, 1);
 		_valuesPanel.add(Box.createHorizontalStrut(20), c);
@@ -169,4 +165,3 @@ public class ExpiredReportView extends DialogView implements IExpiredReportView 
 	}
 
 }
-

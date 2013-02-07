@@ -14,15 +14,16 @@ import java.util.Random;
 /**
  * Controller class for inventory view.
  */
-public class InventoryController extends Controller
-implements IInventoryController {
+public class InventoryController extends Controller implements
+		IInventoryController {
 
 	private Random rand = new Random();
 
 	/**
 	 * Constructor.
 	 * 
-	 * @param view Reference to the inventory view
+	 * @param view
+	 *            Reference to the inventory view
 	 */
 	public InventoryController(IInventoryView view) {
 		super(view);
@@ -39,7 +40,8 @@ implements IInventoryController {
 	}
 
 	/**
-	 * This method is called when the user selects the "Add Product Group" menu item.
+	 * This method is called when the user selects the "Add Product Group" menu
+	 * item.
 	 */
 	@Override
 	public void addProductGroup() {
@@ -51,11 +53,13 @@ implements IInventoryController {
 	//
 
 	/**
-	 * This method is called when the user drags a product into a
-	 * product container.
+	 * This method is called when the user drags a product into a product
+	 * container.
 	 * 
-	 * @param productData Product dragged into the target product container
-	 * @param containerData Target product container
+	 * @param productData
+	 *            Product dragged into the target product container
+	 * @param containerData
+	 *            Target product container
 	 */
 	@Override
 	public void addProductToContainer(ProductData productData,
@@ -63,7 +67,8 @@ implements IInventoryController {
 	}
 
 	/**
-	 * This method is called when the user selects the "Add Storage Unit" menu item.
+	 * This method is called when the user selects the "Add Storage Unit" menu
+	 * item.
 	 */
 	@Override
 	public void addStorageUnit() {
@@ -79,7 +84,8 @@ implements IInventoryController {
 	}
 
 	/**
-	 * Returns true if and only if the "Add Product Group" menu item should be enabled.
+	 * Returns true if and only if the "Add Product Group" menu item should be
+	 * enabled.
 	 */
 	@Override
 	public boolean canAddProductGroup() {
@@ -87,7 +93,8 @@ implements IInventoryController {
 	}
 
 	/**
-	 * Returns true if and only if the "Add Storage Unit" menu item should be enabled.
+	 * Returns true if and only if the "Add Storage Unit" menu item should be
+	 * enabled.
 	 */
 	@Override
 	public boolean canAddStorageUnit() {
@@ -95,7 +102,8 @@ implements IInventoryController {
 	}
 
 	/**
-	 * Returns true if and only if the "Delete Product" menu item should be enabled.
+	 * Returns true if and only if the "Delete Product" menu item should be
+	 * enabled.
 	 */
 	@Override
 	public boolean canDeleteProduct() {
@@ -103,7 +111,8 @@ implements IInventoryController {
 	}
 
 	/**
-	 * Returns true if and only if the "Delete Product Group" menu item should be enabled.
+	 * Returns true if and only if the "Delete Product Group" menu item should
+	 * be enabled.
 	 */
 	@Override
 	public boolean canDeleteProductGroup() {
@@ -111,7 +120,8 @@ implements IInventoryController {
 	}
 
 	/**
-	 * Returns true if and only if the "Delete Storage Unit" menu item should be enabled.
+	 * Returns true if and only if the "Delete Storage Unit" menu item should be
+	 * enabled.
 	 */
 	@Override
 	public boolean canDeleteStorageUnit() {
@@ -127,7 +137,8 @@ implements IInventoryController {
 	}
 
 	/**
-	 * Returns true if and only if the "Edit Product" menu item should be enabled.
+	 * Returns true if and only if the "Edit Product" menu item should be
+	 * enabled.
 	 */
 	@Override
 	public boolean canEditProduct() {
@@ -135,7 +146,8 @@ implements IInventoryController {
 	}
 
 	/**
-	 * Returns true if and only if the "Edit Product Group" menu item should be enabled.
+	 * Returns true if and only if the "Edit Product Group" menu item should be
+	 * enabled.
 	 */
 	@Override
 	public boolean canEditProductGroup() {
@@ -143,7 +155,8 @@ implements IInventoryController {
 	}
 
 	/**
-	 * Returns true if and only if the "Edit Storage Unit" menu item should be enabled.
+	 * Returns true if and only if the "Edit Storage Unit" menu item should be
+	 * enabled.
 	 */
 	@Override
 	public boolean canEditStorageUnit() {
@@ -151,7 +164,8 @@ implements IInventoryController {
 	}
 
 	/**
-	 * Returns true if and only if the "Remove Item" menu item should be enabled.
+	 * Returns true if and only if the "Remove Item" menu item should be
+	 * enabled.
 	 */
 	@Override
 	public boolean canRemoveItem() {
@@ -159,7 +173,8 @@ implements IInventoryController {
 	}
 
 	/**
-	 * Returns true if and only if the "Remove Items" menu item should be enabled.
+	 * Returns true if and only if the "Remove Items" menu item should be
+	 * enabled.
 	 */
 	@Override
 	public boolean canRemoveItems() {
@@ -167,7 +182,8 @@ implements IInventoryController {
 	}
 
 	/**
-	 * Returns true if and only if the "Transfer Items" menu item should be enabled.
+	 * Returns true if and only if the "Transfer Items" menu item should be
+	 * enabled.
 	 */
 	@Override
 	public boolean canTransferItems() {
@@ -175,21 +191,24 @@ implements IInventoryController {
 	}
 
 	/**
-	 * This method is called when the user selects the "Delete Product" menu item.
+	 * This method is called when the user selects the "Delete Product" menu
+	 * item.
 	 */
 	@Override
 	public void deleteProduct() {
 	}
 
 	/**
-	 * This method is called when the user selects the "Delete Product Group" menu item.
+	 * This method is called when the user selects the "Delete Product Group"
+	 * menu item.
 	 */
 	@Override
 	public void deleteProductGroup() {
 	}
 
 	/**
-	 * This method is called when the user selects the "Delete Storage Unit" menu item.
+	 * This method is called when the user selects the "Delete Storage Unit"
+	 * menu item.
 	 */
 	@Override
 	public void deleteStorageUnit() {
@@ -212,7 +231,8 @@ implements IInventoryController {
 	}
 
 	/**
-	 * This method is called when the user selects the "Edit Product Group" menu item.
+	 * This method is called when the user selects the "Edit Product Group" menu
+	 * item.
 	 */
 	@Override
 	public void editProductGroup() {
@@ -220,7 +240,8 @@ implements IInventoryController {
 	}
 
 	/**
-	 * This method is called when the user selects the "Edit Storage Unit" menu item.
+	 * This method is called when the user selects the "Edit Storage Unit" menu
+	 * item.
 	 */
 	@Override
 	public void editStorageUnit() {
@@ -236,11 +257,13 @@ implements IInventoryController {
 	}
 
 	/**
-	 * This method is called when the user drags an item into
-	 * a product container.
+	 * This method is called when the user drags an item into a product
+	 * container.
 	 * 
-	 * @param itemData Item dragged into the target product container
-	 * @param containerData Target product container
+	 * @param itemData
+	 *            Item dragged into the target product container
+	 * @param containerData
+	 *            Target product container
 	 */
 	@Override
 	public void moveItemToContainer(ItemData itemData,
@@ -253,7 +276,8 @@ implements IInventoryController {
 	@Override
 	public void productContainerSelectionChanged() {
 		List<ProductData> productDataList = new ArrayList<ProductData>();
-		ProductContainerData selectedContainer = getView().getSelectedProductContainer();
+		ProductContainerData selectedContainer = getView()
+				.getSelectedProductContainer();
 		if (selectedContainer != null) {
 			int productCount = rand.nextInt(20) + 1;
 			for (int i = 1; i <= productCount; ++i) {
@@ -318,7 +342,8 @@ implements IInventoryController {
 	}
 
 	/**
-	 * This method is called when the user selects the "Transfer Items" menu item.
+	 * This method is called when the user selects the "Transfer Items" menu
+	 * item.
 	 */
 	@Override
 	public void transferItems() {
@@ -329,20 +354,20 @@ implements IInventoryController {
 		Random rand = new Random();
 		StringBuilder barcode = new StringBuilder();
 		for (int i = 0; i < 12; ++i) {
-			barcode.append(((Integer)rand.nextInt(10)).toString());
+			barcode.append(((Integer) rand.nextInt(10)).toString());
 		}
 		return barcode.toString();
 	}
 
 	/**
 	 * Sets the enable/disable state of all components in the controller's view.
-	 * A component should be enabled only if the user is currently
-	 * allowed to interact with that component.
+	 * A component should be enabled only if the user is currently allowed to
+	 * interact with that component.
 	 * 
 	 * {@pre None}
 	 * 
-	 * {@post The enable/disable state of all components in the controller's view
-	 * have been set appropriately.}
+	 * {@post The enable/disable state of all components in the controller's
+	 * view have been set appropriately.}
 	 */
 	@Override
 	protected void enableComponents() {
@@ -354,21 +379,22 @@ implements IInventoryController {
 	 */
 	@Override
 	protected IInventoryView getView() {
-		return (IInventoryView)super.getView();
+		return (IInventoryView) super.getView();
 	}
 
 	/**
 	 * Loads data into the controller's view.
 	 * 
-	 *  {@pre None}
+	 * {@pre None}
 	 * 
-	 *  {@post The controller has loaded data into its view}
+	 * {@post The controller has loaded data into its view}
 	 */
 	@Override
 	protected void loadValues() {
 		ProductContainerData root = new ProductContainerData();
 
-		ProductContainerData basementCloset = new ProductContainerData("Basement Closet");
+		ProductContainerData basementCloset = new ProductContainerData(
+				"Basement Closet");
 
 		ProductContainerData toothpaste = new ProductContainerData("Toothpaste");
 		toothpaste.addChild(new ProductContainerData("Kids"));
@@ -377,7 +403,8 @@ implements IInventoryController {
 
 		root.addChild(basementCloset);
 
-		ProductContainerData foodStorage = new ProductContainerData("Food Storage Room");
+		ProductContainerData foodStorage = new ProductContainerData(
+				"Food Storage Room");
 
 		ProductContainerData soup = new ProductContainerData("Soup");
 		soup.addChild(new ProductContainerData("Chicken Noodle"));
@@ -391,4 +418,3 @@ implements IInventoryController {
 	}
 
 }
-

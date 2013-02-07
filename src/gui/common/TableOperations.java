@@ -13,13 +13,16 @@ public final class TableOperations {
 	/**
 	 * Selects a table row.
 	 * 
-	 * @param table table object in which selection is to be made
-	 * @param rowIndex index of row to be selected
+	 * @param table
+	 *            table object in which selection is to be made
+	 * @param rowIndex
+	 *            index of row to be selected
 	 * 
-	 * {@pre table != null}
-	 * {@pre rowIndex >= 0 AND rowIndex < table.getRowCount()}
+	 *            {@pre table != null} {@pre rowIndex >= 0 AND rowIndex
+	 *            < table
+	 *            .getRowCount()}
 	 * 
-	 * {@post The specified row in the table is selected.}
+	 *            {@post The specified row in the table is selected.}
 	 */
 	public static void selectTableRow(final JTable table, final int rowIndex) {
 		table.setRowSelectionInterval(rowIndex, rowIndex);
@@ -27,18 +30,19 @@ public final class TableOperations {
 	}
 
 	/**
-	 * Selects the table row that occupies the specified (x,y) point.
-	 * This is used to select the table row clicked on by the user.
+	 * Selects the table row that occupies the specified (x,y) point. This is
+	 * used to select the table row clicked on by the user.
 	 * 
-	 * @param table table object in which the mouse click occurred
-	 * @param point coordinates of the mouse click event
+	 * @param table
+	 *            table object in which the mouse click occurred
+	 * @param point
+	 *            coordinates of the mouse click event
 	 * 
-	 * {@pre table != null}
-	 * {@pre point != null}
+	 *            {@pre table != null} {@pre point != null}
 	 * 
-	 * {@post The table row corresponding to the specified point is selected.
-	 * If the specified point is not within the bounds of a table row,
-	 * nothing is done.}
+	 *            {@post The table row corresponding to the specified point is
+	 *            selected. If the specified point is not within the bounds of a
+	 *            table row, nothing is done.}
 	 */
 	public static void selectTableRow(JTable table, Point point) {
 		int rowIndex = table.rowAtPoint(point);
@@ -55,5 +59,3 @@ public final class TableOperations {
 	}
 
 }
-
-

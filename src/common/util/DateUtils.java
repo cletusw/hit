@@ -37,8 +37,8 @@ public final class DateUtils {
 	}
 
 	/**
-	 * Returns a Date object for the current date with the time portion
-	 * set to 12AM.
+	 * Returns a Date object for the current date with the time portion set to
+	 * 12AM.
 	 * 
 	 * {@pre None}
 	 * 
@@ -73,11 +73,12 @@ public final class DateUtils {
 	/**
 	 * Formats a Date object as a string of the form "MM/dd/yyyy".
 	 * 
-	 * @param d Date to be formatted.
+	 * @param d
+	 *            Date to be formatted.
 	 * 
-	 * {@pre d != null}
+	 *            {@pre d != null}
 	 * 
-	 * {@post Returns a date string of the form "MM/dd/yyyy".}
+	 *            {@post Returns a date string of the form "MM/dd/yyyy".}
 	 */
 	public static String formatDate(Date d) {
 		return dateFormatter.format(d);
@@ -86,11 +87,12 @@ public final class DateUtils {
 	/**
 	 * Formats a Date object as a string of the form "MM/dd/yyyy hh:mm a"
 	 * 
-	 * @param d Date object to be formatted.
+	 * @param d
+	 *            Date object to be formatted.
 	 * 
-	 * {@pre d != null}
+	 *            {@pre d != null}
 	 * 
-	 * {@post Returns a string of the form "MM/dd/yyyy hh:mm a".}
+	 *            {@post Returns a string of the form "MM/dd/yyyy hh:mm a".}
 	 */
 	public static String formatDateTime(Date d) {
 		return dateTimeFormatter.format(d);
@@ -99,26 +101,30 @@ public final class DateUtils {
 	/**
 	 * Formats a Date object as a string of the form "MM/dd/yy"
 	 * 
-	 * @param d Date to be formatted.
+	 * @param d
+	 *            Date to be formatted.
 	 * 
-	 * {@pre d != null}
+	 *            {@pre d != null}
 	 * 
-	 * {@post Returns a date string of the form "MM/dd/yy".}
+	 *            {@post Returns a date string of the form "MM/dd/yy".}
 	 */
 	public static String formatShortDate(Date d) {
 		return shortDateFormatter.format(d);
 	}
 
 	/**
-	 * Parses a date string of the form "MM/dd/yyyy" and converts it to a Date object
+	 * Parses a date string of the form "MM/dd/yyyy" and converts it to a Date
+	 * object
 	 * 
-	 * @param text String to be parsed.
+	 * @param text
+	 *            String to be parsed.
 	 * 
-	 * @throws ParseException if text is not of the form "MM/dd/yyyy".
+	 * @throws ParseException
+	 *             if text is not of the form "MM/dd/yyyy".
 	 * 
-	 * {@pre text contains a string of the form "MM/dd/yyyy"}
+	 *             {@pre text contains a string of the form "MM/dd/yyyy"}
 	 * 
-	 * {@post Returns a Date object containing the parsed date.}
+	 *             {@post Returns a Date object containing the parsed date.}
 	 */
 	public static Date parseDate(String text) throws ParseException {
 		Date result = dateFormatter.parse(text);
@@ -130,15 +136,20 @@ public final class DateUtils {
 	}
 
 	/**
-	 * Parses a string of the form "MM/dd/yyyy hh:mm a" and converts it to a Date object.
+	 * Parses a string of the form "MM/dd/yyyy hh:mm a" and converts it to a
+	 * Date object.
 	 * 
-	 * @param text String to be parsed.
+	 * @param text
+	 *            String to be parsed.
 	 * 
-	 * @throws ParseException if text is not of the form "MM/dd/yyyy hh:mm a"
+	 * @throws ParseException
+	 *             if text is not of the form "MM/dd/yyyy hh:mm a"
 	 * 
-	 * {@pre text contains a string of the form "MM/dd/yyyy hh:mm a"}
+	 *             {@pre text contains a string of the form
+	 *             "MM/dd/yyyy hh:mm a"}
 	 * 
-	 * {@post Returns a Date object containing the parsed date/time.}
+	 *             {@post Returns a Date object containing the parsed
+	 *             date/time.}
 	 */
 	public static Date parseDateTime(String text) throws ParseException {
 		Date result = dateTimeFormatter.parse(text);
@@ -152,11 +163,12 @@ public final class DateUtils {
 	/**
 	 * Normalizes the time portion of a Date object to midnight.
 	 * 
-	 * @param date The Date object to be normalized.
+	 * @param date
+	 *            The Date object to be normalized.
 	 * 
-	 * {@pre date != null}
+	 *            {@pre date != null}
 	 * 
-	 * {@post The time portion of date has been set to midnight.}
+	 *            {@post The time portion of date has been set to midnight.}
 	 */
 	public static Date removeTimeFromDate(Date date) {
 		GregorianCalendar calendar = new GregorianCalendar();
@@ -179,4 +191,3 @@ public final class DateUtils {
 	}
 
 }
-

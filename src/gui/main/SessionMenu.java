@@ -1,4 +1,3 @@
-
 package gui.main;
 
 import gui.common.View;
@@ -10,7 +9,6 @@ import javax.swing.JMenu;
 import javax.swing.JMenuItem;
 import javax.swing.event.MenuEvent;
 import javax.swing.event.MenuListener;
-
 
 @SuppressWarnings("serial")
 public class SessionMenu extends JMenu {
@@ -51,7 +49,8 @@ public class SessionMenu extends JMenu {
 		};
 
 		_exitMenuItem = new JMenuItem("Exit");
-		_exitMenuItem.setFont(View.createFont(_exitMenuItem.getFont(), View.MenuFontSize));
+		_exitMenuItem.setFont(View.createFont(_exitMenuItem.getFont(),
+				View.MenuFontSize));
 		_exitMenuItem.addActionListener(actionListener);
 		add(_exitMenuItem);
 	}
@@ -75,5 +74,3 @@ public class SessionMenu extends JMenu {
 	}
 
 }
-
-

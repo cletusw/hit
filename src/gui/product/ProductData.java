@@ -42,12 +42,9 @@ public class ProductData extends Tagable {
 	 * 
 	 * {@pre None}
 	 * 
-	 * {@post getDescription() == ""}
-	 * {@post getSize() == ""}
-	 * {@post getCount() == ""}
-	 * {@post getShelfLife() == ""}
-	 * {@post getSupply() == ""}
-	 * {@post getBarcode() == ""}
+	 * {@post getDescription() == ""} {@post getSize() == ""} {@post getCount()
+	 * == ""} {@post getShelfLife() == ""} {@post getSupply() == ""} {@post
+	 * getBarcode() == ""}
 	 */
 	public ProductData() {
 		_description = "";
@@ -103,11 +100,12 @@ public class ProductData extends Tagable {
 	/**
 	 * Sets the value of the Barcode attribute.
 	 * 
-	 * @param barcode New Barcode value
+	 * @param barcode
+	 *            New Barcode value
 	 * 
-	 * {@pre barcode != null}
+	 *            {@pre barcode != null}
 	 * 
-	 * {@post getBarcode() == barcode}
+	 *            {@post getBarcode() == barcode}
 	 */
 	public void setBarcode(String barcode) {
 		_barcode = barcode;
@@ -116,11 +114,12 @@ public class ProductData extends Tagable {
 	/**
 	 * Sets the value of the Count attribute.
 	 * 
-	 * @param count New Count value
+	 * @param count
+	 *            New Count value
 	 * 
-	 * {@pre count != null}
+	 *            {@pre count != null}
 	 * 
-	 * {@post getCount() == count}
+	 *            {@post getCount() == count}
 	 */
 	public void setCount(String count) {
 		_count = count;
@@ -129,11 +128,12 @@ public class ProductData extends Tagable {
 	/**
 	 * Sets the value of the Description value.
 	 * 
-	 * @param description New Description value
+	 * @param description
+	 *            New Description value
 	 * 
-	 * {@pre description != null}
+	 *            {@pre description != null}
 	 * 
-	 * {@post getDescription() == description}
+	 *            {@post getDescription() == description}
 	 */
 	public void setDescription(String description) {
 		_description = description;
@@ -142,11 +142,12 @@ public class ProductData extends Tagable {
 	/**
 	 * Sets the value of the Shelf Life attribute.
 	 * 
-	 * @param shelfLife New Shelf Life value
+	 * @param shelfLife
+	 *            New Shelf Life value
 	 * 
-	 * {@pre shelfLife != null}
+	 *            {@pre shelfLife != null}
 	 * 
-	 * {@post getShelfLife() == shelfLife}
+	 *            {@post getShelfLife() == shelfLife}
 	 */
 	public void setShelfLife(String shelfLife) {
 		_shelfLife = shelfLife;
@@ -155,11 +156,12 @@ public class ProductData extends Tagable {
 	/**
 	 * Sets the value of the Size attribute.
 	 * 
-	 * @param size New Size value
+	 * @param size
+	 *            New Size value
 	 * 
-	 * {@pre size != null}
+	 *            {@pre size != null}
 	 * 
-	 * {@post getSize() == size}
+	 *            {@post getSize() == size}
 	 */
 	public void setSize(String size) {
 		_size = size;
@@ -168,15 +170,15 @@ public class ProductData extends Tagable {
 	/**
 	 * Sets the value of the Supply attribute.
 	 * 
-	 * @param supply New Supply value
+	 * @param supply
+	 *            New Supply value
 	 * 
-	 * {@pre supply != null}
+	 *            {@pre supply != null}
 	 * 
-	 * {@post getSupply() == supply}
+	 *            {@post getSupply() == supply}
 	 */
 	public void setSupply(String supply) {
 		_supply = supply;
 	}
 
 }
-

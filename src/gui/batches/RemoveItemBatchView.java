@@ -3,9 +3,9 @@ package gui.batches;
 import gui.common.DialogBox;
 import gui.main.GUI;
 
-
 @SuppressWarnings("serial")
-public class RemoveItemBatchView extends ItemBatchView implements IRemoveItemBatchView {
+public class RemoveItemBatchView extends ItemBatchView implements
+		IRemoveItemBatchView {
 
 	public RemoveItemBatchView(GUI parent, DialogBox dialog) {
 		super(parent, dialog);
@@ -15,13 +15,13 @@ public class RemoveItemBatchView extends ItemBatchView implements IRemoveItemBat
 		_controller = new RemoveItemBatchController(this);
 	}
 
-	////////////////////////////
+	// //////////////////////////
 	// ItemBatchView Overrides
-	////////////////////////////
+	// //////////////////////////
 
 	@Override
 	public IRemoveItemBatchController getController() {
-		return (IRemoveItemBatchController)super.getController();
+		return (IRemoveItemBatchController) super.getController();
 	}
 
 	@Override
@@ -75,4 +75,3 @@ public class RemoveItemBatchView extends ItemBatchView implements IRemoveItemBat
 	}
 
 }
-

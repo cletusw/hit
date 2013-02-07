@@ -2,10 +2,9 @@ package gui.main;
 
 import gui.common.IView;
 
-
 /**
- * View interface for the main view.  The main view allows the user to
- * print reports and exit the program.
+ * View interface for the main view. The main view allows the user to print
+ * reports and exit the program.
  */
 public interface IMainView extends IView {
 
@@ -16,14 +15,14 @@ public interface IMainView extends IView {
 	void displayExpiredReportView();
 
 	/**
-	 * Displays the notices report view, which allows the user to print
-	 * the notices report.
+	 * Displays the notices report view, which allows the user to print the
+	 * notices report.
 	 */
 	void displayNoticesReportView();
 
 	/**
-	 * Displays the product statistics report view, which allows the user to print
-	 * the product statistics report.
+	 * Displays the product statistics report view, which allows the user to
+	 * print the product statistics report.
 	 */
 	void displayProductReportView();
 
@@ -40,4 +39,3 @@ public interface IMainView extends IView {
 	void displaySupplyReportView();
 
 }
-

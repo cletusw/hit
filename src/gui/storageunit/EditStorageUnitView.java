@@ -4,11 +4,12 @@ import gui.common.DialogBox;
 import gui.inventory.ProductContainerData;
 import gui.main.GUI;
 
-
 @SuppressWarnings("serial")
-public class EditStorageUnitView extends StorageUnitView implements IEditStorageUnitView {
+public class EditStorageUnitView extends StorageUnitView implements
+		IEditStorageUnitView {
 
-	public EditStorageUnitView(GUI parent, DialogBox dialog, ProductContainerData target) {
+	public EditStorageUnitView(GUI parent, DialogBox dialog,
+			ProductContainerData target) {
 		super(parent, dialog);
 
 		construct();
@@ -18,7 +19,7 @@ public class EditStorageUnitView extends StorageUnitView implements IEditStorage
 
 	@Override
 	public IEditStorageUnitController getController() {
-		return (IEditStorageUnitController)super.getController();
+		return (IEditStorageUnitController) super.getController();
 	}
 
 	@Override
@@ -37,5 +38,3 @@ public class EditStorageUnitView extends StorageUnitView implements IEditStorage
 	}
 
 }
-
-

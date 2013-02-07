@@ -2,10 +2,9 @@ package gui.inventory;
 
 import javax.swing.tree.DefaultMutableTreeNode;
 
-
 /**
- * ProductContainerTreeNode is a subclass of Swing's DefaultMutableTreeNode class
- * that is used to represent nodes in the product container tree.
+ * ProductContainerTreeNode is a subclass of Swing's DefaultMutableTreeNode
+ * class that is used to represent nodes in the product container tree.
  */
 @SuppressWarnings("serial")
 public class ProductContainerTreeNode extends DefaultMutableTreeNode {
@@ -13,13 +12,14 @@ public class ProductContainerTreeNode extends DefaultMutableTreeNode {
 	/**
 	 * Constructs a new ProductContainerTreeNode object.
 	 * 
-	 * @param productContainer ProductContainerData object associated with
-	 * this tree node.  This value becomes the "user object" of the node.
+	 * @param productContainer
+	 *            ProductContainerData object associated with this tree node.
+	 *            This value becomes the "user object" of the node.
 	 * 
-	 * {@pre productContainer != null}
+	 *            {@pre productContainer != null}
 	 * 
-	 * {@post getUserObject() == productContainer}
-	 * {@post New ProductContainerTreeNode object is fully initialized}
+	 *            {@post getUserObject() == productContainer} {@post New
+	 *            ProductContainerTreeNode object is fully initialized}
 	 */
 	public ProductContainerTreeNode(ProductContainerData productContainer) {
 		super(productContainer);
@@ -33,15 +33,17 @@ public class ProductContainerTreeNode extends DefaultMutableTreeNode {
 	 * {@post Returns the "user object" of the node as a ProductContainerData}
 	 */
 	public ProductContainerData getProductContainer() {
-		return (ProductContainerData)getUserObject();
+		return (ProductContainerData) getUserObject();
 	}
 
 	/**
-	 * Returns true if this node is the "all storage units" node and false otherwise.
+	 * Returns true if this node is the "all storage units" node and false
+	 * otherwise.
 	 * 
 	 * {@pre None}
 	 * 
-	 * {@post Returns true if this node is the "all storage units" node and false otherwise.}
+	 * {@post Returns true if this node is the "all storage units" node and
+	 * false otherwise.}
 	 */
 	public boolean isAllStorageUnits() {
 		return isRoot();
@@ -52,10 +54,11 @@ public class ProductContainerTreeNode extends DefaultMutableTreeNode {
 	 * 
 	 * {@pre None}
 	 * 
-	 * {@post Returns true if this node is an "product group" node and false otherwise.}
+	 * {@post Returns true if this node is an "product group" node and false
+	 * otherwise.}
 	 */
 	public boolean isProductGroup() {
-		ProductContainerTreeNode parent = (ProductContainerTreeNode)getParent();
+		ProductContainerTreeNode parent = (ProductContainerTreeNode) getParent();
 		return (parent != null && !parent.isRoot());
 	}
 
@@ -64,10 +67,11 @@ public class ProductContainerTreeNode extends DefaultMutableTreeNode {
 	 * 
 	 * {@pre None}
 	 * 
-	 * {@post Returns true if this node is a "storage unit" node and false otherwise.}
+	 * {@post Returns true if this node is a "storage unit" node and false
+	 * otherwise.}
 	 */
 	public boolean isStorageUnit() {
-		ProductContainerTreeNode parent = (ProductContainerTreeNode)getParent();
+		ProductContainerTreeNode parent = (ProductContainerTreeNode) getParent();
 		return (parent != null && parent.isRoot());
 	}
 
@@ -75,11 +79,9 @@ public class ProductContainerTreeNode extends DefaultMutableTreeNode {
 	public String toString() {
 		if (isAllStorageUnits()) {
 			return "Storage Units";
-		}
-		else {
+		} else {
 			return getProductContainer().getName();
 		}
 	}
 
 }
-

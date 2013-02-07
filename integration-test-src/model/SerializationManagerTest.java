@@ -45,7 +45,7 @@ public class SerializationManagerTest {
 
 	private void deleteDefaultFile() {
 		File f = new File(testTarget);
-		if(f.exists()) {
+		if (f.exists()) {
 			f.delete();
 		}
 	}

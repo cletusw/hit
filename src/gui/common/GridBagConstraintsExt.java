@@ -1,13 +1,11 @@
-
 package gui.common;
 
 import java.awt.GridBagConstraints;
 
 /**
- * GridBagConstraintsExt is an extension of
- * {@link java.awt.GridBagConstraints GridBagConstraints} with an
- * additional operation which makes it easy to reset the
- * (x, y, width, height) properties in one shot.
+ * GridBagConstraintsExt is an extension of {@link java.awt.GridBagConstraints
+ * GridBagConstraints} with an additional operation which makes it easy to reset
+ * the (x, y, width, height) properties in one shot.
  */
 @SuppressWarnings("serial")
 public class GridBagConstraintsExt extends GridBagConstraints {
@@ -31,9 +29,10 @@ public class GridBagConstraintsExt extends GridBagConstraints {
 	 * @param width
 	 * @param height
 	 * 
-	 * {@pre None}
+	 *            {@pre None}
 	 * 
-	 * {@post (x, y, width, height) properties have been set to the specified values.}
+	 *            {@post (x, y, width, height) properties have been set to the
+	 *            specified values.}
 	 */
 	public void place(int x, int y, int width, int height) {
 		gridx = x;
@@ -43,4 +42,3 @@ public class GridBagConstraintsExt extends GridBagConstraints {
 	}
 
 }
-

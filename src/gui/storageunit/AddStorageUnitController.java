@@ -7,12 +7,13 @@ import gui.common.IView;
  * Controller class for the add storage unit view.
  */
 public class AddStorageUnitController extends Controller implements
-IAddStorageUnitController {
+		IAddStorageUnitController {
 
 	/**
 	 * Constructor.
 	 * 
-	 * @param view Reference to add storage unit view
+	 * @param view
+	 *            Reference to add storage unit view
 	 */
 	public AddStorageUnitController(IView view) {
 		super(view);
@@ -25,16 +26,16 @@ IAddStorageUnitController {
 	//
 
 	/**
-	 * This method is called when the user clicks the "OK"
-	 * button in the add storage unit view.
+	 * This method is called when the user clicks the "OK" button in the add
+	 * storage unit view.
 	 */
 	@Override
 	public void addStorageUnit() {
 	}
 
 	/**
-	 * This method is called when any of the fields in the
-	 * add storage unit view is changed by the user.
+	 * This method is called when any of the fields in the add storage unit view
+	 * is changed by the user.
 	 */
 	@Override
 	public void valuesChanged() {
@@ -42,13 +43,13 @@ IAddStorageUnitController {
 
 	/**
 	 * Sets the enable/disable state of all components in the controller's view.
-	 * A component should be enabled only if the user is currently
-	 * allowed to interact with that component.
+	 * A component should be enabled only if the user is currently allowed to
+	 * interact with that component.
 	 * 
 	 * {@pre None}
 	 * 
-	 * {@post The enable/disable state of all components in the controller's view
-	 * have been set appropriately.}
+	 * {@post The enable/disable state of all components in the controller's
+	 * view have been set appropriately.}
 	 */
 	@Override
 	protected void enableComponents() {
@@ -67,19 +68,18 @@ IAddStorageUnitController {
 	 */
 	@Override
 	protected IAddStorageUnitView getView() {
-		return (IAddStorageUnitView)super.getView();
+		return (IAddStorageUnitView) super.getView();
 	}
 
 	/**
 	 * Loads data into the controller's view.
 	 * 
-	 *  {@pre None}
+	 * {@pre None}
 	 * 
-	 *  {@post The controller has loaded data into its view}
+	 * {@post The controller has loaded data into its view}
 	 */
 	@Override
 	protected void loadValues() {
 	}
 
 }
-

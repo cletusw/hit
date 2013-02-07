@@ -11,7 +11,7 @@ public class Result {
 	private boolean _status;
 
 	/**
-	 * Message attribute.  Describes the reason for failure (empty on success).
+	 * Message attribute. Describes the reason for failure (empty on success).
 	 */
 	private String _message;
 
@@ -30,11 +30,12 @@ public class Result {
 	/**
 	 * Constructor.
 	 * 
-	 * @param status Initial value of Status attribute.
+	 * @param status
+	 *            Initial value of Status attribute.
 	 * 
-	 * {@pre None}
+	 *            {@pre None}
 	 * 
-	 * {@post getStatus() == status, getMessage() == ""}
+	 *            {@post getStatus() == status, getMessage() == ""}
 	 */
 	public Result(boolean status) {
 		_status = status;
@@ -44,12 +45,14 @@ public class Result {
 	/**
 	 * Constructor.
 	 * 
-	 * @param status Initial value of Status attribute.
-	 * @param message Initial value of Message attribute.
+	 * @param status
+	 *            Initial value of Status attribute.
+	 * @param message
+	 *            Initial value of Message attribute.
 	 * 
-	 * {@pre None}
+	 *            {@pre None}
 	 * 
-	 * {@post getStatus() == status, getMessage() == message}
+	 *            {@post getStatus() == status, getMessage() == message}
 	 */
 	public Result(boolean status, String message) {
 		_status = status;
@@ -59,11 +62,12 @@ public class Result {
 	/**
 	 * Copy Constructor.
 	 * 
-	 * @param other Object to be copied.
+	 * @param other
+	 *            Object to be copied.
 	 * 
-	 * {@pre other != null}
+	 *            {@pre other != null}
 	 * 
-	 * {@post this is a copy of other}
+	 *            {@post this is a copy of other}
 	 */
 	public Result(Result other) {
 		_status = other._status;
@@ -73,11 +77,12 @@ public class Result {
 	/**
 	 * Appends string to Message attribute.
 	 * 
-	 * @param message String to be appended to Message attribute.
+	 * @param message
+	 *            String to be appended to Message attribute.
 	 * 
-	 * {@pre message != null}
+	 *            {@pre message != null}
 	 * 
-	 * {@post getMessage() == old(getMessage()) + message}
+	 *            {@post getMessage() == old(getMessage()) + message}
 	 */
 	public void appendMessage(String message) {
 		_message += message;
@@ -110,7 +115,8 @@ public class Result {
 	 * 
 	 * {@pre None}
 	 * 
-	 * {@post Returns true if Message is non-null and non-empty, and false otherwise.}
+	 * {@post Returns true if Message is non-null and non-empty, and false
+	 * otherwise.}
 	 */
 	public boolean hasMessage() {
 		return !StringOps.isNullOrEmpty(_message);
@@ -119,19 +125,19 @@ public class Result {
 	/**
 	 * Sets the Message using information from the specified exception.
 	 * 
-	 * @param e Exception used to initialize Message
+	 * @param e
+	 *            Exception used to initialize Message
 	 * 
-	 * {@pre e != null}
+	 *            {@pre e != null}
 	 * 
-	 * {@post Message contains the message and stack trace contained in e.}
+	 *            {@post Message contains the message and stack trace contained
+	 *            in e.}
 	 */
-	public void setFrom(Exception e)
-	{
+	public void setFrom(Exception e) {
 		setStatus(false);
 		setMessage(e.getMessage());
 
-		for(StackTraceElement ste : e.getStackTrace())
-		{
+		for (StackTraceElement ste : e.getStackTrace()) {
 			appendMessage("\n" + ste.toString());
 		}
 	}
@@ -139,11 +145,12 @@ public class Result {
 	/**
 	 * Sets value of Message attribute.
 	 * 
-	 * @param message New value of Message attribute
+	 * @param message
+	 *            New value of Message attribute
 	 * 
-	 * {@pre None}
+	 *            {@pre None}
 	 * 
-	 * {@post getMessage() == message}
+	 *            {@post getMessage() == message}
 	 */
 	public void setMessage(String message) {
 		_message = message;
@@ -152,15 +159,15 @@ public class Result {
 	/**
 	 * Sets value of Status attribute.
 	 * 
-	 * @param status New value of Status attribute
+	 * @param status
+	 *            New value of Status attribute
 	 * 
-	 * {@pre None}
+	 *            {@pre None}
 	 * 
-	 * {@post getStatus() == status}
+	 *            {@post getStatus() == status}
 	 */
 	public void setStatus(boolean status) {
 		_status = status;
 	}
 
 }
-

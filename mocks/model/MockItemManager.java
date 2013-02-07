@@ -9,19 +9,15 @@ public class MockItemManager implements ItemManager {
 
 	@Override
 	public boolean productHasItems(Product product) {
-		// TODO Auto-generated method stub
 		return false;
 	}
 
 	@Override
 	public Iterator<Item> removedItemsIterator() {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
 	public void unmanage(Item item) {
-		// TODO Auto-generated method stub
-
 	}
 }

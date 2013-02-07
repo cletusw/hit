@@ -2,10 +2,9 @@ package gui.main;
 
 import gui.common.IController;
 
-
 /**
- * Controller interface for the main view.  The main view allows the user
- * to print reports and exit the program.
+ * Controller interface for the main view. The main view allows the user to
+ * print reports and exit the program.
  */
 public interface IMainController extends IController {
 
@@ -15,7 +14,8 @@ public interface IMainController extends IController {
 	boolean canExit();
 
 	/**
-	 * Returns true if and only if the "Expired Items" menu item should be enabled.
+	 * Returns true if and only if the "Expired Items" menu item should be
+	 * enabled.
 	 */
 	boolean canPrintExpiredReport();
 
@@ -25,17 +25,20 @@ public interface IMainController extends IController {
 	boolean canPrintNoticesReport();
 
 	/**
-	 * Returns true if and only if the "Product Statistics" menu item should be enabled.
+	 * Returns true if and only if the "Product Statistics" menu item should be
+	 * enabled.
 	 */
 	boolean canPrintProductReport();
 
 	/**
-	 * Returns true if and only if the "Removed Items" menu item should be enabled.
+	 * Returns true if and only if the "Removed Items" menu item should be
+	 * enabled.
 	 */
 	boolean canPrintRemovedReport();
 
 	/**
-	 * Returns true if and only if the "N-Month Supply" menu item should be enabled.
+	 * Returns true if and only if the "N-Month Supply" menu item should be
+	 * enabled.
 	 */
 	boolean canPrintSupplyReport();
 
@@ -45,14 +48,13 @@ public interface IMainController extends IController {
 	void exit();
 
 	/**
-	 * This method is called when the user selects the "Expired Items"
-	 * menu item.
+	 * This method is called when the user selects the "Expired Items" menu
+	 * item.
 	 */
 	void printExpiredReport();
 
 	/**
-	 * This method is called when the user selects the "Notices" menu
-	 * item.
+	 * This method is called when the user selects the "Notices" menu item.
 	 */
 	void printNoticesReport();
 
@@ -75,4 +77,3 @@ public interface IMainController extends IController {
 	void printSupplyReport();
 
 }
-

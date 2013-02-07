@@ -1,4 +1,3 @@
-
 package gui.main;
 
 import gui.common.DialogBox;
@@ -20,27 +19,24 @@ import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 import javax.swing.WindowConstants;
 
-
 @SuppressWarnings("serial")
 public final class GUI extends JFrame implements IMainView {
 
 	public static void main(final String[] args) {
 		try {
 			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-		}
-		catch (Exception e) {
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
-		SwingUtilities.invokeLater(
-				new Runnable() {
-					@Override
-					public void run() {
-						new GUI(args);
-					}
-				}
-				);
+		SwingUtilities.invokeLater(new Runnable() {
+			@Override
+			public void run() {
+				new GUI(args);
+			}
+		});
 	}
+
 	private IMainController _controller;
 	private JMenuBar _menuBar;
 	private SessionMenu _sessionMenu;
@@ -135,10 +131,12 @@ public final class GUI extends JFrame implements IMainView {
 
 	private void createMenus() {
 		_sessionMenu = new SessionMenu(this);
-		_sessionMenu.setFont(View.createFont(_sessionMenu.getFont(), View.MenuFontSize));
+		_sessionMenu.setFont(View.createFont(_sessionMenu.getFont(),
+				View.MenuFontSize));
 
 		_reportsMenu = new ReportsMenu(this);
-		_reportsMenu.setFont(View.createFont(_reportsMenu.getFont(), View.MenuFontSize));
+		_reportsMenu.setFont(View.createFont(_reportsMenu.getFont(),
+				View.MenuFontSize));
 
 		_menuBar = new JMenuBar();
 		_menuBar.setFont(View.createFont(_menuBar.getFont(), View.MenuFontSize));
@@ -162,18 +160,18 @@ public final class GUI extends JFrame implements IMainView {
 
 		// NOTE: Calling JOptionPane.showMessageDialog from an InputVerifier
 		// does not work (Swing's keyboard focus handling goes bonkers), so
-		// here we call JOptionPane.showMessageDialog using SwingUtilities.invokeLater
+		// here we call JOptionPane.showMessageDialog using
+		// SwingUtilities.invokeLater
 		// to circumvent this problem in the case displayErrorMessage is
 		// invoked from an InputVerifier.
 
 		SwingUtilities.invokeLater(new Runnable() {
 			@Override
 			public void run() {
-				JOptionPane.showMessageDialog(GUI.this, message, "Inventory Tracker",
-						messageType);
+				JOptionPane.showMessageDialog(GUI.this, message,
+						"Inventory Tracker", messageType);
 			}
 		});
 	}
 
 }
-
