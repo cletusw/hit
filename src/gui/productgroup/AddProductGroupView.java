@@ -22,11 +22,6 @@ public class AddProductGroupView extends ProductGroupView implements IAddProduct
 	}
 
 	@Override
-	protected void valuesChanged() {
-		getController().valuesChanged();
-	}
-
-	@Override
 	protected void cancel() {
 		return;
 	}
@@ -34,6 +29,11 @@ public class AddProductGroupView extends ProductGroupView implements IAddProduct
 	@Override
 	protected void ok() {
 		getController().addProductGroup();
+	}
+
+	@Override
+	protected void valuesChanged() {
+		getController().valuesChanged();
 	}
 
 }

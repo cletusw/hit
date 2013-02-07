@@ -9,35 +9,11 @@ import gui.common.SizeUnits;
 public interface IEditProductView extends IView {
 
 	/**
-	 * Returns the value of the "Product Barcode" field.
-	 */
-	String getBarcode();
-	
-	/**
-	 * Sets the value of the "Product Barcode" field.
-	 * 
-	 * @param value New "Product Barcode" value
-	 */
-	void setBarcode(String value);
-	
-	/**
 	 * Sets the enable/disable state of the "Product Barcode" field.
 	 * 
 	 * @param value New enable/disable value
 	 */
 	void enableBarcode(boolean value);
-
-	/**
-	 * Returns the value of the "Description" field.
-	 */
-	String getDescription();
-	
-	/**
-	 * Sets the value of the "Description" field.
-	 * 
-	 * @param value New "Description" value
-	 */
-	void setDescription(String value);
 	
 	/**
 	 * Sets the enable/disable state of the "Description" field.
@@ -45,37 +21,20 @@ public interface IEditProductView extends IView {
 	 * @param value New enable/disable value
 	 */
 	void enableDescription(boolean value);
-
-	/**
-	 * Returns the value of the "Size Value" field.
-	 */
-	String getSizeValue();
 	
 	/**
-	 * Sets the value of the "Size Value" field.
-	 * 
-	 * @param value New "Size Value"
-	 */
-	void setSizeValue(String value);
-	
-	/**
-	 * Sets the enable/disable state of the "Size Value" field.
+	 * Sets the enable/disable state of the "OK" button.
 	 * 
 	 * @param value New enable/disable value
 	 */
-	void enableSizeValue(boolean value);
-	
+	void enableOK(boolean value);
+
 	/**
-	 * Returns the value of the "Size Unit" field.
-	 */
-	SizeUnits getSizeUnit();
-	
-	/**
-	 * Sets the value of the "Size Unit" field.
+	 * Sets the enable/disable state of the "Shelf Life" field.
 	 * 
-	 * @param value New "Size Unit" value
+	 * @param value New enable/disable value
 	 */
-	void setSizeUnit(SizeUnits value);
+	void enableShelfLife(boolean value);
 	
 	/**
 	 * Sets the enable/disable state of the "Size Unit" field.
@@ -85,9 +44,62 @@ public interface IEditProductView extends IView {
 	void enableSizeUnit(boolean value);
 	
 	/**
+	 * Sets the enable/disable state of the "Size Value" field.
+	 * 
+	 * @param value New enable/disable value
+	 */
+	void enableSizeValue(boolean value);
+
+	/**
+	 * Sets the enable/disable state of the "3-Month Supply" field.
+	 * 
+	 * @param value New enable/disable value
+	 */
+	void enableSupply(boolean value);
+	
+	/**
+	 * Returns the value of the "Product Barcode" field.
+	 */
+	String getBarcode();
+	
+	/**
+	 * Returns the value of the "Description" field.
+	 */
+	String getDescription();
+	
+	/**
 	 * Returns the value of the "Shelf Life" field.
 	 */
 	String getShelfLife();
+	
+	/**
+	 * Returns the value of the "Size Unit" field.
+	 */
+	SizeUnits getSizeUnit();
+	
+	/**
+	 * Returns the value of the "Size Value" field.
+	 */
+	String getSizeValue();
+	
+	/**
+	 * Returns the value of the "3-Month Supply" field.
+	 */
+	String getSupply();
+	
+	/**
+	 * Sets the value of the "Product Barcode" field.
+	 * 
+	 * @param value New "Product Barcode" value
+	 */
+	void setBarcode(String value);
+	
+	/**
+	 * Sets the value of the "Description" field.
+	 * 
+	 * @param value New "Description" value
+	 */
+	void setDescription(String value);
 	
 	/**
 	 * Sets the value of teh "Shelf Life" field.
@@ -97,37 +109,25 @@ public interface IEditProductView extends IView {
 	void setShelfLife(String value);
 	
 	/**
-	 * Sets the enable/disable state of the "Shelf Life" field.
+	 * Sets the value of the "Size Unit" field.
 	 * 
-	 * @param value New enable/disable value
+	 * @param value New "Size Unit" value
 	 */
-	void enableShelfLife(boolean value);
+	void setSizeUnit(SizeUnits value);
 	
 	/**
-	 * Returns the value of the "3-Month Supply" field.
+	 * Sets the value of the "Size Value" field.
+	 * 
+	 * @param value New "Size Value"
 	 */
-	String getSupply();
-	
+	void setSizeValue(String value);
+
 	/**
 	 * Sets the value of the "3-Month Supply" field.
 	 * 
 	 * @param value New "3-Month Supply" value
 	 */
 	void setSupply(String value);
-	
-	/**
-	 * Sets the enable/disable state of the "3-Month Supply" field.
-	 * 
-	 * @param value New enable/disable value
-	 */
-	void enableSupply(boolean value);
-
-	/**
-	 * Sets the enable/disable state of the "OK" button.
-	 * 
-	 * @param value New enable/disable value
-	 */
-	void enableOK(boolean value);
 
 }
 

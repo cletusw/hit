@@ -71,54 +71,6 @@ public class Result {
 	}
 	
 	/**
-	 * Returns value of Status attribute.
-	 * 
-	 * {@pre None}
-	 * 
-	 * {@post Returns value of Status attribute.}
-	 */
-	public boolean getStatus() {
-		return _status;
-	}
-	
-	/**
-	 * Sets value of Status attribute.
-	 * 
-	 * @param status New value of Status attribute
-	 * 
-	 * {@pre None}
-	 * 
-	 * {@post getStatus() == status}
-	 */
-	public void setStatus(boolean status) {
-		_status = status;
-	}
-
-	/**
-	 * Returns value of Message attribute.
-	 * 
-	 * {@pre None}
-	 * 
-	 * {@post Returns value of Message attribute.}
-	 */
-	public String getMessage() {
-		return _message;
-	}
-
-	/**
-	 * Sets value of Message attribute.
-	 * 
-	 * @param message New value of Message attribute
-	 * 
-	 * {@pre None}
-	 * 
-	 * {@post getMessage() == message}
-	 */
-	public void setMessage(String message) {
-		_message = message;
-	}
-	
-	/**
 	 * Appends string to Message attribute.
 	 * 
 	 * @param message String to be appended to Message attribute.
@@ -132,6 +84,28 @@ public class Result {
 	}
 	
 	/**
+	 * Returns value of Message attribute.
+	 * 
+	 * {@pre None}
+	 * 
+	 * {@post Returns value of Message attribute.}
+	 */
+	public String getMessage() {
+		return _message;
+	}
+
+	/**
+	 * Returns value of Status attribute.
+	 * 
+	 * {@pre None}
+	 * 
+	 * {@post Returns value of Status attribute.}
+	 */
+	public boolean getStatus() {
+		return _status;
+	}
+
+	/**
 	 * Returns true if Message is non-null and non-empty, and false otherwise.
 	 * 
 	 * {@pre None}
@@ -141,7 +115,7 @@ public class Result {
 	public boolean hasMessage() {
 		return !StringOps.isNullOrEmpty(_message);
 	}
-
+	
 	/**
 	 * Sets the Message using information from the specified exception.
 	 * 
@@ -160,6 +134,32 @@ public class Result {
 		{
 			appendMessage("\n" + ste.toString());
 		}
+	}
+	
+	/**
+	 * Sets value of Message attribute.
+	 * 
+	 * @param message New value of Message attribute
+	 * 
+	 * {@pre None}
+	 * 
+	 * {@post getMessage() == message}
+	 */
+	public void setMessage(String message) {
+		_message = message;
+	}
+
+	/**
+	 * Sets value of Status attribute.
+	 * 
+	 * @param status New value of Status attribute
+	 * 
+	 * {@pre None}
+	 * 
+	 * {@post getStatus() == status}
+	 */
+	public void setStatus(boolean status) {
+		_status = status;
 	}
 	
 }

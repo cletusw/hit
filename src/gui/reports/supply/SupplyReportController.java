@@ -26,15 +26,19 @@ import gui.common.IView;
 	//
 	
 	/**
-	 * Returns a reference to the view for this controller.
-	 * 
-	 * {@pre None}
-	 * 
-	 * {@post Returns a reference to the view for this controller.}
+	 * This method is called when the user clicks the "OK"
+	 * button in the N-month supply report view.
 	 */
 	@Override
-	protected ISupplyReportView getView() {
-		return (ISupplyReportView)super.getView();
+	public void display() {
+	}
+
+	/**
+	 * This method is called when any of the fields in the
+	 * N-month supply report view is changed by the user.
+	 */
+	@Override
+	public void valuesChanged() {
 	}
 
 	/**
@@ -51,6 +55,22 @@ import gui.common.IView;
 	protected void enableComponents() {
 	}
 
+	//
+	// IExpiredReportController overrides
+	//
+
+	/**
+	 * Returns a reference to the view for this controller.
+	 * 
+	 * {@pre None}
+	 * 
+	 * {@post Returns a reference to the view for this controller.}
+	 */
+	@Override
+	protected ISupplyReportView getView() {
+		return (ISupplyReportView)super.getView();
+	}
+	
 	/**
 	 * Loads data into the controller's view.
 	 * 
@@ -60,26 +80,6 @@ import gui.common.IView;
 	 */
 	@Override
 	protected void loadValues() {
-	}
-
-	//
-	// IExpiredReportController overrides
-	//
-
-	/**
-	 * This method is called when any of the fields in the
-	 * N-month supply report view is changed by the user.
-	 */
-	@Override
-	public void valuesChanged() {
-	}
-	
-	/**
-	 * This method is called when the user clicks the "OK"
-	 * button in the N-month supply report view.
-	 */
-	@Override
-	public void display() {
 	}
 
 }

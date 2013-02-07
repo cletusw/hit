@@ -16,16 +16,10 @@ public interface IMainView extends IView {
 	void displayExpiredReportView();
 	
 	/**
-	 * Displays the N-month supply report view, which allows the user to print
-	 * the N-month supply report.
+	 * Displays the notices report view, which allows the user to print
+	 * the notices report.
 	 */
-	void displaySupplyReportView();
-	
-	/**
-	 * Displays the removed items report view, which allows the user to print
-	 * the removed items report.
-	 */
-	void displayRemovedReportView();
+	void displayNoticesReportView();
 	
 	/**
 	 * Displays the product statistics report view, which allows the user to print
@@ -34,10 +28,16 @@ public interface IMainView extends IView {
 	void displayProductReportView();
 	
 	/**
-	 * Displays the notices report view, which allows the user to print
-	 * the notices report.
+	 * Displays the removed items report view, which allows the user to print
+	 * the removed items report.
 	 */
-	void displayNoticesReportView();
+	void displayRemovedReportView();
+	
+	/**
+	 * Displays the N-month supply report view, which allows the user to print
+	 * the N-month supply report.
+	 */
+	void displaySupplyReportView();
 
 }
 

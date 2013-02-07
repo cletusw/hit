@@ -60,6 +60,13 @@ public class ButtonBankPanel extends JPanel {
 	}
 
 	/**
+	 * Returns the buttons in the panel.
+	 */
+	public JButton[] getButtons() {
+		return _buttons;
+	}
+
+	/**
 	 * Creates the buttons.
 	 */
 	private void createComponents() {
@@ -79,7 +86,7 @@ public class ButtonBankPanel extends JPanel {
 			_buttons[i].addActionListener(actionListener);
 		}
 	}
-
+	
 	/**
 	 * Lays out the buttons in the panel.
 	 */
@@ -96,13 +103,6 @@ public class ButtonBankPanel extends JPanel {
 		}
 		
 		add(Box.createHorizontalGlue());
-	}
-	
-	/**
-	 * Returns the buttons in the panel.
-	 */
-	public JButton[] getButtons() {
-		return _buttons;
 	}
 
 }

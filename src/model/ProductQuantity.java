@@ -13,29 +13,6 @@ import java.io.Serializable;
 @SuppressWarnings("serial")
 public class ProductQuantity implements Serializable {
 
-	// Member variables
-	private float quantity;
-	private Unit units;
-	private UnitType unitType;
-	
-	/** Constructor
-	 * @param q Quantity, must be non-negative. If Unit is COUNT, must be integer.
-	 * @param u Unit
-	 * 
-	 * @pre quantity >= 0.0
-	 * 
-	 * @post units.equals(u)
-	 * @post quantity.equals(q)
-	 * @post isValidProductQuantity(this.units, this.quantity)
-	 */
-	public ProductQuantity(float q, Unit u){
-		assert(q >= 0);
-		
-		this.units = u;
-		this.unitType = Unit.typeMap.get(this.units);
-		setQuantity(q);
-	}
-	
 	/** Checks if float q and Unit u can be combined to create a valid
 	 * Product Group. q must be non-negative. If u is COUNT, q must be
 	 * an integer.
@@ -59,45 +36,28 @@ public class ProductQuantity implements Serializable {
 		
 		return true;
 	}
+	// Member variables
+	private float quantity;
+	private Unit units;
 	
-	/** Attribute getter for quantity
-	 * 
-	 * @return The float quantity associated with this ProductQuantity
-	 * 
-	 * @pre true
-	 * @post true
-	 */
-	public float getQuantity(){
-		return this.quantity;
-	}
+	private UnitType unitType;
 	
-	/** Attribute setter for quantity. This setter enforces that if the units
-	 * are COUNT, the quantity must be
-	 *  
-	 * @param q Float if units is not COUNT, integer otherwise
-	 * @throws IllegalArgumentException If units are COUNT and quantity is not an integer
+	/** Constructor
+	 * @param q Quantity, must be non-negative. If Unit is COUNT, must be integer.
+	 * @param u Unit
 	 * 
-	 *  @pre isValidProductQuantity(q, this.units)
-	 *  @post quantity.equals(q)
+	 * @pre quantity >= 0.0
+	 * 
+	 * @post units.equals(u)
+	 * @post quantity.equals(q)
+	 * @post isValidProductQuantity(this.units, this.quantity)
 	 */
-	public void setQuantity(float q) throws IllegalArgumentException{
-		assert(isValidProductQuantity(q, this.units));
-		if(!isValidProductQuantity(q, this.units)){
-			throw new IllegalArgumentException("Invalid quantity: " + quantity);
-		}
-		this.quantity = q;
-	}
-	
-	/** Attribute getter for Unit associated with this quantity
-	 * 
-	 * @return Unit Enum of this ProductQuantity
-	 * 
-	 * @pre true
-	 * @post true
-	 * 
-	 */
-	public Unit getUnits(){
-		return this.units;
+	public ProductQuantity(float q, Unit u){
+		assert(q >= 0);
+		
+		this.units = u;
+		this.unitType = Unit.typeMap.get(this.units);
+		setQuantity(q);
 	}
 	
 	/** Adds a ProductQuantity to this ProductQuantity.
@@ -128,6 +88,65 @@ public class ProductQuantity implements Serializable {
 		this.quantity += (otherQuantity.quantity * conversionFactor);
 	}
 	
+	/**
+	 * Determines whether this ProductQuantity is equal to another.
+	 * @param other		the Object to test for equality
+	 * @return 			true if the objects are equal, false otherwise.
+	 * 
+	 * @pre other != null
+	 * @pre other instanceof ProductQuantity
+	 * @post true
+	 * 
+	 */
+	public boolean equals(Object other) {
+		assert(other != null);
+		assert(other instanceof ProductQuantity);
+		
+		ProductQuantity pq = (ProductQuantity) other;
+		return this.quantity == pq.quantity && this.units == pq.units;
+	}
+	
+	/** Attribute getter for quantity
+	 * 
+	 * @return The float quantity associated with this ProductQuantity
+	 * 
+	 * @pre true
+	 * @post true
+	 */
+	public float getQuantity(){
+		return this.quantity;
+	}
+	
+	/** Attribute getter for Unit associated with this quantity
+	 * 
+	 * @return Unit Enum of this ProductQuantity
+	 * 
+	 * @pre true
+	 * @post true
+	 * 
+	 */
+	public Unit getUnits(){
+		return this.units;
+	}
+	
+	/** Attribute setter for quantity. This setter enforces that if the units
+	 * are COUNT, the quantity must be
+	 *  
+	 * @param q Float if units is not COUNT, integer otherwise
+	 * @throws IllegalArgumentException If units are COUNT and quantity is not an integer
+	 * 
+	 *  @pre isValidProductQuantity(q, this.units)
+	 *  @post quantity.equals(q)
+	 */
+	public void setQuantity(float q) throws IllegalArgumentException{
+		assert(isValidProductQuantity(q, this.units));
+		if(!isValidProductQuantity(q, this.units)){
+			throw new IllegalArgumentException("Invalid quantity: " + quantity);
+		}
+		this.quantity = q;
+	}
+	
+	
 	/** Subtracts a ProductQuantity from this ProductQuantity. The two ProductQuantities
 	 * Must have matching units, and the result result must be non-negative.
 	 * 
@@ -157,7 +176,6 @@ public class ProductQuantity implements Serializable {
 		this.quantity -= (otherQuantity.quantity * conversionFactor);
 	}
 	
-	
 	/** Gets a legible string representation of this ProductQuantity 
 	 * in the format [quantity] [Unit]
 	 * 
@@ -172,23 +190,5 @@ public class ProductQuantity implements Serializable {
 		else {
 			return quantity + " " + units.toString();
 		}
-	}
-	
-	/**
-	 * Determines whether this ProductQuantity is equal to another.
-	 * @param other		the Object to test for equality
-	 * @return 			true if the objects are equal, false otherwise.
-	 * 
-	 * @pre other != null
-	 * @pre other instanceof ProductQuantity
-	 * @post true
-	 * 
-	 */
-	public boolean equals(Object other) {
-		assert(other != null);
-		assert(other instanceof ProductQuantity);
-		
-		ProductQuantity pq = (ProductQuantity) other;
-		return this.quantity == pq.quantity && this.units == pq.units;
 	}
 }

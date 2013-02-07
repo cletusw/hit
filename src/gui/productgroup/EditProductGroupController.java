@@ -27,15 +27,19 @@ public class EditProductGroupController extends Controller
 	//
 	
 	/**
-	 * Returns a reference to the view for this controller.
-	 * 
-	 * {@pre None}
-	 * 
-	 * {@post Returns a reference to the view for this controller.}
+	 * This method is called when the user clicks the "OK"
+	 * button in the edit product group view.
 	 */
 	@Override
-	protected IEditProductGroupView getView() {
-		return (IEditProductGroupView)super.getView();
+	public void editProductGroup() {
+	}
+
+	/**
+	 * This method is called when any of the fields in the
+	 * edit product group view is changed by the user.
+	 */
+	@Override
+	public void valuesChanged() {
 	}
 
 	/**
@@ -52,6 +56,22 @@ public class EditProductGroupController extends Controller
 	protected void enableComponents() {
 	}
 
+	//
+	// IEditProductGroupController overrides
+	//
+
+	/**
+	 * Returns a reference to the view for this controller.
+	 * 
+	 * {@pre None}
+	 * 
+	 * {@post Returns a reference to the view for this controller.}
+	 */
+	@Override
+	protected IEditProductGroupView getView() {
+		return (IEditProductGroupView)super.getView();
+	}
+	
 	/**
 	 * Loads data into the controller's view.
 	 * 
@@ -61,26 +81,6 @@ public class EditProductGroupController extends Controller
 	 */
 	@Override
 	protected void loadValues() {
-	}
-
-	//
-	// IEditProductGroupController overrides
-	//
-
-	/**
-	 * This method is called when any of the fields in the
-	 * edit product group view is changed by the user.
-	 */
-	@Override
-	public void valuesChanged() {
-	}
-	
-	/**
-	 * This method is called when the user clicks the "OK"
-	 * button in the edit product group view.
-	 */
-	@Override
-	public void editProductGroup() {
 	}
 
 }

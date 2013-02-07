@@ -8,6 +8,20 @@ import gui.common.IView;
 public interface IAddStorageUnitView extends IView {
 
 	/**
+	 * Sets the enable/disable state of the "OK" button.
+	 * 
+	 * @param value New enable/disable value
+	 */
+	void enableOK(boolean value);
+	
+	/**
+	 * Sets the enable/disable state of the "Storage Unit Name" field.
+	 * 
+	 * @param value New enable/disable value
+	 */
+	void enableStorageUnitName(boolean value);
+	
+	/**
 	 * Returns the value of the "Storage Unit Name" field.
 	 */
 	String getStorageUnitName();
@@ -18,20 +32,6 @@ public interface IAddStorageUnitView extends IView {
 	 * @param value New "Storage Unit Name" value
 	 */
 	void setStorageUnitName(String value);
-	
-	/**
-	 * Sets the enable/disable state of the "Storage Unit Name" field.
-	 * 
-	 * @param value New enable/disable value
-	 */
-	void enableStorageUnitName(boolean value);
-	
-	/**
-	 * Sets the enable/disable state of the "OK" button.
-	 * 
-	 * @param value New enable/disable value
-	 */
-	void enableOK(boolean value);
 
 }
 

@@ -57,6 +57,18 @@ public class ItemTest {
 	}
 
 	/**
+	 * Test method for {@link model.Item#compareTo(java.lang.Object)}.
+	 */
+	@Test
+	public void testCompareTo() {
+		Item sameItem = new Item(validUPCABarcode, product, productGroup, itemManager);
+		Item newItem = new Item(new Barcode("412345688919"), new Product("abc", "abcd", 
+				3, 3, pq, productManager), productGroup, itemManager);
+		assertTrue(item.compareTo(sameItem) == 0);
+		assertTrue(item.compareTo(newItem) != 0);
+	}
+	
+	/**
 	 * Test method for {@link model.Item#Item(model.Barcode, model.Product,
 	 * model.ProductContainer, Date entryDate, ItemManager itemManager)}.
 	 */
@@ -87,6 +99,15 @@ public class ItemTest {
 	}
 	
 	/**
+	 * Test method for {@link model.Item#Item(java.lang.String, 
+	 * model.Product, model.ProductContainer)}.
+	 */
+	@Test
+	public void testItemInvalidBarcode() {
+		item = new Item(validUPCABarcode, product, productGroup, entryDateLastMonth, itemManager);
+	}
+
+	/**
 	 * Test method for {@link model.Item#Item(model.Product, model.ProductContainer, 
 	 * ItemManager itemManager)}.
 	 */
@@ -114,15 +135,6 @@ public class ItemTest {
 	}
 	
 	/**
-	 * Test method for {@link model.Item#Item(java.lang.String, 
-	 * model.Product, model.ProductContainer)}.
-	 */
-	@Test
-	public void testItemInvalidBarcode() {
-		item = new Item(validUPCABarcode, product, productGroup, entryDateLastMonth, itemManager);
-	}
-
-	/**
 	 * Test method for {@link model.Item#remove()}.
 	 */
 	@Test
@@ -135,17 +147,5 @@ public class ItemTest {
 		item.remove();
 		assertTrue(item.getContainer() == null);
 		assertTrue(item.getExitTime().equals(exitTime));
-	}
-	
-	/**
-	 * Test method for {@link model.Item#compareTo(java.lang.Object)}.
-	 */
-	@Test
-	public void testCompareTo() {
-		Item sameItem = new Item(validUPCABarcode, product, productGroup, itemManager);
-		Item newItem = new Item(new Barcode("412345688919"), new Product("abc", "abcd", 
-				3, 3, pq, productManager), productGroup, itemManager);
-		assertTrue(item.compareTo(sameItem) == 0);
-		assertTrue(item.compareTo(newItem) != 0);
 	}
 }

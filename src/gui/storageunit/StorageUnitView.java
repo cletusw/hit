@@ -32,10 +32,28 @@ public abstract class StorageUnitView extends DialogView {
 		super(parent, dialog);
 	}
 	
-	@Override
-	protected void createComponents() {
-		createAddPanel();
-		createButtonsPanel();
+	public void enableOK(boolean value) {
+		_okButton.setEnabled(value);
+	}
+	
+	public void enableStorageUnitName(boolean value) {
+		_nameField.setEnabled(value);
+	}
+	
+	public String getStorageUnitName() {
+		return _nameField.getText();
+	}
+	
+	public void setStorageUnitName(String value) {
+		boolean disabledEvents = disableEvents();
+		try {
+			_nameField.setText(value);
+		}
+		finally {
+			if (disabledEvents) {
+				enableEvents();
+			}
+		}
 	}
 	
 	private void createAddPanel() {
@@ -87,22 +105,6 @@ public abstract class StorageUnitView extends DialogView {
 		_okButton = _buttonsPanel.getButtons()[0];
 		_dialog.getRootPane().setDefaultButton(_okButton);
 	}
-	
-	protected abstract void valuesChanged();
-	
-	protected abstract void ok();
-	
-	protected abstract void cancel();
-
-	@Override
-	protected void layoutComponents() {
-		layoutAddPanel();	
-
-		setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
-		add(_addPanel);
-		add(Box.createHorizontalStrut(5));
-		add(_buttonsPanel);
-	}
 
 	private void layoutAddPanel() {
 		_addPanel.setLayout(new GridBagLayout());
@@ -118,31 +120,29 @@ public abstract class StorageUnitView extends DialogView {
 		c.place(1, 0, 3, 1);
 		_addPanel.add(_nameField, c);
 	}
+
+	protected abstract void cancel();
 	
 
-	public String getStorageUnitName() {
-		return _nameField.getText();
+	@Override
+	protected void createComponents() {
+		createAddPanel();
+		createButtonsPanel();
 	}
 
-	public void setStorageUnitName(String value) {
-		boolean disabledEvents = disableEvents();
-		try {
-			_nameField.setText(value);
-		}
-		finally {
-			if (disabledEvents) {
-				enableEvents();
-			}
-		}
+	@Override
+	protected void layoutComponents() {
+		layoutAddPanel();	
+
+		setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
+		add(_addPanel);
+		add(Box.createHorizontalStrut(5));
+		add(_buttonsPanel);
 	}
 	
-	public void enableStorageUnitName(boolean value) {
-		_nameField.setEnabled(value);
-	}
+	protected abstract void ok();
 	
-	public void enableOK(boolean value) {
-		_okButton.setEnabled(value);
-	}
+	protected abstract void valuesChanged();
 
 }
 

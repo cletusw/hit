@@ -8,7 +8,7 @@ import java.util.Iterator;
  */
 public interface ItemManager {
 	public void manage(Item item);
-	public void unmanage(Item item);
-	public Iterator<Item> removedItemsIterator();
 	public boolean productHasItems(Product product);
+	public Iterator<Item> removedItemsIterator();
+	public void unmanage(Item item);
 }

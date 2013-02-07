@@ -16,6 +16,29 @@ public class ConcreteStorageUnitManager implements Serializable, StorageUnitMana
 		rootStorageUnits = new TreeSet<StorageUnit>();	
 	}
 	
+	/** Creates a new StorageUnit and adds it to the system.
+	 * 
+	 * @param storageUnit The Storage Unit to add
+	 * 
+	 * @pre isValidStorageUnitName(storageUnitName)
+	 * @post true
+	 */
+	public void add(StorageUnit storageUnit) {
+		assert(isValidStorageUnitName(storageUnit.getName()));
+		
+		rootStorageUnits.add(storageUnit);
+	}
+	
+	/** Returns an Iterator over the Storage Units.
+	 * @return an Iterator for accessing the root Storage Units
+	 * 
+	 *  @pre true
+	 *  @post true
+	 */
+	public Iterator<StorageUnit> getStorageUnitsIterator() {
+		return rootStorageUnits.iterator();
+	}
+	
 	/** Determines whether the specified Storage Unit name is valid for adding a new Storage Unit.
 	 * 
 	 * @param name 	The name to be tested
@@ -30,19 +53,6 @@ public class ConcreteStorageUnitManager implements Serializable, StorageUnitMana
 		
 		// From the Data Dictionary: Must be non-empty. Must be unique among all Storage Units.
 		return !name.equals("") && !rootStorageUnits.contains(new StorageUnit(name));
-	}
-	
-	/** Creates a new StorageUnit and adds it to the system.
-	 * 
-	 * @param storageUnit The Storage Unit to add
-	 * 
-	 * @pre isValidStorageUnitName(storageUnitName)
-	 * @post true
-	 */
-	public void add(StorageUnit storageUnit) {
-		assert(isValidStorageUnitName(storageUnit.getName()));
-		
-		rootStorageUnits.add(storageUnit);
 	}
 	
 	/** Removes a given Product from all Storage Units.
@@ -94,16 +104,6 @@ public class ConcreteStorageUnitManager implements Serializable, StorageUnitMana
 		assert(storageUnit.canRemove());
 		
 		rootStorageUnits.remove(storageUnit);
-	}
-	
-	/** Returns an Iterator over the Storage Units.
-	 * @return an Iterator for accessing the root Storage Units
-	 * 
-	 *  @pre true
-	 *  @post true
-	 */
-	public Iterator<StorageUnit> getStorageUnitsIterator() {
-		return rootStorageUnits.iterator();
 	}
 
 	/**

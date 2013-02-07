@@ -6,13 +6,6 @@ package common;
 public final class StringOps {
 
 	/**
-	 * Private Constructor.
-	 */
-	private StringOps() {
-		assert false;
-	}
-	
-	/**
 	 * Returns true if string is null or empty, and false otherwise.
 	 * 
 	 * @param s String to be tested.
@@ -23,6 +16,13 @@ public final class StringOps {
 	 */
 	public static boolean isNullOrEmpty(String s) {
 		return ((s == null) || (s.length() == 0));
+	}
+	
+	/**
+	 * Private Constructor.
+	 */
+	private StringOps() {
+		assert false;
 	}
 	
 }

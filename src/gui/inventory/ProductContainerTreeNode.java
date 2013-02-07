@@ -48,18 +48,6 @@ public class ProductContainerTreeNode extends DefaultMutableTreeNode {
 	}
 	
 	/**
-	 * Returns true if this node is a "storage unit" node and false otherwise.
-	 * 
-	 * {@pre None}
-	 * 
-	 * {@post Returns true if this node is a "storage unit" node and false otherwise.}
-	 */
-	public boolean isStorageUnit() {
-		ProductContainerTreeNode parent = (ProductContainerTreeNode)getParent();
-		return (parent != null && parent.isRoot());
-	}
-	
-	/**
 	 * Returns true if this node is a "product group" node and false otherwise.
 	 * 
 	 * {@pre None}
@@ -69,6 +57,18 @@ public class ProductContainerTreeNode extends DefaultMutableTreeNode {
 	public boolean isProductGroup() {
 		ProductContainerTreeNode parent = (ProductContainerTreeNode)getParent();
 		return (parent != null && !parent.isRoot());
+	}
+	
+	/**
+	 * Returns true if this node is a "storage unit" node and false otherwise.
+	 * 
+	 * {@pre None}
+	 * 
+	 * {@post Returns true if this node is a "storage unit" node and false otherwise.}
+	 */
+	public boolean isStorageUnit() {
+		ProductContainerTreeNode parent = (ProductContainerTreeNode)getParent();
+		return (parent != null && parent.isRoot());
 	}
 	
 	@Override

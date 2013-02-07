@@ -12,80 +12,6 @@ import java.util.Random;
 @SuppressWarnings("serial")
 public class Barcode extends NonNullString{
 
-	/** Constructor
-	 * 
-	 * @param s
-	 * @throws IllegalArgumentException
-	 * 
-	 * @pre s != null
-	 * @pre s.length() > 0
-	 * @post barcode.equals(s)
-	 * @post isValidBarcode(barcode) == true
-	 * 
-	 */
-	public Barcode(String s) throws IllegalArgumentException {
-		super(s);
-		assert(s != null);
-		assert(s.length() > 0);
-		if(!isValidBarcode(s))
-			throw new IllegalArgumentException("Invalid barcode: " + s);
-	}
-
-	/** Default constructor - generates a new, unique UPC-A barcode
-	 * 
-	 * @pre true
-	 * @post getValue() != null
-	 * @post isValidBarcode(barcode) == true
-	 */
-	public Barcode() {
-		this(generateBarcode());
-	}
-	
-	private static String generateBarcode(){
-		Random randomGenerator = new Random();
-		String code = "4";
-		for(int i=0; i<10; i++) 
-			code += Integer.toString(randomGenerator.nextInt(10));
-		
-		int oddDigits = 3 * (Character.getNumericValue(code.charAt(0)) + 
-				Character.getNumericValue(code.charAt(2)) + 
-				Character.getNumericValue(code.charAt(4)) + 
-				Character.getNumericValue(code.charAt(6)) + 
-				Character.getNumericValue(code.charAt(8)) + 
-				Character.getNumericValue(code.charAt(10)));
-		
-		int evenDigits = (Character.getNumericValue(code.charAt(1)) + 
-				Character.getNumericValue(code.charAt(3)) + 
-				Character.getNumericValue(code.charAt(5)) + 
-				Character.getNumericValue(code.charAt(7)) +
-				Character.getNumericValue(code.charAt(9)));
-		
-		int total = oddDigits + evenDigits;
-		total = total % 10;
-		int checkDigit = -1;
-		if(total == 0)
-			checkDigit = 0;
-		else
-			checkDigit = 10 - total;
-		code = code + checkDigit;
-		
-		if(isValidBarcode(String.valueOf(code)))
-			return String.valueOf(code);
-		throw new IllegalArgumentException("Unable to create valid barcode");
-	}
-
-	/** Returns the string value of the barcode. 
-	 * 
-	 * @return String representation of the barcode.
-	 * 
-	 * @pre true
-	 * @post true
-	 * 
-	 */
-	public String getValue() {
-		return this.value;
-	}
-
 	/** Checks to see if a given barcode string is valid.
 	 *
 	 * @param s String barcode to check
@@ -125,7 +51,69 @@ public class Barcode extends NonNullString{
 		
 		return (total == Integer.parseInt(Character.toString(s.charAt(11))));
 	}
+
+	private static String generateBarcode(){
+		Random randomGenerator = new Random();
+		String code = "4";
+		for(int i=0; i<10; i++) 
+			code += Integer.toString(randomGenerator.nextInt(10));
+		
+		int oddDigits = 3 * (Character.getNumericValue(code.charAt(0)) + 
+				Character.getNumericValue(code.charAt(2)) + 
+				Character.getNumericValue(code.charAt(4)) + 
+				Character.getNumericValue(code.charAt(6)) + 
+				Character.getNumericValue(code.charAt(8)) + 
+				Character.getNumericValue(code.charAt(10)));
+		
+		int evenDigits = (Character.getNumericValue(code.charAt(1)) + 
+				Character.getNumericValue(code.charAt(3)) + 
+				Character.getNumericValue(code.charAt(5)) + 
+				Character.getNumericValue(code.charAt(7)) +
+				Character.getNumericValue(code.charAt(9)));
+		
+		int total = oddDigits + evenDigits;
+		total = total % 10;
+		int checkDigit = -1;
+		if(total == 0)
+			checkDigit = 0;
+		else
+			checkDigit = 10 - total;
+		code = code + checkDigit;
+		
+		if(isValidBarcode(String.valueOf(code)))
+			return String.valueOf(code);
+		throw new IllegalArgumentException("Unable to create valid barcode");
+	}
 	
+	/** Default constructor - generates a new, unique UPC-A barcode
+	 * 
+	 * @pre true
+	 * @post getValue() != null
+	 * @post isValidBarcode(barcode) == true
+	 */
+	public Barcode() {
+		this(generateBarcode());
+	}
+
+	/** Constructor
+	 * 
+	 * @param s
+	 * @throws IllegalArgumentException
+	 * 
+	 * @pre s != null
+	 * @pre s.length() > 0
+	 * @post barcode.equals(s)
+	 * @post isValidBarcode(barcode) == true
+	 * 
+	 */
+	public Barcode(String s) throws IllegalArgumentException {
+		super(s);
+		assert(s != null);
+		assert(s.length() > 0);
+		if(!isValidBarcode(s))
+			throw new IllegalArgumentException("Invalid barcode: " + s);
+	}
+
 	/**Compare this not-null string to another using String.compareTo(String other)
 	 * 
 	 * @param other NotNullString to compare
@@ -141,5 +129,17 @@ public class Barcode extends NonNullString{
 		assert(other != null);
 		
 		return this.value.compareTo(other.value);
+	}
+	
+	/** Returns the string value of the barcode. 
+	 * 
+	 * @return String representation of the barcode.
+	 * 
+	 * @pre true
+	 * @post true
+	 * 
+	 */
+	public String getValue() {
+		return this.value;
 	}
 }

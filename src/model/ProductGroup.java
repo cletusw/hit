@@ -53,6 +53,18 @@ public class ProductGroup extends ProductContainer {
 		return !parent.hasDescendantProduct(productBarcode);
 	}
 	
+	/**
+	 * Gets this ProductGroup's parent container
+	 * @return this ProductGroup's container
+	 * 
+	 * @pre true
+	 * @post true
+	 * 
+	 */
+	public ProductContainer getContainer() {
+		return container;
+	}
+	
 	/** Method that calculates and returns the amount of a product group in this container.
 	 * 
 	 * @return ProductQuantity - the current supply of this container
@@ -89,15 +101,24 @@ public class ProductGroup extends ProductContainer {
 	}
 	
 	/**
-	 * Gets this ProductGroup's parent container
-	 * @return this ProductGroup's container
+	 * Determines whether a given ProductQuantity is a valid three-month supply
+	 * @param threeMonthSupply - the ProductQuantity to test
+	 * @return true if the ProductQuantity is valid, false otherwise.
 	 * 
-	 * @pre true
+	 * @pre threeMonthSupply != null
 	 * @post true
 	 * 
 	 */
-	public ProductContainer getContainer() {
-		return container;
+	public boolean isValidThreeMonthSupply(ProductQuantity threeMonthSupply) {
+		// From the Data Dictionary:
+		// Theï¿½magnitudeï¿½canï¿½beï¿½anyï¿½non-negativeï¿½floatï¿½value.ï¿½ï¿½Zeroï¿½meansï¿½"unspecified".ï¿½ï¿½
+		// Theï¿½unitï¿½ofï¿½measurementï¿½canï¿½beï¿½anyï¿½ofï¿½theï¿½following:ï¿½count,ï¿½pounds,ï¿½ounces,ï¿½
+		// grams,ï¿½kilograms,ï¿½gallons,ï¿½quarts,ï¿½pints,ï¿½fluidï¿½ounces,ï¿½liters.ï¿½ï¿½Ifï¿½theï¿½unitï¿½ofï¿½
+		// measurementï¿½isï¿½ï¿½countï¿½,ï¿½theï¿½magnitudeï¿½mustï¿½beï¿½anï¿½integerï¿½(i.e.,ï¿½noï¿½fraction).ï¿½
+		assert(threeMonthSupply != null);
+		
+		return ProductQuantity.isValidProductQuantity(threeMonthSupply.getQuantity(),
+				threeMonthSupply.getUnits());
 	}
 	
 	/**
@@ -109,9 +130,9 @@ public class ProductGroup extends ProductContainer {
 	 */
 	public void setContainer(ProductContainer container) {
 		// From the Data Dictionary: 
-		// Must be non-empty.  A Product Group is 
-		// always contained within one Product 
-		// Container. 
+		// Mustï¿½beï¿½non-empty.ï¿½ï¿½Aï¿½Productï¿½Groupï¿½isï¿½
+		// alwaysï¿½containedï¿½withinï¿½oneï¿½Productï¿½
+		// Container.ï¿½
 		assert(container != null);
 		
 		this.container = container;
@@ -126,26 +147,5 @@ public class ProductGroup extends ProductContainer {
 	 */
 	public void setThreeMonthSupply(ProductQuantity threeMonthSupply) {
 		this.threeMonthSupply = threeMonthSupply;
-	}
-	
-	/**
-	 * Determines whether a given ProductQuantity is a valid three-month supply
-	 * @param threeMonthSupply - the ProductQuantity to test
-	 * @return true if the ProductQuantity is valid, false otherwise.
-	 * 
-	 * @pre threeMonthSupply != null
-	 * @post true
-	 * 
-	 */
-	public boolean isValidThreeMonthSupply(ProductQuantity threeMonthSupply) {
-		// From the Data Dictionary:
-		// The magnitude can be any non-negative float value.  Zero means "unspecified".  
-		// The unit of measurement can be any of the following: count, pounds, ounces, 
-		// grams, kilograms, gallons, quarts, pints, fluid ounces, liters.  If the unit of 
-		// measurement is “count”, the magnitude must be an integer (i.e., no fraction). 
-		assert(threeMonthSupply != null);
-		
-		return ProductQuantity.isValidProductQuantity(threeMonthSupply.getQuantity(),
-				threeMonthSupply.getUnits());
 	}
 }

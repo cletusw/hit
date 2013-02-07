@@ -41,17 +41,6 @@ package gui.common;
 	}
 	
 	/**
-	 * Returns a reference to the view for this controller.
-	 * 
-	 * {@pre None}
-	 * 
-	 * {@post Returns a reference to the view for this controller.}
-	 */
-	protected IView getView() {
-		return _view;
-	}
-	
-	/**
 	 * This is a template method that defines the construction process 
 	 * for all subclasses.  Subclasses should call this method from their 
 	 * constructors in order to properly initialize themselves.
@@ -67,17 +56,6 @@ package gui.common;
 	}
 	
 	/**
-	 * Loads data into the controller's view.
-	 * 
-	 *  {@pre None}
-	 *  
-	 *  {@post The controller has loaded data into its view}
-	 */
-	protected void loadValues() {
-		return;
-	}
-	
-	/**
 	 * Sets the enable/disable state of all components in the controller's view.
 	 * A component should be enabled only if the user is currently
 	 * allowed to interact with that component.
@@ -88,6 +66,28 @@ package gui.common;
 	 * have been set appropriately.}
 	 */
 	protected void enableComponents() {
+		return;
+	}
+	
+	/**
+	 * Returns a reference to the view for this controller.
+	 * 
+	 * {@pre None}
+	 * 
+	 * {@post Returns a reference to the view for this controller.}
+	 */
+	protected IView getView() {
+		return _view;
+	}
+	
+	/**
+	 * Loads data into the controller's view.
+	 * 
+	 *  {@pre None}
+	 *  
+	 *  {@post The controller has loaded data into its view}
+	 */
+	protected void loadValues() {
 		return;
 	}
 	

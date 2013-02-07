@@ -105,20 +105,20 @@ public class ReportsMenu extends JMenu {
 		_controller.printExpiredReport();
 	}
 	
-	private void printSupplyReport() {
-		_controller.printSupplyReport();
-	}
-	
-	private void printRemovedReport() {
-		_controller.printRemovedReport();
+	private void printNoticesReport() {
+		_controller.printNoticesReport();
 	}
 	
 	private void printProductReport() {
 		_controller.printProductReport();
 	}
 	
-	private void printNoticesReport() {
-		_controller.printNoticesReport();
+	private void printRemovedReport() {
+		_controller.printRemovedReport();
+	}
+	
+	private void printSupplyReport() {
+		_controller.printSupplyReport();
 	}
 
 }

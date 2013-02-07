@@ -58,6 +58,77 @@ public class ProductTest {
 	}
 
 	/**
+	 * Test method for {@link model.Product#compareTo(java.lang.Object)}.
+	 */
+	@Test
+	public void testCompareTo() {
+		Product sameProduct = new Product(product.getBarcode(), product.getDescription(), 
+				0, 0, size, productManager);
+		Product differentProduct = new Product("DifferentBarcode", "DifferentDescription", 
+				0, 0, size, productManager);
+		
+		assertTrue(product.compareTo(sameProduct) == 0);
+		assertTrue(product.compareTo(differentProduct) != 0);
+	}
+	
+	/**
+	 * Test method for {@link model.Product#getCreationDate()}.
+	 */
+	@SuppressWarnings("deprecation")
+	@Test
+	public void testCreationDate() {
+		Date createDate = product.getCreationDate();
+		Date today = new Date();
+		
+		assertTrue(createDate.getYear() == today.getYear());
+		assertTrue(createDate.getMonth() == today.getMonth());
+		assertTrue(createDate.getDate() == today.getDate());
+		assertTrue(createDate.getHours() == today.getHours());
+		assertTrue(createDate.getMinutes() == today.getMinutes());
+	}
+
+	/**
+	 * Test method for {@link model.Product#isValidBarcode(java.lang.String)}.
+	 */
+	@Test
+	public void testIsValidBarcode() {
+		assertTrue(Product.isValidBarcode(validBarcode));
+		assertFalse(Product.isValidBarcode(""));
+		assertFalse(Product.isValidBarcode(null));
+	}
+	
+	/**
+	 * Test method for {@link model.Product#isValidDescription(java.lang.String)}.
+	 */
+	@Test
+	public void testIsValidDescription() {
+		assertTrue(Product.isValidDescription(validDescription));
+		assertFalse(Product.isValidDescription(""));
+		assertFalse(Product.isValidDescription(null));
+	}
+	
+	/**
+	 * Test method for {@link model.Product#isValidShelfLife(int)}.
+	 */
+	@Test
+	public void testIsValidShelfLife() {
+		assertTrue(Product.isValidShelfLife(0));
+		assertTrue(Product.isValidShelfLife(10));
+		assertFalse(Product.isValidShelfLife(-5));
+	}
+
+	
+	/**
+	 * Test method for {@link model.Product#isValidThreeMonthSupply(int)}.
+	 */
+	@Test
+	public void testIsValidThreeMonthSupply() {
+		assertTrue(Product.isValidThreeMonthSupply(0));
+		assertTrue(Product.isValidThreeMonthSupply(10));
+		assertFalse(Product.isValidThreeMonthSupply(-1));
+	}
+	
+	/**
 	 * Test method for {@link model.Product#Product(java.lang.String, java.lang.String)}.
 	 */
 	@Test
@@ -83,27 +154,10 @@ public class ProductTest {
 	 * Test method for {@link model.Product#Product(java.lang.String, java.lang.String)}.
 	 */
 	@Test (expected=IllegalArgumentException.class)
-	public void testProductNullBarcode() {
-		new Product(null, "", 3, -1, size, productManager);
-	}
-	
-	/**
-	 * Test method for {@link model.Product#Product(java.lang.String, java.lang.String)}.
-	 */
-	@Test (expected=IllegalArgumentException.class)
 	public void testProductInvalidDescription() {
 		new Product(validBarcode, "", 3, 3, size, productManager);
 	}
-	
-	/**
-	 * Test method for {@link model.Product#Product(java.lang.String, java.lang.String)}.
-	 */
-	@Test (expected=IllegalArgumentException.class)
-	public void testProductNullDescription() {
-		new Product(validBarcode, null, 3, 3, size, productManager);
-	}
 
-	
 	/**
 	 * Test method for {@link model.Product#Product(java.lang.String, java.lang.String)}.
 	 */
@@ -111,7 +165,7 @@ public class ProductTest {
 	public void testProductInvalidShelflife() {
 		new Product(validBarcode, "", -1, 3, size, productManager);
 	}
-	
+
 	/**
 	 * Test method for {@link model.Product#Product(java.lang.String, java.lang.String)}.
 	 */
@@ -119,74 +173,20 @@ public class ProductTest {
 	public void testProductInvalidThreeMonthSupply() {
 		new Product(validBarcode, "", 3, -1, size, productManager);
 	}
-	
+
 	/**
-	 * Test method for {@link model.Product#isValidThreeMonthSupply(int)}.
+	 * Test method for {@link model.Product#Product(java.lang.String, java.lang.String)}.
 	 */
-	@Test
-	public void testIsValidThreeMonthSupply() {
-		assertTrue(Product.isValidThreeMonthSupply(0));
-		assertTrue(Product.isValidThreeMonthSupply(10));
-		assertFalse(Product.isValidThreeMonthSupply(-1));
+	@Test (expected=IllegalArgumentException.class)
+	public void testProductNullBarcode() {
+		new Product(null, "", 3, -1, size, productManager);
 	}
 
 	/**
-	 * Test method for {@link model.Product#isValidBarcode(java.lang.String)}.
+	 * Test method for {@link model.Product#Product(java.lang.String, java.lang.String)}.
 	 */
-	@Test
-	public void testIsValidBarcode() {
-		assertTrue(Product.isValidBarcode(validBarcode));
-		assertFalse(Product.isValidBarcode(""));
-		assertFalse(Product.isValidBarcode(null));
-	}
-
-	/**
-	 * Test method for {@link model.Product#isValidDescription(java.lang.String)}.
-	 */
-	@Test
-	public void testIsValidDescription() {
-		assertTrue(Product.isValidDescription(validDescription));
-		assertFalse(Product.isValidDescription(""));
-		assertFalse(Product.isValidDescription(null));
-	}
-
-	/**
-	 * Test method for {@link model.Product#isValidShelfLife(int)}.
-	 */
-	@Test
-	public void testIsValidShelfLife() {
-		assertTrue(Product.isValidShelfLife(0));
-		assertTrue(Product.isValidShelfLife(10));
-		assertFalse(Product.isValidShelfLife(-5));
-	}
-
-	/**
-	 * Test method for {@link model.Product#getCreationDate()}.
-	 */
-	@SuppressWarnings("deprecation")
-	@Test
-	public void testCreationDate() {
-		Date createDate = product.getCreationDate();
-		Date today = new Date();
-		
-		assertTrue(createDate.getYear() == today.getYear());
-		assertTrue(createDate.getMonth() == today.getMonth());
-		assertTrue(createDate.getDate() == today.getDate());
-		assertTrue(createDate.getHours() == today.getHours());
-		assertTrue(createDate.getMinutes() == today.getMinutes());
-	}
-
-	/**
-	 * Test method for {@link model.Product#compareTo(java.lang.Object)}.
-	 */
-	@Test
-	public void testCompareTo() {
-		Product sameProduct = new Product(product.getBarcode(), product.getDescription(), 
-				0, 0, size, productManager);
-		Product differentProduct = new Product("DifferentBarcode", "DifferentDescription", 
-				0, 0, size, productManager);
-		
-		assertTrue(product.compareTo(sameProduct) == 0);
-		assertTrue(product.compareTo(differentProduct) != 0);
+	@Test (expected=IllegalArgumentException.class)
+	public void testProductNullDescription() {
+		new Product(validBarcode, null, 3, 3, size, productManager);
 	}
 }

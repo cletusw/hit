@@ -25,15 +25,19 @@ public class ProductStatsReportController extends Controller implements
 	//
 	
 	/**
-	 * Returns a reference to the view for this controller.
-	 * 
-	 * {@pre None}
-	 * 
-	 * {@post Returns a reference to the view for this controller.}
+	 * This method is called when the user clicks the "OK"
+	 * button in the product statistics report view.
 	 */
 	@Override
-	protected IProductStatsReportView getView() {
-		return (IProductStatsReportView)super.getView();
+	public void display() {
+	}
+
+	/**
+	 * This method is called when any of the fields in the
+	 * product statistics report view is changed by the user.
+	 */
+	@Override
+	public void valuesChanged() {
 	}
 
 	/**
@@ -50,6 +54,22 @@ public class ProductStatsReportController extends Controller implements
 	protected void enableComponents() {
 	}
 
+	//
+	// IProductStatsReportController overrides
+	//
+
+	/**
+	 * Returns a reference to the view for this controller.
+	 * 
+	 * {@pre None}
+	 * 
+	 * {@post Returns a reference to the view for this controller.}
+	 */
+	@Override
+	protected IProductStatsReportView getView() {
+		return (IProductStatsReportView)super.getView();
+	}
+	
 	/**
 	 * Loads data into the controller's view.
 	 * 
@@ -59,26 +79,6 @@ public class ProductStatsReportController extends Controller implements
 	 */
 	@Override
 	protected void loadValues() {
-	}
-
-	//
-	// IProductStatsReportController overrides
-	//
-
-	/**
-	 * This method is called when any of the fields in the
-	 * product statistics report view is changed by the user.
-	 */
-	@Override
-	public void valuesChanged() {
-	}
-	
-	/**
-	 * This method is called when the user clicks the "OK"
-	 * button in the product statistics report view.
-	 */
-	@Override
-	public void display() {
 	}
 
 }

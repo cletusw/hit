@@ -38,35 +38,40 @@ public class ExpiredReportView extends DialogView implements IExpiredReportView 
 		_controller = new ExpiredReportController(this);
 	}
 
+	public void enableFormat(boolean value) {
+		_formatBox.setEnabled(value);
+	}
+	
+	public void enableOK(boolean value) {
+		_okButton.setEnabled(value);
+	}
+	
 	@Override
 	public IExpiredReportController getController() {
 		return (IExpiredReportController)super.getController();
 	}
 	
-	@Override
-	protected void createComponents() {
-		createValuesPanel();
-		createButtonsPanel();
+	public FileFormat getFormat() {
+		return (FileFormat)_formatBox.getSelectedItem();
 	}
-	
-	private void createValuesPanel() {
-		_valuesPanel = new JPanel();
-		
-		_formatLabel = new JLabel("Format:");
-		
-		_formatBox = new JComboBox();
-		_formatBox.addItem(FileFormat.PDF);
-		_formatBox.addItem(FileFormat.HTML);
-		_formatBox.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent evt) {
-				if (eventsAreDisabled()) {
-					return;
-				}
-				valuesChanged();
+
+	public void setFormat(FileFormat value) {
+		boolean disabledEvents = disableEvents();
+		try {
+			_formatBox.setSelectedItem(value);
+		}
+		finally {
+			if (disabledEvents) {
+				enableEvents();
 			}
-		});
+		}
+	}
+
+	private void cancel() {
+		return;
 	}
 	
+
 	private void createButtonsPanel() {
 		_buttonsPanel = new ButtonBankPanel(new String[]{"OK", "Cancel"},
 				new ButtonBankListener() {
@@ -92,18 +97,24 @@ public class ExpiredReportView extends DialogView implements IExpiredReportView 
 		_dialog.getRootPane().setDefaultButton(_okButton);
 	}
 
-	@Override
-	protected void layoutComponents() {
-		layoutValuesPanel();	
-
-		setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
-		add(Box.createVerticalStrut(15));
-		add(_valuesPanel);
-		add(Box.createVerticalStrut(15));
-		add(_buttonsPanel);
-		add(Box.createVerticalStrut(15));
+	private void createValuesPanel() {
+		_valuesPanel = new JPanel();
+		
+		_formatLabel = new JLabel("Format:");
+		
+		_formatBox = new JComboBox();
+		_formatBox.addItem(FileFormat.PDF);
+		_formatBox.addItem(FileFormat.HTML);
+		_formatBox.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent evt) {
+				if (eventsAreDisabled()) {
+					return;
+				}
+				valuesChanged();
+			}
+		});
 	}
-
+	
 	private void layoutValuesPanel() {
 		_valuesPanel.setLayout(new GridBagLayout());
 
@@ -125,41 +136,30 @@ public class ExpiredReportView extends DialogView implements IExpiredReportView 
 		_valuesPanel.add(Box.createHorizontalStrut(20), c);
 	}
 	
-
-	public FileFormat getFormat() {
-		return (FileFormat)_formatBox.getSelectedItem();
-	}
-
-	public void setFormat(FileFormat value) {
-		boolean disabledEvents = disableEvents();
-		try {
-			_formatBox.setSelectedItem(value);
-		}
-		finally {
-			if (disabledEvents) {
-				enableEvents();
-			}
-		}
-	}
-	
-	public void enableFormat(boolean value) {
-		_formatBox.setEnabled(value);
-	}
-	
-	public void enableOK(boolean value) {
-		_okButton.setEnabled(value);
+	private void ok() {
+		getController().display();
 	}
 
 	private void valuesChanged() {
 		getController().valuesChanged();
 	}
 	
-	private void cancel() {
-		return;
+	@Override
+	protected void createComponents() {
+		createValuesPanel();
+		createButtonsPanel();
 	}
 	
-	private void ok() {
-		getController().display();
+	@Override
+	protected void layoutComponents() {
+		layoutValuesPanel();	
+
+		setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
+		add(Box.createVerticalStrut(15));
+		add(_valuesPanel);
+		add(Box.createVerticalStrut(15));
+		add(_buttonsPanel);
+		add(Box.createVerticalStrut(15));
 	}
 
 }

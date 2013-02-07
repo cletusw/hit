@@ -26,15 +26,19 @@ public class EditItemController extends Controller
 	//
 	
 	/**
-	 * Returns a reference to the view for this controller.
-	 * 
-	 * {@pre None}
-	 * 
-	 * {@post Returns a reference to the view for this controller.}
+	 * This method is called when the user clicks the "OK"
+	 * button in the edit item view.
 	 */
 	@Override
-	protected IEditItemView getView() {
-		return (IEditItemView)super.getView();
+	public void editItem() {
+	}
+
+	/**
+	 * This method is called when any of the fields in the
+	 * edit item view is changed by the user.
+	 */
+	@Override
+	public void valuesChanged() {
 	}
 
 	/**
@@ -51,6 +55,22 @@ public class EditItemController extends Controller
 	protected void enableComponents() {
 	}
 
+	//
+	// IEditItemController overrides
+	//
+
+	/**
+	 * Returns a reference to the view for this controller.
+	 * 
+	 * {@pre None}
+	 * 
+	 * {@post Returns a reference to the view for this controller.}
+	 */
+	@Override
+	protected IEditItemView getView() {
+		return (IEditItemView)super.getView();
+	}
+	
 	/**
 	 * Loads data into the controller's view.
 	 * 
@@ -60,26 +80,6 @@ public class EditItemController extends Controller
 	 */
 	@Override
 	protected void loadValues() {
-	}
-
-	//
-	// IEditItemController overrides
-	//
-
-	/**
-	 * This method is called when any of the fields in the
-	 * edit item view is changed by the user.
-	 */
-	@Override
-	public void valuesChanged() {
-	}
-	
-	/**
-	 * This method is called when the user clicks the "OK"
-	 * button in the edit item view.
-	 */
-	@Override
-	public void editItem() {
 	}
 
 }

@@ -89,6 +89,18 @@ public class ValueResult<T> extends Result
 	}
 
 	/**
+	 * Returns value of Value attribute.
+	 * 
+	 * {@pre None}
+	 * 
+	 * {@post Returns value of Value attribute.}
+	 */
+	public T getValue()
+	{
+		return _value;
+	}
+	
+	/**
 	 * Sets value of Value attribute.
 	 * 
 	 * @param value New value of Value attribute
@@ -100,18 +112,6 @@ public class ValueResult<T> extends Result
 	public void setValue(T value)
 	{
 		_value = value;
-	}
-	
-	/**
-	 * Returns value of Value attribute.
-	 * 
-	 * {@pre None}
-	 * 
-	 * {@post Returns value of Value attribute.}
-	 */
-	public T getValue()
-	{
-		return _value;
 	}
 	
 }

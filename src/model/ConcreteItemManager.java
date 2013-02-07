@@ -61,6 +61,36 @@ public class ConcreteItemManager implements ItemManager, Serializable {
 		items.add(item);
 	}
 	
+	/** Determines whether a given product has items in the system.
+	 * @param product		The Product to test
+	 * @return				true if the specified product has items that use it, false otherwise
+	 * 
+	 * @pre product != null
+	 * @post true
+	 */
+	public boolean productHasItems(Product product) {
+		assert(product != null);
+		
+		if(product == null)
+			throw new IllegalArgumentException("Null product given to find");
+		
+		Collection<Item> found = productsToItems.get(product);
+		if(found == null)
+			return false;
+		
+		return !found.isEmpty();
+	}	
+
+	/** Returns an Iterator to access all of the removed items.
+	 * @return	an Iterator allowing access to all of the removed Items
+	 * 
+	 * @pre true
+	 * @post true
+	 */
+	public Iterator<Item> removedItemsIterator() {
+		return removedItems.iterator();
+	}
+
 	/** Adds the specified item to a productContainer
 	 * @param item		The Item to add
 	 * @param container	The ProductContainer to add the Item to
@@ -85,36 +115,6 @@ public class ConcreteItemManager implements ItemManager, Serializable {
 		
 		item.remove();
 		removedItems.add(item);
-	}	
-
-	/** Returns an Iterator to access all of the removed items.
-	 * @return	an Iterator allowing access to all of the removed Items
-	 * 
-	 * @pre true
-	 * @post true
-	 */
-	public Iterator<Item> removedItemsIterator() {
-		return removedItems.iterator();
-	}
-
-	/** Determines whether a given product has items in the system.
-	 * @param product		The Product to test
-	 * @return				true if the specified product has items that use it, false otherwise
-	 * 
-	 * @pre product != null
-	 * @post true
-	 */
-	public boolean productHasItems(Product product) {
-		assert(product != null);
-		
-		if(product == null)
-			throw new IllegalArgumentException("Null product given to find");
-		
-		Collection<Item> found = productsToItems.get(product);
-		if(found == null)
-			return false;
-		
-		return !found.isEmpty();
 	}
 
 }

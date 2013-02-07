@@ -27,19 +27,6 @@ public class Tagable {
 	}
 	
 	/**
-	 * Sets the Tag property.
-	 * 
-	 * @param value new value for the Tag property
-	 * 
-	 * {@pre None}
-	 * 
-	 * {@post getTag() == value}
-	 */
-	public void setTag(Object value) {
-		_tag = value;
-	}
-	
-	/**
 	 * Returns the current value of the Tag property.
 	 * 
 	 * {@pre None}
@@ -59,6 +46,19 @@ public class Tagable {
 	 */
 	public boolean hasTag() {
 		return (_tag != null);
+	}
+	
+	/**
+	 * Sets the Tag property.
+	 * 
+	 * @param value new value for the Tag property
+	 * 
+	 * {@pre None}
+	 * 
+	 * {@post getTag() == value}
+	 */
+	public void setTag(Object value) {
+		_tag = value;
 	}
 	
 }

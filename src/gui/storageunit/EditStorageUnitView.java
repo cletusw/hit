@@ -22,11 +22,6 @@ public class EditStorageUnitView extends StorageUnitView implements IEditStorage
 	}
 
 	@Override
-	protected void valuesChanged() {
-		getController().valuesChanged();
-	}
-
-	@Override
 	protected void cancel() {
 		return;
 	}
@@ -34,6 +29,11 @@ public class EditStorageUnitView extends StorageUnitView implements IEditStorage
 	@Override
 	protected void ok() {
 		getController().editStorageUnit();
+	}
+
+	@Override
+	protected void valuesChanged() {
+		getController().valuesChanged();
 	}
 
 }

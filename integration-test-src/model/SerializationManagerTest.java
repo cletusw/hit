@@ -22,13 +22,6 @@ public class SerializationManagerTest {
 		deleteDefaultFile();
 	}
 	
-	private void deleteDefaultFile() {
-		File f = new File(testTarget);
-		if(f.exists()) {
-			f.delete();
-		}
-	}
-
 	@Test
 	public void test() {
 		// Create instance of HIT
@@ -48,6 +41,13 @@ public class SerializationManagerTest {
 		hit = SerializationManager.create(testTarget);
 		assertFalse(hit.canAddStorageUnit(name1));
 		assertFalse(hit.canAddStorageUnit(name2));
+	}
+
+	private void deleteDefaultFile() {
+		File f = new File(testTarget);
+		if(f.exists()) {
+			f.delete();
+		}
 	}
 
 }

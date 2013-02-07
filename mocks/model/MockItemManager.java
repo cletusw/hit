@@ -8,9 +8,9 @@ public class MockItemManager implements ItemManager {
 	}
 
 	@Override
-	public void unmanage(Item item) {
+	public boolean productHasItems(Product product) {
 		// TODO Auto-generated method stub
-		
+		return false;
 	}
 
 	@Override
@@ -20,8 +20,8 @@ public class MockItemManager implements ItemManager {
 	}
 
 	@Override
-	public boolean productHasItems(Product product) {
+	public void unmanage(Item item) {
 		// TODO Auto-generated method stub
-		return false;
+		
 	}
 }

@@ -27,15 +27,19 @@ public class EditStorageUnitController extends Controller
 	//
 	
 	/**
-	 * Returns a reference to the view for this controller.
-	 * 
-	 * {@pre None}
-	 * 
-	 * {@post Returns a reference to the view for this controller.}
+	 * This method is called when the user clicks the "OK"
+	 * button in the edit storage unit view.
 	 */
 	@Override
-	protected IEditStorageUnitView getView() {
-		return (IEditStorageUnitView)super.getView();
+	public void editStorageUnit() {
+	}
+
+	/**
+	 * This method is called when any of the fields in the
+	 * edit storage unit view is changed by the user.
+	 */
+	@Override
+	public void valuesChanged() {
 	}
 
 	/**
@@ -52,6 +56,22 @@ public class EditStorageUnitController extends Controller
 	protected void enableComponents() {
 	}
 
+	//
+	// IEditStorageUnitController overrides
+	//
+
+	/**
+	 * Returns a reference to the view for this controller.
+	 * 
+	 * {@pre None}
+	 * 
+	 * {@post Returns a reference to the view for this controller.}
+	 */
+	@Override
+	protected IEditStorageUnitView getView() {
+		return (IEditStorageUnitView)super.getView();
+	}
+
 	/**
 	 * Loads data into the controller's view.
 	 * 
@@ -61,26 +81,6 @@ public class EditStorageUnitController extends Controller
 	 */
 	@Override
 	protected void loadValues() {
-	}
-
-	//
-	// IEditStorageUnitController overrides
-	//
-
-	/**
-	 * This method is called when any of the fields in the
-	 * edit storage unit view is changed by the user.
-	 */
-	@Override
-	public void valuesChanged() {
-	}
-
-	/**
-	 * This method is called when the user clicks the "OK"
-	 * button in the edit storage unit view.
-	 */
-	@Override
-	public void editStorageUnit() {
 	}
 
 }

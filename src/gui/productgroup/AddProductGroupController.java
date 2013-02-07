@@ -27,15 +27,19 @@ public class AddProductGroupController extends Controller implements
 	//
 	
 	/**
-	 * Returns a reference to the view for this controller.
-	 * 
-	 * {@pre None}
-	 * 
-	 * {@post Returns a reference to the view for this controller.}
+	 * This method is called when the user clicks the "OK"
+	 * button in the add product group view.
 	 */
 	@Override
-	protected IAddProductGroupView getView() {
-		return (IAddProductGroupView)super.getView();
+	public void addProductGroup() {
+	}
+
+	/**
+	 * This method is called when any of the fields in the
+	 * add product group view is changed by the user.
+	 */
+	@Override
+	public void valuesChanged() {
 	}
 
 	/**
@@ -52,6 +56,22 @@ public class AddProductGroupController extends Controller implements
 	protected void enableComponents() {
 	}
 
+	//
+	// IAddProductGroupController overrides
+	//
+
+	/**
+	 * Returns a reference to the view for this controller.
+	 * 
+	 * {@pre None}
+	 * 
+	 * {@post Returns a reference to the view for this controller.}
+	 */
+	@Override
+	protected IAddProductGroupView getView() {
+		return (IAddProductGroupView)super.getView();
+	}
+	
 	/**
 	 * Loads data into the controller's view.
 	 * 
@@ -61,26 +81,6 @@ public class AddProductGroupController extends Controller implements
 	 */
 	@Override
 	protected void loadValues() {
-	}
-
-	//
-	// IAddProductGroupController overrides
-	//
-
-	/**
-	 * This method is called when any of the fields in the
-	 * add product group view is changed by the user.
-	 */
-	@Override
-	public void valuesChanged() {
-	}
-	
-	/**
-	 * This method is called when the user clicks the "OK"
-	 * button in the add product group view.
-	 */
-	@Override
-	public void addProductGroup() {
 	}
 
 }

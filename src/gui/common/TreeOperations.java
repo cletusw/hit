@@ -14,10 +14,35 @@ import javax.swing.tree.TreePath;
 public final class TreeOperations {
 
 	/**
-	 * Private Constructor.
+	 * Returns the currently-selected node in the specified tree, or null
+	 * if no node is selected.
+	 * 
+	 * @param tree the tree for which the currently-selected node is desired
+	 * 
+	 * {@pre tree != null}
+	 * 
+	 * {@post The return value contains the currently-selected node, or null if no
+	 * node is selected.}
 	 */
-	private TreeOperations() {
-		assert false;
+	public static DefaultMutableTreeNode getSelectedTreeNode(JTree tree) {
+		return (DefaultMutableTreeNode)tree.getLastSelectedPathComponent();	
+	}
+
+	/**
+	 * Selects a tree node and makes it visible.
+	 * 
+	 * @param tree tree object in which the selection is to be made
+	 * @param node node to be selected
+	 * 
+	 * {@pre tree != null}
+	 * {@pre node != null AND node is a member of tree}
+	 * 
+	 * {@post The specified tree node is selected and visible.}
+	 */
+	public static void selectTreeNode(JTree tree, DefaultMutableTreeNode node) {
+		TreePath nodePath = new TreePath(node.getPath());
+		tree.setSelectionPath(nodePath);
+		tree.scrollPathToVisible(nodePath);
 	}
 
 	/**
@@ -43,37 +68,12 @@ public final class TreeOperations {
 			}
 		}
 	}
-
-	/**
-	 * Selects a tree node and makes it visible.
-	 * 
-	 * @param tree tree object in which the selection is to be made
-	 * @param node node to be selected
-	 * 
-	 * {@pre tree != null}
-	 * {@pre node != null AND node is a member of tree}
-	 * 
-	 * {@post The specified tree node is selected and visible.}
-	 */
-	public static void selectTreeNode(JTree tree, DefaultMutableTreeNode node) {
-		TreePath nodePath = new TreePath(node.getPath());
-		tree.setSelectionPath(nodePath);
-		tree.scrollPathToVisible(nodePath);
-	}
 	
 	/**
-	 * Returns the currently-selected node in the specified tree, or null
-	 * if no node is selected.
-	 * 
-	 * @param tree the tree for which the currently-selected node is desired
-	 * 
-	 * {@pre tree != null}
-	 * 
-	 * {@post The return value contains the currently-selected node, or null if no
-	 * node is selected.}
+	 * Private Constructor.
 	 */
-	public static DefaultMutableTreeNode getSelectedTreeNode(JTree tree) {
-		return (DefaultMutableTreeNode)tree.getLastSelectedPathComponent();	
+	private TreeOperations() {
+		assert false;
 	}
 	
 }

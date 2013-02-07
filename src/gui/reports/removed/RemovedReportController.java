@@ -25,15 +25,19 @@ public class RemovedReportController extends Controller implements
 	//
 
 	/**
-	 * Returns a reference to the view for this controller.
-	 * 
-	 * {@pre None}
-	 * 
-	 * {@post Returns a reference to the view for this controller.}
+	 * This method is called when the user clicks the "OK"
+	 * button in the removed items report view.
 	 */
 	@Override
-	protected IRemovedReportView getView() {
-		return (IRemovedReportView) super.getView();
+	public void display() {
+	}
+
+	/**
+	 * This method is called when any of the fields in the
+	 * removed items report view is changed by the user.
+	 */
+	@Override
+	public void valuesChanged() {
 	}
 
 	/**
@@ -50,6 +54,22 @@ public class RemovedReportController extends Controller implements
 	protected void enableComponents() {
 	}
 
+	//
+	// IExpiredReportController overrides
+	//
+
+	/**
+	 * Returns a reference to the view for this controller.
+	 * 
+	 * {@pre None}
+	 * 
+	 * {@post Returns a reference to the view for this controller.}
+	 */
+	@Override
+	protected IRemovedReportView getView() {
+		return (IRemovedReportView) super.getView();
+	}
+
 	/**
 	 * Loads data into the controller's view.
 	 * 
@@ -59,26 +79,6 @@ public class RemovedReportController extends Controller implements
 	 */
 	@Override
 	protected void loadValues() {
-	}
-
-	//
-	// IExpiredReportController overrides
-	//
-
-	/**
-	 * This method is called when any of the fields in the
-	 * removed items report view is changed by the user.
-	 */
-	@Override
-	public void valuesChanged() {
-	}
-
-	/**
-	 * This method is called when the user clicks the "OK"
-	 * button in the removed items report view.
-	 */
-	@Override
-	public void display() {
 	}
 
 }

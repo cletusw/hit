@@ -10,18 +10,18 @@ import java.io.IOException;
 public interface PersistentStorageManager {
 
 	/**
-	 * Writes the specified HomeInventoryTracker to persistent storage.
-	 * @param hit the instance of HomeInventoryTracker to store
-	 * @param filename the String filename to write to
-	 * @throw IOException if the write failed.
-	 */
-	public void writeObject(HomeInventoryTracker hit,String filename) throws IOException;
-	
-	/**
 	 * Reads a HomeInventoryTracker from persistent storage.
 	 * @param filename The filename of the file to read.
 	 * @return an instance of the HomeInventoryTracker class
 	 * @throws IOException if the read failed.
 	 */
 	public HomeInventoryTracker readObject(String filename) throws IOException;
+	
+	/**
+	 * Writes the specified HomeInventoryTracker to persistent storage.
+	 * @param hit the instance of HomeInventoryTracker to store
+	 * @param filename the String filename to write to
+	 * @throw IOException if the write failed.
+	 */
+	public void writeObject(HomeInventoryTracker hit,String filename) throws IOException;
 }

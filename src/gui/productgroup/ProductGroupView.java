@@ -40,10 +40,68 @@ public abstract class ProductGroupView extends DialogView {
 		super(parent, dialog);
 	}
 	
-	@Override
-	protected void createComponents() {
-		createAddPanel();
-		createButtonsPanel();
+	public void enableOK(boolean value) {
+		_okButton.setEnabled(value);
+	}
+	
+	public void enableProductGroupName(boolean value) {
+		_nameField.setEnabled(value);
+	}
+	
+	public void enableSupplyUnit(boolean value) {
+		_supplyBox.setEnabled(value);
+	}
+	
+	public void enableSupplyValue(boolean value) {
+		_supplyField.setEnabled(value);
+	}
+	
+	public String getProductGroupName() {
+		return _nameField.getText();
+	}
+	
+	public SizeUnits getSupplyUnit() {
+		return (SizeUnits)_supplyBox.getSelectedItem();
+	}
+
+	public String getSupplyValue() {
+		return _supplyField.getText();
+	}
+
+	public void setProductGroupName(String value) {
+		boolean disabledEvents = disableEvents();
+		try {
+			_nameField.setText(value);
+		}
+		finally {
+			if (disabledEvents) {
+				enableEvents();
+			}
+		}
+	}
+	
+	public void setSupplyUnit(SizeUnits value) {
+		boolean disabledEvents = disableEvents();
+		try {
+			_supplyBox.setSelectedItem(value);
+		}
+		finally {
+			if (disabledEvents) {
+				enableEvents();
+			}
+		}
+	}
+
+	public void setSupplyValue(String value) {
+		boolean disabledEvents = disableEvents();
+		try {
+			_supplyField.setText(value);
+		}
+		finally {
+			if (disabledEvents) {
+				enableEvents();
+			}
+		}
 	}
 	
 	private void createAddPanel() {
@@ -97,7 +155,7 @@ public abstract class ProductGroupView extends DialogView {
 			}
 		});
 	}
-	
+
 	private void createButtonsPanel() {
 		_buttonsPanel = new ButtonBankPanel(new String[]{"OK", "Cancel"},
 				new ButtonBankListener() {
@@ -121,22 +179,6 @@ public abstract class ProductGroupView extends DialogView {
 
 		_okButton = _buttonsPanel.getButtons()[0];
 		_dialog.getRootPane().setDefaultButton(_okButton);
-	}
-	
-	protected abstract void valuesChanged();
-	
-	protected abstract void ok();
-	
-	protected abstract void cancel();
-
-	@Override
-	protected void layoutComponents() {
-		layoutAddPanel();	
-
-		setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
-		add(_addPanel);
-		add(Box.createHorizontalStrut(5));
-		add(_buttonsPanel);
 	}
 
 	private void layoutAddPanel() {
@@ -162,70 +204,28 @@ public abstract class ProductGroupView extends DialogView {
 		c.place(2, 1, 2, 1);
 		_addPanel.add(_supplyBox, c);
 	}
+
+	protected abstract void cancel();
+
+	@Override
+	protected void createComponents() {
+		createAddPanel();
+		createButtonsPanel();
+	}
+
+	@Override
+	protected void layoutComponents() {
+		layoutAddPanel();	
+
+		setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
+		add(_addPanel);
+		add(Box.createHorizontalStrut(5));
+		add(_buttonsPanel);
+	}
+
+	protected abstract void ok();
 	
-	public String getProductGroupName() {
-		return _nameField.getText();
-	}
-
-	public void setProductGroupName(String value) {
-		boolean disabledEvents = disableEvents();
-		try {
-			_nameField.setText(value);
-		}
-		finally {
-			if (disabledEvents) {
-				enableEvents();
-			}
-		}
-	}
-	
-	public void enableProductGroupName(boolean value) {
-		_nameField.setEnabled(value);
-	}
-
-	public String getSupplyValue() {
-		return _supplyField.getText();
-	}
-
-	public void setSupplyValue(String value) {
-		boolean disabledEvents = disableEvents();
-		try {
-			_supplyField.setText(value);
-		}
-		finally {
-			if (disabledEvents) {
-				enableEvents();
-			}
-		}
-	}
-
-	public void enableSupplyValue(boolean value) {
-		_supplyField.setEnabled(value);
-	}
-
-	public SizeUnits getSupplyUnit() {
-		return (SizeUnits)_supplyBox.getSelectedItem();
-	}
-
-	public void setSupplyUnit(SizeUnits value) {
-		boolean disabledEvents = disableEvents();
-		try {
-			_supplyBox.setSelectedItem(value);
-		}
-		finally {
-			if (disabledEvents) {
-				enableEvents();
-			}
-		}
-	}
-
-	public void enableSupplyUnit(boolean value) {
-		_supplyBox.setEnabled(value);
-	}
-	
-	public void enableOK(boolean value) {
-		_okButton.setEnabled(value);
-	}
+	protected abstract void valuesChanged();
 
 }
 

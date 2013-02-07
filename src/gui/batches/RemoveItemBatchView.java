@@ -20,28 +20,8 @@ public class RemoveItemBatchView extends ItemBatchView implements IRemoveItemBat
 	////////////////////////////
 
 	@Override
-	protected String getBarcodeLabel() {
-		return "Item Barcode:";
-	}
-	
-	@Override
 	public IRemoveItemBatchController getController() {
 		return (IRemoveItemBatchController)super.getController();
-	}
-	
-	@Override
-	protected void done() {
-		getController().done();
-	}
-
-	@Override
-	protected void itemAction() {
-		getController().removeItem();
-	}
-
-	@Override
-	protected String getItemActionName() {
-		return "Remove Item";
 	}
 	
 	@Override
@@ -50,18 +30,23 @@ public class RemoveItemBatchView extends ItemBatchView implements IRemoveItemBat
 	}
 	
 	@Override
-	protected void useScannerChanged() {
-		getController().useScannerChanged();
+	protected void done() {
+		getController().done();
 	}
 
 	@Override
-	protected void selectedProductChanged() {
-		getController().selectedProductChanged();
+	protected String getBarcodeLabel() {
+		return "Item Barcode:";
 	}
 
 	@Override
-	protected void selectedItemChanged() {
-		return;
+	protected String getItemActionName() {
+		return "Remove Item";
+	}
+	
+	@Override
+	protected void itemAction() {
+		getController().removeItem();
 	}
 	
 	@Override
@@ -70,8 +55,23 @@ public class RemoveItemBatchView extends ItemBatchView implements IRemoveItemBat
 	}
 
 	@Override
+	protected void selectedItemChanged() {
+		return;
+	}
+
+	@Override
+	protected void selectedProductChanged() {
+		getController().selectedProductChanged();
+	}
+	
+	@Override
 	protected void undo() {
 		getController().undo();
+	}
+
+	@Override
+	protected void useScannerChanged() {
+		getController().useScannerChanged();
 	}
 	
 }

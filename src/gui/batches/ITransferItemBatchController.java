@@ -14,10 +14,16 @@ public interface ITransferItemBatchController extends IController {
 	void barcodeChanged();
 	
 	/**
-	 * This method is called when the "Use Barcode Scanner" setting in the
-	 * transfer item batch view is changed by the user.
+	 * This method is called when the user clicks the "Done" button
+	 * in the transfer item batch view.
 	 */
-	void useScannerChanged();
+	void done();
+	
+	/**
+	 * This method is called when the user clicks the "Redo" button
+	 * in the transfer item batch view.
+	 */
+	void redo();
 	
 	/**
 	 * This method is called when the selected product changes
@@ -38,16 +44,10 @@ public interface ITransferItemBatchController extends IController {
 	void undo();
 	
 	/**
-	 * This method is called when the user clicks the "Redo" button
-	 * in the transfer item batch view.
+	 * This method is called when the "Use Barcode Scanner" setting in the
+	 * transfer item batch view is changed by the user.
 	 */
-	void redo();
-	
-	/**
-	 * This method is called when the user clicks the "Done" button
-	 * in the transfer item batch view.
-	 */
-	void done();
+	void useScannerChanged();
 
 }
 

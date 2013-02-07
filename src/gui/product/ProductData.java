@@ -66,16 +66,10 @@ public class ProductData extends Tagable {
 	}
 
 	/**
-	 * Sets the value of the Barcode attribute.
-	 * 
-	 * @param barcode New Barcode value
-	 * 
-	 * {@pre barcode != null}
-	 * 
-	 * {@post getBarcode() == barcode}
+	 * Returns the value of the Count attribute.
 	 */
-	public void setBarcode(String barcode) {
-		this._barcode = barcode;
+	public String getCount() {
+		return _count;
 	}
 
 	/**
@@ -86,16 +80,10 @@ public class ProductData extends Tagable {
 	}
 
 	/**
-	 * Sets the value of the Description value.
-	 * 
-	 * @param description New Description value
-	 * 
-	 * {@pre description != null}
-	 * 
-	 * {@post getDescription() == description}
+	 * Returns the value of the Shelf Life attribute.
 	 */
-	public void setDescription(String description) {
-		this._description = description;
+	public String getShelfLife() {
+		return _shelfLife;
 	}
 
 	/**
@@ -106,23 +94,23 @@ public class ProductData extends Tagable {
 	}
 
 	/**
-	 * Sets the value of the Size attribute.
-	 * 
-	 * @param size New Size value
-	 * 
-	 * {@pre size != null}
-	 * 
-	 * {@post getSize() == size}
+	 * Returns the value of the Supply attribute.
 	 */
-	public void setSize(String size) {
-		this._size = size;
+	public String getSupply() {
+		return _supply;
 	}
 
 	/**
-	 * Returns the value of the Count attribute.
+	 * Sets the value of the Barcode attribute.
+	 * 
+	 * @param barcode New Barcode value
+	 * 
+	 * {@pre barcode != null}
+	 * 
+	 * {@post getBarcode() == barcode}
 	 */
-	public String getCount() {
-		return _count;
+	public void setBarcode(String barcode) {
+		this._barcode = barcode;
 	}
 
 	/**
@@ -139,10 +127,16 @@ public class ProductData extends Tagable {
 	}
 
 	/**
-	 * Returns the value of the Shelf Life attribute.
+	 * Sets the value of the Description value.
+	 * 
+	 * @param description New Description value
+	 * 
+	 * {@pre description != null}
+	 * 
+	 * {@post getDescription() == description}
 	 */
-	public String getShelfLife() {
-		return _shelfLife;
+	public void setDescription(String description) {
+		this._description = description;
 	}
 
 	/**
@@ -159,10 +153,16 @@ public class ProductData extends Tagable {
 	}
 
 	/**
-	 * Returns the value of the Supply attribute.
+	 * Sets the value of the Size attribute.
+	 * 
+	 * @param size New Size value
+	 * 
+	 * {@pre size != null}
+	 * 
+	 * {@post getSize() == size}
 	 */
-	public String getSupply() {
-		return _supply;
+	public void setSize(String size) {
+		this._size = size;
 	}
 
 	/**

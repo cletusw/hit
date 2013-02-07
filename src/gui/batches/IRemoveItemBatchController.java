@@ -14,28 +14,10 @@ public interface IRemoveItemBatchController extends IController {
 	void barcodeChanged();
 	
 	/**
-	 * This method is called when the "Use Barcode Scanner" setting is changed
-	 * in the remove item batch view by the user.
-	 */
-	void useScannerChanged();
-	
-	/**
-	 * This method is called when the selected product changes
+	 * This method is called when the user clicks the "Done" button
 	 * in the remove item batch view.
 	 */
-	void selectedProductChanged();
-	
-	/**
-	 * This method is called when the user clicks the "Remove Item" button
-	 * in the remove item batch view.
-	 */
-	void removeItem();
-	
-	/**
-	 * This method is called when the user clicks the "Undo" button
-	 * in the remove item batch view.
-	 */
-	void undo();
+	void done();
 	
 	/**
 	 * This method is called when the user clicks the "Redo" button
@@ -44,10 +26,28 @@ public interface IRemoveItemBatchController extends IController {
 	void redo();
 	
 	/**
-	 * This method is called when the user clicks the "Done" button
+	 * This method is called when the user clicks the "Remove Item" button
 	 * in the remove item batch view.
 	 */
-	void done();
+	void removeItem();
+	
+	/**
+	 * This method is called when the selected product changes
+	 * in the remove item batch view.
+	 */
+	void selectedProductChanged();
+	
+	/**
+	 * This method is called when the user clicks the "Undo" button
+	 * in the remove item batch view.
+	 */
+	void undo();
+	
+	/**
+	 * This method is called when the "Use Barcode Scanner" setting is changed
+	 * in the remove item batch view by the user.
+	 */
+	void useScannerChanged();
 
 }
 

@@ -26,15 +26,19 @@ public class EditProductController extends Controller
 	//
 	
 	/**
-	 * Returns a reference to the view for this controller.
-	 * 
-	 * {@pre None}
-	 * 
-	 * {@post Returns a reference to the view for this controller.}
+	 * This method is called when the user clicks the "OK"
+	 * button in the edit product view.
 	 */
 	@Override
-	protected IEditProductView getView() {
-		return (IEditProductView)super.getView();
+	public void editProduct() {
+	}
+
+	/**
+	 * This method is called when any of the fields in the
+	 * edit product view is changed by the user.
+	 */
+	@Override
+	public void valuesChanged() {
 	}
 
 	/**
@@ -51,6 +55,22 @@ public class EditProductController extends Controller
 	protected void enableComponents() {
 	}
 
+	//
+	// IEditProductController overrides
+	//
+
+	/**
+	 * Returns a reference to the view for this controller.
+	 * 
+	 * {@pre None}
+	 * 
+	 * {@post Returns a reference to the view for this controller.}
+	 */
+	@Override
+	protected IEditProductView getView() {
+		return (IEditProductView)super.getView();
+	}
+	
 	/**
 	 * Loads data into the controller's view.
 	 * 
@@ -60,26 +80,6 @@ public class EditProductController extends Controller
 	 */
 	@Override
 	protected void loadValues() {
-	}
-
-	//
-	// IEditProductController overrides
-	//
-
-	/**
-	 * This method is called when any of the fields in the
-	 * edit product view is changed by the user.
-	 */
-	@Override
-	public void valuesChanged() {
-	}
-	
-	/**
-	 * This method is called when the user clicks the "OK"
-	 * button in the edit product view.
-	 */
-	@Override
-	public void editProduct() {
 	}
 
 }

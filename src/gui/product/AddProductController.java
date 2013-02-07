@@ -26,15 +26,19 @@ public class AddProductController extends Controller implements
 	//
 	
 	/**
-	 * Returns a reference to the view for this controller.
-	 * 
-	 * {@pre None}
-	 * 
-	 * {@post Returns a reference to the view for this controller.}
+	 * This method is called when the user clicks the "OK"
+	 * button in the add product view.
 	 */
 	@Override
-	protected IAddProductView getView() {
-		return (IAddProductView)super.getView();
+	public void addProduct() {
+	}
+
+	/**
+	 * This method is called when any of the fields in the
+	 * add product view is changed by the user.
+	 */
+	@Override
+	public void valuesChanged() {
 	}
 
 	/**
@@ -51,6 +55,22 @@ public class AddProductController extends Controller implements
 	protected void enableComponents() {
 	}
 
+	//
+	// IAddProductController overrides
+	//
+	
+	/**
+	 * Returns a reference to the view for this controller.
+	 * 
+	 * {@pre None}
+	 * 
+	 * {@post Returns a reference to the view for this controller.}
+	 */
+	@Override
+	protected IAddProductView getView() {
+		return (IAddProductView)super.getView();
+	}
+	
 	/**
 	 * Loads data into the controller's view.
 	 * 
@@ -60,26 +80,6 @@ public class AddProductController extends Controller implements
 	 */
 	@Override
 	protected void loadValues() {
-	}
-
-	//
-	// IAddProductController overrides
-	//
-	
-	/**
-	 * This method is called when any of the fields in the
-	 * add product view is changed by the user.
-	 */
-	@Override
-	public void valuesChanged() {
-	}
-	
-	/**
-	 * This method is called when the user clicks the "OK"
-	 * button in the add product view.
-	 */
-	@Override
-	public void addProduct() {
 	}
 
 }

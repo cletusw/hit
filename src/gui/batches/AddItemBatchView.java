@@ -50,6 +50,83 @@ public class AddItemBatchView extends ItemBatchView implements
 	}
 
 	@Override
+	public void displayAddProductView() {
+		DialogBox dialogBox = new DialogBox(_parent, "Add Product");
+		AddProductView dialogView = new AddProductView(_parent, dialogBox,
+				getBarcode());
+		dialogBox.display(dialogView, false);
+	}
+
+	@Override
+	public IAddItemBatchController getController() {
+		return (IAddItemBatchController) super.getController();
+	}
+
+	@Override
+	public String getCount() {
+		return countField.getText();
+	}
+
+	@Override
+	public Date getEntryDate() {
+		
+		// return DateUtils.removeTimeFromDate((Date) entryDateSpinnerModel
+		// 		.getValue());
+
+		String entryDateText = entryDateSpinnerEditor.getTextField().getText();
+		if (entryDateText == null) {
+			return null;
+		}
+		try {
+			return DateUtils.parseDate(entryDateText);
+		}
+		catch (ParseException e) {
+			return null;
+		}
+	}
+
+	// //////////////////////////
+	// ItemBatchView Overrides
+	// //////////////////////////
+
+	@Override
+	public void setCount(String value) {
+		boolean disabledEvents = disableEvents();
+		try {
+			countField.setText(value);
+		} finally {
+			if (disabledEvents) {
+				enableEvents();
+			}
+		}
+	}
+
+	@Override
+	public void setEntryDate(Date value) {
+		boolean disabledEvents = disableEvents();
+		try {
+			entryDateSpinnerModel.setValue(DateUtils.removeTimeFromDate(value));
+		} finally {
+			if (disabledEvents) {
+				enableEvents();
+			}
+		}
+	}
+
+	private void countChanged() {
+		getController().countChanged();
+	}
+
+	private void entryDateChanged() {
+		getController().entryDateChanged();
+	}
+
+	@Override
+	protected void barcodeChanged() {
+		getController().barcodeChanged();
+	}
+
+	@Override
 	protected void createComponents() {
 		super.createComponents();
 
@@ -127,6 +204,26 @@ public class AddItemBatchView extends ItemBatchView implements
 	}
 
 	@Override
+	protected void done() {
+		getController().done();
+	}
+
+	@Override
+	protected String getBarcodeLabel() {
+		return "Product Barcode:";
+	}
+
+	@Override
+	protected String getItemActionName() {
+		return "Add Item";
+	}
+
+	@Override
+	protected void itemAction() {
+		getController().addItem();
+	}
+
+	@Override
 	protected void layoutComponents() {
 		batchPanel = new JPanel();
 		batchPanel.setLayout(new GridBagLayout());
@@ -186,56 +283,13 @@ public class AddItemBatchView extends ItemBatchView implements
 		this.add(splitPane);
 	}
 
-	private void entryDateChanged() {
-		getController().entryDateChanged();
-	}
-
-	private void countChanged() {
-		getController().countChanged();
-	}
-
 	// //////////////////////////
-	// ItemBatchView Overrides
+	// IAddItemsView overrides
 	// //////////////////////////
 
 	@Override
-	protected String getBarcodeLabel() {
-		return "Product Barcode:";
-	}
-
-	@Override
-	public IAddItemBatchController getController() {
-		return (IAddItemBatchController) super.getController();
-	}
-
-	@Override
-	protected void done() {
-		getController().done();
-	}
-
-	@Override
-	protected void itemAction() {
-		getController().addItem();
-	}
-
-	@Override
-	protected String getItemActionName() {
-		return "Add Item";
-	}
-
-	@Override
-	protected void barcodeChanged() {
-		getController().barcodeChanged();
-	}
-
-	@Override
-	protected void useScannerChanged() {
-		getController().useScannerChanged();
-	}
-
-	@Override
-	protected void selectedProductChanged() {
-		getController().selectedProductChanged();
+	protected void redo() {
+		getController().redo();
 	}
 
 	@Override
@@ -244,8 +298,8 @@ public class AddItemBatchView extends ItemBatchView implements
 	}
 
 	@Override
-	protected void redo() {
-		getController().redo();
+	protected void selectedProductChanged() {
+		getController().selectedProductChanged();
 	}
 
 	@Override
@@ -253,63 +307,9 @@ public class AddItemBatchView extends ItemBatchView implements
 		getController().undo();
 	}
 
-	// //////////////////////////
-	// IAddItemsView overrides
-	// //////////////////////////
-
 	@Override
-	public void displayAddProductView() {
-		DialogBox dialogBox = new DialogBox(_parent, "Add Product");
-		AddProductView dialogView = new AddProductView(_parent, dialogBox,
-				getBarcode());
-		dialogBox.display(dialogView, false);
-	}
-
-	@Override
-	public String getCount() {
-		return countField.getText();
-	}
-
-	@Override
-	public Date getEntryDate() {
-		
-		// return DateUtils.removeTimeFromDate((Date) entryDateSpinnerModel
-		// 		.getValue());
-
-		String entryDateText = entryDateSpinnerEditor.getTextField().getText();
-		if (entryDateText == null) {
-			return null;
-		}
-		try {
-			return DateUtils.parseDate(entryDateText);
-		}
-		catch (ParseException e) {
-			return null;
-		}
-	}
-
-	@Override
-	public void setCount(String value) {
-		boolean disabledEvents = disableEvents();
-		try {
-			countField.setText(value);
-		} finally {
-			if (disabledEvents) {
-				enableEvents();
-			}
-		}
-	}
-
-	@Override
-	public void setEntryDate(Date value) {
-		boolean disabledEvents = disableEvents();
-		try {
-			entryDateSpinnerModel.setValue(DateUtils.removeTimeFromDate(value));
-		} finally {
-			if (disabledEvents) {
-				enableEvents();
-			}
-		}
+	protected void useScannerChanged() {
+		getController().useScannerChanged();
 	}
 
 }

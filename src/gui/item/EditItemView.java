@@ -21,11 +21,6 @@ public class EditItemView extends ItemView implements IEditItemView {
 	}
 
 	@Override
-	protected void valuesChanged() {
-		getController().valuesChanged();
-	}
-
-	@Override
 	protected void cancel() {
 		return;
 	}
@@ -33,6 +28,11 @@ public class EditItemView extends ItemView implements IEditItemView {
 	@Override
 	protected void ok() {
 		getController().editItem();
+	}
+
+	@Override
+	protected void valuesChanged() {
+		getController().valuesChanged();
 	}
 
 }

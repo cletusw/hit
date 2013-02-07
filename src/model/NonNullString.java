@@ -12,10 +12,6 @@ import java.io.Serializable;
 public class NonNullString implements Serializable, Comparable {
 	protected String value;
 	
-	protected NonNullString(){
-		
-	}
-	
 	/** Constructor. Must be given a non-null, non-empty string.
 	 * 
 	 * @param s non-null, non-empty string.
@@ -36,17 +32,10 @@ public class NonNullString implements Serializable, Comparable {
 		this.value = s;
 	}
 	
-	/** Returns the string value of the notnullstring. 
-	 * 
-	 * @return String representation of the notnullstring.
-	 * 
-	 * @pre true
-	 * @post true
-	 */
-	public String getValue(){
-		return this.value;
+	protected NonNullString(){
+		
 	}
-
+	
 	/**Compare this not-null string to another using String.compareTo(String other)
 	 * 
 	 * @param other NotNullString to compare, or String
@@ -68,5 +57,16 @@ public class NonNullString implements Serializable, Comparable {
 			return this.value.compareTo((String)other);
 		}
 		return -1;
+	}
+
+	/** Returns the string value of the notnullstring. 
+	 * 
+	 * @return String representation of the notnullstring.
+	 * 
+	 * @pre true
+	 * @post true
+	 */
+	public String getValue(){
+		return this.value;
 	}
 }

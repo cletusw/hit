@@ -18,58 +18,9 @@ public interface IAddItemBatchView extends IView {
 	void close();
 	
 	/**
-	 * Returns the value of the "Entry Date" field, or null
-	 * if the field's value is invalid.
+	 * Displays the add item view.
 	 */
-	Date getEntryDate();
-	
-	/**
-	 * Sets the value of the "Entry Date" field.
-	 * 
-	 * @param value New "Entry Date" value
-	 */
-	void setEntryDate(Date value);
-	
-	/**
-	 * Returns the value of the "Count" field.
-	 */
-	String getCount();
-	
-	/**
-	 * Sets the value of the "Count" field.
-	 *  
-	 * @param value New "Count" value
-	 */
-	void setCount(String value);
-	
-	/**
-	 * Sets the value of the "Product Barcode" field.
-	 * 
-	 * @param barcode New "Product Barcode" value
-	 */
-	void setBarcode(String barcode);
-	
-	/**
-	 * Returns the value of the "Product Barcode" field.
-	 */
-	String getBarcode();
-
-	/**
-	 * Gives the keyboard focus to the "Item Barcode" field.
-	 */
-	void giveBarcodeFocus();
-	
-	/**
-	 * Sets the value of the "Use Barcode Scanner" setting.
-	 * 
-	 * @param value New "Use Barcode Scanner" value
-	 */
-	void setUseScanner(boolean value);
-	
-	/**
-	 * Returns the "Use Barcode Scanner" setting.
-	 */
-	boolean getUseScanner();
+	void displayAddProductView();
 	
 	/**
 	 * Sets the enable/disable state of the "Add Item" button.
@@ -79,6 +30,13 @@ public interface IAddItemBatchView extends IView {
 	void enableItemAction(boolean value);
 	
 	/**
+	 * Sets the enable/disable state of the "Redo" button.
+	 * 
+	 * @param value New enable/disable state
+	 */
+	void enableRedo(boolean value);
+	
+	/**
 	 * Sets the enable/disable state of the "Undo" button.
 	 * 
 	 * @param value New enable/disable state
@@ -86,18 +44,26 @@ public interface IAddItemBatchView extends IView {
 	void enableUndo(boolean value);
 	
 	/**
-	 * Sets the enable/disable state of the "Redo" button.
-	 * 
-	 * @param value New enable/disable state
+	 * Returns the value of the "Product Barcode" field.
 	 */
-	void enableRedo(boolean value);
+	String getBarcode();
+	
+	/**
+	 * Returns the value of the "Count" field.
+	 */
+	String getCount();
 
 	/**
-	 * Sets the products displayed in the "Products" table.
-	 * 
-	 * @param products Array of products to display
+	 * Returns the value of the "Entry Date" field, or null
+	 * if the field's value is invalid.
 	 */
-	void setProducts(ProductData[] products);
+	Date getEntryDate();
+	
+	/**
+	 * Returns the currently selected item in the "Items" table,
+	 * or null if no item is selected.
+	 */
+	ItemData getSelectedItem();
 	
 	/**
 	 * Returns the currently selected product in the "Products" table,
@@ -105,6 +71,25 @@ public interface IAddItemBatchView extends IView {
 	 */
 	ProductData getSelectedProduct();
 	
+	/**
+	 * Returns the "Use Barcode Scanner" setting.
+	 */
+	boolean getUseScanner();
+	
+	/**
+	 * Gives the keyboard focus to the "Item Barcode" field.
+	 */
+	void giveBarcodeFocus();
+	
+	/**
+	 * Selects the specified item in the "Items" table, or
+	 * selects nothing if item is null.
+	 *  
+	 * @param item The item to be selected.  This must be one
+	 * of the items previously passed to setItems, or null.
+	 */
+	void selectItem(ItemData item);
+
 	/**
 	 * Selects the specified product in the "Products" table, or selects
 	 * nothing if product is null.
@@ -115,31 +100,46 @@ public interface IAddItemBatchView extends IView {
 	void selectProduct(ProductData product);
 	
 	/**
+	 * Sets the value of the "Product Barcode" field.
+	 * 
+	 * @param barcode New "Product Barcode" value
+	 */
+	void setBarcode(String barcode);
+	
+	/**
+	 * Sets the value of the "Count" field.
+	 *  
+	 * @param value New "Count" value
+	 */
+	void setCount(String value);
+	
+	/**
+	 * Sets the value of the "Entry Date" field.
+	 * 
+	 * @param value New "Entry Date" value
+	 */
+	void setEntryDate(Date value);
+
+	/**
 	 * Sets the items displayed in the "Items" table.
 	 * 
 	 * @param items Array of items to display
 	 */
 	void setItems(ItemData[] items);
-
-	/**
-	 * Returns the currently selected item in the "Items" table,
-	 * or null if no item is selected.
-	 */
-	ItemData getSelectedItem();
 	
 	/**
-	 * Selects the specified item in the "Items" table, or
-	 * selects nothing if item is null.
-	 *  
-	 * @param item The item to be selected.  This must be one
-	 * of the items previously passed to setItems, or null.
+	 * Sets the products displayed in the "Products" table.
+	 * 
+	 * @param products Array of products to display
 	 */
-	void selectItem(ItemData item);
+	void setProducts(ProductData[] products);
 	
 	/**
-	 * Displays the add item view.
+	 * Sets the value of the "Use Barcode Scanner" setting.
+	 * 
+	 * @param value New "Use Barcode Scanner" value
 	 */
-	void displayAddProductView();
+	void setUseScanner(boolean value);
 
 }
 

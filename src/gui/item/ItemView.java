@@ -48,10 +48,101 @@ public abstract class ItemView extends DialogView {
 		super(parent, dialog);
 	}
 
-	@Override
-	protected void createComponents() {
-		createValuesPanel();
-		createButtonsPanel();
+	public void enableBarcode(boolean value) {
+		_barcodeField.setEnabled(value);
+	}
+
+	public void enableDescription(boolean value) {
+		_descriptionField.setEnabled(value);
+	}
+
+	public void enableEntryDate(boolean value) {
+		_entryDateSpinner.setEnabled(value);
+	}
+
+	public void enableOK(boolean value) {
+		_okButton.setEnabled(value);
+	}
+
+	public String getBarcode() {
+		return _barcodeField.getText();
+	}
+
+	public String getDescription() {
+		return _descriptionField.getText();
+	}
+
+	public Date getEntryDate() {
+
+		// return (Date)_entryDateSpinnerModel.getValue();
+
+		String entryDateText = _entryDateSpinnerEditor.getTextField().getText();
+		if (entryDateText == null) {
+			return null;
+		}
+		try {
+			return DateUtils.parseDate(entryDateText);
+		}
+		catch (ParseException e) {
+			return null;
+		}
+	}
+
+	public void setBarcode(String value) {
+		boolean disabledEvents = disableEvents();
+		try {
+			_barcodeField.setText(value);
+		} finally {
+			if (disabledEvents) {
+				enableEvents();
+			}
+		}
+	}
+
+	public void setDescription(String value) {
+		boolean disabledEvents = disableEvents();
+		try {
+			_descriptionField.setText(value);
+		} finally {
+			if (disabledEvents) {
+				enableEvents();
+			}
+		}
+	}
+
+	public void setEntryDate(Date value) {
+		boolean disabledEvents = disableEvents();
+		try {
+			_entryDateSpinnerModel.setValue(value);
+		} finally {
+			if (disabledEvents) {
+				enableEvents();
+			}
+		}
+	}
+
+	private void createButtonsPanel() {
+		_buttonsPanel = new ButtonBankPanel(new String[] { "OK", "Cancel" },
+				new ButtonBankListener() {
+					public void buttonPressed(int index, String label) {
+						switch (index) {
+						case 0:
+							ok();
+							_dialog.dispose();
+							break;
+						case 1:
+							cancel();
+							_dialog.dispose();
+							break;
+						default:
+							assert false;
+							break;
+						}
+					}
+				});
+
+		_okButton = _buttonsPanel.getButtons()[0];
+		_dialog.getRootPane().setDefaultButton(_okButton);
 	}
 
 	private void createValuesPanel() {
@@ -135,46 +226,6 @@ public abstract class ItemView extends DialogView {
 //		});
 	}
 
-	private void createButtonsPanel() {
-		_buttonsPanel = new ButtonBankPanel(new String[] { "OK", "Cancel" },
-				new ButtonBankListener() {
-					public void buttonPressed(int index, String label) {
-						switch (index) {
-						case 0:
-							ok();
-							_dialog.dispose();
-							break;
-						case 1:
-							cancel();
-							_dialog.dispose();
-							break;
-						default:
-							assert false;
-							break;
-						}
-					}
-				});
-
-		_okButton = _buttonsPanel.getButtons()[0];
-		_dialog.getRootPane().setDefaultButton(_okButton);
-	}
-
-	protected abstract void valuesChanged();
-
-	protected abstract void ok();
-
-	protected abstract void cancel();
-
-	@Override
-	protected void layoutComponents() {
-		layoutValuesPanel();
-
-		setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
-		add(_valuesPanel);
-		add(Box.createHorizontalStrut(5));
-		add(_buttonsPanel);
-	}
-
 	private void layoutValuesPanel() {
 		_valuesPanel.setLayout(new GridBagLayout());
 
@@ -202,78 +253,27 @@ public abstract class ItemView extends DialogView {
 		_valuesPanel.add(_entryDateSpinner, c);
 	}
 
-	public String getDescription() {
-		return _descriptionField.getText();
+	protected abstract void cancel();
+
+	@Override
+	protected void createComponents() {
+		createValuesPanel();
+		createButtonsPanel();
 	}
 
-	public void setDescription(String value) {
-		boolean disabledEvents = disableEvents();
-		try {
-			_descriptionField.setText(value);
-		} finally {
-			if (disabledEvents) {
-				enableEvents();
-			}
-		}
+	@Override
+	protected void layoutComponents() {
+		layoutValuesPanel();
+
+		setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
+		add(_valuesPanel);
+		add(Box.createHorizontalStrut(5));
+		add(_buttonsPanel);
 	}
 
-	public void enableDescription(boolean value) {
-		_descriptionField.setEnabled(value);
-	}
+	protected abstract void ok();
 
-	public String getBarcode() {
-		return _barcodeField.getText();
-	}
-
-	public void setBarcode(String value) {
-		boolean disabledEvents = disableEvents();
-		try {
-			_barcodeField.setText(value);
-		} finally {
-			if (disabledEvents) {
-				enableEvents();
-			}
-		}
-	}
-
-	public void enableBarcode(boolean value) {
-		_barcodeField.setEnabled(value);
-	}
-
-	public Date getEntryDate() {
-
-		// return (Date)_entryDateSpinnerModel.getValue();
-
-		String entryDateText = _entryDateSpinnerEditor.getTextField().getText();
-		if (entryDateText == null) {
-			return null;
-		}
-		try {
-			return DateUtils.parseDate(entryDateText);
-		}
-		catch (ParseException e) {
-			return null;
-		}
-	}
-
-	public void setEntryDate(Date value) {
-		boolean disabledEvents = disableEvents();
-		try {
-			_entryDateSpinnerModel.setValue(value);
-		} finally {
-			if (disabledEvents) {
-				enableEvents();
-			}
-		}
-	}
-
-	public void enableEntryDate(boolean value) {
-		_entryDateSpinner.setEnabled(value);
-	}
-
-	public void enableOK(boolean value) {
-		_okButton.setEnabled(value);
-	}
+	protected abstract void valuesChanged();
 
 }
 

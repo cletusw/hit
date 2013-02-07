@@ -61,6 +61,34 @@ public class ItemData extends Tagable {
 	}
 
 	/**
+	 * Returns the value of the EntryDate attribute.
+	 */
+	public Date getEntryDate() {
+		return _entryDate;
+	}
+
+	/**
+	 * Returns the value of the ExpirationDate attribute.
+	 */
+	public Date getExpirationDate() {
+		return _expirationDate;
+	}
+
+	/**
+	 * Returns the value of the ProductGroup attribute.
+	 */
+	public String getProductGroup() {
+		return _productGroup;
+	}
+
+	/**
+	 * Returns the value of the StorageUnit attribute.
+	 */
+	public String getStorageUnit() {
+		return _storageUnit;
+	}
+
+	/**
 	 * Sets the value of the Barcode attribute.
 	 * 
 	 * @param barcode New Barcode value
@@ -71,13 +99,6 @@ public class ItemData extends Tagable {
 	 */
 	public void setBarcode(String barcode) {
 		this._barcode = barcode;
-	}
-
-	/**
-	 * Returns the value of the EntryDate attribute.
-	 */
-	public Date getEntryDate() {
-		return _entryDate;
 	}
 
 	/**
@@ -94,13 +115,6 @@ public class ItemData extends Tagable {
 	}
 
 	/**
-	 * Returns the value of the ExpirationDate attribute.
-	 */
-	public Date getExpirationDate() {
-		return _expirationDate;
-	}
-
-	/**
 	 * Sets the value of the ExpirationDate attribute.
 	 * 
 	 * @param expirationDate New ExpirationDate value
@@ -114,10 +128,16 @@ public class ItemData extends Tagable {
 	}
 
 	/**
-	 * Returns the value of the StorageUnit attribute.
+	 * Sets the value of the ProductGroup attribute.
+	 * 
+	 * @param productGroup New ProductGroup value
+	 * 
+	 * {@pre productGroup != null}
+	 * 
+	 * {@post getProductGroup() == productGroup}
 	 */
-	public String getStorageUnit() {
-		return _storageUnit;
+	public void setProductGroup(String productGroup) {
+		this._productGroup = productGroup;
 	}
 
 	/**
@@ -131,26 +151,6 @@ public class ItemData extends Tagable {
 	 */
 	public void setStorageUnit(String storageUnit) {
 		this._storageUnit = storageUnit;
-	}
-
-	/**
-	 * Returns the value of the ProductGroup attribute.
-	 */
-	public String getProductGroup() {
-		return _productGroup;
-	}
-
-	/**
-	 * Sets the value of the ProductGroup attribute.
-	 * 
-	 * @param productGroup New ProductGroup value
-	 * 
-	 * {@pre productGroup != null}
-	 * 
-	 * {@post getProductGroup() == productGroup}
-	 */
-	public void setProductGroup(String productGroup) {
-		this._productGroup = productGroup;
 	}
 
 }

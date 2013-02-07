@@ -20,61 +20,6 @@ public class Item implements Comparable<Object>, Serializable {
 	private Date exitTime;
 	private ProductContainer container;
 	
-	/** Constructs a new Item with the specified data.
-	 * 
-	 * @param product This Item's Product
-	 * @param container The ProductContainer this Item is to be stored in
-	 * @param manager The ItemManager to optimize accesses to this item
-	 * 
-	 * @pre product != null
-	 * @pre container != null
-	 * @pre manager != null
-	 * 
-	 * @post this.container != null
-	 * 
-	 */
-	public Item(Product product, ProductContainer container, ItemManager manager) {
-		this(new Barcode(), product, container, new Date(), manager);
-	}
-	
-	/** Constructs a new Item with the specified data.
-	 * 
-	 * @param product This Item's Product
-	 * @param entryDate The date this Item was entered into the system
-	 * @param container The ProductContainer this Item is to be stored in
-	 * @param manager The ItemManager to optimize accesses to this item
-	 * 
-	 * @pre product != null
-	 * @pre entryDate != null
-	 * @pre container != null
-	 * @pre manager != null
-	 * 
-	 * @post this.container != null
-	 * 
-	 */
-	public Item(Product product, Date entryDate, ProductContainer container, ItemManager manager) {
-		this(new Barcode(), product, container, entryDate, manager);
-	}
-	
-	/** Constructs a new Item with the specified barcode, product, and container. 
-	 *  Sets entryDate to now.
-	 * @param barcode the Item's barcode
-	 * @param product this Item's corresponding Product
-	 * @param container the ProductContainer this Item is to be stored in
-	 * 
-	 * @pre barcode != null
-	 * @pre product != null
-	 * @pre container != null
-	 * @pre manager != null
-	 * 
-	 * @post this.container != null
-	 * 
-	 */
-	public Item(Barcode barcode, Product product, ProductContainer container, 
-			ItemManager manager) {
-		this(barcode, product, container, new Date(), manager);
-	}
-	
 	/** Constructs a new Item with the specified barcode, product, and container.
 	 * @param barcode the Item's barcode
 	 * @param product this Item's corresponding Product
@@ -103,28 +48,75 @@ public class Item implements Comparable<Object>, Serializable {
 		manager.manage(this);
 	}
 	
-	/** Gets this Item's Product
+	/** Constructs a new Item with the specified barcode, product, and container. 
+	 *  Sets entryDate to now.
+	 * @param barcode the Item's barcode
+	 * @param product this Item's corresponding Product
+	 * @param container the ProductContainer this Item is to be stored in
 	 * 
-	 * @return this Item's Product
+	 * @pre barcode != null
+	 * @pre product != null
+	 * @pre container != null
+	 * @pre manager != null
 	 * 
-	 * @pre true
-	 * @post true
+	 * @post this.container != null
 	 * 
 	 */
-	public Product getProduct() {
-		return product;
+	public Item(Barcode barcode, Product product, ProductContainer container, 
+			ItemManager manager) {
+		this(barcode, product, container, new Date(), manager);
 	}
 	
-	/** Gets this Item's Product barcode
+	/** Constructs a new Item with the specified data.
 	 * 
-	 * @return Product (String) barcode
+	 * @param product This Item's Product
+	 * @param entryDate The date this Item was entered into the system
+	 * @param container The ProductContainer this Item is to be stored in
+	 * @param manager The ItemManager to optimize accesses to this item
 	 * 
-	 * @pre true
-	 * @post true
+	 * @pre product != null
+	 * @pre entryDate != null
+	 * @pre container != null
+	 * @pre manager != null
+	 * 
+	 * @post this.container != null
 	 * 
 	 */
-	public String getProductBarcode() {
-		return product.getBarcode();
+	public Item(Product product, Date entryDate, ProductContainer container, ItemManager manager) {
+		this(new Barcode(), product, container, entryDate, manager);
+	}
+	
+	/** Constructs a new Item with the specified data.
+	 * 
+	 * @param product This Item's Product
+	 * @param container The ProductContainer this Item is to be stored in
+	 * @param manager The ItemManager to optimize accesses to this item
+	 * 
+	 * @pre product != null
+	 * @pre container != null
+	 * @pre manager != null
+	 * 
+	 * @post this.container != null
+	 * 
+	 */
+	public Item(Product product, ProductContainer container, ItemManager manager) {
+		this(new Barcode(), product, container, new Date(), manager);
+	}
+	
+	@Override
+	/** Compares this Item to another object
+	 * @param o the object to compare this Item to
+	 * @return zero if the items are equal, otherwise a number greater than or less than zero
+	 * 
+	 * @pre o != null
+	 * @pre (o instanceof Item)
+	 * @post true
+	 */
+	public int compareTo(Object o) {
+		assert(o != null);
+		assert(o instanceof Item);
+		Item other = (Item) o;
+		return barcode.compareTo(other.barcode);
 	}
 	
 	/** Gets this Item's barcode
@@ -136,6 +128,18 @@ public class Item implements Comparable<Object>, Serializable {
 	 */
 	public String getBarcode() {
 		return barcode.getValue();
+	}
+	
+	/** Gets this Item's parent container
+	 * 
+	 * @return this Item's parent ProductContainer
+	 * 
+	 * @pre true
+	 * @post true
+	 * 
+	 */
+	public ProductContainer getContainer() {
+		return container;
 	}
 	
 	/** Gets this Item's entry date
@@ -161,18 +165,6 @@ public class Item implements Comparable<Object>, Serializable {
 		return exitTime;
 	}
 	
-	/**
-	 * Sets exit time to now, container to null
-	 * 
-	 * @pre true
-	 * @post exitTime != null
-	 * @post container == null
-	 */
-	public void remove(){
-		this.exitTime = new Date();
-		this.container = null;
-	}
-	
 	/** Gets this Item's expiration date
 	 * 
 	 * @return the Item's expiration date
@@ -185,32 +177,40 @@ public class Item implements Comparable<Object>, Serializable {
 		return this.expirationDate;
 	}
 	
-	/** Gets this Item's parent container
+	/** Gets this Item's Product
 	 * 
-	 * @return this Item's parent ProductContainer
+	 * @return this Item's Product
 	 * 
 	 * @pre true
 	 * @post true
 	 * 
 	 */
-	public ProductContainer getContainer() {
-		return container;
+	public Product getProduct() {
+		return product;
 	}
 	
-	@Override
-	/** Compares this Item to another object
-	 * @param o the object to compare this Item to
-	 * @return zero if the items are equal, otherwise a number greater than or less than zero
+	/** Gets this Item's Product barcode
 	 * 
-	 * @pre o != null
-	 * @pre (o instanceof Item)
+	 * @return Product (String) barcode
+	 * 
+	 * @pre true
 	 * @post true
+	 * 
 	 */
-	public int compareTo(Object o) {
-		assert(o != null);
-		assert(o instanceof Item);
-		Item other = (Item) o;
-		return barcode.compareTo(other.barcode);
+	public String getProductBarcode() {
+		return product.getBarcode();
+	}
+	
+	/**
+	 * Sets exit time to now, container to null
+	 * 
+	 * @pre true
+	 * @post exitTime != null
+	 * @post container == null
+	 */
+	public void remove(){
+		this.exitTime = new Date();
+		this.container = null;
 	}
 	
 	

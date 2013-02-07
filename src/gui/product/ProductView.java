@@ -48,12 +48,155 @@ public abstract class ProductView extends DialogView {
 		super(parent, dialog);
 	}
 	
-	@Override
-	protected void createComponents() {
-		createValuesPanel();
-		createButtonsPanel();
+	public void enableBarcode(boolean value) {
+		_barcodeField.setEnabled(value);
 	}
 	
+	public void enableDescription(boolean value) {
+		_descriptionField.setEnabled(value);
+	}
+	
+	public void enableOK(boolean value) {
+		_okButton.setEnabled(value);
+	}
+	
+	public void enableShelfLife(boolean value) {
+		_shelfLifeField.setEnabled(value);
+	}
+	
+	public void enableSizeUnit(boolean value) {
+		_sizeBox.setEnabled(value);
+	}
+	
+	public void enableSizeValue(boolean value) {
+		_sizeField.setEnabled(value);
+	}
+
+	public void enableSupply(boolean value) {
+		_supplyField.setEnabled(value);
+	}
+
+	public String getBarcode() {
+		return _barcodeField.getText();
+	}
+	
+	public String getDescription() {
+		return _descriptionField.getText();
+	}
+
+	public String getShelfLife() {
+		return _shelfLifeField.getText();
+	}
+	
+	public SizeUnits getSizeUnit() {
+		return (SizeUnits)_sizeBox.getSelectedItem();
+	}
+	
+	public String getSizeValue() {
+		return _sizeField.getText();
+	}
+
+	public String getSupply() {
+		return _supplyField.getText();
+	}
+	
+	public void setBarcode(String value) {
+		boolean disabledEvents = disableEvents();
+		try {
+			_barcodeField.setText(value);
+		}
+		finally {
+			if (disabledEvents) {
+				enableEvents();
+			}
+		}
+	}
+
+	public void setDescription(String value) {
+		boolean disabledEvents = disableEvents();
+		try {
+			_descriptionField.setText(value);
+		}
+		finally {
+			if (disabledEvents) {
+				enableEvents();
+			}
+		}
+	}
+
+	public void setShelfLife(String value) {
+		boolean disabledEvents = disableEvents();
+		try {
+			_shelfLifeField.setText(value);
+		}
+		finally {
+			if (disabledEvents) {
+				enableEvents();
+			}
+		}
+	}
+
+	public void setSizeUnit(SizeUnits value) {
+		boolean disabledEvents = disableEvents();
+		try {
+			_sizeBox.setSelectedItem(value);
+		}
+		finally {
+			if (disabledEvents) {
+				enableEvents();
+			}
+		}
+	}
+
+	public void setSizeValue(String value) {
+		boolean disabledEvents = disableEvents();
+		try {
+			_sizeField.setText(value);
+		}
+		finally {
+			if (disabledEvents) {
+				enableEvents();
+			}
+		}
+	}
+
+	public void setSupply(String value) {
+		boolean disabledEvents = disableEvents();
+		try {
+			_supplyField.setText(value);
+		}
+		finally {
+			if (disabledEvents) {
+				enableEvents();
+			}
+		}
+	}
+
+	private void createButtonsPanel() {
+		_buttonsPanel = new ButtonBankPanel(new String[]{"OK", "Cancel"},
+				new ButtonBankListener() {
+					public void buttonPressed(int index, String label) {
+						switch (index) {
+							case 0:
+								ok();
+								_dialog.dispose();
+								break;
+							case 1:
+								cancel();
+								_dialog.dispose();
+								break;
+							default:
+								assert false;
+								break;
+						}
+					}
+				}
+			);
+
+		_okButton = _buttonsPanel.getButtons()[0];
+		_dialog.getRootPane().setDefaultButton(_okButton);
+	}
+
 	private void createValuesPanel() {
 		KeyListener keyListener = new KeyListener() {
 			
@@ -124,47 +267,6 @@ public abstract class ProductView extends DialogView {
 		
 		_shelfLifeMonthsLabel = new JLabel("months");
 	}
-	
-	private void createButtonsPanel() {
-		_buttonsPanel = new ButtonBankPanel(new String[]{"OK", "Cancel"},
-				new ButtonBankListener() {
-					public void buttonPressed(int index, String label) {
-						switch (index) {
-							case 0:
-								ok();
-								_dialog.dispose();
-								break;
-							case 1:
-								cancel();
-								_dialog.dispose();
-								break;
-							default:
-								assert false;
-								break;
-						}
-					}
-				}
-			);
-
-		_okButton = _buttonsPanel.getButtons()[0];
-		_dialog.getRootPane().setDefaultButton(_okButton);
-	}
-	
-	protected abstract void valuesChanged();
-	
-	protected abstract void ok();
-	
-	protected abstract void cancel();
-
-	@Override
-	protected void layoutComponents() {
-		layoutValuesPanel();	
-
-		setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
-		add(_valuesPanel);
-		add(Box.createHorizontalStrut(5));
-		add(_buttonsPanel);
-	}
 
 	private void layoutValuesPanel() {
 		_valuesPanel.setLayout(new GridBagLayout());
@@ -213,130 +315,28 @@ public abstract class ProductView extends DialogView {
 		c.place(2, 4, 1, 1);
 		_valuesPanel.add(_supplyCountLabel, c);
 	}
+
+	protected abstract void cancel();
+
+	@Override
+	protected void createComponents() {
+		createValuesPanel();
+		createButtonsPanel();
+	}
+
+	@Override
+	protected void layoutComponents() {
+		layoutValuesPanel();	
+
+		setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
+		add(_valuesPanel);
+		add(Box.createHorizontalStrut(5));
+		add(_buttonsPanel);
+	}
+
+	protected abstract void ok();
 	
-	public String getBarcode() {
-		return _barcodeField.getText();
-	}
-
-	public void setBarcode(String value) {
-		boolean disabledEvents = disableEvents();
-		try {
-			_barcodeField.setText(value);
-		}
-		finally {
-			if (disabledEvents) {
-				enableEvents();
-			}
-		}
-	}
-	
-	public void enableBarcode(boolean value) {
-		_barcodeField.setEnabled(value);
-	}
-	
-	public String getDescription() {
-		return _descriptionField.getText();
-	}
-
-	public void setDescription(String value) {
-		boolean disabledEvents = disableEvents();
-		try {
-			_descriptionField.setText(value);
-		}
-		finally {
-			if (disabledEvents) {
-				enableEvents();
-			}
-		}
-	}
-	
-	public void enableDescription(boolean value) {
-		_descriptionField.setEnabled(value);
-	}
-
-	public String getSizeValue() {
-		return _sizeField.getText();
-	}
-
-	public void setSizeValue(String value) {
-		boolean disabledEvents = disableEvents();
-		try {
-			_sizeField.setText(value);
-		}
-		finally {
-			if (disabledEvents) {
-				enableEvents();
-			}
-		}
-	}
-
-	public void enableSizeValue(boolean value) {
-		_sizeField.setEnabled(value);
-	}
-
-	public SizeUnits getSizeUnit() {
-		return (SizeUnits)_sizeBox.getSelectedItem();
-	}
-
-	public void setSizeUnit(SizeUnits value) {
-		boolean disabledEvents = disableEvents();
-		try {
-			_sizeBox.setSelectedItem(value);
-		}
-		finally {
-			if (disabledEvents) {
-				enableEvents();
-			}
-		}
-	}
-
-	public void enableSizeUnit(boolean value) {
-		_sizeBox.setEnabled(value);
-	}
-
-	public String getSupply() {
-		return _supplyField.getText();
-	}
-
-	public void setSupply(String value) {
-		boolean disabledEvents = disableEvents();
-		try {
-			_supplyField.setText(value);
-		}
-		finally {
-			if (disabledEvents) {
-				enableEvents();
-			}
-		}
-	}
-
-	public void enableSupply(boolean value) {
-		_supplyField.setEnabled(value);
-	}
-
-	public String getShelfLife() {
-		return _shelfLifeField.getText();
-	}
-
-	public void setShelfLife(String value) {
-		boolean disabledEvents = disableEvents();
-		try {
-			_shelfLifeField.setText(value);
-		}
-		finally {
-			if (disabledEvents) {
-				enableEvents();
-			}
-		}
-	}
-
-	public void enableShelfLife(boolean value) {
-		_shelfLifeField.setEnabled(value);
-	}
-	
-	public void enableOK(boolean value) {
-		_okButton.setEnabled(value);
-	}
+	protected abstract void valuesChanged();
 
 }
 

@@ -21,11 +21,6 @@ public class AddStorageUnitView extends StorageUnitView implements IAddStorageUn
 	}
 
 	@Override
-	protected void valuesChanged() {
-		getController().valuesChanged();
-	}
-
-	@Override
 	protected void cancel() {
 		return;
 	}
@@ -33,6 +28,11 @@ public class AddStorageUnitView extends StorageUnitView implements IAddStorageUn
 	@Override
 	protected void ok() {
 		getController().addStorageUnit();
+	}
+
+	@Override
+	protected void valuesChanged() {
+		getController().valuesChanged();
 	}
 
 }

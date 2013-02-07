@@ -48,6 +48,61 @@ public class ProductQuantityTest {
 		assertTrue(count.getUnits() != null);
 	}
 
+	@Test (expected=IllegalArgumentException.class)
+	public void testInvalidAddCount(){
+		fluid.add(new ProductQuantity(1.0f, Unit.COUNT));
+	}
+
+	@Test (expected=IllegalArgumentException.class)
+	public void testInvalidAddToWeight(){
+		ProductQuantity weight = new ProductQuantity(2.0f, Unit.KILOGRAMS);
+		weight.add(new ProductQuantity(3.0f, Unit.FLUID_OUNCES));
+	}
+
+	@Test (expected=IllegalArgumentException.class)
+	public void testInvalidAddVolume(){
+		count.add(new ProductQuantity(1.0f, Unit.FLUID_OUNCES));
+	}
+	
+	@Test (expected=IllegalArgumentException.class)
+	public void testInvalidAddWeight(){
+		fluid.add(new ProductQuantity(1.0f, Unit.KILOGRAMS));
+	}
+	
+	@Test (expected=IllegalArgumentException.class)
+	public void testInvalidSubtractCount(){
+		fluid.subtract(new ProductQuantity(1.0f, Unit.COUNT));
+	}
+	
+	@Test (expected=IllegalArgumentException.class)
+	public void testInvalidSubtractToWeight(){
+		ProductQuantity weight = new ProductQuantity(2.0f, Unit.KILOGRAMS);
+		weight.subtract(new ProductQuantity(3.0f, Unit.FLUID_OUNCES));
+	}
+
+	@Test (expected=IllegalArgumentException.class)
+	public void testInvalidSubtractVolume(){
+		count.subtract(new ProductQuantity(1.0f, Unit.FLUID_OUNCES));
+	}
+	
+	/**
+	 * Test method for {@link model.ProductQuantity#isValidProductQuantity(float, model.Unit)}.
+	 */
+	@Test
+	public void testIsValidProductQuantity() {
+		assertTrue(ProductQuantity.isValidProductQuantity(3.2f, Unit.FLUID_OUNCES));
+		assertTrue(ProductQuantity.isValidProductQuantity(0f, Unit.FLUID_OUNCES));
+		assertFalse(ProductQuantity.isValidProductQuantity(-1.4f, Unit.FLUID_OUNCES));
+		assertTrue(ProductQuantity.isValidProductQuantity(3, Unit.COUNT));
+		assertFalse(ProductQuantity.isValidProductQuantity(3.1f, Unit.COUNT));
+	}
+	
+	@Test (expected=IllegalArgumentException.class)
+	public void testNegativeInvalidSubtract(){
+		ProductQuantity weight = new ProductQuantity(2.0f, Unit.KILOGRAMS);
+		weight.subtract(new ProductQuantity(3.0f, Unit.KILOGRAMS));
+	}
+	
 	/**
 	 * Test method for {@link model.ProductQuantity#ProductQuantity(float, model.Unit)}.
 	 */
@@ -61,17 +116,15 @@ public class ProductQuantityTest {
 		assertTrue(count.getUnits().equals(Unit.COUNT));
 		assertTrue(ProductQuantity.isValidProductQuantity(count.getQuantity(), count.getUnits()));
 	}
-
-	/**
-	 * Test method for {@link model.ProductQuantity#isValidProductQuantity(float, model.Unit)}.
-	 */
-	@Test
-	public void testIsValidProductQuantity() {
-		assertTrue(ProductQuantity.isValidProductQuantity(3.2f, Unit.FLUID_OUNCES));
-		assertTrue(ProductQuantity.isValidProductQuantity(0f, Unit.FLUID_OUNCES));
-		assertFalse(ProductQuantity.isValidProductQuantity(-1.4f, Unit.FLUID_OUNCES));
-		assertTrue(ProductQuantity.isValidProductQuantity(3, Unit.COUNT));
-		assertFalse(ProductQuantity.isValidProductQuantity(3.1f, Unit.COUNT));
+	
+	@Test (expected=IllegalArgumentException.class)
+	public void testSetInvalidQuantity(){
+		count.setQuantity(1.2f);
+	}
+	
+	@Test (expected=IllegalArgumentException.class)
+	public void testSetNegativeQuantity(){
+		count.setQuantity(-1f);
 	}
 
 	/**
@@ -91,14 +144,13 @@ public class ProductQuantityTest {
 		assertTrue(count.getQuantity() == 200);
 	}
 	
-	@Test (expected=IllegalArgumentException.class)
-	public void testSetNegativeQuantity(){
-		count.setQuantity(-1f);
-	}
-	
-	@Test (expected=IllegalArgumentException.class)
-	public void testSetInvalidQuantity(){
-		count.setQuantity(1.2f);
+	/**
+	 * Test method for {@link model.ProductQuantity#toString()}.
+	 */
+	@Test
+	public void testToString() {
+		assertTrue(fluid.toString().equals("3.2 Fluid_ounces"));
+		assertTrue(count.toString().equals("0 Count"));
 	}
 	
 	/**
@@ -110,7 +162,7 @@ public class ProductQuantityTest {
 		assertTrue(count.getQuantity() == 4f);
 		assertTrue(count.getUnits().equals(Unit.COUNT));
 	}
-
+	
 	/**
 	 * Test method for {@link model.ProductQuantity#add(model.ProductQuantity)}.
 	 */
@@ -152,27 +204,6 @@ public class ProductQuantityTest {
 		assertTrue(kilos.getUnits().equals(Unit.KILOGRAMS));
 	}
 	
-	@Test (expected=IllegalArgumentException.class)
-	public void testInvalidAddWeight(){
-		fluid.add(new ProductQuantity(1.0f, Unit.KILOGRAMS));
-	}
-	
-	@Test (expected=IllegalArgumentException.class)
-	public void testInvalidAddCount(){
-		fluid.add(new ProductQuantity(1.0f, Unit.COUNT));
-	}
-	
-	@Test (expected=IllegalArgumentException.class)
-	public void testInvalidAddVolume(){
-		count.add(new ProductQuantity(1.0f, Unit.FLUID_OUNCES));
-	}
-	
-	@Test (expected=IllegalArgumentException.class)
-	public void testInvalidAddToWeight(){
-		ProductQuantity weight = new ProductQuantity(2.0f, Unit.KILOGRAMS);
-		weight.add(new ProductQuantity(3.0f, Unit.FLUID_OUNCES));
-	}
-
 	/**
 	 * Test method for {@link model.ProductQuantity#subtract(model.ProductQuantity)}.
 	 */
@@ -196,28 +227,6 @@ public class ProductQuantityTest {
 		assertTrue(gallons.getUnits().equals(Unit.GALLONS));
 	}
 	
-	@Test (expected=IllegalArgumentException.class)
-	public void testInvalidSubtractCount(){
-		fluid.subtract(new ProductQuantity(1.0f, Unit.COUNT));
-	}
-	
-	@Test (expected=IllegalArgumentException.class)
-	public void testInvalidSubtractVolume(){
-		count.subtract(new ProductQuantity(1.0f, Unit.FLUID_OUNCES));
-	}
-	
-	@Test (expected=IllegalArgumentException.class)
-	public void testInvalidSubtractToWeight(){
-		ProductQuantity weight = new ProductQuantity(2.0f, Unit.KILOGRAMS);
-		weight.subtract(new ProductQuantity(3.0f, Unit.FLUID_OUNCES));
-	}
-	
-	@Test (expected=IllegalArgumentException.class)
-	public void testNegativeInvalidSubtract(){
-		ProductQuantity weight = new ProductQuantity(2.0f, Unit.KILOGRAMS);
-		weight.subtract(new ProductQuantity(3.0f, Unit.KILOGRAMS));
-	}
-	
 	/**
 	 * Test method for {@link model.ProductQuantity#subtract(model.ProductQuantity)}.
 	 */
@@ -236,15 +245,6 @@ public class ProductQuantityTest {
 		kilos.subtract(new ProductQuantity(20f, Unit.OUNCES));
 		assertTrue(kilos.getQuantity() == 2.106214f);
 		assertTrue(kilos.getUnits().equals(Unit.KILOGRAMS));
-	}
-	
-	/**
-	 * Test method for {@link model.ProductQuantity#toString()}.
-	 */
-	@Test
-	public void testToString() {
-		assertTrue(fluid.toString().equals("3.2 Fluid_ounces"));
-		assertTrue(count.toString().equals("0 Count"));
 	}
 
 }

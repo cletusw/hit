@@ -23,21 +23,6 @@ public class StorageUnit extends ProductContainer {
 		super(pcName);
 	}
 	
-	/** Determines whether or not the specified Product Group can be added to this Storage Unit.
-	 * @param pGroup the Product Group to test
-	 * @return true if able to add, false otherwise
-	 * 
-	 * @pre pGroup != null
-	 * @post true
-	 */
-	public boolean canAddProductGroup(ProductGroup pGroup) {
-		// From the Data Dictionary: A Storage Unit cannot have two top-level 
-		// Product Groups of the same name.
-		assert(pGroup != null);
-		
-		return (getProductGroup(pGroup.getName()) == null);
-	}
-	
 	/** Method that adds an Item to the collection.
 	 * 
 	 * @param i - the Item object to add to the collection
@@ -72,6 +57,21 @@ public class StorageUnit extends ProductContainer {
 		add(i.getProduct());
 		registerItem(i);
 		return true;
+	}
+	
+	/** Determines whether or not the specified Product Group can be added to this Storage Unit.
+	 * @param pGroup the Product Group to test
+	 * @return true if able to add, false otherwise
+	 * 
+	 * @pre pGroup != null
+	 * @post true
+	 */
+	public boolean canAddProductGroup(ProductGroup pGroup) {
+		// From the Data Dictionary: A Storage Unit cannot have two top-level 
+		// Product Groups of the same name.
+		assert(pGroup != null);
+		
+		return (getProductGroup(pGroup.getName()) == null);
 	}
 
 }

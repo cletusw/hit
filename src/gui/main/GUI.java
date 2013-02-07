@@ -23,10 +23,27 @@ import javax.swing.UIManager;
 @SuppressWarnings("serial")
 public final class GUI extends JFrame implements IMainView {
 	
+	public static void main(final String[] args) {
+     	try {
+    		UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+    	}
+    	catch (Exception e) {
+    		e.printStackTrace();
+    	}
+
+ 		SwingUtilities.invokeLater(
+			new Runnable() {
+            	public void run() {
+                	new GUI(args);
+            	}
+        	}
+		);
+    }
 	private IMainController _controller;
 	private JMenuBar _menuBar;
 	private SessionMenu _sessionMenu;
 	private ReportsMenu _reportsMenu;
+
 	private InventoryView _inventoryView;
 
 	private GUI(String[] args) {
@@ -50,6 +67,69 @@ public final class GUI extends JFrame implements IMainView {
 		display();
 	}
 
+	@Override
+	public void displayErrorMessage(String message) {
+		displayMessage(message, JOptionPane.ERROR_MESSAGE);
+	}
+
+	@Override
+	public void displayExpiredReportView() {
+		DialogBox dialog = new DialogBox(this, "Expired Items Report");
+		dialog.display(new ExpiredReportView(this, dialog), false);
+	}
+	
+	@Override
+	public void displayInformationMessage(String message) {
+		displayMessage(message, JOptionPane.INFORMATION_MESSAGE);
+	}
+
+    //
+    // IView overrides
+    //
+
+	@Override
+	public void displayNoticesReportView() {
+		DialogBox dialog = new DialogBox(this, "Notices Report");
+		dialog.display(new NoticesReportView(this, dialog), false);
+	}
+
+	@Override
+	public void displayProductReportView() {
+		DialogBox dialog = new DialogBox(this, "Product Statistics Report");
+		dialog.display(new ProductStatsReportView(this, dialog), false);
+	}
+
+	@Override
+	public void displayRemovedReportView() {
+		DialogBox dialog = new DialogBox(this, "Removed Items Report");
+		dialog.display(new RemovedReportView(this, dialog), false);
+		
+	}
+
+	@Override
+	public void displaySupplyReportView() {
+		DialogBox dialog = new DialogBox(this, "N-Month Supply Report");
+		dialog.display(new SupplyReportView(this, dialog), false);
+	}
+
+    //
+    // IMainView overrides
+    //
+
+	@Override
+	public void displayWarningMessage(String message) {
+		displayMessage(message, JOptionPane.WARNING_MESSAGE);
+	}
+
+	public IMainController getController() {
+		return _controller;
+	}
+
+	private void createInventoryView() {
+		_inventoryView = new InventoryView(this);
+		setContentPane(_inventoryView);
+	}
+
 	private void createMenus() {
 		_sessionMenu = new SessionMenu(this);
 		_sessionMenu.setFont(View.createFont(_sessionMenu.getFont(), View.MenuFontSize));
@@ -66,40 +146,16 @@ public final class GUI extends JFrame implements IMainView {
 		setJMenuBar(_menuBar);
 	}
 
-	private void createInventoryView() {
-		_inventoryView = new InventoryView(this);
-		setContentPane(_inventoryView);
-	}
-
 	private void display() {
         pack();
         setVisible(true);
 	}
 	
-	public IMainController getController() {
-		return _controller;
-	}
-
-    //
-    // IView overrides
-    //
-
-	@Override
-	public void displayInformationMessage(String message) {
-		displayMessage(message, JOptionPane.INFORMATION_MESSAGE);
-	}
-
-	@Override
-	public void displayWarningMessage(String message) {
-		displayMessage(message, JOptionPane.WARNING_MESSAGE);
-	}
-
-	@Override
-	public void displayErrorMessage(String message) {
-		displayMessage(message, JOptionPane.ERROR_MESSAGE);
-	}
-
-	private void displayMessage(final String message, final int messageType) {
+	//
+	// Main
+	//
+	
+    private void displayMessage(final String message, final int messageType) {
 
 		// NOTE: Calling JOptionPane.showMessageDialog from an InputVerifier 
 		// does not work (Swing's keyboard focus handling goes bonkers), so 
@@ -114,62 +170,6 @@ public final class GUI extends JFrame implements IMainView {
 			}
 		});
 	}
-
-    //
-    // IMainView overrides
-    //
-
-	@Override
-	public void displayExpiredReportView() {
-		DialogBox dialog = new DialogBox(this, "Expired Items Report");
-		dialog.display(new ExpiredReportView(this, dialog), false);
-	}
-
-	@Override
-	public void displaySupplyReportView() {
-		DialogBox dialog = new DialogBox(this, "N-Month Supply Report");
-		dialog.display(new SupplyReportView(this, dialog), false);
-	}
-
-	@Override
-	public void displayProductReportView() {
-		DialogBox dialog = new DialogBox(this, "Product Statistics Report");
-		dialog.display(new ProductStatsReportView(this, dialog), false);
-	}
-
-	@Override
-	public void displayNoticesReportView() {
-		DialogBox dialog = new DialogBox(this, "Notices Report");
-		dialog.display(new NoticesReportView(this, dialog), false);
-	}
-
-	@Override
-	public void displayRemovedReportView() {
-		DialogBox dialog = new DialogBox(this, "Removed Items Report");
-		dialog.display(new RemovedReportView(this, dialog), false);
-		
-	}
-	
-	//
-	// Main
-	//
-	
-    public static void main(final String[] args) {
-     	try {
-    		UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-    	}
-    	catch (Exception e) {
-    		e.printStackTrace();
-    	}
-
- 		SwingUtilities.invokeLater(
-			new Runnable() {
-            	public void run() {
-                	new GUI(args);
-            	}
-        	}
-		);
-    }
 
 }
 

@@ -55,14 +55,171 @@ public class RemovedReportView extends DialogView implements IRemovedReportView 
 	}
 
 	@Override
+	public void enableFormat(boolean value) {
+		_formatBox.setEnabled(value);
+	}
+
+	@Override
+	public void enableOK(boolean value) {
+		_okButton.setEnabled(value);
+	}
+
+	@Override
+	public void enableSinceDate(boolean value) {
+		boolean disabledEvents = disableEvents();
+		try {
+			_sinceDateButton.setEnabled(value);
+		} finally {
+			if (disabledEvents) {
+				enableEvents();
+			}
+		}
+	}
+
+	@Override
+	public void enableSinceDateValue(boolean value) {
+		_sinceDateSpinner.setEnabled(value);
+	}
+
+	@Override
+	public void enableSinceLast(boolean value) {
+		boolean disabledEvents = disableEvents();
+		try {
+			_sinceLastButton.setEnabled(value);
+		} finally {
+			if (disabledEvents) {
+				enableEvents();
+			}
+		}
+	}
+
+	@Override
 	public IRemovedReportController getController() {
 		return (IRemovedReportController) super.getController();
 	}
 
 	@Override
-	protected void createComponents() {
-		createValuesPanel();
-		createButtonsPanel();
+	public FileFormat getFormat() {
+		return (FileFormat) _formatBox.getSelectedItem();
+	}
+
+	@Override
+	public boolean getSinceDate() {
+		return _sinceDateButton.isSelected();
+	}
+
+	@Override
+	public Date getSinceDateValue() {
+
+		// return (Date) _sinceDateSpinnerModel.getValue();
+	
+		String sinceDateText = _sinceDateSpinnerEditor.getTextField().getText();
+		if (sinceDateText == null) {
+			return null;
+		}
+		try {
+			return DateUtils.parseDate(sinceDateText);
+		}
+		catch (ParseException e) {
+			return null;
+		}	
+	}
+
+	@Override
+	public boolean getSinceLast() {
+		return _sinceLastButton.isSelected();
+	}
+
+	@Override
+	public void setFormat(FileFormat value) {
+		boolean disabledEvents = disableEvents();
+		try {
+			_formatBox.setSelectedItem(value);
+		} finally {
+			if (disabledEvents) {
+				enableEvents();
+			}
+		}
+	}
+
+	@Override
+	public void setSinceDate(boolean value) {
+		boolean disabledEvents = disableEvents();
+		try {
+			_sinceDateButton.setSelected(value);
+		} finally {
+			if (disabledEvents) {
+				enableEvents();
+			}
+		}
+	}
+
+	@Override
+	public void setSinceDateValue(Date value) {
+		boolean disabledEvents = disableEvents();
+		try {
+			_sinceDateSpinnerModel.setValue(value);
+		} finally {
+			if (disabledEvents) {
+				enableEvents();
+			}
+		}
+	}
+
+	@Override
+	public void setSinceLast(boolean value) {
+		boolean disabledEvents = disableEvents();
+		try {
+			_sinceLastButton.setSelected(value);
+		} finally {
+			if (disabledEvents) {
+				enableEvents();
+			}
+		}
+	}
+
+	@Override
+	public void setSinceLastValue(Date value) {
+		boolean disabledEvents = disableEvents();
+		try {
+			String text = "Since the last time I ran this report";
+			if (value != null) {
+				text += "  [" + DateUtils.formatDateTime(value) + "]";
+			}
+			_sinceLastButton.setText(text);
+		} finally {
+			if (disabledEvents) {
+				enableEvents();
+			}
+		}
+	}
+
+	private void cancel() {
+		return;
+	}
+
+	private void createButtonsPanel() {
+		_buttonsPanel = new ButtonBankPanel(new String[] { "OK", "Cancel" },
+				new ButtonBankListener() {
+					public void buttonPressed(int index, String label) {
+						switch (index) {
+						case 0:
+							ok();
+							_dialog.dispose();
+							break;
+						case 1:
+							cancel();
+							_dialog.dispose();
+							break;
+						default:
+							assert false;
+							break;
+						}
+					}
+				});
+
+		_okButton = _buttonsPanel.getButtons()[0];
+		_dialog.getRootPane().setDefaultButton(_okButton);
 	}
 
 	private void createValuesPanel() {
@@ -159,42 +316,6 @@ public class RemovedReportView extends DialogView implements IRemovedReportView 
 		_buttonGroup.add(_sinceDateButton);
 	}
 
-	private void createButtonsPanel() {
-		_buttonsPanel = new ButtonBankPanel(new String[] { "OK", "Cancel" },
-				new ButtonBankListener() {
-					public void buttonPressed(int index, String label) {
-						switch (index) {
-						case 0:
-							ok();
-							_dialog.dispose();
-							break;
-						case 1:
-							cancel();
-							_dialog.dispose();
-							break;
-						default:
-							assert false;
-							break;
-						}
-					}
-				});
-
-		_okButton = _buttonsPanel.getButtons()[0];
-		_dialog.getRootPane().setDefaultButton(_okButton);
-	}
-
-	@Override
-	protected void layoutComponents() {
-		layoutValuesPanel();
-
-		setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
-		add(Box.createVerticalStrut(15));
-		add(_valuesPanel);
-		add(Box.createVerticalStrut(15));
-		add(_buttonsPanel);
-		add(Box.createVerticalStrut(15));
-	}
-
 	private void layoutValuesPanel() {
 
 		final int MARGIN_SPACING = 20;
@@ -235,151 +356,30 @@ public class RemovedReportView extends DialogView implements IRemovedReportView 
 		_valuesPanel.add(sinceDatePanel);
 	}
 
-	@Override
-	public FileFormat getFormat() {
-		return (FileFormat) _formatBox.getSelectedItem();
-	}
-
-	@Override
-	public void setFormat(FileFormat value) {
-		boolean disabledEvents = disableEvents();
-		try {
-			_formatBox.setSelectedItem(value);
-		} finally {
-			if (disabledEvents) {
-				enableEvents();
-			}
-		}
-	}
-
-	@Override
-	public void enableFormat(boolean value) {
-		_formatBox.setEnabled(value);
-	}
-
-	@Override
-	public boolean getSinceLast() {
-		return _sinceLastButton.isSelected();
-	}
-
-	@Override
-	public void setSinceLast(boolean value) {
-		boolean disabledEvents = disableEvents();
-		try {
-			_sinceLastButton.setSelected(value);
-		} finally {
-			if (disabledEvents) {
-				enableEvents();
-			}
-		}
-	}
-
-	@Override
-	public void enableSinceLast(boolean value) {
-		boolean disabledEvents = disableEvents();
-		try {
-			_sinceLastButton.setEnabled(value);
-		} finally {
-			if (disabledEvents) {
-				enableEvents();
-			}
-		}
-	}
-
-	@Override
-	public void setSinceLastValue(Date value) {
-		boolean disabledEvents = disableEvents();
-		try {
-			String text = "Since the last time I ran this report";
-			if (value != null) {
-				text += "  [" + DateUtils.formatDateTime(value) + "]";
-			}
-			_sinceLastButton.setText(text);
-		} finally {
-			if (disabledEvents) {
-				enableEvents();
-			}
-		}
-	}
-
-	@Override
-	public boolean getSinceDate() {
-		return _sinceDateButton.isSelected();
-	}
-
-	@Override
-	public void setSinceDate(boolean value) {
-		boolean disabledEvents = disableEvents();
-		try {
-			_sinceDateButton.setSelected(value);
-		} finally {
-			if (disabledEvents) {
-				enableEvents();
-			}
-		}
-	}
-
-	@Override
-	public void enableSinceDate(boolean value) {
-		boolean disabledEvents = disableEvents();
-		try {
-			_sinceDateButton.setEnabled(value);
-		} finally {
-			if (disabledEvents) {
-				enableEvents();
-			}
-		}
-	}
-
-	@Override
-	public Date getSinceDateValue() {
-
-		// return (Date) _sinceDateSpinnerModel.getValue();
-	
-		String sinceDateText = _sinceDateSpinnerEditor.getTextField().getText();
-		if (sinceDateText == null) {
-			return null;
-		}
-		try {
-			return DateUtils.parseDate(sinceDateText);
-		}
-		catch (ParseException e) {
-			return null;
-		}	
-	}
-
-	@Override
-	public void setSinceDateValue(Date value) {
-		boolean disabledEvents = disableEvents();
-		try {
-			_sinceDateSpinnerModel.setValue(value);
-		} finally {
-			if (disabledEvents) {
-				enableEvents();
-			}
-		}
-	}
-
-	@Override
-	public void enableSinceDateValue(boolean value) {
-		_sinceDateSpinner.setEnabled(value);
-	}
-
-	@Override
-	public void enableOK(boolean value) {
-		_okButton.setEnabled(value);
+	private void ok() {
+		getController().display();
 	}
 
 	private void valuesChanged() {
 		getController().valuesChanged();
 	}
 
-	private void cancel() {
-		return;
+	@Override
+	protected void createComponents() {
+		createValuesPanel();
+		createButtonsPanel();
 	}
 
-	private void ok() {
-		getController().display();
+	@Override
+	protected void layoutComponents() {
+		layoutValuesPanel();
+
+		setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
+		add(Box.createVerticalStrut(15));
+		add(_valuesPanel);
+		add(Box.createVerticalStrut(15));
+		add(_buttonsPanel);
+		add(Box.createVerticalStrut(15));
 	}
 
 }

@@ -22,6 +22,33 @@ public class ConcreteProductManager implements ProductManager, Serializable {
 		barcodesToProducts = new TreeMap<String, Product>();
 	}
 	
+	/**
+	 * Checks if the identified Product exists in the home inventory system.
+	 * @param product The Product to check
+	 * @return true if the product exists in the home inventory system, 
+	 * 		false otherwise.
+	 * 
+	 * @pre product != null
+	 */
+	@Override
+	public boolean contains(Product product) {
+		assert(product != null);
+		
+		return products.contains(product);
+	}
+	
+	/** Looks up a product by the given barcode
+	 * @param barcode The barcode of the product to return
+	 * @return The product with the given barcode
+	 * 
+	 * @pre barcode != null
+	 */
+	public Product getByBarcode(String barcode) {
+		assert(barcode != null);
+		
+		return barcodesToProducts.get(barcode);
+	}
+	
 	/** Adds the given product to this Manager's indices
 	 * @param product Product to manage
 	 * 
@@ -50,33 +77,6 @@ public class ConcreteProductManager implements ProductManager, Serializable {
 		
 		products.remove(product);
 		barcodesToProducts.remove(product.getBarcode());
-	}
-	
-	/** Looks up a product by the given barcode
-	 * @param barcode The barcode of the product to return
-	 * @return The product with the given barcode
-	 * 
-	 * @pre barcode != null
-	 */
-	public Product getByBarcode(String barcode) {
-		assert(barcode != null);
-		
-		return barcodesToProducts.get(barcode);
-	}
-	
-	/**
-	 * Checks if the identified Product exists in the home inventory system.
-	 * @param product The Product to check
-	 * @return true if the product exists in the home inventory system, 
-	 * 		false otherwise.
-	 * 
-	 * @pre product != null
-	 */
-	@Override
-	public boolean contains(Product product) {
-		assert(product != null);
-		
-		return products.contains(product);
 	}
 	
 }

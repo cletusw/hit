@@ -36,6 +36,16 @@ public class SerializationManager implements PersistentStorageManager {
 		return tracker;
 	}
 	
+	private static String assignTargetFilename(String filename) {
+		String target = null;
+		if(filename == null || filename.equals(""))
+			target = defaultSerializedFileName;
+		else
+			target = filename;
+		
+		return target;
+	}
+	
 	/** Deserializes the Home Inventory Tracker from a file.
 	 * @throws 	IOException if an error occurred reading from the serialized file.
 	 * @pre true
@@ -75,15 +85,5 @@ public class SerializationManager implements PersistentStorageManager {
 		objectWriter.writeObject(hit);
 		objectWriter.flush();
 		objectWriter.close();
-	}
-	
-	private static String assignTargetFilename(String filename) {
-		String target = null;
-		if(filename == null || filename.equals(""))
-			target = defaultSerializedFileName;
-		else
-			target = filename;
-		
-		return target;
 	}
 }

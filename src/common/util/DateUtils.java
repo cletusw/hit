@@ -12,17 +12,10 @@ import java.util.GregorianCalendar;
 public final class DateUtils {
 	
 	/**
-	 * Private Constructor.
-	 */
-	private DateUtils() {
-		assert false;
-	}
-
-	/**
 	 * Regular format string for dates.
 	 */
 	public static final String DATE_FORMAT = "MM/dd/yyyy";
-	
+
 	/**
 	 * Short format string for dates.
 	 */
@@ -34,13 +27,47 @@ public final class DateUtils {
 	public static final String DATE_TIME_FORMAT = "MM/dd/yyyy hh:mm a";
 	
 	private static SimpleDateFormat dateFormatter;
+	
 	private static SimpleDateFormat shortDateFormatter;
 	private static SimpleDateFormat dateTimeFormatter;
-	
 	static {
 		dateFormatter = new SimpleDateFormat(DATE_FORMAT);
 		shortDateFormatter = new SimpleDateFormat(SHORT_DATE_FORMAT);
 		dateTimeFormatter = new SimpleDateFormat(DATE_TIME_FORMAT);
+	}
+	
+	/**
+	 * Returns a Date object for the current date with the time portion
+	 * set to 12AM.
+	 * 
+	 * {@pre None}
+	 * 
+	 * {@post Returns a Date object for the current date with the time portion
+	 * set to 12AM.}
+	 */
+	public static Date currentDate() {
+		return removeTimeFromDate(new Date());
+	}
+	
+	/**
+	 * Returns the earliest date supported by the product.
+	 * 
+	 * {@pre None}
+	 * 
+	 * {@post Returns the earliest date supported by the product.}
+	 */
+	public static Date earliestDate() {
+		GregorianCalendar calendar = new GregorianCalendar();
+		
+		calendar.set(Calendar.MONTH, Calendar.JANUARY);
+		calendar.set(Calendar.DAY_OF_MONTH, 1);
+		calendar.set(Calendar.YEAR, 2000);		
+		calendar.set(Calendar.HOUR_OF_DAY, 0);
+		calendar.set(Calendar.MINUTE, 0);
+		calendar.set(Calendar.SECOND, 0);
+		calendar.set(Calendar.MILLISECOND, 0);
+		
+		return calendar.getTime();
 	}
 	
 	/**
@@ -56,6 +83,19 @@ public final class DateUtils {
 		return dateFormatter.format(d);
 	}
 	
+	/**
+	 * Formats a Date object as a string of the form "MM/dd/yyyy hh:mm a"
+	 * 
+	 * @param d Date object to be formatted.
+	 * 
+	 * {@pre d != null}
+	 * 
+	 * {@post Returns a string of the form "MM/dd/yyyy hh:mm a".}
+	 */
+	public static String formatDateTime(Date d) {
+		return dateTimeFormatter.format(d);
+	}
+
 	/**
 	 * Formats a Date object as a string of the form "MM/dd/yy"
 	 * 
@@ -88,19 +128,6 @@ public final class DateUtils {
 		}
 		return result;
 	}
-
-	/**
-	 * Formats a Date object as a string of the form "MM/dd/yyyy hh:mm a"
-	 * 
-	 * @param d Date object to be formatted.
-	 * 
-	 * {@pre d != null}
-	 * 
-	 * {@post Returns a string of the form "MM/dd/yyyy hh:mm a".}
-	 */
-	public static String formatDateTime(Date d) {
-		return dateTimeFormatter.format(d);
-	}
 	
 	/**
 	 * Parses a string of the form "MM/dd/yyyy hh:mm a" and converts it to a Date object.
@@ -121,7 +148,7 @@ public final class DateUtils {
 		}
 		return result;
 	}
-	
+
 	/**
 	 * Normalizes the time portion of a Date object to midnight.
 	 * 
@@ -145,37 +172,10 @@ public final class DateUtils {
 	}
 
 	/**
-	 * Returns a Date object for the current date with the time portion
-	 * set to 12AM.
-	 * 
-	 * {@pre None}
-	 * 
-	 * {@post Returns a Date object for the current date with the time portion
-	 * set to 12AM.}
+	 * Private Constructor.
 	 */
-	public static Date currentDate() {
-		return removeTimeFromDate(new Date());
-	}
-
-	/**
-	 * Returns the earliest date supported by the product.
-	 * 
-	 * {@pre None}
-	 * 
-	 * {@post Returns the earliest date supported by the product.}
-	 */
-	public static Date earliestDate() {
-		GregorianCalendar calendar = new GregorianCalendar();
-		
-		calendar.set(Calendar.MONTH, Calendar.JANUARY);
-		calendar.set(Calendar.DAY_OF_MONTH, 1);
-		calendar.set(Calendar.YEAR, 2000);		
-		calendar.set(Calendar.HOUR_OF_DAY, 0);
-		calendar.set(Calendar.MINUTE, 0);
-		calendar.set(Calendar.SECOND, 0);
-		calendar.set(Calendar.MILLISECOND, 0);
-		
-		return calendar.getTime();
+	private DateUtils() {
+		assert false;
 	}
 
 }

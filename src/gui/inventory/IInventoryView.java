@@ -10,12 +10,76 @@ import gui.product.ProductData;
 public interface IInventoryView extends IView {
 
 	/**
-	 * Sets the contents of the product container tree.
+	 * Deletes the specified product container and its descendants
+	 * from the product container tree.
 	 * 
-	 * @param root Hierarchy of product containers to be displayed
+	 * @param container Product container to be deleted
 	 */
-	void setProductContainers(ProductContainerData root);
+	void deleteProductContainer(ProductContainerData container);
 
+	/**
+	 * Displays the add item batch view.
+	 */
+	void displayAddItemBatchView();
+
+	/**
+	 * Displays the add product group view.
+	 */
+	void displayAddProductGroupView();
+	
+	/**
+	 * Displays the add storage unit view.
+	 */
+	void displayAddStorageUnitView();
+	
+	/**
+	 * Displays the edit item view.
+	 */
+	void displayEditItemView();
+	
+	/**
+	 * Displays the edit product group view.
+	 */
+	void displayEditProductGroupView();
+
+	/**
+	 * Displays the edit product view.
+	 */
+	void displayEditProductView();
+	
+	/**
+	 * Displays the edit storage unit view.
+	 */
+	void displayEditStorageUnitView();
+
+	/**
+	 * Displays the remove item batch view.
+	 */
+	void displayRemoveItemBatchView();
+	
+	/**
+	 * Displays the transfer item batch view.
+	 */
+	void displayTransferItemBatchView();
+	
+	/**
+	 * Returns the currently selected item in the "Item" table,
+	 * or null if no item is selected.
+	 */
+	ItemData getSelectedItem();
+	
+	/**
+	 * Returns the currently selected product in the "Products" table,
+	 * or null if no product is selected.
+	 */
+	ProductData getSelectedProduct();
+	
+	/**
+	 * Returns the selected product container, or null if no product
+	 * container is selected.
+	 */
+	ProductContainerData getSelectedProductContainer();
+	
 	/**
 	 * Inserts a new product container into the product container tree.
 	 * 
@@ -26,28 +90,6 @@ public interface IInventoryView extends IView {
 	 */
 	void insertProductContainer(ProductContainerData parent, 
 								ProductContainerData newContainer, int index);
-
-	/**
-	 * Selects the specified product container in the product container tree.
-	 * 
-	 * @param container Product container to be selected.  Must be one of the
-	 * product containers currently in the product container tree.
-	 */
-	void selectProductContainer(ProductContainerData container);
-	
-	/**
-	 * Returns the selected product container, or null if no product
-	 * container is selected.
-	 */
-	ProductContainerData getSelectedProductContainer();
-	
-	/**
-	 * Deletes the specified product container and its descendants
-	 * from the product container tree.
-	 * 
-	 * @param container Product container to be deleted
-	 */
-	void deleteProductContainer(ProductContainerData container);
 	
 	/**
 	 * Renames a product container that is already in the product
@@ -61,40 +103,15 @@ public interface IInventoryView extends IView {
 	 */
 	void renameProductContainer(ProductContainerData renamedContainer, 
 								String newName, int newIndex);
-
-	/**
-	 * Sets the "UNIT" context field.
-	 * 
-	 * @param value New "UNIT" value
-	 */
-	void setContextUnit(String value);
 	
 	/**
-	 * Sets the "GROUP" context field.
-	 * 
-	 * @param value New "GROUP" value
+	 * Selects the specified item in the "Items" table, or
+	 * selects nothing if item is null.
+	 *  
+	 * @param item The item to be selected.  This must be one
+	 * of the items previously passed to setItems, or null.
 	 */
-	void setContextGroup(String value);
-
-	/**
-	 * Sets the "3-MONTH SUPPLY" context field.
-	 * 
-	 * @param value New "3-MONTH SUPPLY" value
-	 */
-	void setContextSupply(String value);
-	
-	/**
-	 * Sets the products displayed in the "Products" table.
-	 * 
-	 * @param products Array of products to display
-	 */
-	void setProducts(ProductData[] products);
-	
-	/**
-	 * Returns the currently selected product in the "Products" table,
-	 * or null if no product is selected.
-	 */
-	ProductData getSelectedProduct();
+	void selectItem(ItemData item);
 	
 	/**
 	 * Selects the specified product in the "Products" table, or selects
@@ -107,6 +124,35 @@ public interface IInventoryView extends IView {
 	void selectProduct(ProductData product);
 	
 	/**
+	 * Selects the specified product container in the product container tree.
+	 * 
+	 * @param container Product container to be selected.  Must be one of the
+	 * product containers currently in the product container tree.
+	 */
+	void selectProductContainer(ProductContainerData container);
+	
+	/**
+	 * Sets the "GROUP" context field.
+	 * 
+	 * @param value New "GROUP" value
+	 */
+	void setContextGroup(String value);
+	
+	/**
+	 * Sets the "3-MONTH SUPPLY" context field.
+	 * 
+	 * @param value New "3-MONTH SUPPLY" value
+	 */
+	void setContextSupply(String value);
+	
+	/**
+	 * Sets the "UNIT" context field.
+	 * 
+	 * @param value New "UNIT" value
+	 */
+	void setContextUnit(String value);
+	
+	/**
 	 * Sets the items displayed in the "Items" table.
 	 * 
 	 * @param items Array of items to display
@@ -114,64 +160,18 @@ public interface IInventoryView extends IView {
 	void setItems(ItemData[] items);
 	
 	/**
-	 * Returns the currently selected item in the "Item" table,
-	 * or null if no item is selected.
+	 * Sets the contents of the product container tree.
+	 * 
+	 * @param root Hierarchy of product containers to be displayed
 	 */
-	ItemData getSelectedItem();
+	void setProductContainers(ProductContainerData root);
 	
 	/**
-	 * Selects the specified item in the "Items" table, or
-	 * selects nothing if item is null.
-	 *  
-	 * @param item The item to be selected.  This must be one
-	 * of the items previously passed to setItems, or null.
+	 * Sets the products displayed in the "Products" table.
+	 * 
+	 * @param products Array of products to display
 	 */
-	void selectItem(ItemData item);
-	
-	/**
-	 * Displays the add storage unit view.
-	 */
-	void displayAddStorageUnitView();
-	
-	/**
-	 * Displays the add product group view.
-	 */
-	void displayAddProductGroupView();
-	
-	/**
-	 * Displays the add item batch view.
-	 */
-	void displayAddItemBatchView();
-	
-	/**
-	 * Displays the transfer item batch view.
-	 */
-	void displayTransferItemBatchView();
-	
-	/**
-	 * Displays the remove item batch view.
-	 */
-	void displayRemoveItemBatchView();
-	
-	/**
-	 * Displays the edit storage unit view.
-	 */
-	void displayEditStorageUnitView();
-	
-	/**
-	 * Displays the edit product group view.
-	 */
-	void displayEditProductGroupView();
-	
-	/**
-	 * Displays the edit product view.
-	 */
-	void displayEditProductView();
-	
-	/**
-	 * Displays the edit item view.
-	 */
-	void displayEditItemView();
+	void setProducts(ProductData[] products);
 	
 }
 

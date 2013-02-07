@@ -11,10 +11,19 @@ import javax.swing.JTable;
 public final class TableOperations {
 
 	/**
-	 * Private Constructor.
+	 * Selects a table row.
+	 * 
+	 * @param table table object in which selection is to be made
+	 * @param rowIndex index of row to be selected
+	 * 
+	 * {@pre table != null}
+	 * {@pre rowIndex >= 0 AND rowIndex < table.getRowCount()}
+	 * 
+	 * {@post The specified row in the table is selected.}
 	 */
-	private TableOperations() {
-		assert false;
+	public static void selectTableRow(final JTable table, final int rowIndex) {
+		table.setRowSelectionInterval(rowIndex, rowIndex);
+		table.setColumnSelectionInterval(0, table.getColumnCount() - 1);
 	}
 
 	/**
@@ -39,19 +48,10 @@ public final class TableOperations {
 	}
 	
 	/**
-	 * Selects a table row.
-	 * 
-	 * @param table table object in which selection is to be made
-	 * @param rowIndex index of row to be selected
-	 * 
-	 * {@pre table != null}
-	 * {@pre rowIndex >= 0 AND rowIndex < table.getRowCount()}
-	 * 
-	 * {@post The specified row in the table is selected.}
+	 * Private Constructor.
 	 */
-	public static void selectTableRow(final JTable table, final int rowIndex) {
-		table.setRowSelectionInterval(rowIndex, rowIndex);
-		table.setColumnSelectionInterval(0, table.getColumnCount() - 1);
+	private TableOperations() {
+		assert false;
 	}
 
 }

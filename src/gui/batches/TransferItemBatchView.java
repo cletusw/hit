@@ -26,13 +26,13 @@ public class TransferItemBatchView extends ItemBatchView implements ITransferIte
 	////////////////////////////
 
 	@Override
-	protected String getBarcodeLabel() {
-		return "Item Barcode:";
+	public ITransferItemBatchController getController() {
+		return (ITransferItemBatchController)super.getController();
 	}
 
 	@Override
-	public ITransferItemBatchController getController() {
-		return (ITransferItemBatchController)super.getController();
+	protected void barcodeChanged() {
+		getController().barcodeChanged();
 	}
 	
 	@Override
@@ -41,8 +41,8 @@ public class TransferItemBatchView extends ItemBatchView implements ITransferIte
 	}
 
 	@Override
-	protected void itemAction() {
-		getController().transferItem();
+	protected String getBarcodeLabel() {
+		return "Item Barcode:";
 	}
 
 	@Override
@@ -51,23 +51,8 @@ public class TransferItemBatchView extends ItemBatchView implements ITransferIte
 	}
 	
 	@Override
-	protected void barcodeChanged() {
-		getController().barcodeChanged();
-	}
-	
-	@Override
-	protected void useScannerChanged() {
-		getController().useScannerChanged();
-	}
-
-	@Override
-	protected void selectedProductChanged() {
-		getController().selectedProductChanged();
-	}
-
-	@Override
-	protected void selectedItemChanged() {
-		return;
+	protected void itemAction() {
+		getController().transferItem();
 	}
 	
 	@Override
@@ -76,8 +61,23 @@ public class TransferItemBatchView extends ItemBatchView implements ITransferIte
 	}
 
 	@Override
+	protected void selectedItemChanged() {
+		return;
+	}
+
+	@Override
+	protected void selectedProductChanged() {
+		getController().selectedProductChanged();
+	}
+	
+	@Override
 	protected void undo() {
 		getController().undo();
+	}
+
+	@Override
+	protected void useScannerChanged() {
+		getController().useScannerChanged();
 	}
 
 }

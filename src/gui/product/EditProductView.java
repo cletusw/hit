@@ -21,11 +21,6 @@ public class EditProductView extends ProductView implements IEditProductView {
 	}
 
 	@Override
-	protected void valuesChanged() {
-		getController().valuesChanged();
-	}
-
-	@Override
 	protected void cancel() {
 		return;
 	}
@@ -33,6 +28,11 @@ public class EditProductView extends ProductView implements IEditProductView {
 	@Override
 	protected void ok() {
 		getController().editProduct();
+	}
+
+	@Override
+	protected void valuesChanged() {
+		getController().valuesChanged();
 	}
 
 }

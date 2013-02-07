@@ -49,40 +49,19 @@ public class ProductContainerData extends Tagable {
 	}
 	
 	/**
-	 * Returns the current value of the Name property.
+	 * Appends a new child.
 	 * 
-	 * {@pre None}
+	 * @param child New child
 	 * 
-	 * {@post Returns the current value of the Name property.}
+	 * {@pre child != null}
+	 * 
+	 * {@post getChildCount() == old(getChildCount()) + 1}
+	 * {@post getChild(getChildCount() - 1) == child}
 	 */
-	public String getName() {
-		return _name;
+	public void addChild(ProductContainerData child) {
+		_children.add(child);
 	}
 
-	/**
-	 * Sets the Name property.
-	 * 
-	 * @param name New name value
-	 * 
-	 * {@pre name != null}
-	 * 
-	 * {@post getName() == name}
-	 */
-	public void setName(String name) {
-		this._name = name;
-	}
-	
-	/**
-	 * Returns the number of children.
-	 * 
-	 * {@pre None}
-	 * 
-	 * {@post Returns the number of children.}
-	 */
-	public int getChildCount() {
-		return _children.size();
-	}
-	
 	/**
 	 * Returns the child with the specified index.
 	 * 
@@ -97,17 +76,38 @@ public class ProductContainerData extends Tagable {
 	}
 	
 	/**
-	 * Appends a new child.
+	 * Returns the number of children.
 	 * 
-	 * @param child New child
+	 * {@pre None}
 	 * 
-	 * {@pre child != null}
-	 * 
-	 * {@post getChildCount() == old(getChildCount()) + 1}
-	 * {@post getChild(getChildCount() - 1) == child}
+	 * {@post Returns the number of children.}
 	 */
-	public void addChild(ProductContainerData child) {
-		_children.add(child);
+	public int getChildCount() {
+		return _children.size();
+	}
+	
+	/**
+	 * Returns the current value of the Name property.
+	 * 
+	 * {@pre None}
+	 * 
+	 * {@post Returns the current value of the Name property.}
+	 */
+	public String getName() {
+		return _name;
+	}
+	
+	/**
+	 * Sets the Name property.
+	 * 
+	 * @param name New name value
+	 * 
+	 * {@pre name != null}
+	 * 
+	 * {@post getName() == name}
+	 */
+	public void setName(String name) {
+		this._name = name;
 	}
 	
 	@Override
@@ -119,6 +119,22 @@ public class ProductContainerData extends Tagable {
 	// FOR INTERNAL USE ONLY - STUDENTS SHOULD NOT NEED TO CALL THESE METHODS
 	//
 
+	/**
+	 * Deletes the specified child.
+	 * 
+	 * @param child Child to be deleted.
+	 * 
+	 * {@pre child != null}
+	 * {@pre child is a valid child}
+	 * 
+	 * {@post getChildCount() == old(getChildCount()) - 1}
+	 * {@post All children at or following the deleted child have been moved
+	 *  up one position}
+	 */
+	protected void deleteChild(ProductContainerData child) {
+		_children.remove(child);
+	}
+	
 	/**
 	 * Inserts a new child at the specified index.
 	 * 
@@ -142,22 +158,6 @@ public class ProductContainerData extends Tagable {
 			// Child was already added
 			assert i == index;
 		}
-	}
-	
-	/**
-	 * Deletes the specified child.
-	 * 
-	 * @param child Child to be deleted.
-	 * 
-	 * {@pre child != null}
-	 * {@pre child is a valid child}
-	 * 
-	 * {@post getChildCount() == old(getChildCount()) - 1}
-	 * {@post All children at or following the deleted child have been moved
-	 *  up one position}
-	 */
-	protected void deleteChild(ProductContainerData child) {
-		_children.remove(child);
 	}
 	
 	/**

@@ -5,13 +5,7 @@ import java.util.Iterator;
 public class MockStorageUnitManager implements StorageUnitManager {
 
 	@Override
-	public boolean isValidStorageUnitName(String name) {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	@Override
-	public void remove(Product product) {
+	public void add(StorageUnit storageUnit) {
 		// TODO Auto-generated method stub
 		
 	}
@@ -23,7 +17,13 @@ public class MockStorageUnitManager implements StorageUnitManager {
 	}
 
 	@Override
-	public void add(StorageUnit storageUnit) {
+	public boolean isValidStorageUnitName(String name) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public void remove(Product product) {
 		// TODO Auto-generated method stub
 		
 	}

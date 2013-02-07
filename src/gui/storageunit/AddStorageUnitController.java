@@ -25,15 +25,19 @@ public class AddStorageUnitController extends Controller implements
 	//
 	
 	/**
-	 * Returns a reference to the view for this controller.
-	 * 
-	 * {@pre None}
-	 * 
-	 * {@post Returns a reference to the view for this controller.}
+	 * This method is called when the user clicks the "OK"
+	 * button in the add storage unit view.
 	 */
 	@Override
-	protected IAddStorageUnitView getView() {
-		return (IAddStorageUnitView)super.getView();
+	public void addStorageUnit() {
+	}
+
+	/**
+	 * This method is called when any of the fields in the
+	 * add storage unit view is changed by the user.
+	 */
+	@Override
+	public void valuesChanged() {
 	}
 
 	/**
@@ -50,6 +54,22 @@ public class AddStorageUnitController extends Controller implements
 	protected void enableComponents() {
 	}
 
+	//
+	// IAddStorageUnitController overrides
+	//
+
+	/**
+	 * Returns a reference to the view for this controller.
+	 * 
+	 * {@pre None}
+	 * 
+	 * {@post Returns a reference to the view for this controller.}
+	 */
+	@Override
+	protected IAddStorageUnitView getView() {
+		return (IAddStorageUnitView)super.getView();
+	}
+	
 	/**
 	 * Loads data into the controller's view.
 	 * 
@@ -59,26 +79,6 @@ public class AddStorageUnitController extends Controller implements
 	 */
 	@Override
 	protected void loadValues() {
-	}
-
-	//
-	// IAddStorageUnitController overrides
-	//
-
-	/**
-	 * This method is called when any of the fields in the
-	 * add storage unit view is changed by the user.
-	 */
-	@Override
-	public void valuesChanged() {
-	}
-	
-	/**
-	 * This method is called when the user clicks the "OK"
-	 * button in the add storage unit view.
-	 */
-	@Override
-	public void addStorageUnit() {
 	}
 
 }

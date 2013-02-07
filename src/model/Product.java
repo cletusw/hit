@@ -18,18 +18,89 @@ import java.util.TreeSet;
  */
 @SuppressWarnings("serial")
 public class Product implements Comparable<Object>, Serializable {
+	/**
+	 * Determines whether the given string is a valid barcode.
+	 * @param barcode the string to test
+	 * @return true if the barcode is valid, false otherwise.
+	 * 
+	 * @pre barcode != null
+	 * @pre !barcode.equals("")
+	 * @post true
+	 * 
+	 */
+	public static boolean isValidBarcode(String barcode) {
+		assert(barcode != null);
+		assert(!barcode.equals(""));
+		
+		try{
+			new NonNullString(barcode);
+			return true;
+		}catch(IllegalArgumentException ex){}
+		return false;
+	}
+	/**
+	 * Determines whether the given string is a valid description
+	 * @param desc the string to test
+	 * @return true if the string is valid, false otherwise.
+	 * 
+	 * @pre desc != null
+	 * @pre !desc.equals("")
+	 * @post true
+	 */
+	public static boolean isValidDescription(String desc) {
+		assert(desc != null);
+		assert(!desc.equals(""));
+		
+		try{
+			new NonNullString(desc);
+			return true;
+		}catch(IllegalArgumentException ex){}
+		return false;
+	}
+	/**
+	 * Determines whether the given integer is a valid shelf life.
+	 * @param sl the integer to test
+	 * @return true if the shelf life is valid, false otherwise.
+	 * 
+	 * @pre true
+	 * @post true
+	 * 
+	 */
+	public static boolean isValidShelfLife(int sl) {
+		// From the Data Dictionary: Must be non-negative
+		return sl >= 0;
+	}
+	/**
+	 * Determines whether given integer is a valid three-month supply.
+	 * @param tms the integer to check
+	 * @return true if the integer is a valid three-month supply, false otherwise.
+	 * 
+	 * @pre true
+	 * @post true
+	 * 
+	 */
+	public static boolean isValidThreeMonthSupply(int tms) {
+		// From the Data Dictionary: Must be non-negative
+		return tms >= 0;
+	}
 	// member variables
 	private NonNullString barcode;
 	private NonNullString description;
 	private Date creationDate;
 	private int shelfLife;
-	private int threeMonthSupply;
-	private Set<ProductContainer> productContainers;
-	private Set<Item> items;
-	private ProductQuantity size;
 	
 	
 	// Constructors
+	
+	private int threeMonthSupply;
+	
+	private Set<ProductContainer> productContainers;
+	
+	// Public static validator methods to be used before creating Product
+	
+	private Set<Item> items;
+
+	private ProductQuantity size;
 	
 	/**
 	 * Constructs a Product using the given barcode, description, shelfLife, creationDate, 
@@ -99,146 +170,7 @@ public class Product implements Comparable<Object>, Serializable {
 		this(barcode, description, new Date(), shelfLife, tms, pq, manager);
 	}
 	
-	// Public static validator methods to be used before creating Product
-	
-	/**
-	 * Determines whether given integer is a valid three-month supply.
-	 * @param tms the integer to check
-	 * @return true if the integer is a valid three-month supply, false otherwise.
-	 * 
-	 * @pre true
-	 * @post true
-	 * 
-	 */
-	public static boolean isValidThreeMonthSupply(int tms) {
-		// From the Data Dictionary: Must be non-negative
-		return tms >= 0;
-	}
-
-	/**
-	 * Determines whether the given string is a valid description
-	 * @param desc the string to test
-	 * @return true if the string is valid, false otherwise.
-	 * 
-	 * @pre desc != null
-	 * @pre !desc.equals("")
-	 * @post true
-	 */
-	public static boolean isValidDescription(String desc) {
-		assert(desc != null);
-		assert(!desc.equals(""));
-		
-		try{
-			new NonNullString(desc);
-			return true;
-		}catch(IllegalArgumentException ex){}
-		return false;
-	}
-	
-	/**
-	 * Determines whether the given integer is a valid shelf life.
-	 * @param sl the integer to test
-	 * @return true if the shelf life is valid, false otherwise.
-	 * 
-	 * @pre true
-	 * @post true
-	 * 
-	 */
-	public static boolean isValidShelfLife(int sl) {
-		// From the Data Dictionary: Must be non-negative
-		return sl >= 0;
-	}
-	
-	/**
-	 * Determines whether the given string is a valid barcode.
-	 * @param barcode the string to test
-	 * @return true if the barcode is valid, false otherwise.
-	 * 
-	 * @pre barcode != null
-	 * @pre !barcode.equals("")
-	 * @post true
-	 * 
-	 */
-	public static boolean isValidBarcode(String barcode) {
-		assert(barcode != null);
-		assert(!barcode.equals(""));
-		
-		try{
-			new NonNullString(barcode);
-			return true;
-		}catch(IllegalArgumentException ex){}
-		return false;
-	}
-	
 	// public getters
-	
-	/** Gets this Product's size
-	 * 
-	 * @return this Product's size
-	 * 
-	 * @pre true
-	 * @post true
-	 * 
-	 */
-	public ProductQuantity getSize() {
-		return size;
-	}
-	
-	/** Gets this Product's description
-	 * 
-	 * @return this Product's description
-	 * 
-	 * @pre true
-	 * @post true
-	 * 
-	 */
-	public String getDescription() {
-		return description.getValue();
-	}
-
-	/** Gets this Product's shelf life
-	 * 
-	 * @return this Product's shelf life
-	 * 
-	 * @pre true
-	 * @post true
-	 * 
-	 */
-	public int getShelfLife() {
-		return shelfLife;
-	}
-
-	/**
-	 * Gets this Product's three-month supply.
-	 * @return this Product's three-month supply.
-	 * 
-	 * @pre true
-	 * @post true
-	 * 
-	 */
-	public int getThreeMonthSupply() {
-		return threeMonthSupply;
-	}
-	
-	/** 
-	 * Gets this Product's barcode
-	 * @return this Product's barcode
-	 */
-	public String getBarcode() {
-		return barcode.getValue();
-	}
-
-	/** 
-	 * Gets this Product's creation date
-	 * @return this Product's creation date
-	 * 
-	 * @pre true
-	 * @post true
-	 * 
-	 */
-	public Date getCreationDate() {
-		return creationDate;
-	}
 	
 	/**
 	 * Add a ProductContainer to this Product's set of containers.
@@ -269,7 +201,7 @@ public class Product implements Comparable<Object>, Serializable {
 		
 		items.add(item);
 	}
-	
+
 	/**
 	 * Determines if this Product can be removed from the system.
 	 * 
@@ -282,25 +214,7 @@ public class Product implements Comparable<Object>, Serializable {
 	public boolean canRemove() {
 		return items.isEmpty();
 	}
-	
-	/**
-	 * Compare 2 Products to see if their barcodes are equal. Uses String.equals() on 
-	 * the product barcodes.
-	 * 
-	 * @param p Product to compare
-	 * @return true if this.barcode.equals(p.barcode), false otherwise
-	 * 
-	 * @pre p != null
-	 * @post true
-	 * 
-	 */
-	public boolean equals(Product p){
-		assert(p != null);
-		
-		return p.barcode.getValue().equals(this.barcode.getValue());
-	}
-	
-	
+
 	@Override
 	/**
 	 * Compares this Product to another Object.
@@ -325,9 +239,99 @@ public class Product implements Comparable<Object>, Serializable {
 		
 		return barcode.value.compareToIgnoreCase(otherBarcode.value);
 	}
+	
+	/**
+	 * Compare 2 Products to see if their barcodes are equal. Uses String.equals() on 
+	 * the product barcodes.
+	 * 
+	 * @param p Product to compare
+	 * @return true if this.barcode.equals(p.barcode), false otherwise
+	 * 
+	 * @pre p != null
+	 * @post true
+	 * 
+	 */
+	public boolean equals(Product p){
+		assert(p != null);
+		
+		return p.barcode.getValue().equals(this.barcode.getValue());
+	}
+
+	/** 
+	 * Gets this Product's barcode
+	 * @return this Product's barcode
+	 */
+	public String getBarcode() {
+		return barcode.getValue();
+	}
+	
+	/** 
+	 * Gets this Product's creation date
+	 * @return this Product's creation date
+	 * 
+	 * @pre true
+	 * @post true
+	 * 
+	 */
+	public Date getCreationDate() {
+		return creationDate;
+	}
+	
+	/** Gets this Product's description
+	 * 
+	 * @return this Product's description
+	 * 
+	 * @pre true
+	 * @post true
+	 * 
+	 */
+	public String getDescription() {
+		return description.getValue();
+	}
+	
+	/** Gets this Product's shelf life
+	 * 
+	 * @return this Product's shelf life
+	 * 
+	 * @pre true
+	 * @post true
+	 * 
+	 */
+	public int getShelfLife() {
+		return shelfLife;
+	}
+	
+	/** Gets this Product's size
+	 * 
+	 * @return this Product's size
+	 * 
+	 * @pre true
+	 * @post true
+	 * 
+	 */
+	public ProductQuantity getSize() {
+		return size;
+	}
+	
+	
+	/**
+	 * Gets this Product's three-month supply.
+	 * @return this Product's three-month supply.
+	 * 
+	 * @pre true
+	 * @post true
+	 * 
+	 */
+	public int getThreeMonthSupply() {
+		return threeMonthSupply;
+	}
 
 	
 	// Private setters
+	
+	private void setBarcode(String barcode) {
+		this.barcode = new NonNullString(barcode);
+	}
 	
 	private void setCreationDate(Date date){
 		Date now = new Date();
@@ -345,15 +349,11 @@ public class Product implements Comparable<Object>, Serializable {
 		
 		this.shelfLife = shelfLife;
 	}
-	
+
 	private void setThreeMonthSupply(int threeMonthSupply) {
 		if(threeMonthSupply < 0)
 			throw new IllegalArgumentException("Three Month Supply must be non-negative");
 		
 		this.threeMonthSupply = threeMonthSupply;
-	}
-
-	private void setBarcode(String barcode) {
-		this.barcode = new NonNullString(barcode);
 	}
 }
