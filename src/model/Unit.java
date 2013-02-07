@@ -27,8 +27,7 @@ public enum Unit implements Serializable {
 	}
 
 	/**
-	 * Retrieves the conversion factor to convert a quantity of one type of unit
-	 * to another.
+	 * Retrieves the conversion factor to convert a quantity of one type of unit to another.
 	 * 
 	 * @param convertFrom
 	 *            - originalUnits
@@ -55,8 +54,7 @@ public enum Unit implements Serializable {
 				throw new NotImplementedException();
 			}
 		} else {
-			throw new IllegalArgumentException(
-					"Units must match UnitType to convert");
+			throw new IllegalArgumentException("Units must match UnitType to convert");
 		}
 	}
 
@@ -233,8 +231,7 @@ public enum Unit implements Serializable {
 		}
 	}
 
-	private static float getVolumeConversionFactor(Unit convertFrom,
-			Unit convertTo) {
+	private static float getVolumeConversionFactor(Unit convertFrom, Unit convertTo) {
 		switch (convertFrom) {
 		case GALLONS: // GALLONS ->
 			return convertFromGallons(convertTo);
@@ -256,8 +253,7 @@ public enum Unit implements Serializable {
 		}
 	}
 
-	private static float getWeightConversionFactor(Unit convertFrom,
-			Unit convertTo) {
+	private static float getWeightConversionFactor(Unit convertFrom, Unit convertTo) {
 		switch (convertFrom) {
 		case POUNDS: // POUNDS ->
 			return convertFromPounds(convertTo);

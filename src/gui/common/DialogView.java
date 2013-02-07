@@ -23,8 +23,7 @@ public class DialogView extends View {
 	 * 
 	 *            {@pre parent != null, dialog != null}
 	 * 
-	 *            {@post DialogView has been initialized with the specified
-	 *            parent and dialog.}
+	 *            {@post DialogView has been initialized with the specified parent and dialog.}
 	 */
 	public DialogView(GUI parent, DialogBox dialog) {
 		super(parent);

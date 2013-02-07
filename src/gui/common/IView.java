@@ -1,8 +1,8 @@
 package gui.common;
 
 /**
- * IView defines functionality that is supported by all views in the program.
- * Controllers invoke this functionality on their views.
+ * IView defines functionality that is supported by all views in the program. Controllers
+ * invoke this functionality on their views.
  */
 public interface IView {
 

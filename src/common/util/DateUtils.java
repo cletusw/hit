@@ -37,13 +37,11 @@ public final class DateUtils {
 	}
 
 	/**
-	 * Returns a Date object for the current date with the time portion set to
-	 * 12AM.
+	 * Returns a Date object for the current date with the time portion set to 12AM.
 	 * 
 	 * {@pre None}
 	 * 
-	 * {@post Returns a Date object for the current date with the time portion
-	 * set to 12AM.}
+	 * {@post Returns a Date object for the current date with the time portion set to 12AM.}
 	 */
 	public static Date currentDate() {
 		return removeTimeFromDate(new Date());
@@ -113,8 +111,7 @@ public final class DateUtils {
 	}
 
 	/**
-	 * Parses a date string of the form "MM/dd/yyyy" and converts it to a Date
-	 * object
+	 * Parses a date string of the form "MM/dd/yyyy" and converts it to a Date object
 	 * 
 	 * @param text
 	 *            String to be parsed.
@@ -136,8 +133,7 @@ public final class DateUtils {
 	}
 
 	/**
-	 * Parses a string of the form "MM/dd/yyyy hh:mm a" and converts it to a
-	 * Date object.
+	 * Parses a string of the form "MM/dd/yyyy hh:mm a" and converts it to a Date object.
 	 * 
 	 * @param text
 	 *            String to be parsed.
@@ -145,11 +141,9 @@ public final class DateUtils {
 	 * @throws ParseException
 	 *             if text is not of the form "MM/dd/yyyy hh:mm a"
 	 * 
-	 *             {@pre text contains a string of the form
-	 *             "MM/dd/yyyy hh:mm a"}
+	 *             {@pre text contains a string of the form "MM/dd/yyyy hh:mm a"}
 	 * 
-	 *             {@post Returns a Date object containing the parsed
-	 *             date/time.}
+	 *             {@post Returns a Date object containing the parsed date/time.}
 	 */
 	public static Date parseDateTime(String text) throws ParseException {
 		Date result = dateTimeFormatter.parse(text);

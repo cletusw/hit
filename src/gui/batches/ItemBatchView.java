@@ -64,8 +64,8 @@ public abstract class ItemBatchView extends DialogView {
 				case 0:
 					return DateUtils.formatDate(data.getEntryDate());
 				case 1:
-					return (data.getExpirationDate() != null ? DateUtils
-							.formatDate(data.getExpirationDate()) : "");
+					return (data.getExpirationDate() != null ? DateUtils.formatDate(data
+							.getExpirationDate()) : "");
 				case 2:
 					return data.getBarcode();
 				case 3:
@@ -187,8 +187,8 @@ public abstract class ItemBatchView extends DialogView {
 	public ItemData getSelectedItem() {
 		int selectedIndex = itemTable.getSelectedRow();
 		if (selectedIndex >= 0) {
-			ItemFormatter formatter = (ItemFormatter) itemTableModel
-					.getValueAt(selectedIndex, 0);
+			ItemFormatter formatter = (ItemFormatter) itemTableModel.getValueAt(selectedIndex,
+					0);
 			return (ItemData) formatter.getTag();
 		}
 		return null;
@@ -197,8 +197,8 @@ public abstract class ItemBatchView extends DialogView {
 	public ProductData getSelectedProduct() {
 		int selectedIndex = productTable.getSelectedRow();
 		if (selectedIndex >= 0) {
-			ProductFormatter formatter = (ProductFormatter) productTableModel
-					.getValueAt(selectedIndex, 0);
+			ProductFormatter formatter = (ProductFormatter) productTableModel.getValueAt(
+					selectedIndex, 0);
 			return (ProductData) formatter.getTag();
 		}
 		return null;
@@ -223,8 +223,7 @@ public abstract class ItemBatchView extends DialogView {
 		boolean disabledEvents = disableEvents();
 		try {
 			for (int i = 0; i < itemTableModel.getRowCount(); ++i) {
-				ItemFormatter formatter = (ItemFormatter) itemTableModel
-						.getValueAt(i, 0);
+				ItemFormatter formatter = (ItemFormatter) itemTableModel.getValueAt(i, 0);
 				ItemData id = (ItemData) formatter.getTag();
 				if (id == item) {
 					TableOperations.selectTableRow(itemTable, i);
@@ -242,8 +241,8 @@ public abstract class ItemBatchView extends DialogView {
 		boolean disabledEvents = disableEvents();
 		try {
 			for (int i = 0; i < productTableModel.getRowCount(); ++i) {
-				ProductFormatter formatter = (ProductFormatter) productTableModel
-						.getValueAt(i, 0);
+				ProductFormatter formatter = (ProductFormatter) productTableModel.getValueAt(
+						i, 0);
 				ProductData pd = (ProductData) formatter.getTag();
 				if (pd == product) {
 					TableOperations.selectTableRow(productTable, i);
@@ -460,19 +459,18 @@ public abstract class ItemBatchView extends DialogView {
 		itemTable = new JTable(itemTableModel, itemTableColumnModel);
 		itemTable.setFont(createFont(itemTable.getFont(), ContentFontSize));
 		itemTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-		itemTable.getSelectionModel().addListSelectionListener(
-				new ListSelectionListener() {
-					@Override
-					public void valueChanged(ListSelectionEvent evt) {
-						if (eventsAreDisabled()) {
-							return;
-						}
-						if (evt.getValueIsAdjusting()) {
-							return;
-						}
-						selectedItemChanged();
-					}
-				});
+		itemTable.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
+			@Override
+			public void valueChanged(ListSelectionEvent evt) {
+				if (eventsAreDisabled()) {
+					return;
+				}
+				if (evt.getValueIsAdjusting()) {
+					return;
+				}
+				selectedItemChanged();
+			}
+		});
 		itemTable.addMouseListener(mouseListener);
 
 		itemTableHeader = itemTable.getTableHeader();
@@ -483,8 +481,7 @@ public abstract class ItemBatchView extends DialogView {
 				ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED,
 				ScrollPaneConstants.HORIZONTAL_SCROLLBAR_AS_NEEDED);
 		itemTableScrollPane.setPreferredSize(new Dimension(600, 300));
-		itemTableScrollPane.setBorder(createTitledBorder("Items",
-				BorderFontSize));
+		itemTableScrollPane.setBorder(createTitledBorder("Items", BorderFontSize));
 	}
 
 	@SuppressWarnings("serial")
@@ -520,8 +517,7 @@ public abstract class ItemBatchView extends DialogView {
 		};
 
 		productTableColumnModel = new DefaultTableColumnModel();
-		TableColumn column = createTableColumn(0, "Description",
-				ContentFontSize);
+		TableColumn column = createTableColumn(0, "Description", ContentFontSize);
 		productTableColumnModel.addColumn(column);
 		column = createTableColumn(1, "Size", ContentFontSize);
 		productTableColumnModel.addColumn(column);
@@ -542,22 +538,20 @@ public abstract class ItemBatchView extends DialogView {
 		};
 
 		productTable = new JTable(productTableModel, productTableColumnModel);
-		productTable
-				.setFont(createFont(productTable.getFont(), ContentFontSize));
+		productTable.setFont(createFont(productTable.getFont(), ContentFontSize));
 		productTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-		productTable.getSelectionModel().addListSelectionListener(
-				new ListSelectionListener() {
-					@Override
-					public void valueChanged(ListSelectionEvent evt) {
-						if (eventsAreDisabled()) {
-							return;
-						}
-						if (evt.getValueIsAdjusting()) {
-							return;
-						}
-						selectedProductChanged();
-					}
-				});
+		productTable.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
+			@Override
+			public void valueChanged(ListSelectionEvent evt) {
+				if (eventsAreDisabled()) {
+					return;
+				}
+				if (evt.getValueIsAdjusting()) {
+					return;
+				}
+				selectedProductChanged();
+			}
+		});
 		productTable.addMouseListener(mouseListener);
 
 		productTableHeader = productTable.getTableHeader();
@@ -568,8 +562,7 @@ public abstract class ItemBatchView extends DialogView {
 				ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED,
 				ScrollPaneConstants.HORIZONTAL_SCROLLBAR_AS_NEEDED);
 		productTableScrollPane.setPreferredSize(new Dimension(600, 300));
-		productTableScrollPane.setBorder(createTitledBorder("Products",
-				BorderFontSize));
+		productTableScrollPane.setBorder(createTitledBorder("Products", BorderFontSize));
 	}
 
 	protected abstract void barcodeChanged();
@@ -648,8 +641,7 @@ public abstract class ItemBatchView extends DialogView {
 
 	protected void setMaximumSize(JComponent c) {
 		Dimension preferred = c.getPreferredSize();
-		Dimension maximum = new Dimension(Integer.MAX_VALUE,
-				(int) preferred.getHeight());
+		Dimension maximum = new Dimension(Integer.MAX_VALUE, (int) preferred.getHeight());
 		c.setMaximumSize(maximum);
 	}
 

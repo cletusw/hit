@@ -30,8 +30,7 @@ import javax.swing.event.DocumentListener;
 import common.util.DateUtils;
 
 @SuppressWarnings("serial")
-public class AddItemBatchView extends ItemBatchView implements
-		IAddItemBatchView {
+public class AddItemBatchView extends ItemBatchView implements IAddItemBatchView {
 
 	private JLabel entryDateLabel;
 	private SpinnerModel entryDateSpinnerModel;
@@ -40,8 +39,7 @@ public class AddItemBatchView extends ItemBatchView implements
 	private JLabel countLabel;
 	private JTextField countField;
 
-	public AddItemBatchView(GUI parent, DialogBox dialog,
-			ProductContainerData target) {
+	public AddItemBatchView(GUI parent, DialogBox dialog, ProductContainerData target) {
 		super(parent, dialog);
 
 		construct();
@@ -52,8 +50,7 @@ public class AddItemBatchView extends ItemBatchView implements
 	@Override
 	public void displayAddProductView() {
 		DialogBox dialogBox = new DialogBox(_parent, "Add Product");
-		AddProductView dialogView = new AddProductView(_parent, dialogBox,
-				getBarcode());
+		AddProductView dialogView = new AddProductView(_parent, dialogBox, getBarcode());
 		dialogBox.display(dialogView, false);
 	}
 
@@ -135,8 +132,8 @@ public class AddItemBatchView extends ItemBatchView implements
 
 		entryDateLabel = new JLabel("Entry Date:");
 
-		entryDateSpinnerModel = new SpinnerDateModel(initDate, earliestDate,
-				latestDate, Calendar.YEAR);
+		entryDateSpinnerModel = new SpinnerDateModel(initDate, earliestDate, latestDate,
+				Calendar.YEAR);
 		entryDateSpinner = new JSpinner(entryDateSpinnerModel);
 		entryDateSpinnerEditor = new JSpinner.DateEditor(entryDateSpinner,
 				DateUtils.DATE_FORMAT);

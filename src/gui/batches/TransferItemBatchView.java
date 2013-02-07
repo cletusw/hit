@@ -5,14 +5,12 @@ import gui.inventory.ProductContainerData;
 import gui.main.GUI;
 
 @SuppressWarnings("serial")
-public class TransferItemBatchView extends ItemBatchView implements
-		ITransferItemBatchView {
+public class TransferItemBatchView extends ItemBatchView implements ITransferItemBatchView {
 
 	@SuppressWarnings("unused")
 	private ProductContainerData _target;
 
-	public TransferItemBatchView(GUI parent, DialogBox dialog,
-			ProductContainerData target) {
+	public TransferItemBatchView(GUI parent, DialogBox dialog, ProductContainerData target) {
 		super(parent, dialog);
 
 		_target = target;

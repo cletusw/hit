@@ -10,8 +10,8 @@ import javax.swing.JButton;
 import javax.swing.JPanel;
 
 /**
- * ButtonBankPanel can be used to easily create a horizontal bank of buttons,
- * and to respond to the action events generated when the buttons are pressed.
+ * ButtonBankPanel can be used to easily create a horizontal bank of buttons, and to respond to
+ * the action events generated when the buttons are pressed.
  */
 @SuppressWarnings("serial")
 public class ButtonBankPanel extends JPanel {
@@ -32,22 +32,19 @@ public class ButtonBankPanel extends JPanel {
 	private JButton[] _buttons;
 
 	/**
-	 * Constructs a new ButtonBankPanel with the specified buttons and listener,
-	 * and lays the buttons out horizontally.
+	 * Constructs a new ButtonBankPanel with the specified buttons and listener, and lays the
+	 * buttons out horizontally.
 	 * 
 	 * @param labels
 	 *            list of labels for the buttons to be created
 	 * @param listener
-	 *            listener object to be notified when one of the buttons is
-	 *            pressed
+	 *            listener object to be notified when one of the buttons is pressed
 	 * 
-	 *            {@pre labels != null AND labels.length > 0} {@pre listener !=
-	 *            null}
+	 *            {@pre labels != null AND labels.length > 0} {@pre listener != null}
 	 * 
-	 *            {@post ButtonBankPanel with the specified buttons and listener
-	 *            has been initialized} {@post Buttons have been lain out
-	 *            horizontally} {@post labels array has been cloned to avoid
-	 *            sharing with the caller}
+	 *            {@post ButtonBankPanel with the specified buttons and listener has been
+	 *            initialized} {@post Buttons have been lain out horizontally} {@post labels
+	 *            array has been cloned to avoid sharing with the caller}
 	 */
 	public ButtonBankPanel(String[] labels, ButtonBankListener listener) {
 		_labels = labels.clone();

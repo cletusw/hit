@@ -28,8 +28,7 @@ public class ConcreteProductManager implements ProductManager, Serializable {
 	 * 
 	 * @param product
 	 *            The Product to check
-	 * @return true if the product exists in the home inventory system, false
-	 *         otherwise.
+	 * @return true if the product exists in the home inventory system, false otherwise.
 	 * 
 	 * @pre product != null
 	 */

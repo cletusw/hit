@@ -131,12 +131,10 @@ public final class GUI extends JFrame implements IMainView {
 
 	private void createMenus() {
 		_sessionMenu = new SessionMenu(this);
-		_sessionMenu.setFont(View.createFont(_sessionMenu.getFont(),
-				View.MenuFontSize));
+		_sessionMenu.setFont(View.createFont(_sessionMenu.getFont(), View.MenuFontSize));
 
 		_reportsMenu = new ReportsMenu(this);
-		_reportsMenu.setFont(View.createFont(_reportsMenu.getFont(),
-				View.MenuFontSize));
+		_reportsMenu.setFont(View.createFont(_reportsMenu.getFont(), View.MenuFontSize));
 
 		_menuBar = new JMenuBar();
 		_menuBar.setFont(View.createFont(_menuBar.getFont(), View.MenuFontSize));
@@ -168,8 +166,8 @@ public final class GUI extends JFrame implements IMainView {
 		SwingUtilities.invokeLater(new Runnable() {
 			@Override
 			public void run() {
-				JOptionPane.showMessageDialog(GUI.this, message,
-						"Inventory Tracker", messageType);
+				JOptionPane.showMessageDialog(GUI.this, message, "Inventory Tracker",
+						messageType);
 			}
 		});
 	}

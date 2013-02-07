@@ -28,8 +28,7 @@ public class DialogBox extends JDialog {
 	 * 
 	 *            {@pre parent != null, title != null}
 	 * 
-	 *            {@post DialogBox has been initialized with the specified
-	 *            parent and title.}
+	 *            {@post DialogBox has been initialized with the specified parent and title.}
 	 */
 	public DialogBox(GUI parent, String title) {
 		super(parent, title, true);
@@ -43,14 +42,12 @@ public class DialogBox extends JDialog {
 	 * @param content
 	 *            The view defining the content of the dialog box.
 	 * @param resizable
-	 *            Flag indicating whether or not the dialog box should be
-	 *            resizable.
+	 *            Flag indicating whether or not the dialog box should be resizable.
 	 * 
 	 *            {@pre content != null}
 	 * 
-	 *            {@post The specified DialogView has been displayed in a modal
-	 *            dialog box on the screen. The dialog box is resizable iff
-	 *            resizable is true.}
+	 *            {@post The specified DialogView has been displayed in a modal dialog box on
+	 *            the screen. The dialog box is resizable iff resizable is true.}
 	 */
 	public void display(DialogView content, boolean resizable) {
 		setResizable(resizable);

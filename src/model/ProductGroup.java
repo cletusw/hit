@@ -22,15 +22,14 @@ public class ProductGroup extends ProductContainer {
 	 * @param pcName
 	 *            - String name of the product group.
 	 * @param tmSupply
-	 *            - the three-month supply (ProductQuantity) to be specified for
-	 *            this object
+	 *            - the three-month supply (ProductQuantity) to be specified for this object
 	 * 
 	 * @pre true
 	 * @post true
 	 * 
 	 */
-	public ProductGroup(String pcName, ProductQuantity tmSupply,
-			Unit groupUnit, ProductContainer parent) {
+	public ProductGroup(String pcName, ProductQuantity tmSupply, Unit groupUnit,
+			ProductContainer parent) {
 		super(pcName);
 		container = parent;
 		threeMonthSupply = tmSupply;
@@ -38,8 +37,7 @@ public class ProductGroup extends ProductContainer {
 	}
 
 	/**
-	 * Determines whether the specified Product can be added to this Product
-	 * Group.
+	 * Determines whether the specified Product can be added to this Product Group.
 	 * 
 	 * @param productBarcode
 	 *            the Product barcode to check
@@ -78,8 +76,7 @@ public class ProductGroup extends ProductContainer {
 	}
 
 	/**
-	 * Method that calculates and returns the amount of a product group in this
-	 * container.
+	 * Method that calculates and returns the amount of a product group in this container.
 	 * 
 	 * @return ProductQuantity - the current supply of this container
 	 * 
@@ -135,8 +132,8 @@ public class ProductGroup extends ProductContainer {
 		// magnitude must be an integer (i.e., no fraction).
 		assert (threeMonthSupply != null);
 
-		return ProductQuantity.isValidProductQuantity(
-				threeMonthSupply.getQuantity(), threeMonthSupply.getUnits());
+		return ProductQuantity.isValidProductQuantity(threeMonthSupply.getQuantity(),
+				threeMonthSupply.getUnits());
 	}
 
 	/**

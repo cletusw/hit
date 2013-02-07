@@ -72,12 +72,9 @@ public class ProductQuantityTest {
 
 	@Test
 	public void testIsValidProductQuantity() {
-		assertTrue(ProductQuantity.isValidProductQuantity(3.2f,
-				Unit.FLUID_OUNCES));
-		assertTrue(ProductQuantity
-				.isValidProductQuantity(0f, Unit.FLUID_OUNCES));
-		assertFalse(ProductQuantity.isValidProductQuantity(-1.4f,
-				Unit.FLUID_OUNCES));
+		assertTrue(ProductQuantity.isValidProductQuantity(3.2f, Unit.FLUID_OUNCES));
+		assertTrue(ProductQuantity.isValidProductQuantity(0f, Unit.FLUID_OUNCES));
+		assertFalse(ProductQuantity.isValidProductQuantity(-1.4f, Unit.FLUID_OUNCES));
 		assertTrue(ProductQuantity.isValidProductQuantity(3, Unit.COUNT));
 		assertFalse(ProductQuantity.isValidProductQuantity(3.1f, Unit.COUNT));
 	}

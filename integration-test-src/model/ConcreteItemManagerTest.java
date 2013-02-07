@@ -21,15 +21,15 @@ public class ConcreteItemManagerTest {
 	@Before
 	public void setUp() throws Exception {
 		pm = new ConcreteProductManager();
-		pOne = new Product("barcode1", "Description1", new Date(), 5, 3,
-				new ProductQuantity(5, Unit.GALLONS), pm);
-		pTwo = new Product("barcode2", "Description2", new Date(), 1, 1,
-				new ProductQuantity(1, Unit.COUNT), pm);
+		pOne = new Product("barcode1", "Description1", new Date(), 5, 3, new ProductQuantity(
+				5, Unit.GALLONS), pm);
+		pTwo = new Product("barcode2", "Description2", new Date(), 1, 1, new ProductQuantity(
+				1, Unit.COUNT), pm);
 		pm.manage(pOne);
 		pm.manage(pTwo);
 
-		pg1 = new ProductGroup("Pg1", new ProductQuantity(3, Unit.COUNT),
-				Unit.COUNT, new StorageUnit("Su1"));
+		pg1 = new ProductGroup("Pg1", new ProductQuantity(3, Unit.COUNT), Unit.COUNT,
+				new StorageUnit("Su1"));
 
 		cm = new ConcreteItemManager();
 	}
@@ -77,8 +77,7 @@ public class ConcreteItemManagerTest {
 		int counter = 0;
 		while (removed.hasNext()) {
 			Item current = removed.next();
-			if (!current.equals(one) && !current.equals(two)
-					&& !current.equals(three))
+			if (!current.equals(one) && !current.equals(two) && !current.equals(three))
 				assertFalse(true);
 			else
 				counter++;

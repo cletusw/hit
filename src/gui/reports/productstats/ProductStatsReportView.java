@@ -24,8 +24,7 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 
 @SuppressWarnings("serial")
-public class ProductStatsReportView extends DialogView implements
-		IProductStatsReportView {
+public class ProductStatsReportView extends DialogView implements IProductStatsReportView {
 
 	private JPanel _valuesPanel;
 	private JLabel _formatLabel;

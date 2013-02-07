@@ -16,8 +16,7 @@ public class ConcreteProductManagerTest {
 	public void setUp() throws Exception {
 		manager = new ConcreteProductManager();
 		productQuantity = new ProductQuantity(1, Unit.COUNT);
-		product = new Product(barcode, "testDescription", 10, 10,
-				productQuantity, manager);
+		product = new Product(barcode, "testDescription", 10, 10, productQuantity, manager);
 	}
 
 	@Test

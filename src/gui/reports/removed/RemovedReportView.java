@@ -241,8 +241,7 @@ public class RemovedReportView extends DialogView implements IRemovedReportView 
 			}
 		});
 
-		_sinceLastButton = new JRadioButton(
-				"Since the last time I ran this report");
+		_sinceLastButton = new JRadioButton("Since the last time I ran this report");
 		_sinceLastButton.addChangeListener(new ChangeListener() {
 			@Override
 			public void stateChanged(ChangeEvent arg0) {
@@ -268,8 +267,8 @@ public class RemovedReportView extends DialogView implements IRemovedReportView 
 		Date latestDate = initDate;
 		Date earliestDate = DateUtils.earliestDate();
 
-		_sinceDateSpinnerModel = new SpinnerDateModel(initDate, earliestDate,
-				latestDate, Calendar.YEAR);
+		_sinceDateSpinnerModel = new SpinnerDateModel(initDate, earliestDate, latestDate,
+				Calendar.YEAR);
 		_sinceDateSpinner = new JSpinner(_sinceDateSpinnerModel);
 		_sinceDateSpinnerEditor = new JSpinner.DateEditor(_sinceDateSpinner,
 				DateUtils.DATE_FORMAT);
@@ -332,16 +331,14 @@ public class RemovedReportView extends DialogView implements IRemovedReportView 
 		formatPanel.add(Box.createHorizontalGlue());
 
 		JPanel sinceLastPanel = new JPanel();
-		sinceLastPanel
-				.setLayout(new BoxLayout(sinceLastPanel, BoxLayout.X_AXIS));
+		sinceLastPanel.setLayout(new BoxLayout(sinceLastPanel, BoxLayout.X_AXIS));
 		sinceLastPanel.add(Box.createHorizontalStrut(MARGIN_SPACING));
 		sinceLastPanel.add(_sinceLastButton);
 		sinceLastPanel.add(Box.createHorizontalStrut(MARGIN_SPACING));
 		sinceLastPanel.add(Box.createHorizontalGlue());
 
 		JPanel sinceDatePanel = new JPanel();
-		sinceDatePanel
-				.setLayout(new BoxLayout(sinceDatePanel, BoxLayout.X_AXIS));
+		sinceDatePanel.setLayout(new BoxLayout(sinceDatePanel, BoxLayout.X_AXIS));
 		sinceDatePanel.add(Box.createHorizontalStrut(MARGIN_SPACING));
 		sinceDatePanel.add(_sinceDateButton);
 		sinceDatePanel.add(Box.createHorizontalStrut(5));

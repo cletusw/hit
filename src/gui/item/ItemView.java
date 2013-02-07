@@ -182,8 +182,8 @@ public abstract class ItemView extends DialogView {
 
 		_entryDateLabel = new JLabel("Entry Date:");
 
-		_entryDateSpinnerModel = new SpinnerDateModel(initDate, earliestDate,
-				latestDate, Calendar.YEAR);
+		_entryDateSpinnerModel = new SpinnerDateModel(initDate, earliestDate, latestDate,
+				Calendar.YEAR);
 		_entryDateSpinner = new JSpinner(_entryDateSpinnerModel);
 		_entryDateSpinnerEditor = new JSpinner.DateEditor(_entryDateSpinner,
 				DateUtils.DATE_FORMAT);

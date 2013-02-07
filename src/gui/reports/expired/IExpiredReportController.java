@@ -8,14 +8,14 @@ import gui.common.IController;
 public interface IExpiredReportController extends IController {
 
 	/**
-	 * This method is called when the user clicks the "OK" button in the expired
-	 * items report view.
+	 * This method is called when the user clicks the "OK" button in the expired items report
+	 * view.
 	 */
 	void display();
 
 	/**
-	 * This method is called when any of the fields in the expired items report
-	 * view is changed by the user.
+	 * This method is called when any of the fields in the expired items report view is changed
+	 * by the user.
 	 */
 	void valuesChanged();
 

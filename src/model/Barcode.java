@@ -65,14 +65,14 @@ public class Barcode extends NonNullString {
 				+ Character.getNumericValue(code.charAt(2))
 				+ Character.getNumericValue(code.charAt(4))
 				+ Character.getNumericValue(code.charAt(6))
-				+ Character.getNumericValue(code.charAt(8)) + Character
-				.getNumericValue(code.charAt(10)));
+				+ Character.getNumericValue(code.charAt(8)) + Character.getNumericValue(code
+				.charAt(10)));
 
 		int evenDigits = (Character.getNumericValue(code.charAt(1))
 				+ Character.getNumericValue(code.charAt(3))
 				+ Character.getNumericValue(code.charAt(5))
-				+ Character.getNumericValue(code.charAt(7)) + Character
-				.getNumericValue(code.charAt(9)));
+				+ Character.getNumericValue(code.charAt(7)) + Character.getNumericValue(code
+				.charAt(9)));
 
 		int total = oddDigits + evenDigits;
 		total = total % 10;
@@ -120,15 +120,14 @@ public class Barcode extends NonNullString {
 	}
 
 	/**
-	 * Compare this not-null string to another using String.compareTo(String
-	 * other)
+	 * Compare this not-null string to another using String.compareTo(String other)
 	 * 
 	 * @param other
 	 *            NotNullString to compare
-	 * @return the value 0 if the argument string is equal to this string; a
-	 *         value less than 0 if this string is lexicographically less than
-	 *         the string argument; and a value greater than 0 if this string is
-	 *         lexicographically greater than the string argument.
+	 * @return the value 0 if the argument string is equal to this string; a value less than 0
+	 *         if this string is lexicographically less than the string argument; and a value
+	 *         greater than 0 if this string is lexicographically greater than the string
+	 *         argument.
 	 * 
 	 * @pre other != null
 	 * @post true

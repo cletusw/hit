@@ -115,8 +115,7 @@ public class Result {
 	 * 
 	 * {@pre None}
 	 * 
-	 * {@post Returns true if Message is non-null and non-empty, and false
-	 * otherwise.}
+	 * {@post Returns true if Message is non-null and non-empty, and false otherwise.}
 	 */
 	public boolean hasMessage() {
 		return !StringOps.isNullOrEmpty(_message);
@@ -130,8 +129,7 @@ public class Result {
 	 * 
 	 *            {@pre e != null}
 	 * 
-	 *            {@post Message contains the message and stack trace contained
-	 *            in e.}
+	 *            {@post Message contains the message and stack trace contained in e.}
 	 */
 	public void setFrom(Exception e) {
 		setStatus(false);

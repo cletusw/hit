@@ -8,22 +8,22 @@ import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.TreePath;
 
 /**
- * TreeOperations provides useful utility functions for operating on
- * {@link javax.swing.JTree}s.
+ * TreeOperations provides useful utility functions for operating on {@link javax.swing.JTree}
+ * s.
  */
 public final class TreeOperations {
 
 	/**
-	 * Returns the currently-selected node in the specified tree, or null if no
-	 * node is selected.
+	 * Returns the currently-selected node in the specified tree, or null if no node is
+	 * selected.
 	 * 
 	 * @param tree
 	 *            the tree for which the currently-selected node is desired
 	 * 
 	 *            {@pre tree != null}
 	 * 
-	 *            {@post The return value contains the currently-selected node,
-	 *            or null if no node is selected.}
+	 *            {@post The return value contains the currently-selected node, or null if no
+	 *            node is selected.}
 	 */
 	public static DefaultMutableTreeNode getSelectedTreeNode(JTree tree) {
 		return (DefaultMutableTreeNode) tree.getLastSelectedPathComponent();
@@ -37,8 +37,7 @@ public final class TreeOperations {
 	 * @param node
 	 *            node to be selected
 	 * 
-	 *            {@pre tree != null} {@pre node != null AND node is a member of
-	 *            tree}
+	 *            {@pre tree != null} {@pre node != null AND node is a member of tree}
 	 * 
 	 *            {@post The specified tree node is selected and visible.}
 	 */
@@ -49,8 +48,8 @@ public final class TreeOperations {
 	}
 
 	/**
-	 * Selects the tree node that occupies the specified (x,y) point. This is
-	 * used to select the tree node clicked on by the user.
+	 * Selects the tree node that occupies the specified (x,y) point. This is used to select
+	 * the tree node clicked on by the user.
 	 * 
 	 * @param tree
 	 *            tree object in which the mouse click occurred
@@ -59,13 +58,11 @@ public final class TreeOperations {
 	 * 
 	 *            {@pre tree != null} {@pre point != null}
 	 * 
-	 *            {@post The tree node corresponding to the specified point is
-	 *            selected. If the specified point is not within the bounds of a
-	 *            tree node, nothing is done.}
+	 *            {@post The tree node corresponding to the specified point is selected. If the
+	 *            specified point is not within the bounds of a tree node, nothing is done.}
 	 */
 	public static void selectTreeNode(JTree tree, Point point) {
-		int itemRow = tree.getRowForLocation((int) point.getX(),
-				(int) point.getY());
+		int itemRow = tree.getRowForLocation((int) point.getX(), (int) point.getY());
 		if (itemRow >= 0) {
 			Rectangle rowBounds = tree.getRowBounds(itemRow);
 			if (rowBounds.contains(point)) {

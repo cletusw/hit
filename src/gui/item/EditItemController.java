@@ -6,8 +6,7 @@ import gui.common.IView;
 /**
  * Controller class for the edit item view.
  */
-public class EditItemController extends Controller implements
-		IEditItemController {
+public class EditItemController extends Controller implements IEditItemController {
 
 	/**
 	 * Constructor.
@@ -28,30 +27,28 @@ public class EditItemController extends Controller implements
 	//
 
 	/**
-	 * This method is called when the user clicks the "OK" button in the edit
-	 * item view.
+	 * This method is called when the user clicks the "OK" button in the edit item view.
 	 */
 	@Override
 	public void editItem() {
 	}
 
 	/**
-	 * This method is called when any of the fields in the edit item view is
-	 * changed by the user.
+	 * This method is called when any of the fields in the edit item view is changed by the
+	 * user.
 	 */
 	@Override
 	public void valuesChanged() {
 	}
 
 	/**
-	 * Sets the enable/disable state of all components in the controller's view.
-	 * A component should be enabled only if the user is currently allowed to
-	 * interact with that component.
+	 * Sets the enable/disable state of all components in the controller's view. A component
+	 * should be enabled only if the user is currently allowed to interact with that component.
 	 * 
 	 * {@pre None}
 	 * 
-	 * {@post The enable/disable state of all components in the controller's
-	 * view have been set appropriately.}
+	 * {@post The enable/disable state of all components in the controller's view have been set
+	 * appropriately.}
 	 */
 	@Override
 	protected void enableComponents() {

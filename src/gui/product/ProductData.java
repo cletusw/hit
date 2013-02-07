@@ -42,9 +42,8 @@ public class ProductData extends Tagable {
 	 * 
 	 * {@pre None}
 	 * 
-	 * {@post getDescription() == ""} {@post getSize() == ""} {@post getCount()
-	 * == ""} {@post getShelfLife() == ""} {@post getSupply() == ""} {@post
-	 * getBarcode() == ""}
+	 * {@post getDescription() == ""} {@post getSize() == ""} {@post getCount() == ""} {@post
+	 * getShelfLife() == ""} {@post getSupply() == ""} {@post getBarcode() == ""}
 	 */
 	public ProductData() {
 		_description = "";

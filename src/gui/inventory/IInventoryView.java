@@ -10,8 +10,8 @@ import gui.product.ProductData;
 public interface IInventoryView extends IView {
 
 	/**
-	 * Deletes the specified product container and its descendants from the
-	 * product container tree.
+	 * Deletes the specified product container and its descendants from the product container
+	 * tree.
 	 * 
 	 * @param container
 	 *            Product container to be deleted
@@ -64,20 +64,18 @@ public interface IInventoryView extends IView {
 	void displayTransferItemBatchView();
 
 	/**
-	 * Returns the currently selected item in the "Item" table, or null if no
-	 * item is selected.
+	 * Returns the currently selected item in the "Item" table, or null if no item is selected.
 	 */
 	ItemData getSelectedItem();
 
 	/**
-	 * Returns the currently selected product in the "Products" table, or null
-	 * if no product is selected.
+	 * Returns the currently selected product in the "Products" table, or null if no product is
+	 * selected.
 	 */
 	ProductData getSelectedProduct();
 
 	/**
-	 * Returns the selected product container, or null if no product container
-	 * is selected.
+	 * Returns the selected product container, or null if no product container is selected.
 	 */
 	ProductContainerData getSelectedProductContainer();
 
@@ -89,46 +87,42 @@ public interface IInventoryView extends IView {
 	 * @param newContainer
 	 *            Product container being inserted
 	 * @param index
-	 *            Zero-based index at which newContainer will be inserted under
-	 *            parent
+	 *            Zero-based index at which newContainer will be inserted under parent
 	 */
 	void insertProductContainer(ProductContainerData parent,
 			ProductContainerData newContainer, int index);
 
 	/**
-	 * Renames a product container that is already in the product container
-	 * tree. (Because product containers are sorted alphabetically, renaming a
-	 * container might move it to a different position in its parent's child
-	 * list.)
+	 * Renames a product container that is already in the product container tree. (Because
+	 * product containers are sorted alphabetically, renaming a container might move it to a
+	 * different position in its parent's child list.)
 	 * 
 	 * @param renamedContainer
 	 *            Product container being renamed
 	 * @param newName
 	 *            New name for product container
 	 * @param newIndex
-	 *            New index of renamed product container in its parent's child
-	 *            list
+	 *            New index of renamed product container in its parent's child list
 	 */
-	void renameProductContainer(ProductContainerData renamedContainer,
-			String newName, int newIndex);
+	void renameProductContainer(ProductContainerData renamedContainer, String newName,
+			int newIndex);
 
 	/**
-	 * Selects the specified item in the "Items" table, or selects nothing if
-	 * item is null.
+	 * Selects the specified item in the "Items" table, or selects nothing if item is null.
 	 * 
 	 * @param item
-	 *            The item to be selected. This must be one of the items
-	 *            previously passed to setItems, or null.
+	 *            The item to be selected. This must be one of the items previously passed to
+	 *            setItems, or null.
 	 */
 	void selectItem(ItemData item);
 
 	/**
-	 * Selects the specified product in the "Products" table, or selects nothing
-	 * if product is null.
+	 * Selects the specified product in the "Products" table, or selects nothing if product is
+	 * null.
 	 * 
 	 * @param product
-	 *            The product to be selected. This must be one of the products
-	 *            previously passed to setProducts , or null.
+	 *            The product to be selected. This must be one of the products previously
+	 *            passed to setProducts , or null.
 	 */
 	void selectProduct(ProductData product);
 
@@ -136,8 +130,8 @@ public interface IInventoryView extends IView {
 	 * Selects the specified product container in the product container tree.
 	 * 
 	 * @param container
-	 *            Product container to be selected. Must be one of the product
-	 *            containers currently in the product container tree.
+	 *            Product container to be selected. Must be one of the product containers
+	 *            currently in the product container tree.
 	 */
 	void selectProductContainer(ProductContainerData container);
 

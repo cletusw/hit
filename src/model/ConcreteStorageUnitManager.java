@@ -6,8 +6,7 @@ import java.util.Set;
 import java.util.TreeSet;
 
 @SuppressWarnings("serial")
-public class ConcreteStorageUnitManager implements Serializable,
-		StorageUnitManager {
+public class ConcreteStorageUnitManager implements Serializable, StorageUnitManager {
 	private Set<StorageUnit> rootStorageUnits;
 
 	/**
@@ -48,8 +47,8 @@ public class ConcreteStorageUnitManager implements Serializable,
 	}
 
 	/**
-	 * Determines whether the specified Storage Unit name is valid for adding a
-	 * new Storage Unit.
+	 * Determines whether the specified Storage Unit name is valid for adding a new Storage
+	 * Unit.
 	 * 
 	 * @param name
 	 *            The name to be tested
@@ -65,8 +64,7 @@ public class ConcreteStorageUnitManager implements Serializable,
 
 		// From the Data Dictionary: Must be non-empty. Must be unique among all
 		// Storage Units.
-		return !name.equals("")
-				&& !rootStorageUnits.contains(new StorageUnit(name));
+		return !name.equals("") && !rootStorageUnits.contains(new StorageUnit(name));
 	}
 
 	/**
@@ -76,8 +74,8 @@ public class ConcreteStorageUnitManager implements Serializable,
 	 *            The Product to remove
 	 * 
 	 * @pre product.canRemove()
-	 * @post for(storageUnit in rootStorageUnits) storageUnit::products.size()
-	 *       == storageUnit::products.size()@pre - 1
+	 * @post for(storageUnit in rootStorageUnits) storageUnit::products.size() ==
+	 *       storageUnit::products.size()@pre - 1
 	 */
 	@Override
 	public void remove(Product product) {
@@ -96,8 +94,8 @@ public class ConcreteStorageUnitManager implements Serializable,
 	 * 
 	 * @pre productGroup != null
 	 * @pre productGroup.canRemove()
-	 * @post for(storageUnit in rootStorageUnits) storageUnit::products.size()
-	 *       == storageUnit::products.size()@pre - 1
+	 * @post for(storageUnit in rootStorageUnits) storageUnit::products.size() ==
+	 *       storageUnit::products.size()@pre - 1
 	 */
 	@Override
 	public void remove(ProductGroup productGroup) {
@@ -142,8 +140,7 @@ public class ConcreteStorageUnitManager implements Serializable,
 	 * @post rootStorageUnits.contains(newStorageUnitName)
 	 */
 	@Override
-	public void renameStorageUnit(StorageUnit storageUnit,
-			String newStorageUnitName) {
+	public void renameStorageUnit(StorageUnit storageUnit, String newStorageUnitName) {
 		assert (rootStorageUnits.contains(storageUnit));
 		assert (isValidStorageUnitName(newStorageUnitName));
 

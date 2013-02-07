@@ -6,8 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Display data class for product containers (i.e., storage units and product
- * groups).
+ * Display data class for product containers (i.e., storage units and product groups).
  */
 public class ProductContainerData extends Tagable {
 
@@ -128,9 +127,8 @@ public class ProductContainerData extends Tagable {
 	 * 
 	 *            {@pre child != null} {@pre child is a valid child}
 	 * 
-	 *            {@post getChildCount() == old(getChildCount()) - 1} {@post All
-	 *            children at or following the deleted child have been moved up
-	 *            one position}
+	 *            {@post getChildCount() == old(getChildCount()) - 1} {@post All children at or
+	 *            following the deleted child have been moved up one position}
 	 */
 	protected void deleteChild(ProductContainerData child) {
 		_children.remove(child);
@@ -146,9 +144,9 @@ public class ProductContainerData extends Tagable {
 	 * 
 	 *            {@pre child != null} {@pre 0 <= index <= getChildCount()}
 	 * 
-	 *            {@post getChildCount() == old(getChildCount()) + 1} {@post
-	 *            getChild(index) == child} {@post All children at or following
-	 *            the insertion point have been moved down one position}
+	 *            {@post getChildCount() == old(getChildCount()) + 1} {@post getChild(index) ==
+	 *            child} {@post All children at or following the insertion point have been
+	 *            moved down one position}
 	 */
 	protected void insertChild(ProductContainerData child, int index) {
 		int i = _children.indexOf(child);
@@ -182,16 +180,15 @@ public class ProductContainerData extends Tagable {
 	 * @param newIndex
 	 *            New position for the child
 	 * 
-	 *            {@pre child != null} {@pre child is a valid child} {@pre
-	 *            newName != null} {@pre 0 <= newIndex < getChildCount()}
+	 *            {@pre child != null} {@pre child is a valid child} {@pre newName != null}
+	 *            {@pre 0 <= newIndex < getChildCount()}
 	 * 
 	 *            {@post child.getName() == newName} {@post getChildCount() ==
-	 *            old(getChildCount())} {@post getChild(newIndex) == child}
-	 *            {@post All children with original indexes in the range
-	 *            oldIndex < index <= newIndex have been moved up one position}
+	 *            old(getChildCount())} {@post getChild(newIndex) == child} {@post All children
+	 *            with original indexes in the range oldIndex < index <= newIndex have been
+	 *            moved up one position}
 	 */
-	protected void renameChild(ProductContainerData child, String newName,
-			int newIndex) {
+	protected void renameChild(ProductContainerData child, String newName, int newIndex) {
 		int oldIndex = _children.indexOf(child);
 		assert oldIndex >= 0;
 		if (oldIndex >= 0) {

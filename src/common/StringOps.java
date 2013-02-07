@@ -13,8 +13,7 @@ public final class StringOps {
 	 * 
 	 *            {@pre s != null}
 	 * 
-	 *            {@post Returns true if string is null or empty, and false
-	 *            otherwise.}
+	 *            {@post Returns true if string is null or empty, and false otherwise.}
 	 */
 	public static boolean isNullOrEmpty(String s) {
 		return ((s == null) || (s.length() == 0));

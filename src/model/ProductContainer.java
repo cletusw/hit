@@ -8,8 +8,8 @@ import java.util.TreeMap;
 import java.util.TreeSet;
 
 /**
- * Product Container class: Represents an object that can hold various types of
- * items, products, and product groups.
+ * Product Container class: Represents an object that can hold various types of items,
+ * products, and product groups.
  * 
  * @author Matt Hess
  * @version 1.0 - Snell 340 Group 4 Phase 1
@@ -21,8 +21,7 @@ import java.util.TreeSet;
  * @invariant productGroups != null
  */
 @SuppressWarnings("serial")
-public abstract class ProductContainer implements Comparable<ProductContainer>,
-		Serializable {
+public abstract class ProductContainer implements Comparable<ProductContainer>, Serializable {
 	protected NonNullString name;
 	protected Map<String, Item> items;
 	protected Map<String, Product> products;
@@ -88,13 +87,12 @@ public abstract class ProductContainer implements Comparable<ProductContainer>,
 
 		if (!canAddProductGroup(productGroup.getName()))
 			throw new IllegalStateException(
-					"Cannot add two product groups of the same name into a single parent container");
+					"Cannot add two product groups of the same name into a container");
 		productGroups.put(productGroup.getName(), productGroup);
 	}
 
 	/**
-	 * Determines whether the specified Product can be added to this Storage
-	 * Unit.
+	 * Determines whether the specified Product can be added to this Storage Unit.
 	 * 
 	 * @param productBarcode
 	 *            the Product barcode to check
@@ -121,8 +119,7 @@ public abstract class ProductContainer implements Comparable<ProductContainer>,
 	}
 
 	/**
-	 * Determines whether the specified ProductGroup can be added to this
-	 * ProductContainer.
+	 * Determines whether the specified ProductGroup can be added to this ProductContainer.
 	 * 
 	 * @param productGroup
 	 *            - the ProductGroup to test
@@ -137,8 +134,7 @@ public abstract class ProductContainer implements Comparable<ProductContainer>,
 	}
 
 	/**
-	 * Determines whether the specified ProductGroup can be added to this
-	 * ProductContainer.
+	 * Determines whether the specified ProductGroup can be added to this ProductContainer.
 	 * 
 	 * @param productGroupName
 	 *            - the ProductGroup name to test
@@ -149,8 +145,7 @@ public abstract class ProductContainer implements Comparable<ProductContainer>,
 	 */
 	public boolean canAddProductGroup(String productGroupName) {
 		assert (productGroupName != null);
-		return !productGroupName.equals("")
-				&& !containsProductGroup(productGroupName);
+		return !productGroupName.equals("") && !containsProductGroup(productGroupName);
 	}
 
 	/**
@@ -179,8 +174,7 @@ public abstract class ProductContainer implements Comparable<ProductContainer>,
 	}
 
 	/**
-	 * Determines whether we can remove a given Product from this
-	 * ProductContainer.
+	 * Determines whether we can remove a given Product from this ProductContainer.
 	 * 
 	 * @param product
 	 *            - the Product object to be removed from the container
@@ -199,8 +193,7 @@ public abstract class ProductContainer implements Comparable<ProductContainer>,
 	 * Compares this ProductContainer to another
 	 * 
 	 * @param su
-	 * @return 0 if equal, some other integer representing the comparison
-	 *         otherwise
+	 * @return 0 if equal, some other integer representing the comparison otherwise
 	 * @pre pc != null
 	 * @post true
 	 */
@@ -230,8 +223,7 @@ public abstract class ProductContainer implements Comparable<ProductContainer>,
 	 * 
 	 * @param product
 	 *            the Product to check
-	 * @return true if this Product Container contains the Product, false
-	 *         otherwise
+	 * @return true if this Product Container contains the Product, false otherwise
 	 * 
 	 * @pre product != null
 	 * @post true
@@ -243,13 +235,11 @@ public abstract class ProductContainer implements Comparable<ProductContainer>,
 	}
 
 	/**
-	 * Determines whether the specified ProductGroup is contained in this
-	 * ProductContainer.
+	 * Determines whether the specified ProductGroup is contained in this ProductContainer.
 	 * 
 	 * @param productGroupName
 	 *            - the ProductGroup to test
-	 * @return true if the ProductGroup exists in this ProductContainer, false
-	 *         otherwise.
+	 * @return true if the ProductGroup exists in this ProductContainer, false otherwise.
 	 * 
 	 * @pre productGroup != null
 	 * @post true
@@ -280,8 +270,7 @@ public abstract class ProductContainer implements Comparable<ProductContainer>,
 	 * 
 	 * @param productBarcode
 	 *            the Product's barcode to check
-	 * @return true if this Product Container contains the Product, false
-	 *         otherwise
+	 * @return true if this Product Container contains the Product, false otherwise
 	 * 
 	 * @pre productBarcode != null
 	 * @post true
@@ -293,13 +282,11 @@ public abstract class ProductContainer implements Comparable<ProductContainer>,
 	}
 
 	/**
-	 * Determines whether the specified ProductGroup is contained in this
-	 * ProductContainer.
+	 * Determines whether the specified ProductGroup is contained in this ProductContainer.
 	 * 
 	 * @param productGroupName
 	 *            - the ProductGroup to test
-	 * @return true if the ProductGroup exists in this ProductContainer, false
-	 *         otherwise.
+	 * @return true if the ProductGroup exists in this ProductContainer, false otherwise.
 	 * 
 	 * @pre productGroupName != null
 	 * @post true
@@ -335,13 +322,11 @@ public abstract class ProductContainer implements Comparable<ProductContainer>,
 	}
 
 	/**
-	 * Method that calculates and returns the amount of a product in this
-	 * container.
+	 * Method that calculates and returns the amount of a product in this container.
 	 * 
 	 * @param p
 	 *            - the Product to be found
-	 * @return ProductQuantity - the current supply of the found product, or
-	 *         null.
+	 * @return ProductQuantity - the current supply of the found product, or null.
 	 * 
 	 * @pre p != null
 	 * @pre p.getBarcode() != null
@@ -367,8 +352,7 @@ public abstract class ProductContainer implements Comparable<ProductContainer>,
 		// add product quantity of items in this container
 		if (productsToItems.containsKey(p)) {
 			for (Item item : productsToItems.get(p)) {
-				total.add(new ProductQuantity(pSize.getQuantity(), pSize
-						.getUnits()));
+				total.add(new ProductQuantity(pSize.getQuantity(), pSize.getUnits()));
 			}
 		}
 
@@ -512,8 +496,7 @@ public abstract class ProductContainer implements Comparable<ProductContainer>,
 	 * @param item
 	 *            the Item to be removed
 	 * @param manager
-	 *            the ItemManager to notify of the removal. If null, no manager
-	 *            is notified.
+	 *            the ItemManager to notify of the removal. If null, no manager is notified.
 	 * 
 	 * @return the removed item
 	 * 
@@ -538,8 +521,7 @@ public abstract class ProductContainer implements Comparable<ProductContainer>,
 	 * Method that removes a Product object from the collection.
 	 * 
 	 * @param barcode
-	 *            - the String barcode of the Product object to be removed from
-	 *            the collection
+	 *            - the String barcode of the Product object to be removed from the collection
 	 * @return the removed Product
 	 * @pre product != null
 	 * @post !products.contains(product)
@@ -591,8 +573,7 @@ public abstract class ProductContainer implements Comparable<ProductContainer>,
 	}
 
 	/**
-	 * Internal method: Used to determine whether it is possible to add a
-	 * Product
+	 * Internal method: Used to determine whether it is possible to add a Product
 	 * 
 	 * @param productBarcode
 	 *            Product to look for

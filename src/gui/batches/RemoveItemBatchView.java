@@ -4,8 +4,7 @@ import gui.common.DialogBox;
 import gui.main.GUI;
 
 @SuppressWarnings("serial")
-public class RemoveItemBatchView extends ItemBatchView implements
-		IRemoveItemBatchView {
+public class RemoveItemBatchView extends ItemBatchView implements IRemoveItemBatchView {
 
 	public RemoveItemBatchView(GUI parent, DialogBox dialog) {
 		super(parent, dialog);

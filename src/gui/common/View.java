@@ -14,21 +14,19 @@ import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.TableColumn;
 
 /**
- * View is a base class that provides common functionality required by all views
- * in the program (i.e., view classes extend View instead of
- * {@link javax.swing.JPanel JPanel}).
+ * View is a base class that provides common functionality required by all views in the program
+ * (i.e., view classes extend View instead of {@link javax.swing.JPanel JPanel}).
  * <P>
  * The functionality provided by View to its subclasses includes:
  * <UL>
  * <LI>A reference to the owning {@link gui.main.GUI GUI} object
  * <LI>A reference to the view's controller
- * <LI>A facility for turning off event notifications when user interface
- * components are being programmatically updated
+ * <LI>A facility for turning off event notifications when user interface components are being
+ * programmatically updated
  * <LI>Methods for displaying various types of messages to users
  * <LI>Utility methods for creating fonts, borders, and other UI objects.
  * <LI>An abstract method interface that must be supported by all subclasses
- * <LI>A template method that defines a standard algorithm for constructing
- * subclass instances
+ * <LI>A template method that defines a standard algorithm for constructing subclass instances
  * </UL>
  * <P>
  * Subclasses should override the following methods:
@@ -37,9 +35,8 @@ import javax.swing.table.TableColumn;
  * <LI>{@link #layoutComponents() layoutComponents}
  * </UL>
  * <P>
- * Subclasses should also call {@link #construct() construct} from their
- * constructors. Subclass constructors should also initialize the view's
- * controller;
+ * Subclasses should also call {@link #construct() construct} from their constructors. Subclass
+ * constructors should also initialize the view's controller;
  */
 public abstract class View extends JPanel implements IView {
 
@@ -62,8 +59,8 @@ public abstract class View extends JPanel implements IView {
 		 * 
 		 *            {@pre customFont != null}
 		 * 
-		 *            {@post StringCellRenderer has been initialized with the
-		 *            specified custom font.}
+		 *            {@post StringCellRenderer has been initialized with the specified custom
+		 *            font.}
 		 */
 		public StringCellRenderer(Font customFont) {
 			_customFont = customFont;
@@ -93,8 +90,8 @@ public abstract class View extends JPanel implements IView {
 		 * 
 		 *            {@pre customFont != null}
 		 * 
-		 *            {@post TableHeaderRenderer has been initialized with the
-		 *            specified custom font.}
+		 *            {@post TableHeaderRenderer has been initialized with the specified custom
+		 *            font.}
 		 */
 		public TableHeaderRenderer(Font customFont) {
 			super(customFont);
@@ -127,8 +124,7 @@ public abstract class View extends JPanel implements IView {
 	 * 
 	 *            {@pre prototype != null, size > 0}
 	 * 
-	 *            {@post Returns a font based on the specified prototype and
-	 *            size.}
+	 *            {@post Returns a font based on the specified prototype and size.}
 	 */
 	public static Font createFont(Font prototype, int size) {
 		return new Font(prototype.getName(), prototype.getStyle(), size);
@@ -146,17 +142,14 @@ public abstract class View extends JPanel implements IView {
 	 * 
 	 *            {@pre columnIndex >= 0, columnTitle != null, size > 0}
 	 * 
-	 *            {@post Returns a new table column with the specified column
-	 *            index, title, and title font size.}
+	 *            {@post Returns a new table column with the specified column index, title, and
+	 *            title font size.}
 	 */
-	public static TableColumn createTableColumn(int columnIndex,
-			String columnTitle, int size) {
+	public static TableColumn createTableColumn(int columnIndex, String columnTitle, int size) {
 		Font DefaultFont = new JTable().getFont();
 		TableColumn column = new TableColumn(columnIndex);
-		column.setHeaderRenderer(new TableHeaderRenderer(createFont(
-				DefaultFont, size)));
-		column.setCellRenderer(new StringCellRenderer(createFont(DefaultFont,
-				size)));
+		column.setHeaderRenderer(new TableHeaderRenderer(createFont(DefaultFont, size)));
+		column.setCellRenderer(new StringCellRenderer(createFont(DefaultFont, size)));
 		column.setHeaderValue(columnTitle);
 		return column;
 	}
@@ -171,13 +164,12 @@ public abstract class View extends JPanel implements IView {
 	 * 
 	 *            {@pre borderTitle != null, int size > 0}
 	 * 
-	 *            {@post Returns a new titled border with the specified title
-	 *            text and font size.}
+	 *            {@post Returns a new titled border with the specified title text and font
+	 *            size.}
 	 */
 	public static TitledBorder createTitledBorder(String borderTitle, int size) {
 		TitledBorder border = BorderFactory.createTitledBorder(borderTitle);
-		border.setTitleFont(createFont(UIManager.getFont("TitledBorder.font"),
-				size));
+		border.setTitleFont(createFont(UIManager.getFont("TitledBorder.font"), size));
 		return border;
 	}
 
@@ -204,8 +196,7 @@ public abstract class View extends JPanel implements IView {
 	 * 
 	 *            {@pre parent != null}
 	 * 
-	 *            {@post The View has been initialized with the specified
-	 *            parent.}
+	 *            {@post The View has been initialized with the specified parent.}
 	 */
 	protected View(GUI parent) {
 		_parent = parent;
@@ -269,14 +260,13 @@ public abstract class View extends JPanel implements IView {
 	//
 
 	/**
-	 * This is a template method that defines the construction process for all
-	 * subclasses. Subclasses should call this method from their constructors in
-	 * order to properly initialize themselves.
+	 * This is a template method that defines the construction process for all subclasses.
+	 * Subclasses should call this method from their constructors in order to properly
+	 * initialize themselves.
 	 * 
 	 * {@pre None}
 	 * 
-	 * {@post The components for this view have been created and lain out on the
-	 * panel.}
+	 * {@post The components for this view have been created and lain out on the panel.}
 	 */
 	protected void construct() {
 		createComponents();
@@ -284,10 +274,10 @@ public abstract class View extends JPanel implements IView {
 	}
 
 	/**
-	 * Creates and initializes the components that populate this view. This
-	 * method should only create/initialize the component objects, but not
-	 * actually add them to the panel. Laying out the components on the panel is
-	 * done by the {@link #layoutComponents() layoutComponents} method.
+	 * Creates and initializes the components that populate this view. This method should only
+	 * create/initialize the component objects, but not actually add them to the panel. Laying
+	 * out the components on the panel is done by the {@link #layoutComponents()
+	 * layoutComponents} method.
 	 * 
 	 * {@pre None}
 	 * 
@@ -302,8 +292,8 @@ public abstract class View extends JPanel implements IView {
 	 * 
 	 * {@pre None}
 	 * 
-	 * {@post Returns true if events were disabled. Returns false if events were
-	 * already disabled.}
+	 * {@post Returns true if events were disabled. Returns false if events were already
+	 * disabled.}
 	 */
 	protected boolean disableEvents() {
 		if (_eventsDisabled) {
@@ -319,8 +309,8 @@ public abstract class View extends JPanel implements IView {
 	 * 
 	 * {@pre eventsAreDisabled() == true}
 	 * 
-	 * {@post Returns true if events were enabled. Returns false if events were
-	 * already enabled.}
+	 * {@post Returns true if events were enabled. Returns false if events were already
+	 * enabled.}
 	 */
 	protected boolean enableEvents() {
 		if (_eventsDisabled) {
@@ -336,8 +326,7 @@ public abstract class View extends JPanel implements IView {
 	 * 
 	 * {@pre None}
 	 * 
-	 * {@post Returns true if events are disabled. Returns false if events are
-	 * enabled.}
+	 * {@post Returns true if events are disabled. Returns false if events are enabled.}
 	 */
 	protected boolean eventsAreDisabled() {
 		return _eventsDisabled;

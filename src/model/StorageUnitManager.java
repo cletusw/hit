@@ -16,6 +16,5 @@ public interface StorageUnitManager {
 
 	public void remove(StorageUnit storageUnit);
 
-	public void renameStorageUnit(StorageUnit storageUnit,
-			String newStorageUnitName);
+	public void renameStorageUnit(StorageUnit storageUnit, String newStorageUnitName);
 }

@@ -5,11 +5,9 @@ import gui.inventory.ProductContainerData;
 import gui.main.GUI;
 
 @SuppressWarnings("serial")
-public class EditStorageUnitView extends StorageUnitView implements
-		IEditStorageUnitView {
+public class EditStorageUnitView extends StorageUnitView implements IEditStorageUnitView {
 
-	public EditStorageUnitView(GUI parent, DialogBox dialog,
-			ProductContainerData target) {
+	public EditStorageUnitView(GUI parent, DialogBox dialog, ProductContainerData target) {
 		super(parent, dialog);
 
 		construct();

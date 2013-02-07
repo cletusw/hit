@@ -1,15 +1,14 @@
 package gui.common;
 
 /**
- * Controller is a base class that provides common functionality required by all
- * controllers in the program (i.e., all controller classes extend Controller).
+ * Controller is a base class that provides common functionality required by all controllers in
+ * the program (i.e., all controller classes extend Controller).
  * <P>
  * The functionality provided by Controller to its subclasses includes:
  * <UL>
  * <LI>A reference to the controller's view object
  * <LI>An abstract method interface that must be supported by all subclasses
- * <LI>A template method that defines a standard algorithm for constructing
- * subclass instances
+ * <LI>A template method that defines a standard algorithm for constructing subclass instances
  * </UL>
  * <P>
  * Subclasses should override the following methods:
@@ -18,8 +17,7 @@ package gui.common;
  * <LI>{@link #loadValues() loadValues}
  * </UL>
  * <P>
- * Subclasses should also call {@link #construct() construct} from their
- * constructors.
+ * Subclasses should also call {@link #construct() construct} from their constructors.
  */
 public abstract class Controller implements IController {
 
@@ -43,14 +41,14 @@ public abstract class Controller implements IController {
 	}
 
 	/**
-	 * This is a template method that defines the construction process for all
-	 * subclasses. Subclasses should call this method from their constructors in
-	 * order to properly initialize themselves.
+	 * This is a template method that defines the construction process for all subclasses.
+	 * Subclasses should call this method from their constructors in order to properly
+	 * initialize themselves.
 	 * 
 	 * {@pre None}
 	 * 
-	 * {@post The controller has loaded data into its view, and set the
-	 * enable/disable state of its view's components}
+	 * {@post The controller has loaded data into its view, and set the enable/disable state of
+	 * its view's components}
 	 */
 	protected void construct() {
 		loadValues();
@@ -58,14 +56,13 @@ public abstract class Controller implements IController {
 	}
 
 	/**
-	 * Sets the enable/disable state of all components in the controller's view.
-	 * A component should be enabled only if the user is currently allowed to
-	 * interact with that component.
+	 * Sets the enable/disable state of all components in the controller's view. A component
+	 * should be enabled only if the user is currently allowed to interact with that component.
 	 * 
 	 * {@pre None}
 	 * 
-	 * {@post The enable/disable state of all components in the controller's
-	 * view have been set appropriately.}
+	 * {@post The enable/disable state of all components in the controller's view have been set
+	 * appropriately.}
 	 */
 	protected void enableComponents() {
 		return;

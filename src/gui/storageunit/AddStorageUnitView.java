@@ -4,8 +4,7 @@ import gui.common.DialogBox;
 import gui.main.GUI;
 
 @SuppressWarnings("serial")
-public class AddStorageUnitView extends StorageUnitView implements
-		IAddStorageUnitView {
+public class AddStorageUnitView extends StorageUnitView implements IAddStorageUnitView {
 
 	public AddStorageUnitView(GUI parent, DialogBox dialog) {
 		super(parent, dialog);

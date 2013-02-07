@@ -17,8 +17,8 @@ public class SerializationManager implements PersistentStorageManager {
 	public static final String defaultSerializedFileName = "HomeInventoryTracker.ser";
 
 	/**
-	 * Creates a new HomeInventoryTracker, reading it from persistent storage if
-	 * available. Otherwise, it creates a new empty instance of the class.
+	 * Creates a new HomeInventoryTracker, reading it from persistent storage if available.
+	 * Otherwise, it creates a new empty instance of the class.
 	 * 
 	 * @return a new instance of HomeInventoryTracker
 	 * @pre true
@@ -62,8 +62,7 @@ public class SerializationManager implements PersistentStorageManager {
 		HomeInventoryTracker hit;
 		try {
 			FileInputStream fileInputStream = new FileInputStream(target);
-			ObjectInputStream objectReader = new ObjectInputStream(
-					fileInputStream);
+			ObjectInputStream objectReader = new ObjectInputStream(fileInputStream);
 			hit = (HomeInventoryTracker) objectReader.readObject();
 			objectReader.close();
 		} catch (ClassNotFoundException e) {
@@ -83,15 +82,13 @@ public class SerializationManager implements PersistentStorageManager {
 	 * @post true
 	 */
 	@Override
-	public void writeObject(HomeInventoryTracker hit, String filename)
-			throws IOException {
+	public void writeObject(HomeInventoryTracker hit, String filename) throws IOException {
 		assert (hit != null);
 
 		String target = assignTargetFilename(filename);
 
 		FileOutputStream fileOutputStream = new FileOutputStream(target);
-		ObjectOutputStream objectWriter = new ObjectOutputStream(
-				fileOutputStream);
+		ObjectOutputStream objectWriter = new ObjectOutputStream(fileOutputStream);
 
 		objectWriter.writeObject(hit);
 		objectWriter.flush();

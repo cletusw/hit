@@ -3,8 +3,8 @@ package gui.main;
 import gui.common.Controller;
 
 /**
- * Controller class for the main view. The main view allows the user to print
- * reports and exit the application.
+ * Controller class for the main view. The main view allows the user to print reports and exit
+ * the application.
  */
 public class MainController extends Controller implements IMainController {
 
@@ -33,8 +33,7 @@ public class MainController extends Controller implements IMainController {
 	//
 
 	/**
-	 * Returns true if and only if the "Expired Items" menu item should be
-	 * enabled.
+	 * Returns true if and only if the "Expired Items" menu item should be enabled.
 	 */
 	@Override
 	public boolean canPrintExpiredReport() {
@@ -50,8 +49,7 @@ public class MainController extends Controller implements IMainController {
 	}
 
 	/**
-	 * Returns true if and only if the "Product Statistics" menu item should be
-	 * enabled.
+	 * Returns true if and only if the "Product Statistics" menu item should be enabled.
 	 */
 	@Override
 	public boolean canPrintProductReport() {
@@ -59,8 +57,7 @@ public class MainController extends Controller implements IMainController {
 	}
 
 	/**
-	 * Returns true if and only if the "Removed Items" menu item should be
-	 * enabled.
+	 * Returns true if and only if the "Removed Items" menu item should be enabled.
 	 */
 	@Override
 	public boolean canPrintRemovedReport() {
@@ -68,8 +65,7 @@ public class MainController extends Controller implements IMainController {
 	}
 
 	/**
-	 * Returns true if and only if the "N-Month Supply" menu item should be
-	 * enabled.
+	 * Returns true if and only if the "N-Month Supply" menu item should be enabled.
 	 */
 	@Override
 	public boolean canPrintSupplyReport() {
@@ -84,8 +80,7 @@ public class MainController extends Controller implements IMainController {
 	}
 
 	/**
-	 * This method is called when the user selects the "Expired Items" menu
-	 * item.
+	 * This method is called when the user selects the "Expired Items" menu item.
 	 */
 	@Override
 	public void printExpiredReport() {
@@ -101,8 +96,7 @@ public class MainController extends Controller implements IMainController {
 	}
 
 	/**
-	 * This method is called when the user selects the "Product Statistics" menu
-	 * item.
+	 * This method is called when the user selects the "Product Statistics" menu item.
 	 */
 	@Override
 	public void printProductReport() {
@@ -110,8 +104,7 @@ public class MainController extends Controller implements IMainController {
 	}
 
 	/**
-	 * This method is called when the user selects the "Removed Items" menu
-	 * item.
+	 * This method is called when the user selects the "Removed Items" menu item.
 	 */
 	@Override
 	public void printRemovedReport() {
@@ -119,8 +112,7 @@ public class MainController extends Controller implements IMainController {
 	}
 
 	/**
-	 * This method is called when the user selects the "N-Month Supply" menu
-	 * item.
+	 * This method is called when the user selects the "N-Month Supply" menu item.
 	 */
 	@Override
 	public void printSupplyReport() {

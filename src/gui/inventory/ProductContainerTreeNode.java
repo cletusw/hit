@@ -3,8 +3,8 @@ package gui.inventory;
 import javax.swing.tree.DefaultMutableTreeNode;
 
 /**
- * ProductContainerTreeNode is a subclass of Swing's DefaultMutableTreeNode
- * class that is used to represent nodes in the product container tree.
+ * ProductContainerTreeNode is a subclass of Swing's DefaultMutableTreeNode class that is used
+ * to represent nodes in the product container tree.
  */
 @SuppressWarnings("serial")
 public class ProductContainerTreeNode extends DefaultMutableTreeNode {
@@ -13,8 +13,8 @@ public class ProductContainerTreeNode extends DefaultMutableTreeNode {
 	 * Constructs a new ProductContainerTreeNode object.
 	 * 
 	 * @param productContainer
-	 *            ProductContainerData object associated with this tree node.
-	 *            This value becomes the "user object" of the node.
+	 *            ProductContainerData object associated with this tree node. This value
+	 *            becomes the "user object" of the node.
 	 * 
 	 *            {@pre productContainer != null}
 	 * 
@@ -37,13 +37,11 @@ public class ProductContainerTreeNode extends DefaultMutableTreeNode {
 	}
 
 	/**
-	 * Returns true if this node is the "all storage units" node and false
-	 * otherwise.
+	 * Returns true if this node is the "all storage units" node and false otherwise.
 	 * 
 	 * {@pre None}
 	 * 
-	 * {@post Returns true if this node is the "all storage units" node and
-	 * false otherwise.}
+	 * {@post Returns true if this node is the "all storage units" node and false otherwise.}
 	 */
 	public boolean isAllStorageUnits() {
 		return isRoot();
@@ -54,8 +52,7 @@ public class ProductContainerTreeNode extends DefaultMutableTreeNode {
 	 * 
 	 * {@pre None}
 	 * 
-	 * {@post Returns true if this node is an "product group" node and false
-	 * otherwise.}
+	 * {@post Returns true if this node is an "product group" node and false otherwise.}
 	 */
 	public boolean isProductGroup() {
 		ProductContainerTreeNode parent = (ProductContainerTreeNode) getParent();
@@ -67,8 +64,7 @@ public class ProductContainerTreeNode extends DefaultMutableTreeNode {
 	 * 
 	 * {@pre None}
 	 * 
-	 * {@post Returns true if this node is a "storage unit" node and false
-	 * otherwise.}
+	 * {@post Returns true if this node is a "storage unit" node and false otherwise.}
 	 */
 	public boolean isStorageUnit() {
 		ProductContainerTreeNode parent = (ProductContainerTreeNode) getParent();

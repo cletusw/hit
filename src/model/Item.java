@@ -38,8 +38,8 @@ public class Item implements Comparable<Object>, Serializable {
 	 * @post this.container != null
 	 * 
 	 */
-	public Item(Barcode barcode, Product product, ProductContainer container,
-			Date entryDate, ItemManager manager) {
+	public Item(Barcode barcode, Product product, ProductContainer container, Date entryDate,
+			ItemManager manager) {
 		assert (barcode != null);
 		assert (product != null);
 		assert (container != null);
@@ -54,8 +54,8 @@ public class Item implements Comparable<Object>, Serializable {
 	}
 
 	/**
-	 * Constructs a new Item with the specified barcode, product, and container.
-	 * Sets entryDate to now.
+	 * Constructs a new Item with the specified barcode, product, and container. Sets entryDate
+	 * to now.
 	 * 
 	 * @param barcode
 	 *            the Item's barcode
@@ -128,8 +128,7 @@ public class Item implements Comparable<Object>, Serializable {
 	 * 
 	 * @param o
 	 *            the object to compare this Item to
-	 * @return zero if the items are equal, otherwise a number greater than or
-	 *         less than zero
+	 * @return zero if the items are equal, otherwise a number greater than or less than zero
 	 * 
 	 * @pre o != null
 	 * @pre (o instanceof Item)
@@ -264,8 +263,7 @@ public class Item implements Comparable<Object>, Serializable {
 	@SuppressWarnings("deprecation")
 	private void setExpirationDate() {
 		Date d = entryDate;
-		expirationDate = new Date(d.getYear(), d.getMonth()
-				+ product.getShelfLife(), d.getDate(), d.getHours(),
-				d.getMinutes(), d.getSeconds());
+		expirationDate = new Date(d.getYear(), d.getMonth() + product.getShelfLife(),
+				d.getDate(), d.getHours(), d.getMinutes(), d.getSeconds());
 	}
 }

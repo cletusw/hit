@@ -15,15 +15,15 @@ import java.io.Serializable;
 public class ProductQuantity implements Serializable {
 
 	/**
-	 * Checks if float q and Unit u can be combined to create a valid Product
-	 * Group. q must be non-negative. If u is COUNT, q must be an integer.
+	 * Checks if float q and Unit u can be combined to create a valid Product Group. q must be
+	 * non-negative. If u is COUNT, q must be an integer.
 	 * 
 	 * @param quantity
 	 *            float quantity to test.
 	 * @param units
 	 *            Unit to test.
-	 * @return true if quantity, units can be combined to make a valid
-	 *         ProductQuantity, false otherwise
+	 * @return true if quantity, units can be combined to make a valid ProductQuantity, false
+	 *         otherwise
 	 * 
 	 * @pre true
 	 * @post true
@@ -49,8 +49,7 @@ public class ProductQuantity implements Serializable {
 	 * Constructor
 	 * 
 	 * @param q
-	 *            Quantity, must be non-negative. If Unit is COUNT, must be
-	 *            integer.
+	 *            Quantity, must be non-negative. If Unit is COUNT, must be integer.
 	 * @param u
 	 *            Unit
 	 * 
@@ -69,24 +68,22 @@ public class ProductQuantity implements Serializable {
 	}
 
 	/**
-	 * Adds a ProductQuantity to this ProductQuantity. If their UnitTypes don't
-	 * match, no effect will take place. If their units don't match but the
-	 * UnitTypes do, the incoming ProductQuantity will be converted to a
-	 * matching unit and added to this product quantity. This ProductQuantity's
-	 * units will not be modified.
+	 * Adds a ProductQuantity to this ProductQuantity. If their UnitTypes don't match, no
+	 * effect will take place. If their units don't match but the UnitTypes do, the incoming
+	 * ProductQuantity will be converted to a matching unit and added to this product quantity.
+	 * This ProductQuantity's units will not be modified.
 	 * 
 	 * @param otherQuantity
 	 *            - ProductQuantity to add to this ProductQuantity
 	 * 
 	 * @throws IllegalArgumentException
-	 *             If this ProductQuantity's UnitType does not match incoming
-	 *             ProductQuantity UnitType
+	 *             If this ProductQuantity's UnitType does not match incoming ProductQuantity
+	 *             UnitType
 	 * 
 	 * @pre otherQuantity UnitType.equals(units.UnitType)
 	 * @post quantity.equals(quantity + quantityToAdd.quantity)
 	 */
-	public void add(ProductQuantity otherQuantity)
-			throws IllegalArgumentException {
+	public void add(ProductQuantity otherQuantity) throws IllegalArgumentException {
 		assert (otherQuantity != null);
 		assert (!unitType.equals(otherQuantity.unitType));
 
@@ -96,8 +93,7 @@ public class ProductQuantity implements Serializable {
 					"Cannot add quantities with different unit types.");
 		}
 
-		float conversionFactor = Unit.getConversionFactor(otherQuantity.units,
-				units);
+		float conversionFactor = Unit.getConversionFactor(otherQuantity.units, units);
 		quantity += (otherQuantity.quantity * conversionFactor);
 	}
 
@@ -148,8 +144,8 @@ public class ProductQuantity implements Serializable {
 	}
 
 	/**
-	 * Attribute setter for quantity. This setter enforces that if the units are
-	 * COUNT, the quantity must be an Integer
+	 * Attribute setter for quantity. This setter enforces that if the units are COUNT, the
+	 * quantity must be an Integer
 	 * 
 	 * @param q
 	 *            Float if units is not COUNT, integer otherwise
@@ -168,17 +164,15 @@ public class ProductQuantity implements Serializable {
 	}
 
 	/**
-	 * Subtracts a ProductQuantity from this ProductQuantity. The two
-	 * ProductQuantities Must have matching units, and the result result must be
-	 * non-negative.
+	 * Subtracts a ProductQuantity from this ProductQuantity. The two ProductQuantities Must
+	 * have matching units, and the result result must be non-negative.
 	 * 
 	 * @param quantityToSubtract
-	 *            - ProductQuantity to subtract from this ProductQuantity, must
-	 *            have non-negative quantity
+	 *            - ProductQuantity to subtract from this ProductQuantity, must have
+	 *            non-negative quantity
 	 * 
 	 * @throws IllegalArgumentException
-	 *             If this ProductQuantity's Unit does not match incoming
-	 *             ProductQuantity Unit
+	 *             If this ProductQuantity's Unit does not match incoming ProductQuantity Unit
 	 * @throws IllegalArgumentException
 	 *             If the resulting quantity < 0
 	 * 
@@ -193,20 +187,18 @@ public class ProductQuantity implements Serializable {
 					"Cannot add quantities with different unit types.");
 		}
 
-		float conversionFactor = Unit.getConversionFactor(otherQuantity.units,
-				units);
+		float conversionFactor = Unit.getConversionFactor(otherQuantity.units, units);
 		assert (!(quantity - (otherQuantity.quantity * conversionFactor) < 0));
 		if (quantity - (otherQuantity.quantity * conversionFactor) < 0) {
-			throw new IllegalArgumentException(
-					"Resulting Subtraction would be negative");
+			throw new IllegalArgumentException("Resulting Subtraction would be negative");
 		}
 
 		quantity -= (otherQuantity.quantity * conversionFactor);
 	}
 
 	/**
-	 * Gets a legible string representation of this ProductQuantity in the
-	 * format [quantity] [Unit]
+	 * Gets a legible string representation of this ProductQuantity in the format [quantity]
+	 * [Unit]
 	 * 
 	 * @return String representation of ProductQuantity
 	 * @pre true

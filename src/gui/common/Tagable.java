@@ -2,10 +2,9 @@ package gui.common;
 
 /**
  * 
- * Tagable is the base class for all classes used to pass data into views.
- * Tagable subclasses contain the data that will be displayed by views. The Tag
- * property is used to link Tagable objects back to the model objects they
- * represent.
+ * Tagable is the base class for all classes used to pass data into views. Tagable subclasses
+ * contain the data that will be displayed by views. The Tag property is used to link Tagable
+ * objects back to the model objects they represent.
  */
 public class Tagable {
 

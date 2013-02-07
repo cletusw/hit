@@ -39,9 +39,9 @@ public class ItemData extends Tagable {
 	 * 
 	 * {@pre None}
 	 * 
-	 * {@post getEntryDate() == current date/time} {@post getExpirationDate() ==
-	 * current date/time} {@post getBarcode() == ""} {@post getStorageUnit() ==
-	 * ""} {@post getProductGroup() == ""}
+	 * {@post getEntryDate() == current date/time} {@post getExpirationDate() == current
+	 * date/time} {@post getBarcode() == ""} {@post getStorageUnit() == ""} {@post
+	 * getProductGroup() == ""}
 	 */
 	public ItemData() {
 		_entryDate = new Date();

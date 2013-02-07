@@ -71,8 +71,7 @@ public class ConcreteItemManager implements ItemManager, Serializable {
 	 * 
 	 * @param product
 	 *            The Product to test
-	 * @return true if the specified product has items that use it, false
-	 *         otherwise
+	 * @return true if the specified product has items that use it, false otherwise
 	 * 
 	 * @pre product != null
 	 * @post true
@@ -123,8 +122,7 @@ public class ConcreteItemManager implements ItemManager, Serializable {
 		assert (productsToItems.get(item.getProduct()).contains(item));
 
 		if (item == null)
-			throw new IllegalArgumentException(
-					"Item to unmanage can't be null.");
+			throw new IllegalArgumentException("Item to unmanage can't be null.");
 
 		Collection<Item> found = productsToItems.get(item.getProduct());
 		found.remove(item);

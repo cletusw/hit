@@ -16,8 +16,7 @@ public class AddProductGroupController extends Controller implements
 	 * @param view
 	 *            Reference to add product group view
 	 * @param container
-	 *            Product container to which the new product group is being
-	 *            added
+	 *            Product container to which the new product group is being added
 	 */
 	public AddProductGroupController(IView view, ProductContainerData container) {
 		super(view);
@@ -30,30 +29,29 @@ public class AddProductGroupController extends Controller implements
 	//
 
 	/**
-	 * This method is called when the user clicks the "OK" button in the add
-	 * product group view.
+	 * This method is called when the user clicks the "OK" button in the add product group
+	 * view.
 	 */
 	@Override
 	public void addProductGroup() {
 	}
 
 	/**
-	 * This method is called when any of the fields in the add product group
-	 * view is changed by the user.
+	 * This method is called when any of the fields in the add product group view is changed by
+	 * the user.
 	 */
 	@Override
 	public void valuesChanged() {
 	}
 
 	/**
-	 * Sets the enable/disable state of all components in the controller's view.
-	 * A component should be enabled only if the user is currently allowed to
-	 * interact with that component.
+	 * Sets the enable/disable state of all components in the controller's view. A component
+	 * should be enabled only if the user is currently allowed to interact with that component.
 	 * 
 	 * {@pre None}
 	 * 
-	 * {@post The enable/disable state of all components in the controller's
-	 * view have been set appropriately.}
+	 * {@post The enable/disable state of all components in the controller's view have been set
+	 * appropriately.}
 	 */
 	@Override
 	protected void enableComponents() {

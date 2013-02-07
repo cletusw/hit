@@ -33,8 +33,7 @@ public class ValueResult<T> extends Result {
 	 * 
 	 *            {@pre None}
 	 * 
-	 *            {@post getStatus() == status, getMessage() == "", getValue()
-	 *            == null}
+	 *            {@post getStatus() == status, getMessage() == "", getValue() == null}
 	 */
 	public ValueResult(boolean status) {
 		super(status);
@@ -52,8 +51,7 @@ public class ValueResult<T> extends Result {
 	 * 
 	 *            {@pre None}
 	 * 
-	 *            {@post getStatus() == status, getMessage() == message,
-	 *            getValue() == null}
+	 *            {@post getStatus() == status, getMessage() == message, getValue() == null}
 	 */
 	public ValueResult(boolean status, String message) {
 		super(status, message);
@@ -73,8 +71,7 @@ public class ValueResult<T> extends Result {
 	 * 
 	 *            {@pre None}
 	 * 
-	 *            {@post getStatus() == status, getMessage() == message,
-	 *            getValue() == value}
+	 *            {@post getStatus() == status, getMessage() == message, getValue() == value}
 	 */
 	public ValueResult(boolean status, String message, T value) {
 		super(status, message);

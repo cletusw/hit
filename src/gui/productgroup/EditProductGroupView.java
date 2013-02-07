@@ -5,11 +5,9 @@ import gui.inventory.ProductContainerData;
 import gui.main.GUI;
 
 @SuppressWarnings("serial")
-public class EditProductGroupView extends ProductGroupView implements
-		IEditProductGroupView {
+public class EditProductGroupView extends ProductGroupView implements IEditProductGroupView {
 
-	public EditProductGroupView(GUI parent, DialogBox dialog,
-			ProductContainerData target) {
+	public EditProductGroupView(GUI parent, DialogBox dialog, ProductContainerData target) {
 		super(parent, dialog);
 
 		construct();

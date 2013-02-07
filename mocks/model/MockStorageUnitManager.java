@@ -31,8 +31,7 @@ public class MockStorageUnitManager implements StorageUnitManager {
 	}
 
 	@Override
-	public void renameStorageUnit(StorageUnit storageUnit,
-			String newStorageUnitName) {
+	public void renameStorageUnit(StorageUnit storageUnit, String newStorageUnitName) {
 	}
 
 }

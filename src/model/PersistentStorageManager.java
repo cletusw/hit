@@ -3,8 +3,8 @@ package model;
 import java.io.IOException;
 
 /**
- * Defines an interface for classes that support read/write persistence
- * operations for the HomeInventoryTracker class
+ * Defines an interface for classes that support read/write persistence operations for the
+ * HomeInventoryTracker class
  * 
  * @author Seth Stewart
  * @version 1.0 - Snell 340 Group 4 Phase 1
@@ -31,6 +31,5 @@ public interface PersistentStorageManager {
 	 *            the String filename to write to
 	 * @throw IOException if the write failed.
 	 */
-	public void writeObject(HomeInventoryTracker hit, String filename)
-			throws IOException;
+	public void writeObject(HomeInventoryTracker hit, String filename) throws IOException;
 }

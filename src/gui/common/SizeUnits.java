@@ -1,8 +1,8 @@
 package gui.common;
 
 /**
- * Enumeration defining all the units of measurement (including weight, volume,
- * and count) supported by the program.
+ * Enumeration defining all the units of measurement (including weight, volume, and count)
+ * supported by the program.
  */
 public enum SizeUnits {
 
@@ -10,8 +10,8 @@ public enum SizeUnits {
 	Pounds("pounds"), Ounces("ounces"), Grams("grams"), Kilograms("kilograms"),
 
 	// Volume units
-	Gallons("gallons"), Quarts("quarts"), Pints("pints"), FluidOunces(
-			"fluid ounces"), Liters("liters"),
+	Gallons("gallons"), Quarts("quarts"), Pints("pints"), FluidOunces("fluid ounces"), Liters(
+			"liters"),
 
 	// Count units
 	Count("count");

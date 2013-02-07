@@ -49,8 +49,7 @@ public class SessionMenu extends JMenu {
 		};
 
 		_exitMenuItem = new JMenuItem("Exit");
-		_exitMenuItem.setFont(View.createFont(_exitMenuItem.getFont(),
-				View.MenuFontSize));
+		_exitMenuItem.setFont(View.createFont(_exitMenuItem.getFont(), View.MenuFontSize));
 		_exitMenuItem.addActionListener(actionListener);
 		add(_exitMenuItem);
 	}

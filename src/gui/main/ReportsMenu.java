@@ -58,32 +58,31 @@ public class ReportsMenu extends JMenu {
 		};
 
 		_expiredMenuItem = new JMenuItem("Expired Items");
-		_expiredMenuItem.setFont(View.createFont(_expiredMenuItem.getFont(),
-				View.MenuFontSize));
+		_expiredMenuItem
+				.setFont(View.createFont(_expiredMenuItem.getFont(), View.MenuFontSize));
 		_expiredMenuItem.addActionListener(actionListener);
 		add(_expiredMenuItem);
 
 		_removedMenuItem = new JMenuItem("Removed Items");
-		_removedMenuItem.setFont(View.createFont(_removedMenuItem.getFont(),
-				View.MenuFontSize));
+		_removedMenuItem
+				.setFont(View.createFont(_removedMenuItem.getFont(), View.MenuFontSize));
 		_removedMenuItem.addActionListener(actionListener);
 		add(_removedMenuItem);
 
 		_supplyMenuItem = new JMenuItem("N-Month Supply");
-		_supplyMenuItem.setFont(View.createFont(_supplyMenuItem.getFont(),
-				View.MenuFontSize));
+		_supplyMenuItem.setFont(View.createFont(_supplyMenuItem.getFont(), View.MenuFontSize));
 		_supplyMenuItem.addActionListener(actionListener);
 		add(_supplyMenuItem);
 
 		_productMenuItem = new JMenuItem("Product Statistics");
-		_productMenuItem.setFont(View.createFont(_productMenuItem.getFont(),
-				View.MenuFontSize));
+		_productMenuItem
+				.setFont(View.createFont(_productMenuItem.getFont(), View.MenuFontSize));
 		_productMenuItem.addActionListener(actionListener);
 		add(_productMenuItem);
 
 		_noticesMenuItem = new JMenuItem("Notices");
-		_noticesMenuItem.setFont(View.createFont(_noticesMenuItem.getFont(),
-				View.MenuFontSize));
+		_noticesMenuItem
+				.setFont(View.createFont(_noticesMenuItem.getFont(), View.MenuFontSize));
 		_noticesMenuItem.addActionListener(actionListener);
 		add(_noticesMenuItem);
 	}

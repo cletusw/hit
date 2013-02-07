@@ -23,8 +23,8 @@ public class ProductTest {
 	public void setUp() throws Exception {
 		productManager = new MockProductManager();
 		size = new ProductQuantity(2.3f, Unit.GALLONS);
-		product = new Product(validBarcode, validDescription, shelfLife,
-				threeMonthSupply, size, productManager);
+		product = new Product(validBarcode, validDescription, shelfLife, threeMonthSupply,
+				size, productManager);
 
 		// test invariants
 		assertTrue(product.getBarcode() != null);
@@ -48,10 +48,10 @@ public class ProductTest {
 
 	@Test
 	public void testCompareTo() {
-		Product sameProduct = new Product(product.getBarcode(),
-				product.getDescription(), 0, 0, size, productManager);
-		Product differentProduct = new Product("DifferentBarcode",
-				"DifferentDescription", 0, 0, size, productManager);
+		Product sameProduct = new Product(product.getBarcode(), product.getDescription(), 0,
+				0, size, productManager);
+		Product differentProduct = new Product("DifferentBarcode", "DifferentDescription", 0,
+				0, size, productManager);
 
 		assertTrue(product.compareTo(sameProduct) == 0);
 		assertTrue(product.compareTo(differentProduct) != 0);

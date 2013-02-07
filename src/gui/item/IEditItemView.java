@@ -52,8 +52,7 @@ public interface IEditItemView extends IView {
 	String getDescription();
 
 	/**
-	 * Returns the value of the "Entry Date" field, or null if the field's value
-	 * is invalid.
+	 * Returns the value of the "Entry Date" field, or null if the field's value is invalid.
 	 */
 	Date getEntryDate();
 

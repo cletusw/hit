@@ -86,8 +86,7 @@ public class Product implements Comparable<Object>, Serializable {
 	 * 
 	 * @param tms
 	 *            the integer to check
-	 * @return true if the integer is a valid three-month supply, false
-	 *         otherwise.
+	 * @return true if the integer is a valid three-month supply, false otherwise.
 	 * 
 	 * @pre true
 	 * @post true
@@ -109,9 +108,8 @@ public class Product implements Comparable<Object>, Serializable {
 	private ProductQuantity size;
 
 	/**
-	 * Constructs a Product using the given barcode, description, shelfLife,
-	 * creationDate, manager describing the productManager that will manage this
-	 * product.
+	 * Constructs a Product using the given barcode, description, shelfLife, creationDate,
+	 * manager describing the productManager that will manage this product.
 	 * 
 	 * @param barcode
 	 *            NotNullString to identify this product
@@ -120,11 +118,10 @@ public class Product implements Comparable<Object>, Serializable {
 	 * @param creationDate
 	 *            Date this item was created, must not be in the future
 	 * @param shelfLife
-	 *            integer describing how long in months before the product
-	 *            expires
+	 *            integer describing how long in months before the product expires
 	 * @param tms
-	 *            ThreeMonthSupply describing how many of this product are
-	 *            needed for three months
+	 *            ThreeMonthSupply describing how many of this product are needed for three
+	 *            months
 	 * @param manager
 	 *            the ProductManager that will manage this product
 	 * 
@@ -143,8 +140,8 @@ public class Product implements Comparable<Object>, Serializable {
 	 * @post this.threemonthSupply = tms
 	 * @post this.size = pq
 	 */
-	public Product(String barcode, String description, Date creationDate,
-			int shelfLife, int tms, ProductQuantity pq, ProductManager manager) {
+	public Product(String barcode, String description, Date creationDate, int shelfLife,
+			int tms, ProductQuantity pq, ProductManager manager) {
 		setBarcode(barcode);
 		this.description = new NonNullString(description);
 		setCreationDate(creationDate);
@@ -157,20 +154,18 @@ public class Product implements Comparable<Object>, Serializable {
 	}
 
 	/**
-	 * Constructs a Product using the given barcode, description, shelfLife,
-	 * manager describing the productManager that will manage this product. The
-	 * creationDate is set to now.
+	 * Constructs a Product using the given barcode, description, shelfLife, manager describing
+	 * the productManager that will manage this product. The creationDate is set to now.
 	 * 
 	 * @param barcode
 	 *            NotNullString to identify this product
 	 * @param description
 	 *            string description of the product
 	 * @param shelfLife
-	 *            integer describing how long in months before the product
-	 *            expires
+	 *            integer describing how long in months before the product expires
 	 * @param tms
-	 *            ThreeMonthSupply describing how many of this product are
-	 *            needed for three months
+	 *            ThreeMonthSupply describing how many of this product are needed for three
+	 *            months
 	 * @param manager
 	 *            the ProductManager that will manage this product
 	 * 
@@ -264,8 +259,8 @@ public class Product implements Comparable<Object>, Serializable {
 	}
 
 	/**
-	 * Compare 2 Products to see if their barcodes are equal. Uses
-	 * String.equals() on the product barcodes.
+	 * Compare 2 Products to see if their barcodes are equal. Uses String.equals() on the
+	 * product barcodes.
 	 * 
 	 * @param p
 	 *            Product to compare
@@ -364,8 +359,7 @@ public class Product implements Comparable<Object>, Serializable {
 		if (!date.after(now)) {
 			creationDate = date;
 		} else {
-			throw new IllegalArgumentException(
-					"CreationDate cannot be in the future");
+			throw new IllegalArgumentException("CreationDate cannot be in the future");
 		}
 	}
 
@@ -378,8 +372,7 @@ public class Product implements Comparable<Object>, Serializable {
 
 	private void setThreeMonthSupply(int threeMonthSupply) {
 		if (threeMonthSupply < 0)
-			throw new IllegalArgumentException(
-					"Three Month Supply must be non-negative");
+			throw new IllegalArgumentException("Three Month Supply must be non-negative");
 
 		this.threeMonthSupply = threeMonthSupply;
 	}

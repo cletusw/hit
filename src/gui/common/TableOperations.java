@@ -30,8 +30,8 @@ public final class TableOperations {
 	}
 
 	/**
-	 * Selects the table row that occupies the specified (x,y) point. This is
-	 * used to select the table row clicked on by the user.
+	 * Selects the table row that occupies the specified (x,y) point. This is used to select
+	 * the table row clicked on by the user.
 	 * 
 	 * @param table
 	 *            table object in which the mouse click occurred
@@ -40,9 +40,8 @@ public final class TableOperations {
 	 * 
 	 *            {@pre table != null} {@pre point != null}
 	 * 
-	 *            {@post The table row corresponding to the specified point is
-	 *            selected. If the specified point is not within the bounds of a
-	 *            table row, nothing is done.}
+	 *            {@post The table row corresponding to the specified point is selected. If the
+	 *            specified point is not within the bounds of a table row, nothing is done.}
 	 */
 	public static void selectTableRow(JTable table, Point point) {
 		int rowIndex = table.rowAtPoint(point);

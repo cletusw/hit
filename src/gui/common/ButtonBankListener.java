@@ -15,8 +15,8 @@ public interface ButtonBankListener {
 	 * @param label
 	 *            label of the button that was pressed
 	 * 
-	 *            {@pre index is a valid button index} {@pre label is the label
-	 *            of the button at position index}
+	 *            {@pre index is a valid button index} {@pre label is the label of the button
+	 *            at position index}
 	 * 
 	 *            {@post Button press has been processed.}
 	 */
