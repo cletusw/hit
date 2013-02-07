@@ -1,6 +1,6 @@
 package gui.productgroup;
 
-import gui.common.*;
+import gui.common.IController;
 
 /**
  * Controller interface for add product group view.

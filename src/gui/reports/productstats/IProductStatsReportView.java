@@ -1,6 +1,7 @@
 package gui.reports.productstats;
 
-import gui.common.*;
+import gui.common.FileFormat;
+import gui.common.IView;
 
 /**
  * View interface for the product statistics report view.

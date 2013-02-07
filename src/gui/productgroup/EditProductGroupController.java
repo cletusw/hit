@@ -1,7 +1,8 @@
 package gui.productgroup;
 
-import gui.common.*;
-import gui.inventory.*;
+import gui.common.Controller;
+import gui.common.IView;
+import gui.inventory.ProductContainerData;
 
 /**
  * Controller class for the edit product group view.

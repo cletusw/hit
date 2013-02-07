@@ -1,7 +1,7 @@
 package gui.batches;
 
-import gui.common.*;
-import gui.product.*;
+import gui.common.Controller;
+import gui.common.IView;
 
 /**
  * Controller class for the remove item batch view.

@@ -1,8 +1,8 @@
 package gui.batches;
 
-import gui.common.*;
-import gui.inventory.*;
-import gui.product.*;
+import gui.common.Controller;
+import gui.common.IView;
+import gui.inventory.ProductContainerData;
 
 /**
  * Controller class for the add item batch view.

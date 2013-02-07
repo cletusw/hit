@@ -1,6 +1,7 @@
 package gui.reports.removed;
 
-import gui.common.*;
+import gui.common.Controller;
+import gui.common.IView;
 
 /**
  * Controller class for the removed items report view.

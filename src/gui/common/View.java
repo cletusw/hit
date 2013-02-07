@@ -1,12 +1,18 @@
 package gui.common;
 
 
-import java.awt.*;
-import javax.swing.*;
-import javax.swing.border.TitledBorder;
-import javax.swing.table.*;
-
 import gui.main.GUI;
+
+import java.awt.Color;
+import java.awt.Font;
+
+import javax.swing.BorderFactory;
+import javax.swing.JPanel;
+import javax.swing.JTable;
+import javax.swing.UIManager;
+import javax.swing.border.TitledBorder;
+import javax.swing.table.DefaultTableCellRenderer;
+import javax.swing.table.TableColumn;
 
 /**
  * View is a base class that provides common functionality required

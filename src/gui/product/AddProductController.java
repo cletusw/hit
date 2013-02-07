@@ -1,6 +1,7 @@
 package gui.product;
 
-import gui.common.*;
+import gui.common.Controller;
+import gui.common.IView;
 
 /**
  * Controller class for the add item view.

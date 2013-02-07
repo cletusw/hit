@@ -1,6 +1,6 @@
 package gui.main;
 
-import gui.common.*;
+import gui.common.IView;
 
 
 /**

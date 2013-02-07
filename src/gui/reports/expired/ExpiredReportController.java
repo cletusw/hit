@@ -1,7 +1,8 @@
 package gui.reports.expired;
 
 
-import gui.common.*;
+import gui.common.Controller;
+import gui.common.IView;
 
 
 /**

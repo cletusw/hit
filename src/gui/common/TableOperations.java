@@ -1,7 +1,8 @@
 package gui.common;
 
-import java.awt.*;
-import javax.swing.*;
+import java.awt.Point;
+
+import javax.swing.JTable;
 
 /**
  * TableOperations provides useful utility functions for operating on

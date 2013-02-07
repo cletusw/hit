@@ -1,6 +1,6 @@
 package gui.reports.supply;
 
-import gui.common.*;
+import gui.common.IController;
 
 /**
  * Controller interface for the N-month supply report view.

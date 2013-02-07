@@ -1,20 +1,35 @@
 package gui.reports.removed;
 
-import java.awt.event.*;
+import gui.common.ButtonBankListener;
+import gui.common.ButtonBankPanel;
+import gui.common.DialogBox;
+import gui.common.DialogView;
+import gui.common.FileFormat;
+import gui.main.GUI;
+
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.text.ParseException;
 import java.util.Calendar;
 import java.util.Date;
 
-import javax.swing.*;
+import javax.swing.Box;
+import javax.swing.BoxLayout;
+import javax.swing.ButtonGroup;
+import javax.swing.JButton;
+import javax.swing.JComboBox;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JRadioButton;
+import javax.swing.JSpinner;
+import javax.swing.SpinnerDateModel;
+import javax.swing.SpinnerModel;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 
-import gui.common.*;
-import gui.main.*;
-
-import common.util.*;
+import common.util.DateUtils;
 
 @SuppressWarnings("serial")
 public class RemovedReportView extends DialogView implements IRemovedReportView {

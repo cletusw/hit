@@ -1,10 +1,10 @@
 package gui.batches;
 
-import java.util.*;
-
 import gui.common.IView;
 import gui.item.ItemData;
 import gui.product.ProductData;
+
+import java.util.Date;
 
 
 /**

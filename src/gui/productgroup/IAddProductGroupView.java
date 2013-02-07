@@ -1,6 +1,7 @@
 package gui.productgroup;
 
-import gui.common.*;
+import gui.common.IView;
+import gui.common.SizeUnits;
 
 /**
  * View interface for the add product group view.

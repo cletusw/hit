@@ -1,6 +1,6 @@
 package gui.reports.notices;
 
-import gui.common.*;
+import gui.common.IController;
 
 /**
  * Controller interface for the notices report view.

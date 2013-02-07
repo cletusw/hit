@@ -1,8 +1,9 @@
 package gui.reports.removed;
 
-import java.util.*;
+import gui.common.FileFormat;
+import gui.common.IView;
 
-import gui.common.*;
+import java.util.Date;
 
 /**
  * View interface for the removed items report view.

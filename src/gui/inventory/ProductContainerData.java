@@ -1,7 +1,9 @@
 package gui.inventory;
 
-import java.util.*;
-import gui.common.*;
+import gui.common.Tagable;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Display data class for product containers (i.e., storage units

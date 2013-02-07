@@ -1,6 +1,6 @@
 package gui.reports.productstats;
 
-import gui.common.*;
+import gui.common.IController;
 
 /**
  * Controller interface for the product statistics report view.

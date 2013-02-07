@@ -1,10 +1,11 @@
 package gui.common;
 
-import java.awt.event.*;
+import gui.main.GUI;
 
-import javax.swing.*;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 
-import gui.main.*;
+import javax.swing.JDialog;
 
 /**
  * Used to display modal dialog boxes.

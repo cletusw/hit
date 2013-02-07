@@ -1,12 +1,24 @@
 package gui.reports.notices;
 
-import java.awt.*;
-import java.awt.event.*;
+import gui.common.ButtonBankListener;
+import gui.common.ButtonBankPanel;
+import gui.common.DialogBox;
+import gui.common.DialogView;
+import gui.common.FileFormat;
+import gui.common.GridBagConstraintsExt;
+import gui.main.GUI;
 
-import javax.swing.*;
+import java.awt.GridBagLayout;
+import java.awt.Insets;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
-import gui.common.*;
-import gui.main.*;
+import javax.swing.Box;
+import javax.swing.BoxLayout;
+import javax.swing.JButton;
+import javax.swing.JComboBox;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
 
 
 @SuppressWarnings("serial")

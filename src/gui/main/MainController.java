@@ -1,6 +1,6 @@
 package gui.main;
 
-import gui.common.*;
+import gui.common.Controller;
 
 /**
  * Controller class for the main view.  The main view allows the user

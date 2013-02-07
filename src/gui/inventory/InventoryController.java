@@ -1,10 +1,15 @@
 package gui.inventory;
 
-import gui.common.*;
-import gui.item.*;
-import gui.product.*;
+import gui.common.Controller;
+import gui.item.ItemData;
+import gui.product.ProductData;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.GregorianCalendar;
+import java.util.List;
+import java.util.Random;
 
 /**
  * Controller class for inventory view.

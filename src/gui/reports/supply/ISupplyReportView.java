@@ -1,6 +1,7 @@
 package gui.reports.supply;
 
-import gui.common.*;
+import gui.common.FileFormat;
+import gui.common.IView;
 
 /**
  * View interface for the N-month supply report view.

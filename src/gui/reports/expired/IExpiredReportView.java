@@ -1,6 +1,7 @@
 package gui.reports.expired;
 
-import gui.common.*;
+import gui.common.FileFormat;
+import gui.common.IView;
 
 /**
  * View interface for the expired items report view.

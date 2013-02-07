@@ -1,25 +1,72 @@
 package gui.inventory;
 
-import java.awt.*;
-import java.awt.event.*;
-import java.awt.datatransfer.*;
-import java.io.IOException;
-import java.util.*;
-
-import javax.swing.*;
-import javax.swing.event.*;
-import javax.swing.tree.*;
-import javax.swing.table.*;
-
-import common.util.*;
-
+import gui.batches.AddItemBatchView;
+import gui.batches.RemoveItemBatchView;
+import gui.batches.TransferItemBatchView;
+import gui.common.DialogBox;
+import gui.common.TableOperations;
+import gui.common.Tagable;
+import gui.common.TreeOperations;
+import gui.common.View;
+import gui.item.EditItemView;
+import gui.item.ItemData;
 import gui.main.GUI;
-import gui.product.*;
-import gui.productgroup.*;
-import gui.storageunit.*;
-import gui.item.*;
-import gui.batches.*;
-import gui.common.*;
+import gui.product.EditProductView;
+import gui.product.ProductData;
+import gui.productgroup.AddProductGroupView;
+import gui.productgroup.EditProductGroupView;
+import gui.storageunit.AddStorageUnitView;
+import gui.storageunit.EditStorageUnitView;
+
+import java.awt.Color;
+import java.awt.Component;
+import java.awt.Dimension;
+import java.awt.Font;
+import java.awt.datatransfer.DataFlavor;
+import java.awt.datatransfer.Transferable;
+import java.awt.datatransfer.UnsupportedFlavorException;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Enumeration;
+import java.util.HashMap;
+
+import javax.swing.Box;
+import javax.swing.BoxLayout;
+import javax.swing.DropMode;
+import javax.swing.Icon;
+import javax.swing.ImageIcon;
+import javax.swing.JComponent;
+import javax.swing.JLabel;
+import javax.swing.JMenuItem;
+import javax.swing.JPanel;
+import javax.swing.JPopupMenu;
+import javax.swing.JScrollPane;
+import javax.swing.JSplitPane;
+import javax.swing.JTable;
+import javax.swing.JTextField;
+import javax.swing.JTree;
+import javax.swing.ListSelectionModel;
+import javax.swing.TransferHandler;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
+import javax.swing.event.TreeSelectionEvent;
+import javax.swing.event.TreeSelectionListener;
+import javax.swing.table.DefaultTableColumnModel;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.table.JTableHeader;
+import javax.swing.table.TableColumn;
+import javax.swing.tree.DefaultMutableTreeNode;
+import javax.swing.tree.DefaultTreeCellRenderer;
+import javax.swing.tree.DefaultTreeModel;
+import javax.swing.tree.TreePath;
+import javax.swing.tree.TreeSelectionModel;
+
+import common.util.DateUtils;
 
 
 @SuppressWarnings("serial")

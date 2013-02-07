@@ -1,6 +1,6 @@
 package gui.storageunit;
 
-import gui.common.*;
+import gui.common.IView;
 
 /**
  * View interface for the add storage unit view.

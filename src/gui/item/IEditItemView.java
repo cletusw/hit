@@ -1,8 +1,8 @@
 package gui.item;
 
-import java.util.*;
+import gui.common.IView;
 
-import gui.common.*;
+import java.util.Date;
 
 /**
  * View interface for the edit item view.

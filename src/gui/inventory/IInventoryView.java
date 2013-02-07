@@ -1,8 +1,8 @@
 package gui.inventory;
 
-import gui.common.*;
+import gui.common.IView;
 import gui.item.ItemData;
-import gui.product.*;
+import gui.product.ProductData;
 
 /**
  * View interface for inventory view.

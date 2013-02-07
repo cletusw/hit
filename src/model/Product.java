@@ -1,10 +1,9 @@
 package model;
 
 import java.io.Serializable;
+import java.util.Date;
 import java.util.Set;
 import java.util.TreeSet;
-
-import java.util.Date;
 
 /**
  * A representation of a product within the Home Inventory System

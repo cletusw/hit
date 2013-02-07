@@ -1,17 +1,23 @@
 
 package gui.main;
 
-import javax.swing.*;
+import gui.common.DialogBox;
+import gui.common.View;
+import gui.inventory.InventoryView;
+import gui.reports.expired.ExpiredReportView;
+import gui.reports.notices.NoticesReportView;
+import gui.reports.productstats.ProductStatsReportView;
+import gui.reports.removed.RemovedReportView;
+import gui.reports.supply.SupplyReportView;
 
-import java.awt.event.*;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 
-import gui.common.*;
-import gui.inventory.*;
-import gui.reports.expired.*;
-import gui.reports.supply.*;
-import gui.reports.notices.*;
-import gui.reports.productstats.*;
-import gui.reports.removed.*;
+import javax.swing.JFrame;
+import javax.swing.JMenuBar;
+import javax.swing.JOptionPane;
+import javax.swing.SwingUtilities;
+import javax.swing.UIManager;
 
 
 @SuppressWarnings("serial")

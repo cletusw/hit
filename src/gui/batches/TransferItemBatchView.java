@@ -1,7 +1,7 @@
 package gui.batches;
 
-import gui.common.*;
-import gui.inventory.*;
+import gui.common.DialogBox;
+import gui.inventory.ProductContainerData;
 import gui.main.GUI;
 
 

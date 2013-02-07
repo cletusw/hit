@@ -1,6 +1,7 @@
 package gui.product;
 
-import gui.common.*;
+import gui.common.IView;
+import gui.common.SizeUnits;
 
 /**
  * View interface for the edit product view.

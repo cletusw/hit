@@ -1,18 +1,33 @@
 package gui.batches;
 
+import gui.common.DialogBox;
+import gui.common.GridBagConstraintsExt;
+import gui.inventory.ProductContainerData;
+import gui.main.GUI;
+import gui.product.AddProductView;
+
+import java.awt.Dimension;
+import java.awt.GridBagLayout;
+import java.awt.Insets;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.text.ParseException;
-import java.util.*;
-import java.awt.*;
-import java.awt.event.*;
-import javax.swing.*;
-import javax.swing.event.*;
+import java.util.Calendar;
+import java.util.Date;
+
+import javax.swing.Box;
+import javax.swing.BoxLayout;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JSpinner;
+import javax.swing.JSplitPane;
+import javax.swing.JTextField;
+import javax.swing.SpinnerDateModel;
+import javax.swing.SpinnerModel;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
 
 import common.util.DateUtils;
-
-import gui.common.*;
-import gui.inventory.*;
-import gui.main.GUI;
-import gui.product.*;
 
 @SuppressWarnings("serial")
 public class AddItemBatchView extends ItemBatchView implements

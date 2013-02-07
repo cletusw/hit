@@ -1,6 +1,6 @@
 package gui.reports.expired;
 
-import gui.common.*;
+import gui.common.IController;
 
 /**
  * Controller interface for the expired items report view.

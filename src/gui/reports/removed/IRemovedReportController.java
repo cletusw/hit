@@ -1,6 +1,6 @@
 package gui.reports.removed;
 
-import gui.common.*;
+import gui.common.IController;
 
 /**
  * Controller interface for the removed items report view.

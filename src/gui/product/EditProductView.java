@@ -1,6 +1,6 @@
 package gui.product;
 
-import gui.common.*;
+import gui.common.DialogBox;
 import gui.main.GUI;
 
 

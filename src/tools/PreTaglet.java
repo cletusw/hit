@@ -1,8 +1,9 @@
 package tools;
 
-import com.sun.tools.doclets.Taglet;
-import com.sun.javadoc.*;
 import java.util.Map;
+
+import com.sun.javadoc.Tag;
+import com.sun.tools.doclets.Taglet;
 
 
 public class PreTaglet implements Taglet {

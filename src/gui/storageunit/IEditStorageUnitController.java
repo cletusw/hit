@@ -1,6 +1,6 @@
 package gui.storageunit;
 
-import gui.common.*;
+import gui.common.IController;
 
 /**
  * Controller interface for edit storage unit view.

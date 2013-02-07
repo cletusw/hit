@@ -1,8 +1,8 @@
 package gui.item;
 
-import java.util.*;
-
 import gui.common.Tagable;
+
+import java.util.Date;
 
 /**
  * Display data class for items.

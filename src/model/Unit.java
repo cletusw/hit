@@ -1,7 +1,7 @@
 package model;
 import java.io.Serializable;
-import java.util.TreeMap;
 import java.util.Map;
+import java.util.TreeMap;
 
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 

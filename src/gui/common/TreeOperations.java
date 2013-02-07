@@ -1,8 +1,11 @@
 package gui.common;
 
-import java.awt.*;
-import javax.swing.*;
-import javax.swing.tree.*;
+import java.awt.Point;
+import java.awt.Rectangle;
+
+import javax.swing.JTree;
+import javax.swing.tree.DefaultMutableTreeNode;
+import javax.swing.tree.TreePath;
 
 /**
  * TreeOperations provides useful utility functions for operating on

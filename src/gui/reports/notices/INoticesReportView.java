@@ -1,6 +1,7 @@
 package gui.reports.notices;
 
-import gui.common.*;
+import gui.common.FileFormat;
+import gui.common.IView;
 
 /**
  * View interface for the notices report view.
