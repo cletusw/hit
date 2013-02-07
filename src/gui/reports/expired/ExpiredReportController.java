@@ -9,7 +9,7 @@ import gui.common.IView;
  * Controller class for the expired items report view.
  */
 public class ExpiredReportController extends Controller implements
-										IExpiredReportController {
+IExpiredReportController {
 
 	/**
 	 * Constructor.
@@ -25,7 +25,7 @@ public class ExpiredReportController extends Controller implements
 	//
 	// Controller overrides
 	//
-	
+
 	/**
 	 * This method is called when the user clicks the "OK"
 	 * button in the expired items report view.
@@ -71,12 +71,12 @@ public class ExpiredReportController extends Controller implements
 	protected IExpiredReportView getView() {
 		return (IExpiredReportView)super.getView();
 	}
-	
+
 	/**
 	 * Loads data into the controller's view.
 	 * 
 	 *  {@pre None}
-	 *  
+	 * 
 	 *  {@post The controller has loaded data into its view}
 	 */
 	@Override

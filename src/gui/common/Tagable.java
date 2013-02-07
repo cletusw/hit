@@ -14,7 +14,7 @@ public class Tagable {
 	 * Tag property.  Reference to a model object corresponding to this object.
 	 */
 	private Object _tag;
-	
+
 	/**
 	 * Constructs an empty Tagable object.
 	 * 
@@ -25,7 +25,7 @@ public class Tagable {
 	public Tagable() {
 		_tag = null;
 	}
-	
+
 	/**
 	 * Returns the current value of the Tag property.
 	 * 
@@ -36,7 +36,7 @@ public class Tagable {
 	public Object getTag() {
 		return _tag;
 	}
-	
+
 	/**
 	 * Returns true if and only if Tag is not null.
 	 * 
@@ -47,7 +47,7 @@ public class Tagable {
 	public boolean hasTag() {
 		return (_tag != null);
 	}
-	
+
 	/**
 	 * Sets the Tag property.
 	 * 
@@ -60,6 +60,6 @@ public class Tagable {
 	public void setTag(Object value) {
 		_tag = value;
 	}
-	
+
 }
 

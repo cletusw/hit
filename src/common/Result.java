@@ -4,17 +4,17 @@ package common;
  * Represents the result of an operation.
  */
 public class Result {
-	
+
 	/**
 	 * Status attribute. Indicates success or failure of the operation.
 	 */
 	private boolean _status;
-	
+
 	/**
 	 * Message attribute.  Describes the reason for failure (empty on success).
 	 */
 	private String _message;
-	
+
 	/**
 	 * Constructor.
 	 * 
@@ -26,7 +26,7 @@ public class Result {
 		_status = false;
 		_message = "";
 	}
-	
+
 	/**
 	 * Constructor.
 	 * 
@@ -40,7 +40,7 @@ public class Result {
 		_status = status;
 		_message = "";
 	}
-	
+
 	/**
 	 * Constructor.
 	 * 
@@ -55,7 +55,7 @@ public class Result {
 		_status = status;
 		_message = message;
 	}
-	
+
 	/**
 	 * Copy Constructor.
 	 * 
@@ -69,7 +69,7 @@ public class Result {
 		_status = other._status;
 		_message = other._message;
 	}
-	
+
 	/**
 	 * Appends string to Message attribute.
 	 * 
@@ -82,7 +82,7 @@ public class Result {
 	public void appendMessage(String message) {
 		_message += message;
 	}
-	
+
 	/**
 	 * Returns value of Message attribute.
 	 * 
@@ -115,7 +115,7 @@ public class Result {
 	public boolean hasMessage() {
 		return !StringOps.isNullOrEmpty(_message);
 	}
-	
+
 	/**
 	 * Sets the Message using information from the specified exception.
 	 * 
@@ -129,13 +129,13 @@ public class Result {
 	{
 		setStatus(false);
 		setMessage(e.getMessage());
-		
+
 		for(StackTraceElement ste : e.getStackTrace())
 		{
 			appendMessage("\n" + ste.toString());
 		}
 	}
-	
+
 	/**
 	 * Sets value of Message attribute.
 	 * 
@@ -161,6 +161,6 @@ public class Result {
 	public void setStatus(boolean status) {
 		_status = status;
 	}
-	
+
 }
 

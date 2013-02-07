@@ -14,14 +14,14 @@ public interface IEditProductGroupView extends IView {
 	 * @param value New enable/disable value
 	 */
 	void enableOK(boolean value);
-	
+
 	/**
 	 * Sets the enable/disable state of the "Product Group Name" field.
 	 * 
 	 * @param value New enable/disable value
 	 */
 	void enableProductGroupName(boolean value);
-	
+
 	/**
 	 * Sets the enable/disable state of the "3-Month Supply Unit" field.
 	 * 
@@ -35,29 +35,29 @@ public interface IEditProductGroupView extends IView {
 	 * @param value New enable/disable value
 	 */
 	void enableSupplyValue(boolean value);
-	
+
 	/**
 	 * Returns the value of the "Product Group Name" field.
 	 */
 	String getProductGroupName();
-	
+
 	/**
 	 * Returns the value of the "3-Month Supply Unit" field.
 	 */
 	SizeUnits getSupplyUnit();
-	
+
 	/**
 	 * Returns the value of the "3-Month Supply Value" field.
 	 */
 	String getSupplyValue();
-	
+
 	/**
 	 * Sets the value of the "Product Group Name" field.
 	 * 
 	 * @param value New "Product Group Name" value
 	 */
 	void setProductGroupName(String value);
-	
+
 	/**
 	 * Sets the value of the "3-Month Supply Unit" field.
 	 * 

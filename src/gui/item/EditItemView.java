@@ -10,7 +10,7 @@ public class EditItemView extends ItemView implements IEditItemView {
 	public EditItemView(GUI parent, DialogBox dialog, ItemData target) {
 		super(parent, dialog);
 
-		construct();		
+		construct();
 
 		_controller = new EditItemController(this, target);
 	}

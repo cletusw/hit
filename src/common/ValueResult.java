@@ -11,7 +11,7 @@ public class ValueResult<T> extends Result
 	 * Value attribute. Contains the return value of the operation.
 	 */
 	private T _value;
-	
+
 	/**
 	 * Constructor.
 	 * 
@@ -21,7 +21,7 @@ public class ValueResult<T> extends Result
 	 */
 	public ValueResult() {
 		super();
-		
+
 		setValue(null);
 	}
 
@@ -52,7 +52,7 @@ public class ValueResult<T> extends Result
 	 */
 	public ValueResult(boolean status, String message) {
 		super(status, message);
-		
+
 		setValue(null);
 	}
 
@@ -69,10 +69,10 @@ public class ValueResult<T> extends Result
 	 */
 	public ValueResult(boolean status, String message, T value) {
 		super(status, message);
-		
+
 		setValue(value);
 	}
-	
+
 	/**
 	 * Copy Constructor.
 	 * 
@@ -84,7 +84,7 @@ public class ValueResult<T> extends Result
 	 */
 	public ValueResult(ValueResult<T> other) {
 		super(other);
-		
+
 		setValue(other.getValue());
 	}
 
@@ -99,7 +99,7 @@ public class ValueResult<T> extends Result
 	{
 		return _value;
 	}
-	
+
 	/**
 	 * Sets value of Value attribute.
 	 * 
@@ -113,6 +113,6 @@ public class ValueResult<T> extends Result
 	{
 		_value = value;
 	}
-	
+
 }
 

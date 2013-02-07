@@ -6,9 +6,9 @@ import gui.common.IView;
 /**
  * Controller class for the edit product view.
  */
-public class EditProductController extends Controller 
-										implements IEditProductController {
-	
+public class EditProductController extends Controller
+implements IEditProductController {
+
 	/**
 	 * Constructor.
 	 * 
@@ -24,7 +24,7 @@ public class EditProductController extends Controller
 	//
 	// Controller overrides
 	//
-	
+
 	/**
 	 * This method is called when the user clicks the "OK"
 	 * button in the edit product view.
@@ -70,12 +70,12 @@ public class EditProductController extends Controller
 	protected IEditProductView getView() {
 		return (IEditProductView)super.getView();
 	}
-	
+
 	/**
 	 * Loads data into the controller's view.
 	 * 
 	 *  {@pre None}
-	 *  
+	 * 
 	 *  {@post The controller has loaded data into its view}
 	 */
 	@Override

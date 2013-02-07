@@ -10,7 +10,7 @@ import java.util.GregorianCalendar;
  * Utility class containing date/time functionality
  */
 public final class DateUtils {
-	
+
 	/**
 	 * Regular format string for dates.
 	 */
@@ -20,14 +20,14 @@ public final class DateUtils {
 	 * Short format string for dates.
 	 */
 	public static final String SHORT_DATE_FORMAT = "MM/dd/yy";
-	
+
 	/**
 	 * Format string for date/time.
 	 */
 	public static final String DATE_TIME_FORMAT = "MM/dd/yyyy hh:mm a";
-	
+
 	private static SimpleDateFormat dateFormatter;
-	
+
 	private static SimpleDateFormat shortDateFormatter;
 	private static SimpleDateFormat dateTimeFormatter;
 	static {
@@ -35,7 +35,7 @@ public final class DateUtils {
 		shortDateFormatter = new SimpleDateFormat(SHORT_DATE_FORMAT);
 		dateTimeFormatter = new SimpleDateFormat(DATE_TIME_FORMAT);
 	}
-	
+
 	/**
 	 * Returns a Date object for the current date with the time portion
 	 * set to 12AM.
@@ -48,7 +48,7 @@ public final class DateUtils {
 	public static Date currentDate() {
 		return removeTimeFromDate(new Date());
 	}
-	
+
 	/**
 	 * Returns the earliest date supported by the product.
 	 * 
@@ -58,18 +58,18 @@ public final class DateUtils {
 	 */
 	public static Date earliestDate() {
 		GregorianCalendar calendar = new GregorianCalendar();
-		
+
 		calendar.set(Calendar.MONTH, Calendar.JANUARY);
 		calendar.set(Calendar.DAY_OF_MONTH, 1);
-		calendar.set(Calendar.YEAR, 2000);		
+		calendar.set(Calendar.YEAR, 2000);
 		calendar.set(Calendar.HOUR_OF_DAY, 0);
 		calendar.set(Calendar.MINUTE, 0);
 		calendar.set(Calendar.SECOND, 0);
 		calendar.set(Calendar.MILLISECOND, 0);
-		
+
 		return calendar.getTime();
 	}
-	
+
 	/**
 	 * Formats a Date object as a string of the form "MM/dd/yyyy".
 	 * 
@@ -82,7 +82,7 @@ public final class DateUtils {
 	public static String formatDate(Date d) {
 		return dateFormatter.format(d);
 	}
-	
+
 	/**
 	 * Formats a Date object as a string of the form "MM/dd/yyyy hh:mm a"
 	 * 
@@ -108,7 +108,7 @@ public final class DateUtils {
 	public static String formatShortDate(Date d) {
 		return shortDateFormatter.format(d);
 	}
-	
+
 	/**
 	 * Parses a date string of the form "MM/dd/yyyy" and converts it to a Date object
 	 * 
@@ -128,7 +128,7 @@ public final class DateUtils {
 		}
 		return result;
 	}
-	
+
 	/**
 	 * Parses a string of the form "MM/dd/yyyy hh:mm a" and converts it to a Date object.
 	 * 
@@ -160,14 +160,14 @@ public final class DateUtils {
 	 */
 	public static Date removeTimeFromDate(Date date) {
 		GregorianCalendar calendar = new GregorianCalendar();
-		
+
 		calendar.setTime(date);
-		
+
 		calendar.set(Calendar.HOUR_OF_DAY, 0);
 		calendar.set(Calendar.MINUTE, 0);
 		calendar.set(Calendar.SECOND, 0);
 		calendar.set(Calendar.MILLISECOND, 0);
-		
+
 		return calendar.getTime();
 	}
 

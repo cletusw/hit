@@ -25,21 +25,25 @@ public class ReportsMenu extends JMenu {
 	public ReportsMenu(GUI parent) {
 		super("Reports");
 
-		this.addMenuListener(new MenuListener() {
+		addMenuListener(new MenuListener() {
+			@Override
 			public void menuCanceled(MenuEvent e) {
 				return;
 			}
-			
+
+			@Override
 			public void menuDeselected(MenuEvent e) {
 				return;
 			}
-			
+
+			@Override
 			public void menuSelected(MenuEvent e) {
 				enableMenuItems();
-			}			
+			}
 		});
 
 		ActionListener actionListener = new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent evt) {
 				if (evt.getSource() == _expiredMenuItem) {
 					printExpiredReport();
@@ -58,33 +62,33 @@ public class ReportsMenu extends JMenu {
 				}
 			}
 		};
-		
+
 		_expiredMenuItem = new JMenuItem("Expired Items");
 		_expiredMenuItem.setFont(View.createFont(_expiredMenuItem.getFont(), View.MenuFontSize));
 		_expiredMenuItem.addActionListener(actionListener);
 		add(_expiredMenuItem);
-		
+
 		_removedMenuItem = new JMenuItem("Removed Items");
 		_removedMenuItem.setFont(View.createFont(_removedMenuItem.getFont(), View.MenuFontSize));
 		_removedMenuItem.addActionListener(actionListener);
 		add(_removedMenuItem);
-		
+
 		_supplyMenuItem = new JMenuItem("N-Month Supply");
 		_supplyMenuItem.setFont(View.createFont(_supplyMenuItem.getFont(), View.MenuFontSize));
 		_supplyMenuItem.addActionListener(actionListener);
 		add(_supplyMenuItem);
-		
+
 		_productMenuItem = new JMenuItem("Product Statistics");
 		_productMenuItem.setFont(View.createFont(_productMenuItem.getFont(), View.MenuFontSize));
 		_productMenuItem.addActionListener(actionListener);
 		add(_productMenuItem);
-		
+
 		_noticesMenuItem = new JMenuItem("Notices");
 		_noticesMenuItem.setFont(View.createFont(_noticesMenuItem.getFont(), View.MenuFontSize));
 		_noticesMenuItem.addActionListener(actionListener);
 		add(_noticesMenuItem);
 	}
-	
+
 	public void setController(IMainController value) {
 		_controller = value;
 	}
@@ -100,23 +104,23 @@ public class ReportsMenu extends JMenu {
 		_productMenuItem.setEnabled(_controller.canPrintProductReport());
 		_noticesMenuItem.setEnabled(_controller.canPrintNoticesReport());
 	}
-	
+
 	private void printExpiredReport() {
 		_controller.printExpiredReport();
 	}
-	
+
 	private void printNoticesReport() {
 		_controller.printNoticesReport();
 	}
-	
+
 	private void printProductReport() {
 		_controller.printProductReport();
 	}
-	
+
 	private void printRemovedReport() {
 		_controller.printRemovedReport();
 	}
-	
+
 	private void printSupplyReport() {
 		_controller.printSupplyReport();
 	}

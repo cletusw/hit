@@ -14,14 +14,14 @@ public interface IExpiredReportView extends IView {
 	 * @param value New enable/disable value
 	 */
 	void enableFormat(boolean value);
-	
+
 	/**
 	 * Sets the enable/disable state of the "OK" button.
 	 * 
 	 * @param value New enable/disable value
 	 */
 	void enableOK(boolean value);
-	
+
 	/**
 	 * Returns the value of the "Format" field.
 	 */

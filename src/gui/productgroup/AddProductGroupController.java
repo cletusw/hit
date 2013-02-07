@@ -8,8 +8,8 @@ import gui.inventory.ProductContainerData;
  * Controller class for the add product group view.
  */
 public class AddProductGroupController extends Controller implements
-		IAddProductGroupController {
-	
+IAddProductGroupController {
+
 	/**
 	 * Constructor.
 	 * 
@@ -18,14 +18,14 @@ public class AddProductGroupController extends Controller implements
 	 */
 	public AddProductGroupController(IView view, ProductContainerData container) {
 		super(view);
-		
+
 		construct();
 	}
 
 	//
 	// Controller overrides
 	//
-	
+
 	/**
 	 * This method is called when the user clicks the "OK"
 	 * button in the add product group view.
@@ -71,12 +71,12 @@ public class AddProductGroupController extends Controller implements
 	protected IAddProductGroupView getView() {
 		return (IAddProductGroupView)super.getView();
 	}
-	
+
 	/**
 	 * Loads data into the controller's view.
 	 * 
 	 *  {@pre None}
-	 *  
+	 * 
 	 *  {@post The controller has loaded data into its view}
 	 */
 	@Override

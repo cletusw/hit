@@ -25,7 +25,7 @@ public final class TreeOperations {
 	 * node is selected.}
 	 */
 	public static DefaultMutableTreeNode getSelectedTreeNode(JTree tree) {
-		return (DefaultMutableTreeNode)tree.getLastSelectedPathComponent();	
+		return (DefaultMutableTreeNode)tree.getLastSelectedPathComponent();
 	}
 
 	/**
@@ -68,14 +68,14 @@ public final class TreeOperations {
 			}
 		}
 	}
-	
+
 	/**
 	 * Private Constructor.
 	 */
 	private TreeOperations() {
 		assert false;
 	}
-	
+
 }
 
 

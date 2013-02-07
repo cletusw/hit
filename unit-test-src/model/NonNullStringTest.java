@@ -26,22 +26,22 @@ public class NonNullStringTest {
 		assertTrue(one.compareTo(copyOfOne) == 0);
 		assertTrue(one.compareTo(copyOfOne.getValue()) == 0);
 	}
-	
+
 	@Test (expected=IllegalArgumentException.class)
 	public void testEmptyStringConstructor(){
 		new NonNullString("");
 	}
-	
+
 	@Test (expected=IllegalArgumentException.class)
 	public void testNullConstructor(){
 		new NonNullString(null);
 	}
-	
+
 	@Test
 	public void validConstructorTest(){
 		NonNullString one = new NonNullString("one");
 		assertTrue(one.value.equals("one"));
-		
+
 		NonNullString two = new NonNullString("two");
 		assertTrue(two.value.equals("two"));
 	}

@@ -8,8 +8,8 @@ import gui.inventory.ProductContainerData;
  * Controller class for the transfer item batch view.
  */
 public class TransferItemBatchController extends Controller implements
-		ITransferItemBatchController {
-	
+ITransferItemBatchController {
+
 	/**
 	 * Constructor.
 	 * 
@@ -21,7 +21,7 @@ public class TransferItemBatchController extends Controller implements
 
 		construct();
 	}
-	
+
 	/**
 	 * This method is called when the "Item Barcode" field in the
 	 * transfer item batch view is changed by the user.
@@ -54,7 +54,7 @@ public class TransferItemBatchController extends Controller implements
 	@Override
 	public void selectedProductChanged() {
 	}
-	
+
 	/**
 	 * This method is called when the user clicks the "Transfer Item" button
 	 * in the transfer item batch view.
@@ -62,7 +62,7 @@ public class TransferItemBatchController extends Controller implements
 	@Override
 	public void transferItem() {
 	}
-	
+
 	/**
 	 * This method is called when the user clicks the "Undo" button
 	 * in the transfer item batch view.
@@ -70,7 +70,7 @@ public class TransferItemBatchController extends Controller implements
 	@Override
 	public void undo() {
 	}
-	
+
 	/**
 	 * This method is called when the "Use Barcode Scanner" setting in the
 	 * transfer item batch view is changed by the user.
@@ -78,7 +78,7 @@ public class TransferItemBatchController extends Controller implements
 	@Override
 	public void useScannerChanged() {
 	}
-	
+
 	/**
 	 * Sets the enable/disable state of all components in the controller's view.
 	 * A component should be enabled only if the user is currently
@@ -105,7 +105,7 @@ public class TransferItemBatchController extends Controller implements
 	 * Loads data into the controller's view.
 	 * 
 	 *  {@pre None}
-	 *  
+	 * 
 	 *  {@post The controller has loaded data into its view}
 	 */
 	@Override

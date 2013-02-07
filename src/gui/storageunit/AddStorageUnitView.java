@@ -9,8 +9,8 @@ public class AddStorageUnitView extends StorageUnitView implements IAddStorageUn
 
 	public AddStorageUnitView(GUI parent, DialogBox dialog) {
 		super(parent, dialog);
-		
-		construct();		
+
+		construct();
 
 		_controller = new AddStorageUnitController(this);
 	}

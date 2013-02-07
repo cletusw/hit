@@ -24,7 +24,7 @@ public class ProductContainerTreeNode extends DefaultMutableTreeNode {
 	public ProductContainerTreeNode(ProductContainerData productContainer) {
 		super(productContainer);
 	}
-	
+
 	/**
 	 * Returns the "user object" of the node as a ProductContainerData.
 	 * 
@@ -35,7 +35,7 @@ public class ProductContainerTreeNode extends DefaultMutableTreeNode {
 	public ProductContainerData getProductContainer() {
 		return (ProductContainerData)getUserObject();
 	}
-	
+
 	/**
 	 * Returns true if this node is the "all storage units" node and false otherwise.
 	 * 
@@ -44,9 +44,9 @@ public class ProductContainerTreeNode extends DefaultMutableTreeNode {
 	 * {@post Returns true if this node is the "all storage units" node and false otherwise.}
 	 */
 	public boolean isAllStorageUnits() {
-		return this.isRoot();
+		return isRoot();
 	}
-	
+
 	/**
 	 * Returns true if this node is a "product group" node and false otherwise.
 	 * 
@@ -58,7 +58,7 @@ public class ProductContainerTreeNode extends DefaultMutableTreeNode {
 		ProductContainerTreeNode parent = (ProductContainerTreeNode)getParent();
 		return (parent != null && !parent.isRoot());
 	}
-	
+
 	/**
 	 * Returns true if this node is a "storage unit" node and false otherwise.
 	 * 
@@ -70,7 +70,7 @@ public class ProductContainerTreeNode extends DefaultMutableTreeNode {
 		ProductContainerTreeNode parent = (ProductContainerTreeNode)getParent();
 		return (parent != null && parent.isRoot());
 	}
-	
+
 	@Override
 	public String toString() {
 		if (isAllStorageUnits()) {
@@ -80,6 +80,6 @@ public class ProductContainerTreeNode extends DefaultMutableTreeNode {
 			return getProductContainer().getName();
 		}
 	}
-	
+
 }
 

@@ -13,19 +13,19 @@ public interface IEditStorageUnitView extends IView {
 	 * @param value New enable/disable value
 	 */
 	void enableOK(boolean value);
-	
+
 	/**
 	 * Sets the enable/disable state of the "Storage Unit Name" field.
 	 * 
 	 * @param value New enable/disable value
 	 */
 	void enableStorageUnitName(boolean value);
-	
+
 	/**
 	 * Returns the value of the "Storage Unit Name" field.
 	 */
 	String getStorageUnitName();
-	
+
 	/**
 	 * Sets the value of the "Storage Unit Name" field.
 	 * 

@@ -7,8 +7,8 @@ import gui.common.IView;
  * Controller class for the add storage unit view.
  */
 public class AddStorageUnitController extends Controller implements
-		IAddStorageUnitController {
-	
+IAddStorageUnitController {
+
 	/**
 	 * Constructor.
 	 * 
@@ -16,14 +16,14 @@ public class AddStorageUnitController extends Controller implements
 	 */
 	public AddStorageUnitController(IView view) {
 		super(view);
-		
+
 		construct();
 	}
 
 	//
 	// Controller overrides
 	//
-	
+
 	/**
 	 * This method is called when the user clicks the "OK"
 	 * button in the add storage unit view.
@@ -69,12 +69,12 @@ public class AddStorageUnitController extends Controller implements
 	protected IAddStorageUnitView getView() {
 		return (IAddStorageUnitView)super.getView();
 	}
-	
+
 	/**
 	 * Loads data into the controller's view.
 	 * 
 	 *  {@pre None}
-	 *  
+	 * 
 	 *  {@post The controller has loaded data into its view}
 	 */
 	@Override

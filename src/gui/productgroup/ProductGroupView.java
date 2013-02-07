@@ -35,31 +35,31 @@ public abstract class ProductGroupView extends DialogView {
 	private JComboBox _supplyBox;
 	private ButtonBankPanel _buttonsPanel;
 	protected JButton _okButton;
-	
+
 	public ProductGroupView(GUI parent, DialogBox dialog) {
 		super(parent, dialog);
 	}
-	
+
 	public void enableOK(boolean value) {
 		_okButton.setEnabled(value);
 	}
-	
+
 	public void enableProductGroupName(boolean value) {
 		_nameField.setEnabled(value);
 	}
-	
+
 	public void enableSupplyUnit(boolean value) {
 		_supplyBox.setEnabled(value);
 	}
-	
+
 	public void enableSupplyValue(boolean value) {
 		_supplyField.setEnabled(value);
 	}
-	
+
 	public String getProductGroupName() {
 		return _nameField.getText();
 	}
-	
+
 	public SizeUnits getSupplyUnit() {
 		return (SizeUnits)_supplyBox.getSelectedItem();
 	}
@@ -79,7 +79,7 @@ public abstract class ProductGroupView extends DialogView {
 			}
 		}
 	}
-	
+
 	public void setSupplyUnit(SizeUnits value) {
 		boolean disabledEvents = disableEvents();
 		try {
@@ -103,10 +103,10 @@ public abstract class ProductGroupView extends DialogView {
 			}
 		}
 	}
-	
+
 	private void createAddPanel() {
 		KeyListener keyListener = new KeyListener() {
-			
+
 			@Override
 			public void keyPressed(KeyEvent e) {
 				return;
@@ -122,19 +122,19 @@ public abstract class ProductGroupView extends DialogView {
 				return;
 			}
 		};
-		
+
 		_addPanel = new JPanel();
-		
+
 		_nameLabel = new JLabel("Product Group Name:");
-		
+
 		_nameField = new JTextField(20);
 		_nameField.addKeyListener(keyListener);
 
 		_supplyLabel = new JLabel("3 Month Supply:");
-		
+
 		_supplyField = new JTextField(8);
 		_supplyField.addKeyListener(keyListener);
-		
+
 		_supplyBox = new JComboBox();
 		_supplyBox.addItem(SizeUnits.Count);
 		_supplyBox.addItem(SizeUnits.Pounds);
@@ -147,6 +147,7 @@ public abstract class ProductGroupView extends DialogView {
 		_supplyBox.addItem(SizeUnits.FluidOunces);
 		_supplyBox.addItem(SizeUnits.Liters);
 		_supplyBox.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent evt) {
 				if (eventsAreDisabled()) {
 					return;
@@ -159,23 +160,24 @@ public abstract class ProductGroupView extends DialogView {
 	private void createButtonsPanel() {
 		_buttonsPanel = new ButtonBankPanel(new String[]{"OK", "Cancel"},
 				new ButtonBankListener() {
-					public void buttonPressed(int index, String label) {
-						switch (index) {
-							case 0:
-								ok();
-								_dialog.dispose();
-								break;
-							case 1:
-								cancel();
-								_dialog.dispose();
-								break;
-							default:
-								assert false;
-								break;
-						}
-					}
+			@Override
+			public void buttonPressed(int index, String label) {
+				switch (index) {
+				case 0:
+					ok();
+					_dialog.dispose();
+					break;
+				case 1:
+					cancel();
+					_dialog.dispose();
+					break;
+				default:
+					assert false;
+					break;
 				}
-			);
+			}
+		}
+				);
 
 		_okButton = _buttonsPanel.getButtons()[0];
 		_dialog.getRootPane().setDefaultButton(_okButton);
@@ -194,13 +196,13 @@ public abstract class ProductGroupView extends DialogView {
 
 		c.place(1, 0, 3, 1);
 		_addPanel.add(_nameField, c);
-		
+
 		c.place(0, 1, 1, 1);
 		_addPanel.add(_supplyLabel, c);
-		
+
 		c.place(1, 1, 1, 1);
 		_addPanel.add(_supplyField, c);
-		
+
 		c.place(2, 1, 2, 1);
 		_addPanel.add(_supplyBox, c);
 	}
@@ -215,7 +217,7 @@ public abstract class ProductGroupView extends DialogView {
 
 	@Override
 	protected void layoutComponents() {
-		layoutAddPanel();	
+		layoutAddPanel();
 
 		setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 		add(_addPanel);
@@ -224,7 +226,7 @@ public abstract class ProductGroupView extends DialogView {
 	}
 
 	protected abstract void ok();
-	
+
 	protected abstract void valuesChanged();
 
 }

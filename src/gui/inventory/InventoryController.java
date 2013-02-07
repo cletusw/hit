@@ -14,14 +14,14 @@ import java.util.Random;
 /**
  * Controller class for inventory view.
  */
-public class InventoryController extends Controller 
-									implements IInventoryController {
+public class InventoryController extends Controller
+implements IInventoryController {
 
 	private Random rand = new Random();
 
 	/**
 	 * Constructor.
-	 *  
+	 * 
 	 * @param view Reference to the inventory view
 	 */
 	public InventoryController(IInventoryView view) {
@@ -45,7 +45,7 @@ public class InventoryController extends Controller
 	public void addProductGroup() {
 		getView().displayAddProductGroupView();
 	}
-	
+
 	//
 	// IInventoryController overrides
 	//
@@ -58,10 +58,10 @@ public class InventoryController extends Controller
 	 * @param containerData Target product container
 	 */
 	@Override
-	public void addProductToContainer(ProductData productData, 
-										ProductContainerData containerData) {		
+	public void addProductToContainer(ProductData productData,
+			ProductContainerData containerData) {
 	}
-	
+
 	/**
 	 * This method is called when the user selects the "Add Storage Unit" menu item.
 	 */
@@ -69,7 +69,7 @@ public class InventoryController extends Controller
 	public void addStorageUnit() {
 		getView().displayAddStorageUnitView();
 	}
-	
+
 	/**
 	 * Returns true if and only if the "Add Items" menu item should be enabled.
 	 */
@@ -77,7 +77,7 @@ public class InventoryController extends Controller
 	public boolean canAddItems() {
 		return true;
 	}
-	
+
 	/**
 	 * Returns true if and only if the "Add Product Group" menu item should be enabled.
 	 */
@@ -93,7 +93,7 @@ public class InventoryController extends Controller
 	public boolean canAddStorageUnit() {
 		return true;
 	}
-	
+
 	/**
 	 * Returns true if and only if the "Delete Product" menu item should be enabled.
 	 */
@@ -133,7 +133,7 @@ public class InventoryController extends Controller
 	public boolean canEditProduct() {
 		return true;
 	}
-	
+
 	/**
 	 * Returns true if and only if the "Edit Product Group" menu item should be enabled.
 	 */
@@ -149,7 +149,7 @@ public class InventoryController extends Controller
 	public boolean canEditStorageUnit() {
 		return true;
 	}
-	
+
 	/**
 	 * Returns true if and only if the "Remove Item" menu item should be enabled.
 	 */
@@ -244,20 +244,20 @@ public class InventoryController extends Controller
 	 */
 	@Override
 	public void moveItemToContainer(ItemData itemData,
-									ProductContainerData containerData) {
+			ProductContainerData containerData) {
 	}
-	
+
 	/**
 	 * This method is called when the selected item container changes.
 	 */
 	@Override
 	public void productContainerSelectionChanged() {
-		List<ProductData> productDataList = new ArrayList<ProductData>();		
+		List<ProductData> productDataList = new ArrayList<ProductData>();
 		ProductContainerData selectedContainer = getView().getSelectedProductContainer();
 		if (selectedContainer != null) {
 			int productCount = rand.nextInt(20) + 1;
 			for (int i = 1; i <= productCount; ++i) {
-				ProductData productData = new ProductData();			
+				ProductData productData = new ProductData();
 				productData.setBarcode(getRandomBarcode());
 				int itemCount = rand.nextInt(25) + 1;
 				productData.setCount(Integer.toString(itemCount));
@@ -265,21 +265,21 @@ public class InventoryController extends Controller
 				productData.setShelfLife("3 months");
 				productData.setSize("1 pounds");
 				productData.setSupply("10 count");
-				
+
 				productDataList.add(productData);
 			}
 		}
 		getView().setProducts(productDataList.toArray(new ProductData[0]));
-		
+
 		getView().setItems(new ItemData[0]);
 	}
-	
+
 	/**
 	 * This method is called when the selected item changes.
 	 */
 	@Override
 	public void productSelectionChanged() {
-		List<ItemData> itemDataList = new ArrayList<ItemData>();		
+		List<ItemData> itemDataList = new ArrayList<ItemData>();
 		ProductData selectedProduct = getView().getSelectedProduct();
 		if (selectedProduct != null) {
 			Date now = new Date();
@@ -295,13 +295,13 @@ public class InventoryController extends Controller
 				itemData.setExpirationDate(cal.getTime());
 				itemData.setProductGroup("Some Group");
 				itemData.setStorageUnit("Some Unit");
-				
+
 				itemDataList.add(itemData);
 			}
 		}
 		getView().setItems(itemDataList.toArray(new ItemData[0]));
 	}
-	
+
 	/**
 	 * This method is called when the user selects the "Remove Item" menu item.
 	 */
@@ -348,7 +348,7 @@ public class InventoryController extends Controller
 	protected void enableComponents() {
 		return;
 	}
-	
+
 	/**
 	 * Returns a reference to the view for this controller.
 	 */
@@ -361,32 +361,32 @@ public class InventoryController extends Controller
 	 * Loads data into the controller's view.
 	 * 
 	 *  {@pre None}
-	 *  
+	 * 
 	 *  {@post The controller has loaded data into its view}
 	 */
 	@Override
 	protected void loadValues() {
 		ProductContainerData root = new ProductContainerData();
-		
+
 		ProductContainerData basementCloset = new ProductContainerData("Basement Closet");
-		
+
 		ProductContainerData toothpaste = new ProductContainerData("Toothpaste");
 		toothpaste.addChild(new ProductContainerData("Kids"));
 		toothpaste.addChild(new ProductContainerData("Parents"));
 		basementCloset.addChild(toothpaste);
-		
+
 		root.addChild(basementCloset);
-		
+
 		ProductContainerData foodStorage = new ProductContainerData("Food Storage Room");
-		
+
 		ProductContainerData soup = new ProductContainerData("Soup");
 		soup.addChild(new ProductContainerData("Chicken Noodle"));
 		soup.addChild(new ProductContainerData("Split Pea"));
 		soup.addChild(new ProductContainerData("Tomato"));
 		foodStorage.addChild(soup);
-		
+
 		root.addChild(foodStorage);
-		
+
 		getView().setProductContainers(root);
 	}
 

@@ -12,12 +12,12 @@ public interface INoticesReportController extends IController {
 	 * button in the notices report view.
 	 */
 	void display();
-	
+
 	/**
 	 * This method is called when any of the fields in the
 	 * notices report view is changed by the user.
 	 */
 	void valuesChanged();
-	
+
 }
 

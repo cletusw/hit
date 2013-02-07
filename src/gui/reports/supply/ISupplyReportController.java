@@ -12,12 +12,12 @@ public interface ISupplyReportController extends IController {
 	 * button in the N-month supply report view.
 	 */
 	void display();
-	
+
 	/**
 	 * This method is called when any of the fields in the
 	 * N-month supply report view is changed by the user.
 	 */
 	void valuesChanged();
-	
+
 }
 

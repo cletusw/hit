@@ -14,17 +14,17 @@ import java.io.ObjectOutputStream;
  */
 public class SerializationManager implements PersistentStorageManager {
 	public static final String defaultSerializedFileName = "HomeInventoryTracker.ser";
-	
-	/** Creates a new HomeInventoryTracker, reading it from persistent storage if 
+
+	/** Creates a new HomeInventoryTracker, reading it from persistent storage if
 	 * 		available. Otherwise, it creates a new empty instance of the class.
-	 *  
+	 * 
 	 * @return a new instance of HomeInventoryTracker
 	 * @pre true
 	 * @post true
 	 */
 	public static HomeInventoryTracker create(String filename) {
 		String target = assignTargetFilename(filename);
-		
+
 		HomeInventoryTracker tracker;
 		PersistentStorageManager persistentStorageManager = new SerializationManager();
 		try {
@@ -35,25 +35,26 @@ public class SerializationManager implements PersistentStorageManager {
 		}
 		return tracker;
 	}
-	
+
 	private static String assignTargetFilename(String filename) {
 		String target = null;
 		if(filename == null || filename.equals(""))
 			target = defaultSerializedFileName;
 		else
 			target = filename;
-		
+
 		return target;
 	}
-	
+
 	/** Deserializes the Home Inventory Tracker from a file.
 	 * @throws 	IOException if an error occurred reading from the serialized file.
 	 * @pre true
 	 * @post true
 	 */
+	@Override
 	public HomeInventoryTracker readObject(String filename) throws IOException {
 		String target = assignTargetFilename(filename);
-		
+
 		HomeInventoryTracker hit;
 		try {
 			FileInputStream fileInputStream = new FileInputStream(target);
@@ -68,20 +69,21 @@ public class SerializationManager implements PersistentStorageManager {
 		}
 		return hit;
 	}
-	
+
 	/** Serializes the Home Inventory Tracker to a file.
 	 * @throws 	IOException if an error occurred writing to the serialized file.
 	 * @pre hit != null
 	 * @post true
 	 */
+	@Override
 	public void writeObject(HomeInventoryTracker hit,String filename) throws IOException {
 		assert(hit != null);
-		
+
 		String target = assignTargetFilename(filename);
 
 		FileOutputStream fileOutputStream = new FileOutputStream(target);
 		ObjectOutputStream objectWriter = new ObjectOutputStream(fileOutputStream);
-		
+
 		objectWriter.writeObject(hit);
 		objectWriter.flush();
 		objectWriter.close();

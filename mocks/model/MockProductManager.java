@@ -20,6 +20,6 @@ public class MockProductManager implements ProductManager {
 	@Override
 	public void unmanage(Product product) {
 		// TODO Auto-generated method stub
-		
+
 	}
 }

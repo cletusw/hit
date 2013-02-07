@@ -12,12 +12,12 @@ public interface IExpiredReportController extends IController {
 	 * button in the expired items report view.
 	 */
 	void display();
-	
+
 	/**
 	 * This method is called when any of the fields in the
 	 * expired items report view is changed by the user.
 	 */
 	void valuesChanged();
-	
+
 }
 

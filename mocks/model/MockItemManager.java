@@ -22,6 +22,6 @@ public class MockItemManager implements ItemManager {
 	@Override
 	public void unmanage(Item item) {
 		// TODO Auto-generated method stub
-		
+
 	}
 }

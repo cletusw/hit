@@ -17,13 +17,13 @@ public final class StringOps {
 	public static boolean isNullOrEmpty(String s) {
 		return ((s == null) || (s.length() == 0));
 	}
-	
+
 	/**
 	 * Private Constructor.
 	 */
 	private StringOps() {
 		assert false;
 	}
-	
+
 }
 

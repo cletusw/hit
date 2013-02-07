@@ -7,23 +7,23 @@ import gui.common.IView;
  * Controller class for the notices report view.
  */
 public class NoticesReportController extends Controller implements
-		INoticesReportController {
+INoticesReportController {
 
 	/**
 	 * Constructor.
 	 * 
 	 * @param view Reference to the notices report view
-	 */	
+	 */
 	public NoticesReportController(IView view) {
 		super(view);
-		
+
 		construct();
 	}
 
 	//
 	// Controller overrides
 	//
-	
+
 	/**
 	 * This method is called when the user clicks the "OK"
 	 * button in the notices report view.
@@ -69,12 +69,12 @@ public class NoticesReportController extends Controller implements
 	protected INoticesReportView getView() {
 		return (INoticesReportView)super.getView();
 	}
-	
+
 	/**
 	 * Loads data into the controller's view.
 	 * 
 	 *  {@pre None}
-	 *  
+	 * 
 	 *  {@post The controller has loaded data into its view}
 	 */
 	@Override

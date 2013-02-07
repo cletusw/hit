@@ -5,28 +5,28 @@ package gui.common;
  * volume, and count) supported by the program.
  */
 public enum SizeUnits {
-	
+
 	// Weight units
 	Pounds("pounds"),
 	Ounces("ounces"),
 	Grams("grams"),
 	Kilograms("kilograms"),
-	
+
 	// Volume units
 	Gallons("gallons"),
 	Quarts("quarts"),
 	Pints("pints"),
 	FluidOunces("fluid ounces"),
 	Liters("liters"),
-	
+
 	// Count units
 	Count("count");
-	
+
 	/**
 	 * String value to be returned by toString.
 	 */
 	private String _string;
-	
+
 	/**
 	 * Constructor.
 	 * 
@@ -39,11 +39,11 @@ public enum SizeUnits {
 	private SizeUnits(String s) {
 		_string = s;
 	}
-	
+
 	@Override
 	public String toString() {
 		return _string;
 	}
-	
+
 }
 

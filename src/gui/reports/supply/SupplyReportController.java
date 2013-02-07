@@ -6,25 +6,25 @@ import gui.common.IView;
 /**
  * Controller class for the N-month supply report view.
  */
-	public class SupplyReportController extends Controller implements
-		ISupplyReportController {
-/*---	STUDENT-INCLUDE-BEGIN
+public class SupplyReportController extends Controller implements
+ISupplyReportController {
+	/*---	STUDENT-INCLUDE-BEGIN
 
 	/**
 	 * Constructor.
 	 * 
 	 * @param view Reference to the N-month supply report view
-	 */	
+	 */
 	public SupplyReportController(IView view) {
 		super(view);
-		
+
 		construct();
 	}
 
 	//
 	// Controller overrides
 	//
-	
+
 	/**
 	 * This method is called when the user clicks the "OK"
 	 * button in the N-month supply report view.
@@ -70,12 +70,12 @@ import gui.common.IView;
 	protected ISupplyReportView getView() {
 		return (ISupplyReportView)super.getView();
 	}
-	
+
 	/**
 	 * Loads data into the controller's view.
 	 * 
 	 *  {@pre None}
-	 *  
+	 * 
 	 *  {@post The controller has loaded data into its view}
 	 */
 	@Override

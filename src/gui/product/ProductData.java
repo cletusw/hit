@@ -11,27 +11,27 @@ public class ProductData extends Tagable {
 	 * Description attribute.
 	 */
 	private String _description;
-	
+
 	/**
 	 * Size attribute.
 	 */
 	private String _size;
-	
+
 	/**
 	 * Count attribute.
 	 */
 	private String _count;
-	
+
 	/**
 	 * Shelf Life attribute
 	 */
 	private String _shelfLife;
-	
+
 	/**
 	 * Supply attribute.
 	 */
 	private String _supply;
-	
+
 	/**
 	 * Barcode attribute.
 	 */
@@ -110,7 +110,7 @@ public class ProductData extends Tagable {
 	 * {@post getBarcode() == barcode}
 	 */
 	public void setBarcode(String barcode) {
-		this._barcode = barcode;
+		_barcode = barcode;
 	}
 
 	/**
@@ -123,7 +123,7 @@ public class ProductData extends Tagable {
 	 * {@post getCount() == count}
 	 */
 	public void setCount(String count) {
-		this._count = count;
+		_count = count;
 	}
 
 	/**
@@ -136,7 +136,7 @@ public class ProductData extends Tagable {
 	 * {@post getDescription() == description}
 	 */
 	public void setDescription(String description) {
-		this._description = description;
+		_description = description;
 	}
 
 	/**
@@ -149,7 +149,7 @@ public class ProductData extends Tagable {
 	 * {@post getShelfLife() == shelfLife}
 	 */
 	public void setShelfLife(String shelfLife) {
-		this._shelfLife = shelfLife;
+		_shelfLife = shelfLife;
 	}
 
 	/**
@@ -162,7 +162,7 @@ public class ProductData extends Tagable {
 	 * {@post getSize() == size}
 	 */
 	public void setSize(String size) {
-		this._size = size;
+		_size = size;
 	}
 
 	/**
@@ -175,7 +175,7 @@ public class ProductData extends Tagable {
 	 * {@post getSupply() == supply}
 	 */
 	public void setSupply(String supply) {
-		this._supply = supply;
+		_supply = supply;
 	}
 
 }

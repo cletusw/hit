@@ -4,12 +4,12 @@ package model;
  * 
  *  @author - Matt Hess
  *  @version 1.0 - Snell 340 Group 4 Phase 1
- *  
+ * 
  */
 
 @SuppressWarnings("serial")
 public class StorageUnit extends ProductContainer {
-	
+
 	/** Constructor
 	 * 
 	 * @param pcName - String name of the storage unit.
@@ -22,11 +22,11 @@ public class StorageUnit extends ProductContainer {
 	public StorageUnit(String pcName) {
 		super(pcName);
 	}
-	
+
 	/** Method that adds an Item to the collection.
 	 * 
 	 * @param i - the Item object to add to the collection
-	 * @return true if the item was added to this container or one of its children, 
+	 * @return true if the item was added to this container or one of its children,
 	 * 		   false otherwise.
 	 * @pre i != null
 	 * @post items.size() == items.size()@pre + 1
@@ -37,7 +37,7 @@ public class StorageUnit extends ProductContainer {
 		assert (i != null);
 		if (items.containsKey(i.getBarcode()))
 			throw new IllegalStateException("Cannot have two items with same barcode");
-		
+
 		// A new item is added to the same Product Container that contains the Item's Product
 		//    within the target Storage Unit
 		if (!contains(i.getProduct())) {
@@ -58,7 +58,7 @@ public class StorageUnit extends ProductContainer {
 		registerItem(i);
 		return true;
 	}
-	
+
 	/** Determines whether or not the specified Product Group can be added to this Storage Unit.
 	 * @param pGroup the Product Group to test
 	 * @return true if able to add, false otherwise
@@ -66,11 +66,12 @@ public class StorageUnit extends ProductContainer {
 	 * @pre pGroup != null
 	 * @post true
 	 */
+	@Override
 	public boolean canAddProductGroup(ProductGroup pGroup) {
-		// From the Data Dictionary: A Storage Unit cannot have two top-level 
+		// From the Data Dictionary: A Storage Unit cannot have two top-level
 		// Product Groups of the same name.
 		assert(pGroup != null);
-		
+
 		return (getProductGroup(pGroup.getName()) == null);
 	}
 

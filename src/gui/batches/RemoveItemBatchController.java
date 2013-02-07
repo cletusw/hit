@@ -7,8 +7,8 @@ import gui.common.IView;
  * Controller class for the remove item batch view.
  */
 public class RemoveItemBatchController extends Controller implements
-		IRemoveItemBatchController {
-	
+IRemoveItemBatchController {
+
 	/**
 	 * Constructor.
 	 * 
@@ -19,7 +19,7 @@ public class RemoveItemBatchController extends Controller implements
 
 		construct();
 	}
-	
+
 	/**
 	 * This method is called when the "Item Barcode" field is changed
 	 * in the remove item batch view by the user.
@@ -52,7 +52,7 @@ public class RemoveItemBatchController extends Controller implements
 	@Override
 	public void removeItem() {
 	}
-	
+
 	/**
 	 * This method is called when the selected product changes
 	 * in the remove item batch view.
@@ -60,7 +60,7 @@ public class RemoveItemBatchController extends Controller implements
 	@Override
 	public void selectedProductChanged() {
 	}
-	
+
 	/**
 	 * This method is called when the user clicks the "Undo" button
 	 * in the remove item batch view.
@@ -68,7 +68,7 @@ public class RemoveItemBatchController extends Controller implements
 	@Override
 	public void undo() {
 	}
-	
+
 	/**
 	 * This method is called when the "Use Barcode Scanner" setting is changed
 	 * in the remove item batch view by the user.
@@ -76,7 +76,7 @@ public class RemoveItemBatchController extends Controller implements
 	@Override
 	public void useScannerChanged() {
 	}
-	
+
 	/**
 	 * Sets the enable/disable state of all components in the controller's view.
 	 * A component should be enabled only if the user is currently
@@ -103,7 +103,7 @@ public class RemoveItemBatchController extends Controller implements
 	 * Loads data into the controller's view.
 	 * 
 	 *  {@pre None}
-	 *  
+	 * 
 	 *  {@post The controller has loaded data into its view}
 	 */
 	@Override

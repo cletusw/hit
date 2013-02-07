@@ -43,31 +43,31 @@ public abstract class ProductView extends DialogView {
 	private JLabel _shelfLifeMonthsLabel;
 	private ButtonBankPanel _buttonsPanel;
 	protected JButton _okButton;
-	
+
 	public ProductView(GUI parent, DialogBox dialog) {
 		super(parent, dialog);
 	}
-	
+
 	public void enableBarcode(boolean value) {
 		_barcodeField.setEnabled(value);
 	}
-	
+
 	public void enableDescription(boolean value) {
 		_descriptionField.setEnabled(value);
 	}
-	
+
 	public void enableOK(boolean value) {
 		_okButton.setEnabled(value);
 	}
-	
+
 	public void enableShelfLife(boolean value) {
 		_shelfLifeField.setEnabled(value);
 	}
-	
+
 	public void enableSizeUnit(boolean value) {
 		_sizeBox.setEnabled(value);
 	}
-	
+
 	public void enableSizeValue(boolean value) {
 		_sizeField.setEnabled(value);
 	}
@@ -79,7 +79,7 @@ public abstract class ProductView extends DialogView {
 	public String getBarcode() {
 		return _barcodeField.getText();
 	}
-	
+
 	public String getDescription() {
 		return _descriptionField.getText();
 	}
@@ -87,11 +87,11 @@ public abstract class ProductView extends DialogView {
 	public String getShelfLife() {
 		return _shelfLifeField.getText();
 	}
-	
+
 	public SizeUnits getSizeUnit() {
 		return (SizeUnits)_sizeBox.getSelectedItem();
 	}
-	
+
 	public String getSizeValue() {
 		return _sizeField.getText();
 	}
@@ -99,7 +99,7 @@ public abstract class ProductView extends DialogView {
 	public String getSupply() {
 		return _supplyField.getText();
 	}
-	
+
 	public void setBarcode(String value) {
 		boolean disabledEvents = disableEvents();
 		try {
@@ -175,23 +175,24 @@ public abstract class ProductView extends DialogView {
 	private void createButtonsPanel() {
 		_buttonsPanel = new ButtonBankPanel(new String[]{"OK", "Cancel"},
 				new ButtonBankListener() {
-					public void buttonPressed(int index, String label) {
-						switch (index) {
-							case 0:
-								ok();
-								_dialog.dispose();
-								break;
-							case 1:
-								cancel();
-								_dialog.dispose();
-								break;
-							default:
-								assert false;
-								break;
-						}
-					}
+			@Override
+			public void buttonPressed(int index, String label) {
+				switch (index) {
+				case 0:
+					ok();
+					_dialog.dispose();
+					break;
+				case 1:
+					cancel();
+					_dialog.dispose();
+					break;
+				default:
+					assert false;
+					break;
 				}
-			);
+			}
+		}
+				);
 
 		_okButton = _buttonsPanel.getButtons()[0];
 		_dialog.getRootPane().setDefaultButton(_okButton);
@@ -199,7 +200,7 @@ public abstract class ProductView extends DialogView {
 
 	private void createValuesPanel() {
 		KeyListener keyListener = new KeyListener() {
-			
+
 			@Override
 			public void keyPressed(KeyEvent e) {
 				return;
@@ -215,24 +216,24 @@ public abstract class ProductView extends DialogView {
 				return;
 			}
 		};
-		
+
 		_valuesPanel = new JPanel();
-		
+
 		_barcodeLabel = new JLabel("Product Barcode:");
-		
+
 		_barcodeField = new JTextField(15);
 		_barcodeField.addKeyListener(keyListener);
-		
+
 		_descriptionLabel = new JLabel("Description:");
-		
+
 		_descriptionField = new JTextField(30);
 		_descriptionField.addKeyListener(keyListener);
 
 		_sizeLabel = new JLabel("Size:");
-		
+
 		_sizeField = new JTextField(8);
 		_sizeField.addKeyListener(keyListener);
-		
+
 		_sizeBox = new JComboBox();
 		_sizeBox.addItem(SizeUnits.Count);
 		_sizeBox.addItem(SizeUnits.Pounds);
@@ -245,6 +246,7 @@ public abstract class ProductView extends DialogView {
 		_sizeBox.addItem(SizeUnits.FluidOunces);
 		_sizeBox.addItem(SizeUnits.Liters);
 		_sizeBox.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent evt) {
 				if (eventsAreDisabled()) {
 					return;
@@ -252,19 +254,19 @@ public abstract class ProductView extends DialogView {
 				valuesChanged();
 			}
 		});
-		
+
 		_supplyLabel = new JLabel("3 Month Supply:");
-		
+
 		_supplyField = new JTextField(8);
 		_supplyField.addKeyListener(keyListener);
-		
+
 		_supplyCountLabel = new JLabel("count");
-		
+
 		_shelfLifeLabel = new JLabel("Shelf Life:");
-		
+
 		_shelfLifeField = new JTextField(8);
 		_shelfLifeField.addKeyListener(keyListener);
-		
+
 		_shelfLifeMonthsLabel = new JLabel("months");
 	}
 
@@ -287,31 +289,31 @@ public abstract class ProductView extends DialogView {
 
 		c.place(1, 1, 3, 1);
 		_valuesPanel.add(_descriptionField, c);
-		
+
 		c.place(0, 2, 1, 1);
 		_valuesPanel.add(_sizeLabel, c);
-		
+
 		c.place(1, 2, 1, 1);
 		_valuesPanel.add(_sizeField, c);
-		
+
 		c.place(2, 2, 2, 1);
 		_valuesPanel.add(_sizeBox, c);
-		
+
 		c.place(0, 3, 1, 1);
 		_valuesPanel.add(_shelfLifeLabel, c);
-		
+
 		c.place(1, 3, 1, 1);
 		_valuesPanel.add(_shelfLifeField, c);
-		
+
 		c.place(2, 3, 1, 1);
 		_valuesPanel.add(_shelfLifeMonthsLabel, c);
-		
+
 		c.place(0, 4, 1, 1);
 		_valuesPanel.add(_supplyLabel, c);
-		
+
 		c.place(1, 4, 1, 1);
 		_valuesPanel.add(_supplyField, c);
-		
+
 		c.place(2, 4, 1, 1);
 		_valuesPanel.add(_supplyCountLabel, c);
 	}
@@ -326,7 +328,7 @@ public abstract class ProductView extends DialogView {
 
 	@Override
 	protected void layoutComponents() {
-		layoutValuesPanel();	
+		layoutValuesPanel();
 
 		setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 		add(_valuesPanel);
@@ -335,7 +337,7 @@ public abstract class ProductView extends DialogView {
 	}
 
 	protected abstract void ok();
-	
+
 	protected abstract void valuesChanged();
 
 }

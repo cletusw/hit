@@ -7,8 +7,8 @@ import java.util.Set;
 import java.util.TreeMap;
 import java.util.TreeSet;
 
-/** Product Container class: Represents an object that can hold various 
- *    types of items, products, and product groups. 
+/** Product Container class: Represents an object that can hold various
+ *    types of items, products, and product groups.
  * 
  * @author Matt Hess
  * @version 1.0 - Snell 340 Group 4 Phase 1
@@ -28,12 +28,12 @@ public abstract class ProductContainer implements Comparable<ProductContainer>, 
 	protected Map<String, Product> products;
 	protected Map<String, ProductGroup> productGroups;
 	//TODO: Implement this map for all descendant nodes
-	private Map<Product, Set<Item>> productsToItems; 
-	
-	/** Constructor 
+	private Map<Product, Set<Item>> productsToItems;
+
+	/** Constructor
 	 * 
 	 * @param name - the name of the Product Container
-	 *   
+	 * 
 	 * @pre name != null
 	 * @pre !name.equals("")
 	 * @post true
@@ -48,7 +48,7 @@ public abstract class ProductContainer implements Comparable<ProductContainer>, 
 		products = new TreeMap<String, Product>();
 		productsToItems = new TreeMap<Product, Set<Item>>();
 	}
-	
+
 	/** Method that adds a Product to the collection.
 	 * 
 	 * @param p - the Product object to add to the collection
@@ -60,14 +60,14 @@ public abstract class ProductContainer implements Comparable<ProductContainer>, 
 	 */
 	public void add(Product p) {
 		assert (p != null);
-		
+
 		if (!canAddProduct(p.getBarcode()))
 			throw new IllegalStateException(
 					"Cannot add two products of the same name into a single parent container");
 		products.put(p.getBarcode(), p);
 		productsToItems.put(p, new TreeSet<Item>());
 	}
-	
+
 	/** Method that adds a ProductGroup object to the collection.
 	 * 
 	 * @param productGroup - the ProductGroup object to add to the collection
@@ -79,13 +79,13 @@ public abstract class ProductContainer implements Comparable<ProductContainer>, 
 	 */
 	public void add(ProductGroup productGroup) {
 		assert(productGroup != null);
-		
+
 		if (!canAddProductGroup(productGroup.getName()))
 			throw new IllegalStateException(
-				"Cannot add two product groups of the same name into a single parent container");
+					"Cannot add two product groups of the same name into a single parent container");
 		productGroups.put(productGroup.getName(), productGroup);
 	}
-	
+
 	/** Determines whether the specified Product can be added to this Storage Unit.
 	 * @param productBarcode	the Product barcode to check
 	 * @return true if it can be added, false otherwise
@@ -104,11 +104,11 @@ public abstract class ProductContainer implements Comparable<ProductContainer>, 
 		// We need to ask our parents unless we are the Storage Unit to make sure this Product
 		//    does not exist elsewhere inside the StorageUnit's children.
 		if (!(this instanceof StorageUnit)) {
-			
+
 		}
 		return true;
 	}
-	
+
 	/** Determines whether the specified ProductGroup can be added to this ProductContainer.
 	 * 
 	 * @param productGroup - the ProductGroup to test
@@ -121,7 +121,7 @@ public abstract class ProductContainer implements Comparable<ProductContainer>, 
 		assert(productGroup != null);
 		return canAddProductGroup(productGroup.getName());
 	}
-	
+
 	/** Determines whether the specified ProductGroup can be added to this ProductContainer.
 	 * 
 	 * @param productGroupName - the ProductGroup name to test
@@ -134,7 +134,7 @@ public abstract class ProductContainer implements Comparable<ProductContainer>, 
 		assert(productGroupName != null);
 		return !productGroupName.equals("") && !containsProductGroup(productGroupName);
 	}
-	
+
 	/**
 	 * Determines if this ProductContainer can be removed from the system.
 	 * 
@@ -144,22 +144,22 @@ public abstract class ProductContainer implements Comparable<ProductContainer>, 
 		if (!items.isEmpty()) {
 			return false;
 		}
-		
+
 		for (Product product : products.values()) {
 			if (!product.canRemove()) {
 				return false;
 			}
 		}
-		
+
 		for (ProductGroup productGroup : productGroups.values()) {
 			if (!productGroup.canRemove()) {
 				return false;
 			}
 		}
-		
+
 		return true;
 	}
-	
+
 	/** Determines whether we can remove a given Product from this ProductContainer.
 	 * 
 	 * @param product - the Product object to be removed from the container
@@ -173,7 +173,7 @@ public abstract class ProductContainer implements Comparable<ProductContainer>, 
 			return true;
 		return (productsToItems.get(product).isEmpty());
 	}
-	
+
 	/** Compares this ProductContainer to another
 	 * 
 	 * @param su
@@ -186,7 +186,7 @@ public abstract class ProductContainer implements Comparable<ProductContainer>, 
 		assert(pc != null);
 		return name.compareTo(pc.name);
 	}
-	
+
 	/** Determines whether this Product Container contains a specific Item
 	 * 
 	 * @param item			the Item to check
@@ -214,21 +214,21 @@ public abstract class ProductContainer implements Comparable<ProductContainer>, 
 		assert(product != null);
 		return products.containsKey(product.getBarcode());
 	}
-	
-	
+
+
 	/** Determines whether the specified ProductGroup is contained in this ProductContainer.
 	 * 
 	 * @param productGroupName - the ProductGroup to test
 	 * @return true if the ProductGroup exists in this ProductContainer, false otherwise.
 	 * 
-	 * @pre productGroup != null 
+	 * @pre productGroup != null
 	 * @post true
 	 */
 	public boolean contains(ProductGroup productGroup) {
 		assert(productGroup != null);
 		return productGroups.containsKey(productGroup.getName());
 	}
-	
+
 	/** Determines whether this Product Container contains a specific Item
 	 * 
 	 * @param barcode		the barcode of the Item to check
@@ -256,20 +256,20 @@ public abstract class ProductContainer implements Comparable<ProductContainer>, 
 		assert(productBarcode != null);
 		return products.containsKey(productBarcode);
 	}
-	
+
 	/** Determines whether the specified ProductGroup is contained in this ProductContainer.
 	 * 
 	 * @param productGroupName - the ProductGroup to test
 	 * @return true if the ProductGroup exists in this ProductContainer, false otherwise.
 	 * 
-	 * @pre productGroupName != null 
+	 * @pre productGroupName != null
 	 * @post true
 	 */
 	public boolean containsProductGroup(String productGroupName) {
 		assert(productGroupName != null);
 		return productGroups.containsKey(productGroupName);
 	}
-	
+
 	/** Defines equality with another ProductContainer descendant.
 	 * 
 	 * @param o - the object to be compared to.
@@ -278,21 +278,22 @@ public abstract class ProductContainer implements Comparable<ProductContainer>, 
 	 * @pre o != null
 	 * @post true
 	 */
+	@Override
 	public boolean equals(Object o) {
 		assert (o != null);
-		
+
 		String otherName;
-		
+
 		if (o instanceof ProductContainer) {
 			otherName = ((ProductContainer) o).getName();
 		}
 		else {
 			otherName = o.toString();
 		}
-		
+
 		return getName().equals(otherName);
 	}
-	
+
 	/** Method that calculates and returns the amount of a product in this container.
 	 * 
 	 * @param p - the Product to be found
@@ -308,9 +309,9 @@ public abstract class ProductContainer implements Comparable<ProductContainer>, 
 		assert(p != null);
 		assert(p.getBarcode() != null);
 		assert(p.getSize() != null);
-		
+
 		ProductQuantity pSize = p.getSize();
-		
+
 		// Get sum of all pGroup product quantities
 		Iterator<ProductGroup> it = productGroups.values().iterator();
 		ProductQuantity total = new ProductQuantity(0,p.getSize().getUnits());
@@ -318,29 +319,29 @@ public abstract class ProductContainer implements Comparable<ProductContainer>, 
 			ProductGroup current = it.next();
 			total.add(current.getCurrentSupply(p));
 		}
-		
+
 		// add product quantity of items in this container
 		if (productsToItems.containsKey(p)) {
 			for (Item item : productsToItems.get(p)) {
-				total.add(new ProductQuantity(pSize.getQuantity(),pSize.getUnits()));			
+				total.add(new ProductQuantity(pSize.getQuantity(),pSize.getUnits()));
 			}
 		}
-		
+
 		return total;
 	}
-	
+
 	/** Gets the size of the items collection.
 	 * 
 	 * @return int - the number of elements in the items collection.
 	 * 
 	 * @pre true
-	 * @post true 
+	 * @post true
 	 * 
 	 */
 	public int getItemsSize() {
 		return items.size();
 	}
-	
+
 	/** Attribute getter - name
 	 * 
 	 * @return The String name of the ProductContainer
@@ -352,22 +353,22 @@ public abstract class ProductContainer implements Comparable<ProductContainer>, 
 	public String getName() {
 		return name.getValue();
 	}
-	
+
 	/** Finds and returns the requested Product object
 	 * 
 	 * @param barcode - the String barcode of the product to find
 	 * @return Product - the requested Product
 	 * 
 	 * @pre barcode != null
-	 * @post true  
+	 * @post true
 	 * 
 	 */
 	public Product getProduct(String barcode) {
 		assert (barcode != null);
-		
+
 		return products.get(barcode);
 	}
-	
+
 	/** Finds and returns the requested ProductGroup object
 	 * 
 	 * @param pgToFind - the name of the ProductGroup to find
@@ -378,10 +379,10 @@ public abstract class ProductContainer implements Comparable<ProductContainer>, 
 	 */
 	public ProductGroup getProductGroup(String pgToFind) {
 		assert(pgToFind != null);
-		
+
 		return productGroups.get(pgToFind);
 	}
-	
+
 	/** Gets the size of the productGroups collection
 	 * 
 	 * @return int - the number of elements in the pGroups collection.
@@ -393,7 +394,7 @@ public abstract class ProductContainer implements Comparable<ProductContainer>, 
 	public int getProductGroupsSize() {
 		return productGroups.size();
 	}
-	
+
 	/** Gets an iterator over this Container's Products
 	 * 
 	 * @return Iterator<Product> this Container's Products iterator
@@ -405,7 +406,7 @@ public abstract class ProductContainer implements Comparable<ProductContainer>, 
 	public Iterator<Product> getProductsIterator() {
 		return products.values().iterator();
 	}
-	
+
 	/** Gets the size of the products collection.
 	 * 
 	 * @return int - the number of elements in the products collection.
@@ -417,9 +418,9 @@ public abstract class ProductContainer implements Comparable<ProductContainer>, 
 	public int getProductsSize() {
 		return products.size();
 	}
-	
+
 	/** Removes the specified item from this ProductContainer.
-	 *  Use this only 
+	 *  Use this only
 	 * 
 	 * @param item			the Item to be moved
 	 * @param destination 	the ProductContainer to move the item to
@@ -435,7 +436,7 @@ public abstract class ProductContainer implements Comparable<ProductContainer>, 
 		assert(item != null);
 		assert(destination != null);
 		assert(items.containsKey(item.getBarcode()));
-		
+
 		if (destination.contains(item)) {
 			throw new IllegalStateException(
 					"Destination container already contains the item to be moved");
@@ -443,7 +444,7 @@ public abstract class ProductContainer implements Comparable<ProductContainer>, 
 		if (!contains(item)) {
 			throw new IllegalStateException("Item does not exist in this container; cannot move");
 		}
-		
+
 		unregisterItem(item);
 		destination.registerItem(item);
 	}
@@ -464,14 +465,14 @@ public abstract class ProductContainer implements Comparable<ProductContainer>, 
 		assert(item != null);
 		assert(manager != null);
 		assert(productsToItems.containsKey(item.getProduct()));
-		
+
 		manager.unmanage(item);
 		Set<Item> newItemsForProduct = productsToItems.get(item.getProduct());
 		newItemsForProduct.remove(item);
 		productsToItems.put(item.getProduct(), newItemsForProduct);
 		return items.remove(item.getBarcode());
 	}
-	
+
 	/** Method that removes a Product object from the collection.
 	 * 
 	 * @param barcode - the String barcode of the Product object to be removed from the collection
@@ -489,7 +490,7 @@ public abstract class ProductContainer implements Comparable<ProductContainer>, 
 		productsToItems.remove(product);
 		return products.remove(product.getBarcode());
 	}
-	
+
 	/** Removes a specified ProductGroup from this container.
 	 * 
 	 * @param productGroup 		The ProductGroup to remove
@@ -500,13 +501,13 @@ public abstract class ProductContainer implements Comparable<ProductContainer>, 
 	 */
 	public void remove(ProductGroup productGroup) {
 		assert (productGroup != null);
-		
+
 		if (!productGroup.canRemove()) {
 			throw new IllegalStateException("Cannot remove child product group");
 		}
 		productGroups.remove(productGroup.getName());
 	}
-	
+
 	/** Sets this Container's name
 	 * 
 	 * @param name Name to set to
@@ -530,7 +531,7 @@ public abstract class ProductContainer implements Comparable<ProductContainer>, 
 		}
 		return false;
 	}
-	
+
 	// Helper method for adding items
 	protected void registerItem(Item i) {
 		items.put(i.getBarcode(),i);
@@ -544,11 +545,11 @@ public abstract class ProductContainer implements Comparable<ProductContainer>, 
 		newItemsForProduct.add(i);
 		productsToItems.put(i.getProduct(), newItemsForProduct);
 	}
-	
+
 	// Helper method for moving / removing items
 	protected void unregisterItem(Item i) {
 		items.remove(i.getBarcode());
-		
+
 		Set<Item> newItemsForProduct;
 		if (productsToItems.containsKey(i.getProduct())) {
 			newItemsForProduct = productsToItems.get(i.getProduct());

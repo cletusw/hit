@@ -7,7 +7,7 @@ import gui.common.IView;
  * Controller class for the product statistics report view.
  */
 public class ProductStatsReportController extends Controller implements
-		IProductStatsReportController {
+IProductStatsReportController {
 
 	/**
 	 * Constructor.
@@ -16,14 +16,14 @@ public class ProductStatsReportController extends Controller implements
 	 */
 	public ProductStatsReportController(IView view) {
 		super(view);
-		
+
 		construct();
 	}
 
 	//
 	// Controller overrides
 	//
-	
+
 	/**
 	 * This method is called when the user clicks the "OK"
 	 * button in the product statistics report view.
@@ -69,12 +69,12 @@ public class ProductStatsReportController extends Controller implements
 	protected IProductStatsReportView getView() {
 		return (IProductStatsReportView)super.getView();
 	}
-	
+
 	/**
 	 * Loads data into the controller's view.
 	 * 
 	 *  {@pre None}
-	 *  
+	 * 
 	 *  {@post The controller has loaded data into its view}
 	 */
 	@Override

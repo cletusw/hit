@@ -124,22 +124,23 @@ public abstract class ItemView extends DialogView {
 	private void createButtonsPanel() {
 		_buttonsPanel = new ButtonBankPanel(new String[] { "OK", "Cancel" },
 				new ButtonBankListener() {
-					public void buttonPressed(int index, String label) {
-						switch (index) {
-						case 0:
-							ok();
-							_dialog.dispose();
-							break;
-						case 1:
-							cancel();
-							_dialog.dispose();
-							break;
-						default:
-							assert false;
-							break;
-						}
-					}
-				});
+			@Override
+			public void buttonPressed(int index, String label) {
+				switch (index) {
+				case 0:
+					ok();
+					_dialog.dispose();
+					break;
+				case 1:
+					cancel();
+					_dialog.dispose();
+					break;
+				default:
+					assert false;
+					break;
+				}
+			}
+		});
 
 		_okButton = _buttonsPanel.getButtons()[0];
 		_dialog.getRootPane().setDefaultButton(_okButton);
@@ -189,41 +190,41 @@ public abstract class ItemView extends DialogView {
 				DateUtils.DATE_FORMAT);
 		_entryDateSpinner.setEditor(_entryDateSpinnerEditor);
 		_entryDateSpinnerEditor.getTextField().getDocument()
-				.addDocumentListener(new DocumentListener() {
+		.addDocumentListener(new DocumentListener() {
 
-					@Override
-					public void changedUpdate(DocumentEvent e) {
-						return;
-					}
+			@Override
+			public void changedUpdate(DocumentEvent e) {
+				return;
+			}
 
-					@Override
-					public void insertUpdate(DocumentEvent e) {
-						processChange(e);
-					}
+			@Override
+			public void insertUpdate(DocumentEvent e) {
+				processChange(e);
+			}
 
-					@Override
-					public void removeUpdate(DocumentEvent e) {
-						processChange(e);
-					}
+			@Override
+			public void removeUpdate(DocumentEvent e) {
+				processChange(e);
+			}
 
-					private void processChange(DocumentEvent e) {
-						if (eventsAreDisabled()) {
-							return;
-						}
-						if (_entryDateSpinnerEditor.getTextField().hasFocus()) {
-							valuesChanged();
-						}
-					}
-				});
-//		 _entryDateSpinner.addChangeListener(new ChangeListener() {
-//			@Override
-//			public void stateChanged(ChangeEvent arg0) {
-//				if (eventsAreDisabled()) {
-//					return;
-//				}
-//				valuesChanged();
-//			}
-//		});
+			private void processChange(DocumentEvent e) {
+				if (eventsAreDisabled()) {
+					return;
+				}
+				if (_entryDateSpinnerEditor.getTextField().hasFocus()) {
+					valuesChanged();
+				}
+			}
+		});
+		//		 _entryDateSpinner.addChangeListener(new ChangeListener() {
+		//			@Override
+		//			public void stateChanged(ChangeEvent arg0) {
+		//				if (eventsAreDisabled()) {
+		//					return;
+		//				}
+		//				valuesChanged();
+		//			}
+		//		});
 	}
 
 	private void layoutValuesPanel() {

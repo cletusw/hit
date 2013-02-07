@@ -7,7 +7,7 @@ public class MockStorageUnitManager implements StorageUnitManager {
 	@Override
 	public void add(StorageUnit storageUnit) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
@@ -25,26 +25,26 @@ public class MockStorageUnitManager implements StorageUnitManager {
 	@Override
 	public void remove(Product product) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
 	public void remove(ProductGroup productGroup) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
 	public void remove(StorageUnit storageUnit) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
 	public void renameStorageUnit(StorageUnit storageUnit,
 			String newStorageUnitName) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 }

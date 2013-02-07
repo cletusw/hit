@@ -5,7 +5,7 @@ package gui.common;
  * Controllers invoke this functionality on their views.
  */
 public interface IView {
-	
+
 	/**
 	 * Displays an "error" message to the user.
 	 * 
@@ -27,7 +27,7 @@ public interface IView {
 	 * {@post The user has viewed the information message.}
 	 */
 	void displayInformationMessage(String message);
-	
+
 	/**
 	 * Displays a "warning" message to the user.
 	 * 

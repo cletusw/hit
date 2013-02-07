@@ -20,7 +20,7 @@ public class ProductQuantity implements Serializable {
 	 * @param quantity float quantity to test.
 	 * @param units Unit to test.
 	 * @return true if quantity, units can be combined to make a valid ProductQuantity,
-	 * false otherwise 
+	 * false otherwise
 	 * 
 	 * @pre true
 	 * @post true
@@ -29,19 +29,19 @@ public class ProductQuantity implements Serializable {
 		if(quantity < 0){
 			return false;
 		}
-		
+
 		if(units == Unit.COUNT && quantity != Math.round(quantity)){
 			return false;
 		}
-		
+
 		return true;
 	}
 	// Member variables
 	private float quantity;
 	private Unit units;
-	
+
 	private UnitType unitType;
-	
+
 	/** Constructor
 	 * @param q Quantity, must be non-negative. If Unit is COUNT, must be integer.
 	 * @param u Unit
@@ -54,18 +54,18 @@ public class ProductQuantity implements Serializable {
 	 */
 	public ProductQuantity(float q, Unit u){
 		assert(q >= 0);
-		
-		this.units = u;
-		this.unitType = Unit.typeMap.get(this.units);
+
+		units = u;
+		unitType = Unit.typeMap.get(units);
 		setQuantity(q);
 	}
-	
+
 	/** Adds a ProductQuantity to this ProductQuantity.
 	 * If their UnitTypes don't match, no effect will take place.
-	 * If their units don't match but the UnitTypes do, the incoming 
+	 * If their units don't match but the UnitTypes do, the incoming
 	 * ProductQuantity will be converted to a matching unit and added
 	 * to this product quantity. This ProductQuantity's units will not
-	 * be modified. 
+	 * be modified.
 	 * 
 	 * @param otherQuantity - ProductQuantity to add to this ProductQuantity
 	 * 
@@ -77,17 +77,17 @@ public class ProductQuantity implements Serializable {
 	 */
 	public void add(ProductQuantity otherQuantity) throws IllegalArgumentException {
 		assert(otherQuantity != null);
-		assert(!this.unitType.equals(otherQuantity.unitType));
-		
-		this.unitType.equals(otherQuantity.unitType);
-		if(!this.unitType.equals(otherQuantity.unitType)){
+		assert(!unitType.equals(otherQuantity.unitType));
+
+		unitType.equals(otherQuantity.unitType);
+		if(!unitType.equals(otherQuantity.unitType)){
 			throw new IllegalArgumentException("Cannot add quantities with different unit types.");
 		}
-		
-		float conversionFactor = Unit.getConversionFactor(otherQuantity.units, this.units);
-		this.quantity += (otherQuantity.quantity * conversionFactor);
+
+		float conversionFactor = Unit.getConversionFactor(otherQuantity.units, units);
+		quantity += (otherQuantity.quantity * conversionFactor);
 	}
-	
+
 	/**
 	 * Determines whether this ProductQuantity is equal to another.
 	 * @param other		the Object to test for equality
@@ -98,14 +98,15 @@ public class ProductQuantity implements Serializable {
 	 * @post true
 	 * 
 	 */
+	@Override
 	public boolean equals(Object other) {
 		assert(other != null);
 		assert(other instanceof ProductQuantity);
-		
+
 		ProductQuantity pq = (ProductQuantity) other;
-		return this.quantity == pq.quantity && this.units == pq.units;
+		return quantity == pq.quantity && units == pq.units;
 	}
-	
+
 	/** Attribute getter for quantity
 	 * 
 	 * @return The float quantity associated with this ProductQuantity
@@ -114,9 +115,9 @@ public class ProductQuantity implements Serializable {
 	 * @post true
 	 */
 	public float getQuantity(){
-		return this.quantity;
+		return quantity;
 	}
-	
+
 	/** Attribute getter for Unit associated with this quantity
 	 * 
 	 * @return Unit Enum of this ProductQuantity
@@ -126,12 +127,12 @@ public class ProductQuantity implements Serializable {
 	 * 
 	 */
 	public Unit getUnits(){
-		return this.units;
+		return units;
 	}
-	
+
 	/** Attribute setter for quantity. This setter enforces that if the units
 	 * are COUNT, the quantity must be
-	 *  
+	 * 
 	 * @param q Float if units is not COUNT, integer otherwise
 	 * @throws IllegalArgumentException If units are COUNT and quantity is not an integer
 	 * 
@@ -139,20 +140,20 @@ public class ProductQuantity implements Serializable {
 	 *  @post quantity.equals(q)
 	 */
 	public void setQuantity(float q) throws IllegalArgumentException{
-		assert(isValidProductQuantity(q, this.units));
-		if(!isValidProductQuantity(q, this.units)){
+		assert(isValidProductQuantity(q, units));
+		if(!isValidProductQuantity(q, units)){
 			throw new IllegalArgumentException("Invalid quantity: " + quantity);
 		}
-		this.quantity = q;
+		quantity = q;
 	}
-	
-	
+
+
 	/** Subtracts a ProductQuantity from this ProductQuantity. The two ProductQuantities
 	 * Must have matching units, and the result result must be non-negative.
 	 * 
 	 * @param quantityToSubtract - ProductQuantity to subtract from this ProductQuantity,
 	 * 								must have non-negative quantity
-	 *  
+	 * 
 	 * @throws IllegalArgumentException If this ProductQuantity's Unit does not
 	 * match incoming ProductQuantity Unit
 	 * @throws IllegalArgumentException If the resulting quantity < 0
@@ -163,26 +164,27 @@ public class ProductQuantity implements Serializable {
 	 */
 	public void subtract(ProductQuantity otherQuantity){
 		assert(otherQuantity != null);
-		if(!this.unitType.equals(otherQuantity.unitType)){
+		if(!unitType.equals(otherQuantity.unitType)){
 			throw new IllegalArgumentException("Cannot add quantities with different unit types.");
 		}
-		
-		float conversionFactor = Unit.getConversionFactor(otherQuantity.units, this.units);
-		assert(!(this.quantity - (otherQuantity.quantity * conversionFactor) < 0));
-		if(this.quantity - (otherQuantity.quantity * conversionFactor) < 0){
+
+		float conversionFactor = Unit.getConversionFactor(otherQuantity.units, units);
+		assert(!(quantity - (otherQuantity.quantity * conversionFactor) < 0));
+		if(quantity - (otherQuantity.quantity * conversionFactor) < 0){
 			throw new IllegalArgumentException("Resulting Subtraction would be negative");
 		}
-		
-		this.quantity -= (otherQuantity.quantity * conversionFactor);
+
+		quantity -= (otherQuantity.quantity * conversionFactor);
 	}
-	
-	/** Gets a legible string representation of this ProductQuantity 
+
+	/** Gets a legible string representation of this ProductQuantity
 	 * in the format [quantity] [Unit]
 	 * 
 	 * @return String representation of ProductQuantity
 	 * @pre true
 	 * @post true
 	 */
+	@Override
 	public String toString(){
 		if (units == Unit.COUNT) {
 			return Math.round(quantity) + " " + units.toString();

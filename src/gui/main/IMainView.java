@@ -14,25 +14,25 @@ public interface IMainView extends IView {
 	 * the expired items report.
 	 */
 	void displayExpiredReportView();
-	
+
 	/**
 	 * Displays the notices report view, which allows the user to print
 	 * the notices report.
 	 */
 	void displayNoticesReportView();
-	
+
 	/**
 	 * Displays the product statistics report view, which allows the user to print
 	 * the product statistics report.
 	 */
 	void displayProductReportView();
-	
+
 	/**
 	 * Displays the removed items report view, which allows the user to print
 	 * the removed items report.
 	 */
 	void displayRemovedReportView();
-	
+
 	/**
 	 * Displays the N-month supply report view, which allows the user to print
 	 * the N-month supply report.

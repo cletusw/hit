@@ -25,15 +25,15 @@ public class ProductTest {
 	private final int threeMonthSupply = 4;
 	private final ProductQuantity size = new ProductQuantity(2.3f, Unit.GALLONS);
 	private Product product;
-	
+
 	/**
 	 * @throws java.lang.Exception
 	 */
 	@Before
 	public void setUp() throws Exception {
-		product = new Product(validBarcode, validDescription, shelfLife, 
+		product = new Product(validBarcode, validDescription, shelfLife,
 				threeMonthSupply, size, productManager);
-		
+
 		// test invariants
 		assertTrue(product.getBarcode() != null);
 		assertTrue(product.getDescription() != null);
@@ -62,15 +62,15 @@ public class ProductTest {
 	 */
 	@Test
 	public void testCompareTo() {
-		Product sameProduct = new Product(product.getBarcode(), product.getDescription(), 
+		Product sameProduct = new Product(product.getBarcode(), product.getDescription(),
 				0, 0, size, productManager);
-		Product differentProduct = new Product("DifferentBarcode", "DifferentDescription", 
+		Product differentProduct = new Product("DifferentBarcode", "DifferentDescription",
 				0, 0, size, productManager);
-		
+
 		assertTrue(product.compareTo(sameProduct) == 0);
 		assertTrue(product.compareTo(differentProduct) != 0);
 	}
-	
+
 	/**
 	 * Test method for {@link model.Product#getCreationDate()}.
 	 */
@@ -79,7 +79,7 @@ public class ProductTest {
 	public void testCreationDate() {
 		Date createDate = product.getCreationDate();
 		Date today = new Date();
-		
+
 		assertTrue(createDate.getYear() == today.getYear());
 		assertTrue(createDate.getMonth() == today.getMonth());
 		assertTrue(createDate.getDate() == today.getDate());
@@ -96,7 +96,7 @@ public class ProductTest {
 		assertFalse(Product.isValidBarcode(""));
 		assertFalse(Product.isValidBarcode(null));
 	}
-	
+
 	/**
 	 * Test method for {@link model.Product#isValidDescription(java.lang.String)}.
 	 */
@@ -106,7 +106,7 @@ public class ProductTest {
 		assertFalse(Product.isValidDescription(""));
 		assertFalse(Product.isValidDescription(null));
 	}
-	
+
 	/**
 	 * Test method for {@link model.Product#isValidShelfLife(int)}.
 	 */
@@ -117,7 +117,7 @@ public class ProductTest {
 		assertFalse(Product.isValidShelfLife(-5));
 	}
 
-	
+
 	/**
 	 * Test method for {@link model.Product#isValidThreeMonthSupply(int)}.
 	 */
@@ -127,12 +127,12 @@ public class ProductTest {
 		assertTrue(Product.isValidThreeMonthSupply(10));
 		assertFalse(Product.isValidThreeMonthSupply(-1));
 	}
-	
+
 	/**
 	 * Test method for {@link model.Product#Product(java.lang.String, java.lang.String)}.
 	 */
 	@Test
-	public void testProduct() {		
+	public void testProduct() {
 		// test constructor post
 		assertTrue(!product.getCreationDate().after(new Date()));
 		assertTrue(product.getBarcode().equals(validBarcode));
@@ -141,7 +141,7 @@ public class ProductTest {
 		assertTrue(product.getSize().equals(size));
 		assertTrue(product.getThreeMonthSupply() == threeMonthSupply);
 	}
-	
+
 	/**
 	 * Test method for {@link model.Product#Product(java.lang.String, java.lang.String)}.
 	 */

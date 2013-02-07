@@ -31,7 +31,7 @@ import common.util.DateUtils;
 
 @SuppressWarnings("serial")
 public class AddItemBatchView extends ItemBatchView implements
-		IAddItemBatchView {
+IAddItemBatchView {
 
 	private JLabel entryDateLabel;
 	private SpinnerModel entryDateSpinnerModel;
@@ -69,7 +69,7 @@ public class AddItemBatchView extends ItemBatchView implements
 
 	@Override
 	public Date getEntryDate() {
-		
+
 		// return DateUtils.removeTimeFromDate((Date) entryDateSpinnerModel
 		// 		.getValue());
 
@@ -143,41 +143,41 @@ public class AddItemBatchView extends ItemBatchView implements
 				DateUtils.DATE_FORMAT);
 		entryDateSpinner.setEditor(entryDateSpinnerEditor);
 		entryDateSpinnerEditor.getTextField().getDocument()
-				.addDocumentListener(new DocumentListener() {
+		.addDocumentListener(new DocumentListener() {
 
-					@Override
-					public void changedUpdate(DocumentEvent e) {
-						return;
-					}
+			@Override
+			public void changedUpdate(DocumentEvent e) {
+				return;
+			}
 
-					@Override
-					public void insertUpdate(DocumentEvent e) {
-						processChange(e);
-					}
+			@Override
+			public void insertUpdate(DocumentEvent e) {
+				processChange(e);
+			}
 
-					@Override
-					public void removeUpdate(DocumentEvent e) {
-						processChange(e);
-					}
+			@Override
+			public void removeUpdate(DocumentEvent e) {
+				processChange(e);
+			}
 
-					private void processChange(DocumentEvent e) {
-						if (eventsAreDisabled()) {
-							return;
-						}
-						if (entryDateSpinnerEditor.getTextField().hasFocus()) {
-							entryDateChanged();
-						}
-					}
-				});
-//		entryDateSpinner.addChangeListener(new ChangeListener() {
-//			@Override
-//			public void stateChanged(ChangeEvent e) {
-//				if (eventsAreDisabled()) {
-//					return;
-//				}
-//				entryDateChanged();
-//			}
-//		});
+			private void processChange(DocumentEvent e) {
+				if (eventsAreDisabled()) {
+					return;
+				}
+				if (entryDateSpinnerEditor.getTextField().hasFocus()) {
+					entryDateChanged();
+				}
+			}
+		});
+		//		entryDateSpinner.addChangeListener(new ChangeListener() {
+		//			@Override
+		//			public void stateChanged(ChangeEvent e) {
+		//				if (eventsAreDisabled()) {
+		//					return;
+		//				}
+		//				entryDateChanged();
+		//			}
+		//		});
 
 		countLabel = new JLabel("Count:");
 
@@ -279,7 +279,7 @@ public class AddItemBatchView extends ItemBatchView implements
 		splitPane = new JSplitPane(JSplitPane.VERTICAL_SPLIT, productPanel,
 				itemTableScrollPane);
 
-		this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
+		setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 		this.add(splitPane);
 	}
 

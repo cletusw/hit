@@ -11,7 +11,7 @@ import java.io.Serializable;
 @SuppressWarnings("serial")
 public class NonNullString implements Serializable, Comparable {
 	protected String value;
-	
+
 	/** Constructor. Must be given a non-null, non-empty string.
 	 * 
 	 * @param s non-null, non-empty string.
@@ -24,42 +24,43 @@ public class NonNullString implements Serializable, Comparable {
 	public NonNullString(String s){
 		assert(s != null);
 		assert(!s.isEmpty());
-		
+
 		if(s == null || s.isEmpty()){
 			throw new IllegalArgumentException();
 		}
-		
-		this.value = s;
+
+		value = s;
 	}
-	
+
 	protected NonNullString(){
-		
+
 	}
-	
+
 	/**Compare this not-null string to another using String.compareTo(String other)
 	 * 
 	 * @param other NotNullString to compare, or String
-	 * @return the value 0 if the argument string is equal to this string; 
-	 * a value less than 0 if this string is lexicographically less than 
-	 * the string argument; and a value greater than 0 if this string is 
+	 * @return the value 0 if the argument string is equal to this string;
+	 * a value less than 0 if this string is lexicographically less than
+	 * the string argument; and a value greater than 0 if this string is
 	 * lexicographically greater than the string argument.
 	 * 
 	 * @pre other instanceof NonNullString || String
 	 * @post true
 	 */
+	@Override
 	public int compareTo(Object other) {
 		assert(other instanceof NonNullString || other instanceof String);
-		
+
 		if(other instanceof NonNullString){
-			return this.value.compareTo(((NonNullString) other).getValue());
+			return value.compareTo(((NonNullString) other).getValue());
 		}
 		else if(other instanceof String){
-			return this.value.compareTo((String)other);
+			return value.compareTo((String)other);
 		}
 		return -1;
 	}
 
-	/** Returns the string value of the notnullstring. 
+	/** Returns the string value of the notnullstring.
 	 * 
 	 * @return String representation of the notnullstring.
 	 * 
@@ -67,6 +68,6 @@ public class NonNullString implements Serializable, Comparable {
 	 * @post true
 	 */
 	public String getValue(){
-		return this.value;
+		return value;
 	}
 }

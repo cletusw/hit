@@ -7,7 +7,7 @@ import java.util.List;
 
 /**
  * Display data class for product containers (i.e., storage units
- * and product groups). 
+ * and product groups).
  */
 public class ProductContainerData extends Tagable {
 
@@ -15,7 +15,7 @@ public class ProductContainerData extends Tagable {
 	 * Name property.
 	 */
 	private String _name;
-	
+
 	/**
 	 * List of children.
 	 */
@@ -43,11 +43,11 @@ public class ProductContainerData extends Tagable {
 	 */
 	public ProductContainerData(String name) {
 		super();
-		
-		this._name = name;
+
+		_name = name;
 		_children = new ArrayList<ProductContainerData>();
 	}
-	
+
 	/**
 	 * Appends a new child.
 	 * 
@@ -74,7 +74,7 @@ public class ProductContainerData extends Tagable {
 	public ProductContainerData getChild(int index) {
 		return _children.get(index);
 	}
-	
+
 	/**
 	 * Returns the number of children.
 	 * 
@@ -85,7 +85,7 @@ public class ProductContainerData extends Tagable {
 	public int getChildCount() {
 		return _children.size();
 	}
-	
+
 	/**
 	 * Returns the current value of the Name property.
 	 * 
@@ -96,7 +96,7 @@ public class ProductContainerData extends Tagable {
 	public String getName() {
 		return _name;
 	}
-	
+
 	/**
 	 * Sets the Name property.
 	 * 
@@ -107,14 +107,14 @@ public class ProductContainerData extends Tagable {
 	 * {@post getName() == name}
 	 */
 	public void setName(String name) {
-		this._name = name;
+		_name = name;
 	}
-	
+
 	@Override
 	public String toString() {
 		return _name;
 	}
-	
+
 	//
 	// FOR INTERNAL USE ONLY - STUDENTS SHOULD NOT NEED TO CALL THESE METHODS
 	//
@@ -134,7 +134,7 @@ public class ProductContainerData extends Tagable {
 	protected void deleteChild(ProductContainerData child) {
 		_children.remove(child);
 	}
-	
+
 	/**
 	 * Inserts a new child at the specified index.
 	 * 
@@ -159,7 +159,7 @@ public class ProductContainerData extends Tagable {
 			assert i == index;
 		}
 	}
-	
+
 	/**
 	 * Renames the specified child.
 	 * <ol>
@@ -197,6 +197,6 @@ public class ProductContainerData extends Tagable {
 		child.setName(newName);
 		_children.add(newIndex, child);
 	}
-	
+
 }
 

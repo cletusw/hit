@@ -26,35 +26,39 @@ public class NoticesReportView extends DialogView implements INoticesReportView 
 
 	private JPanel _valuesPanel;
 	private JLabel _formatLabel;
-	private JComboBox _formatBox;		
+	private JComboBox _formatBox;
 	private ButtonBankPanel _buttonsPanel;
 	protected JButton _okButton;
-	
+
 	public NoticesReportView(GUI parent, DialogBox dialog) {
 		super(parent, dialog);
 
 		construct();
-		
+
 		_controller = new NoticesReportController(this);
 	}
 
+	@Override
 	public void enableFormat(boolean value) {
 		_formatBox.setEnabled(value);
 	}
-	
+
+	@Override
 	public void enableOK(boolean value) {
 		_okButton.setEnabled(value);
 	}
-	
+
 	@Override
 	public INoticesReportController getController() {
 		return (INoticesReportController)super.getController();
 	}
-	
+
+	@Override
 	public FileFormat getFormat() {
 		return (FileFormat)_formatBox.getSelectedItem();
 	}
 
+	@Override
 	public void setFormat(FileFormat value) {
 		boolean disabledEvents = disableEvents();
 		try {
@@ -70,28 +74,29 @@ public class NoticesReportView extends DialogView implements INoticesReportView 
 	private void cancel() {
 		return;
 	}
-	
+
 
 	private void createButtonsPanel() {
 		_buttonsPanel = new ButtonBankPanel(new String[]{"OK", "Cancel"},
 				new ButtonBankListener() {
-					public void buttonPressed(int index, String label) {
-						switch (index) {
-							case 0:
-								ok();
-								_dialog.dispose();
-								break;
-							case 1:
-								cancel();
-								_dialog.dispose();
-								break;
-							default:
-								assert false;
-								break;
-						}
-					}
+			@Override
+			public void buttonPressed(int index, String label) {
+				switch (index) {
+				case 0:
+					ok();
+					_dialog.dispose();
+					break;
+				case 1:
+					cancel();
+					_dialog.dispose();
+					break;
+				default:
+					assert false;
+					break;
 				}
-			);
+			}
+		}
+				);
 
 		_okButton = _buttonsPanel.getButtons()[0];
 		_dialog.getRootPane().setDefaultButton(_okButton);
@@ -99,13 +104,14 @@ public class NoticesReportView extends DialogView implements INoticesReportView 
 
 	private void createValuesPanel() {
 		_valuesPanel = new JPanel();
-		
+
 		_formatLabel = new JLabel("Format:");
-		
+
 		_formatBox = new JComboBox();
 		_formatBox.addItem(FileFormat.PDF);
 		_formatBox.addItem(FileFormat.HTML);
 		_formatBox.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent evt) {
 				if (eventsAreDisabled()) {
 					return;
@@ -114,7 +120,7 @@ public class NoticesReportView extends DialogView implements INoticesReportView 
 			}
 		});
 	}
-	
+
 	private void layoutValuesPanel() {
 		_valuesPanel.setLayout(new GridBagLayout());
 
@@ -135,7 +141,7 @@ public class NoticesReportView extends DialogView implements INoticesReportView 
 		c.place(5, 0, 1, 1);
 		_valuesPanel.add(Box.createHorizontalStrut(20), c);
 	}
-	
+
 	private void ok() {
 		getController().display();
 	}
@@ -143,16 +149,16 @@ public class NoticesReportView extends DialogView implements INoticesReportView 
 	private void valuesChanged() {
 		getController().valuesChanged();
 	}
-	
+
 	@Override
 	protected void createComponents() {
 		createValuesPanel();
 		createButtonsPanel();
 	}
-	
+
 	@Override
 	protected void layoutComponents() {
-		layoutValuesPanel();	
+		layoutValuesPanel();
 
 		setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 		add(Box.createVerticalStrut(15));

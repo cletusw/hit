@@ -6,10 +6,10 @@ import gui.main.GUI;
 
 @SuppressWarnings("serial")
 public class RemoveItemBatchView extends ItemBatchView implements IRemoveItemBatchView {
-	
+
 	public RemoveItemBatchView(GUI parent, DialogBox dialog) {
 		super(parent, dialog);
-		
+
 		construct();
 
 		_controller = new RemoveItemBatchController(this);
@@ -23,12 +23,12 @@ public class RemoveItemBatchView extends ItemBatchView implements IRemoveItemBat
 	public IRemoveItemBatchController getController() {
 		return (IRemoveItemBatchController)super.getController();
 	}
-	
+
 	@Override
 	protected void barcodeChanged() {
 		getController().barcodeChanged();
 	}
-	
+
 	@Override
 	protected void done() {
 		getController().done();
@@ -43,12 +43,12 @@ public class RemoveItemBatchView extends ItemBatchView implements IRemoveItemBat
 	protected String getItemActionName() {
 		return "Remove Item";
 	}
-	
+
 	@Override
 	protected void itemAction() {
 		getController().removeItem();
 	}
-	
+
 	@Override
 	protected void redo() {
 		getController().redo();
@@ -63,7 +63,7 @@ public class RemoveItemBatchView extends ItemBatchView implements IRemoveItemBat
 	protected void selectedProductChanged() {
 		getController().selectedProductChanged();
 	}
-	
+
 	@Override
 	protected void undo() {
 		getController().undo();
@@ -73,6 +73,6 @@ public class RemoveItemBatchView extends ItemBatchView implements IRemoveItemBat
 	protected void useScannerChanged() {
 		getController().useScannerChanged();
 	}
-	
+
 }
 

@@ -9,8 +9,8 @@ public class AddProductView extends ProductView implements IAddProductView {
 
 	public AddProductView(GUI parent, DialogBox dialog, String barcode) {
 		super(parent, dialog);
-		
-		construct();		
+
+		construct();
 
 		_controller = new AddProductController(this, barcode);
 	}

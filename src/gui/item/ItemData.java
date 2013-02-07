@@ -13,22 +13,22 @@ public class ItemData extends Tagable {
 	 * EntryDate attribute.
 	 */
 	private Date _entryDate;
-	
+
 	/**
 	 * ExpirationDate attribute.
 	 */
 	private Date _expirationDate;
-	
+
 	/**
 	 * Barcode attribute.
 	 */
 	private String _barcode;
-	
+
 	/**
 	 * StorageUnit attribute.
 	 */
 	private String _storageUnit;
-	
+
 	/**
 	 * ProductGroup attribute.
 	 */
@@ -52,7 +52,7 @@ public class ItemData extends Tagable {
 		_storageUnit = "";
 		_productGroup = "";
 	}
-	
+
 	/**
 	 * Returns the value of the Barcode attribute.
 	 */
@@ -98,7 +98,7 @@ public class ItemData extends Tagable {
 	 * {@post getBarcode() == barcode}
 	 */
 	public void setBarcode(String barcode) {
-		this._barcode = barcode;
+		_barcode = barcode;
 	}
 
 	/**
@@ -111,7 +111,7 @@ public class ItemData extends Tagable {
 	 * {@post getEntryDate() == entryDate}
 	 */
 	public void setEntryDate(Date entryDate) {
-		this._entryDate = entryDate;
+		_entryDate = entryDate;
 	}
 
 	/**
@@ -124,7 +124,7 @@ public class ItemData extends Tagable {
 	 * {@post getExpirationDate() == expirationDate}
 	 */
 	public void setExpirationDate(Date expirationDate) {
-		this._expirationDate = expirationDate;
+		_expirationDate = expirationDate;
 	}
 
 	/**
@@ -137,7 +137,7 @@ public class ItemData extends Tagable {
 	 * {@post getProductGroup() == productGroup}
 	 */
 	public void setProductGroup(String productGroup) {
-		this._productGroup = productGroup;
+		_productGroup = productGroup;
 	}
 
 	/**
@@ -150,7 +150,7 @@ public class ItemData extends Tagable {
 	 * {@post getStorageUnit() == storageUnit}
 	 */
 	public void setStorageUnit(String storageUnit) {
-		this._storageUnit = storageUnit;
+		_storageUnit = storageUnit;
 	}
 
 }

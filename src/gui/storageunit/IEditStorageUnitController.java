@@ -12,7 +12,7 @@ public interface IEditStorageUnitController extends IController {
 	 * button in the edit storage unit view.
 	 */
 	void editStorageUnit();
-	
+
 	/**
 	 * This method is called when any of the fields in the
 	 * edit storage unit view is changed by the user.

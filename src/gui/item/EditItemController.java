@@ -6,9 +6,9 @@ import gui.common.IView;
 /**
  * Controller class for the edit item view.
  */
-public class EditItemController extends Controller 
-										implements IEditItemController {
-	
+public class EditItemController extends Controller
+implements IEditItemController {
+
 	/**
 	 * Constructor.
 	 * 
@@ -24,7 +24,7 @@ public class EditItemController extends Controller
 	//
 	// Controller overrides
 	//
-	
+
 	/**
 	 * This method is called when the user clicks the "OK"
 	 * button in the edit item view.
@@ -70,12 +70,12 @@ public class EditItemController extends Controller
 	protected IEditItemView getView() {
 		return (IEditItemView)super.getView();
 	}
-	
+
 	/**
 	 * Loads data into the controller's view.
 	 * 
 	 *  {@pre None}
-	 *  
+	 * 
 	 *  {@post The controller has loaded data into its view}
 	 */
 	@Override

@@ -13,9 +13,9 @@ public class ConcreteStorageUnitManager implements Serializable, StorageUnitMana
 	 * 
 	 */
 	public ConcreteStorageUnitManager() {
-		rootStorageUnits = new TreeSet<StorageUnit>();	
+		rootStorageUnits = new TreeSet<StorageUnit>();
 	}
-	
+
 	/** Creates a new StorageUnit and adds it to the system.
 	 * 
 	 * @param storageUnit The Storage Unit to add
@@ -23,22 +23,24 @@ public class ConcreteStorageUnitManager implements Serializable, StorageUnitMana
 	 * @pre isValidStorageUnitName(storageUnitName)
 	 * @post true
 	 */
+	@Override
 	public void add(StorageUnit storageUnit) {
 		assert(isValidStorageUnitName(storageUnit.getName()));
-		
+
 		rootStorageUnits.add(storageUnit);
 	}
-	
+
 	/** Returns an Iterator over the Storage Units.
 	 * @return an Iterator for accessing the root Storage Units
 	 * 
 	 *  @pre true
 	 *  @post true
 	 */
+	@Override
 	public Iterator<StorageUnit> getStorageUnitsIterator() {
 		return rootStorageUnits.iterator();
 	}
-	
+
 	/** Determines whether the specified Storage Unit name is valid for adding a new Storage Unit.
 	 * 
 	 * @param name 	The name to be tested
@@ -47,30 +49,32 @@ public class ConcreteStorageUnitManager implements Serializable, StorageUnitMana
 	 * @pre true
 	 * @post true
 	 */
+	@Override
 	public boolean isValidStorageUnitName(String name) {
 		if(name == null || name.equals(""))
 			return false;
-		
+
 		// From the Data Dictionary: Must be non-empty. Must be unique among all Storage Units.
 		return !name.equals("") && !rootStorageUnits.contains(new StorageUnit(name));
 	}
-	
+
 	/** Removes a given Product from all Storage Units.
 	 * 
 	 * @param product The Product to remove
 	 * 
 	 * @pre product.canRemove()
-	 * @post for(storageUnit in rootStorageUnits) storageUnit::products.size() == 
+	 * @post for(storageUnit in rootStorageUnits) storageUnit::products.size() ==
 	 * 		storageUnit::products.size()@pre - 1
 	 */
+	@Override
 	public void remove(Product product) {
 		assert(product.canRemove());
-		
+
 		for (StorageUnit storageUnit : rootStorageUnits) {
 			storageUnit.remove(product);
 		}
 	}
-	
+
 	/** Removes a ProductGroup from the system
 	 * 
 	 * @param productGroup the ProductGroup to remove
@@ -80,15 +84,16 @@ public class ConcreteStorageUnitManager implements Serializable, StorageUnitMana
 	 * @post for(storageUnit in rootStorageUnits) storageUnit::products.size() ==
 	 * 		storageUnit::products.size()@pre - 1
 	 */
+	@Override
 	public void remove(ProductGroup productGroup) {
 		assert(productGroup != null);
 		assert(productGroup.canRemove());
-		
+
 		for (StorageUnit storageUnit : rootStorageUnits) {
 			storageUnit.remove(productGroup);
 		}
 	}
-	
+
 	/**
 	 * Removes a Storage Unit from the system
 	 * 
@@ -99,10 +104,11 @@ public class ConcreteStorageUnitManager implements Serializable, StorageUnitMana
 	 * @post rootStorageUnits.size() == rootStorageUnits.size()@post - 1
 	 * 
 	 */
+	@Override
 	public void remove(StorageUnit storageUnit) {
 		assert(storageUnit != null);
 		assert(storageUnit.canRemove());
-		
+
 		rootStorageUnits.remove(storageUnit);
 	}
 
@@ -116,10 +122,11 @@ public class ConcreteStorageUnitManager implements Serializable, StorageUnitMana
 	 * @post !rootStorageUnits.contains(storageUnitName)
 	 * @post rootStorageUnits.contains(newStorageUnitName)
 	 */
+	@Override
 	public void renameStorageUnit(StorageUnit storageUnit, String newStorageUnitName) {
 		assert(rootStorageUnits.contains(storageUnit));
 		assert(isValidStorageUnitName(newStorageUnitName));
-		
+
 		storageUnit.setName(newStorageUnitName);
 	}
 }

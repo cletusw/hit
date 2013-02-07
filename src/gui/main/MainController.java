@@ -10,15 +10,15 @@ public class MainController extends Controller implements IMainController {
 
 	/**
 	 * Constructor.
-	 *  
+	 * 
 	 * @param view Reference to the main view
 	 */
 	public MainController(IMainView view) {
 		super(view);
-		
+
 		construct();
 	}
-	
+
 	/**
 	 * Returns true if and only if the "Exit" menu item should be enabled.
 	 */
@@ -79,7 +79,7 @@ public class MainController extends Controller implements IMainController {
 	}
 
 	/**
-	 * This method is called when the user selects the "Expired Items" 
+	 * This method is called when the user selects the "Expired Items"
 	 * menu item.
 	 */
 	@Override
@@ -88,7 +88,7 @@ public class MainController extends Controller implements IMainController {
 	}
 
 	/**
-	 * This method is called when the user selects the "Notices" menu 
+	 * This method is called when the user selects the "Notices" menu
 	 * item.
 	 */
 	@Override
@@ -97,7 +97,7 @@ public class MainController extends Controller implements IMainController {
 	}
 
 	/**
-	 * This method is called when the user selects the "Product Statistics" menu 
+	 * This method is called when the user selects the "Product Statistics" menu
 	 * item.
 	 */
 	@Override
@@ -106,7 +106,7 @@ public class MainController extends Controller implements IMainController {
 	}
 
 	/**
-	 * This method is called when the user selects the "Removed Items" menu 
+	 * This method is called when the user selects the "Removed Items" menu
 	 * item.
 	 */
 	@Override
@@ -115,7 +115,7 @@ public class MainController extends Controller implements IMainController {
 	}
 
 	/**
-	 * This method is called when the user selects the "N-Month Supply" menu 
+	 * This method is called when the user selects the "N-Month Supply" menu
 	 * item.
 	 */
 	@Override

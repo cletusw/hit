@@ -24,26 +24,26 @@ public abstract class StorageUnitView extends DialogView {
 
 	private JPanel _addPanel;
 	private JLabel _nameLabel;
-	private JTextField _nameField;		
+	private JTextField _nameField;
 	private ButtonBankPanel _buttonsPanel;
 	protected JButton _okButton;
-	
+
 	public StorageUnitView(GUI parent, DialogBox dialog) {
 		super(parent, dialog);
 	}
-	
+
 	public void enableOK(boolean value) {
 		_okButton.setEnabled(value);
 	}
-	
+
 	public void enableStorageUnitName(boolean value) {
 		_nameField.setEnabled(value);
 	}
-	
+
 	public String getStorageUnitName() {
 		return _nameField.getText();
 	}
-	
+
 	public void setStorageUnitName(String value) {
 		boolean disabledEvents = disableEvents();
 		try {
@@ -55,15 +55,15 @@ public abstract class StorageUnitView extends DialogView {
 			}
 		}
 	}
-	
+
 	private void createAddPanel() {
 		_addPanel = new JPanel();
-		
+
 		_nameLabel = new JLabel("Storage Unit Name:");
-		
+
 		_nameField = new JTextField(20);
 		_nameField.addKeyListener(new KeyListener() {
-			
+
 			@Override
 			public void keyPressed(KeyEvent e) {
 				return;
@@ -80,27 +80,28 @@ public abstract class StorageUnitView extends DialogView {
 			}
 		});
 	}
-	
+
 	private void createButtonsPanel() {
 		_buttonsPanel = new ButtonBankPanel(new String[]{"OK", "Cancel"},
 				new ButtonBankListener() {
-					public void buttonPressed(int index, String label) {
-						switch (index) {
-							case 0:
-								ok();
-								_dialog.dispose();
-								break;
-							case 1:
-								cancel();
-								_dialog.dispose();
-								break;
-							default:
-								assert false;
-								break;
-						}
-					}
+			@Override
+			public void buttonPressed(int index, String label) {
+				switch (index) {
+				case 0:
+					ok();
+					_dialog.dispose();
+					break;
+				case 1:
+					cancel();
+					_dialog.dispose();
+					break;
+				default:
+					assert false;
+					break;
 				}
-			);
+			}
+		}
+				);
 
 		_okButton = _buttonsPanel.getButtons()[0];
 		_dialog.getRootPane().setDefaultButton(_okButton);
@@ -122,7 +123,7 @@ public abstract class StorageUnitView extends DialogView {
 	}
 
 	protected abstract void cancel();
-	
+
 
 	@Override
 	protected void createComponents() {
@@ -132,16 +133,16 @@ public abstract class StorageUnitView extends DialogView {
 
 	@Override
 	protected void layoutComponents() {
-		layoutAddPanel();	
+		layoutAddPanel();
 
 		setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 		add(_addPanel);
 		add(Box.createHorizontalStrut(5));
 		add(_buttonsPanel);
 	}
-	
+
 	protected abstract void ok();
-	
+
 	protected abstract void valuesChanged();
 
 }

@@ -21,23 +21,23 @@ public class SerializationManagerTest {
 	public void tearDown() throws Exception {
 		deleteDefaultFile();
 	}
-	
+
 	@Test
 	public void test() {
 		// Create instance of HIT
 		HomeInventoryTracker hit = SerializationManager.create("");
-		
+
 		String name1 = "StorageUnit1";
 		String name2 = "StorageUnit2";
 		hit.addStorageUnit(new StorageUnit(name1));
 		hit.addStorageUnit(new StorageUnit(name2));
-		
+
 		try {
 			hit.write(testTarget);
 		} catch (IOException e) {
 			assertFalse(true);
 		}
-		
+
 		hit = SerializationManager.create(testTarget);
 		assertFalse(hit.canAddStorageUnit(name1));
 		assertFalse(hit.canAddStorageUnit(name2));

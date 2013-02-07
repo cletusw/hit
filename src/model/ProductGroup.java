@@ -6,7 +6,7 @@ import java.util.Iterator;
  * 
  *  @author - Matt Hess
  *  @version 1.0 - Snell 340 Group 4 Phase 1
- *  
+ * 
  *  @invariant container != null
  */
 @SuppressWarnings("serial")
@@ -14,7 +14,7 @@ public class ProductGroup extends ProductContainer {
 	private ProductQuantity threeMonthSupply;
 	private ProductContainer container;
 	private Unit groupUnit;
-	
+
 	/** Constructor
 	 * 
 	 * @param pcName - String name of the product group.
@@ -24,27 +24,28 @@ public class ProductGroup extends ProductContainer {
 	 * @post true
 	 * 
 	 */
-	public ProductGroup(String pcName, ProductQuantity tmSupply, 
+	public ProductGroup(String pcName, ProductQuantity tmSupply,
 			Unit groupUnit, ProductContainer parent) {
 		super(pcName);
 		container = parent;
 		threeMonthSupply = tmSupply;
 		this.groupUnit = groupUnit;
 	}
-	
+
 	/** Determines whether the specified Product can be added to this Product Group.
 	 * @param productBarcode	the Product barcode to check
 	 * @return true if it can be added, false otherwise
 	 * @pre productBarcode != null
 	 * @post true
 	 */
+	@Override
 	public boolean canAddProduct(String productBarcode) {
 		assert(productBarcode != null);
-		
+
 		// A Product may appear at most once in a given Storage Unit.
 		if(containsProduct(productBarcode))
 			return false;
-		
+
 		// We need to ask daddy (the Storage Unit) if the Product exists elsewhere in his children.
 		ProductContainer parent = container;
 		while(parent instanceof ProductGroup) {
@@ -52,7 +53,7 @@ public class ProductGroup extends ProductContainer {
 		}
 		return !parent.hasDescendantProduct(productBarcode);
 	}
-	
+
 	/**
 	 * Gets this ProductGroup's parent container
 	 * @return this ProductGroup's container
@@ -64,7 +65,7 @@ public class ProductGroup extends ProductContainer {
 	public ProductContainer getContainer() {
 		return container;
 	}
-	
+
 	/** Method that calculates and returns the amount of a product group in this container.
 	 * 
 	 * @return ProductQuantity - the current supply of this container
@@ -84,10 +85,10 @@ public class ProductGroup extends ProductContainer {
 				continue;
 			}
 		}
-		
+
 		return total;
 	}
-	
+
 	/** Attribute getter - threeMonthSupply
 	 * 
 	 * @return ProductQuantity - the three-month supply
@@ -99,7 +100,7 @@ public class ProductGroup extends ProductContainer {
 	public ProductQuantity getThreeMonthSupply() {
 		return threeMonthSupply;
 	}
-	
+
 	/**
 	 * Determines whether a given ProductQuantity is a valid three-month supply
 	 * @param threeMonthSupply - the ProductQuantity to test
@@ -116,11 +117,11 @@ public class ProductGroup extends ProductContainer {
 		// grams,�kilograms,�gallons,�quarts,�pints,�fluid�ounces,�liters.��If�the�unit�of�
 		// measurement�is��count�,�the�magnitude�must�be�an�integer�(i.e.,�no�fraction).�
 		assert(threeMonthSupply != null);
-		
+
 		return ProductQuantity.isValidProductQuantity(threeMonthSupply.getQuantity(),
 				threeMonthSupply.getUnits());
 	}
-	
+
 	/**
 	 * Sets this ProductGroup's parent container to the specified container.
 	 * @param container the new parent container
@@ -129,15 +130,15 @@ public class ProductGroup extends ProductContainer {
 	 * @post this.container == container
 	 */
 	public void setContainer(ProductContainer container) {
-		// From the Data Dictionary: 
+		// From the Data Dictionary:
 		// Must�be�non-empty.��A�Product�Group�is�
 		// always�contained�within�one�Product�
 		// Container.�
 		assert(container != null);
-		
+
 		this.container = container;
 	}
-	
+
 	/**
 	 * Sets this ProductGroup's three-month supply
 	 * @param threeMonthSupply - the new quantity for the three-month supply

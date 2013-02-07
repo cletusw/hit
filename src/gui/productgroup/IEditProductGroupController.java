@@ -12,7 +12,7 @@ public interface IEditProductGroupController extends IController {
 	 * button in the edit product group view.
 	 */
 	void editProductGroup();
-	
+
 	/**
 	 * This method is called when any of the fields in the
 	 * edit product group view is changed by the user.

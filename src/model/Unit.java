@@ -11,7 +11,7 @@ import sun.reflect.generics.reflectiveObjects.NotImplementedException;
  */
 public enum Unit implements Serializable {
 	COUNT, POUNDS, OUNCES, GRAMS, KILOGRAMS, GALLONS, QUARTS, PINTS, FLUID_OUNCES, LITERS;
-	
+
 	public static final Map<Unit, UnitType> typeMap = new TreeMap<Unit, UnitType>();
 	static {
 		typeMap.put(Unit.COUNT, UnitType.COUNT);
@@ -25,7 +25,7 @@ public enum Unit implements Serializable {
 		typeMap.put(Unit.FLUID_OUNCES, UnitType.VOLUME);
 		typeMap.put(Unit.LITERS, UnitType.VOLUME);
 	}
-	
+
 	/** Retrieves the conversion factor to convert a quantity of one type of unit to another.
 	 * 
 	 * @param convertFrom - originalUnits
@@ -38,7 +38,7 @@ public enum Unit implements Serializable {
 	public static float getConversionFactor(Unit convertFrom, Unit convertTo){
 		if(convertFrom.equals(convertTo))
 			return 1f;
-		
+
 		if(typeMap.get(convertFrom).equals(typeMap.get(convertTo))){
 			switch(typeMap.get(convertFrom)){
 			case COUNT:
@@ -55,7 +55,7 @@ public enum Unit implements Serializable {
 			throw new IllegalArgumentException("Units must match UnitType to convert");
 		}
 	}
-	
+
 	/**
 	 * Determines whether a specified integer is a valid count.
 	 * @param toTest	the integer to test
@@ -67,238 +67,238 @@ public enum Unit implements Serializable {
 	public static boolean isValidCount(int toTest) {
 		return toTest >= 0;
 	}
-	
+
 	private static float convertFromFluidOunces(Unit convertTo){
 		switch(convertTo){
-			// FLUID_OUNCES -> GALLONS
-			case GALLONS:
-				return 0.0078125f;
-				
+		// FLUID_OUNCES -> GALLONS
+		case GALLONS:
+			return 0.0078125f;
+
 			// FLUID_OUNCES -> QUARTS
-			case QUARTS:
-				return 0.03125f;
-				
+		case QUARTS:
+			return 0.03125f;
+
 			// FLUID_OUNCES -> PINTS
-			case PINTS:
-				return 0.0625f;
-				
+		case PINTS:
+			return 0.0625f;
+
 			// FLUID_OUNCES -> LITERS
-			case LITERS:
-				return 0.0295735f;
-				
-			default:
-				throw new NotImplementedException();
+		case LITERS:
+			return 0.0295735f;
+
+		default:
+			throw new NotImplementedException();
 		}
 	}
-	
+
 	private static float convertFromGallons(Unit convertTo){
 		switch(convertTo){
-			// GALLONS -> QUARTS
-			case QUARTS:
-				return 4;
-			
+		// GALLONS -> QUARTS
+		case QUARTS:
+			return 4;
+
 			// GALLONS -> PINTS
-			case PINTS:
-				return 8;
-			
+		case PINTS:
+			return 8;
+
 			// GALLONS -> FLUID_OUNCES
-			case FLUID_OUNCES:
-				return 128;
-			
+		case FLUID_OUNCES:
+			return 128;
+
 			// GALLONS -> LITERS
-			case LITERS:
-				return 3.78541f;
-			default:
-				throw new NotImplementedException();
+		case LITERS:
+			return 3.78541f;
+		default:
+			throw new NotImplementedException();
 		}
 	}
-	
+
 	private static float convertFromGrams(Unit convertTo){
 		switch(convertTo){
-			// GRAMS -> POUNDS
-			case POUNDS:
-				return 0.00220462f;
-				
+		// GRAMS -> POUNDS
+		case POUNDS:
+			return 0.00220462f;
+
 			// GRAMS -> OUNCES
-			case OUNCES:
-				return 0.035274f;
-				
+		case OUNCES:
+			return 0.035274f;
+
 			// GRAMS -> KILOGRAMS
-			case KILOGRAMS:
-				return 0.001f;
-				
-			default:
-				throw new NotImplementedException();
+		case KILOGRAMS:
+			return 0.001f;
+
+		default:
+			throw new NotImplementedException();
 		}
 	}
-	
+
 	private static float convertFromKilograms(Unit convertTo){
 		switch(convertTo){
-			// KILOGRAMS -> POUNDS
-			case POUNDS:
-				return 2.20462f;
-				
+		// KILOGRAMS -> POUNDS
+		case POUNDS:
+			return 2.20462f;
+
 			// KILOGRAMS -> OUNCES
-			case OUNCES:
-				return 35.274f;
-				
+		case OUNCES:
+			return 35.274f;
+
 			// KILOGRAMS -> GRAMS
-			case GRAMS:
-				return 1000f;
-				
-			default:
-				throw new NotImplementedException();
+		case GRAMS:
+			return 1000f;
+
+		default:
+			throw new NotImplementedException();
 		}
 	}
-	
+
 	private static float convertFromLiters(Unit convertTo){
 		switch(convertTo){
-			// LITERS -> GALLONS
-			case GALLONS:
-				return 0.264172f;
-				
+		// LITERS -> GALLONS
+		case GALLONS:
+			return 0.264172f;
+
 			// LITERS -> QUARTS
-			case QUARTS:
-				return 1.05669f;
-				
+		case QUARTS:
+			return 1.05669f;
+
 			// LITERS -> PINTS
-			case PINTS:
-				return 2.11338f;
-				
+		case PINTS:
+			return 2.11338f;
+
 			// LITERS -> FLUID_OUNCES
-			case FLUID_OUNCES:
-				return 33.814f;
-		
-			default:
-				throw new NotImplementedException();
+		case FLUID_OUNCES:
+			return 33.814f;
+
+		default:
+			throw new NotImplementedException();
 		}
 	}
-	
+
 	private static float convertFromOunces(Unit convertTo){
 		switch(convertTo){
-			// OUNCES -> POUNDS
-			case POUNDS:
-				return 0.0625f;
-				
+		// OUNCES -> POUNDS
+		case POUNDS:
+			return 0.0625f;
+
 			// OUNCES -> GRAMS
-			case GRAMS:
-				return 28.3495f;
-				
+		case GRAMS:
+			return 28.3495f;
+
 			// OUNCES -> KILOGRAMS
-			case KILOGRAMS:
-				return 0.0283495f;
-			default:
-				throw new NotImplementedException();
+		case KILOGRAMS:
+			return 0.0283495f;
+		default:
+			throw new NotImplementedException();
 		}
 	}
-	
+
 	private static float convertFromPints(Unit convertTo){
 		switch(convertTo){
-			// PINTS -> GALLONS
-			case GALLONS:
-				return .125f;
-			
+		// PINTS -> GALLONS
+		case GALLONS:
+			return .125f;
+
 			// PINTS -> QUARTS
-			case QUARTS:
-				return .5f;
-			
+		case QUARTS:
+			return .5f;
+
 			// PINTS -> FLUID_OUNCES
-			case FLUID_OUNCES:
-				return 16f;
-			
+		case FLUID_OUNCES:
+			return 16f;
+
 			// PINTS -> LITERS;
-			case LITERS:
-				return 0.473176f;
-			
-			default:
-				throw new NotImplementedException();
+		case LITERS:
+			return 0.473176f;
+
+		default:
+			throw new NotImplementedException();
 		}
 	}
-	
+
 	private static float convertFromPounds(Unit convertTo){
 		switch(convertTo){
-			// POUNDS -> OUNCES
-			case OUNCES:
-				return 16f;
-			
+		// POUNDS -> OUNCES
+		case OUNCES:
+			return 16f;
+
 			// POUNDS -> GRAMS
-			case GRAMS:
-				return 453.592f;
-			
+		case GRAMS:
+			return 453.592f;
+
 			// POUNDS -> KILOGRAMS
-			case KILOGRAMS:
-				return 0.453592f;
-			default:
-				throw new NotImplementedException();
+		case KILOGRAMS:
+			return 0.453592f;
+		default:
+			throw new NotImplementedException();
 		}
 	}
-	
+
 	private static float convertFromQuarts(Unit convertTo){
 		switch(convertTo){
-			// QUARTS -> GALLONS
-			case GALLONS:
-				return .25f;
-			
-			// QUARTS -> PINTS	
-			case PINTS:
-				return 2f;
-			
-			// QUARTS -> FLUID_OUNCES	
-			case FLUID_OUNCES:
-				return 32f;
-			
+		// QUARTS -> GALLONS
+		case GALLONS:
+			return .25f;
+
+			// QUARTS -> PINTS
+		case PINTS:
+			return 2f;
+
+			// QUARTS -> FLUID_OUNCES
+		case FLUID_OUNCES:
+			return 32f;
+
 			// QUARTS -> LITERS
-			case LITERS:
-				return 0.946353f;
-			
-			default:
-				throw new NotImplementedException();
+		case LITERS:
+			return 0.946353f;
+
+		default:
+			throw new NotImplementedException();
 		}
 	}
-	
+
 	private static float getVolumeConversionFactor(Unit convertFrom, Unit convertTo){
 		switch(convertFrom){
 
 		// GALLONS ->
 		case GALLONS:
 			return convertFromGallons(convertTo);
-				
-		// QUARTS ->	
+
+			// QUARTS ->
 		case QUARTS:
 			return convertFromQuarts(convertTo);
-		
-		// PINTS ->
+
+			// PINTS ->
 		case PINTS:
 			return convertFromPints(convertTo);
-			
-		// FLUID_OUNCES ->
+
+			// FLUID_OUNCES ->
 		case FLUID_OUNCES:
 			return convertFromFluidOunces(convertTo);
 
-		// LITERS ->
+			// LITERS ->
 		case LITERS:
 			return convertFromLiters(convertTo);
 		default:
 			throw new NotImplementedException();
 		}
 	}
-	
+
 	private static float getWeightConversionFactor(Unit convertFrom, Unit convertTo){
 		switch(convertFrom){
-		
-		// POUNDS -> 
+
+		// POUNDS ->
 		case POUNDS:
 			return convertFromPounds(convertTo);
-			
-		// OUNCES ->
+
+			// OUNCES ->
 		case OUNCES:
 			return convertFromOunces(convertTo);
-			
-		// GRAMS -> 
+
+			// GRAMS ->
 		case GRAMS:
 			return convertFromGrams(convertTo);
-			
-		// KILOGRAMS ->
+
+			// KILOGRAMS ->
 		case KILOGRAMS:
 			return convertFromKilograms(convertTo);
 		default:
@@ -313,9 +313,9 @@ public enum Unit implements Serializable {
 	 * @pre true
 	 * @post true
 	 */
-	@Override 
+	@Override
 	public String toString() {
 		String s = super.toString();
 		return s.substring(0, 1) + s.substring(1).toLowerCase();
-	 }
+	}
 }

@@ -7,9 +7,9 @@ import gui.inventory.ProductContainerData;
 /**
  * Controller class for the edit storage unit view.
  */
-public class EditStorageUnitController extends Controller 
-										implements IEditStorageUnitController {
-	
+public class EditStorageUnitController extends Controller
+implements IEditStorageUnitController {
+
 	/**
 	 * Constructor.
 	 * 
@@ -25,7 +25,7 @@ public class EditStorageUnitController extends Controller
 	//
 	// Controller overrides
 	//
-	
+
 	/**
 	 * This method is called when the user clicks the "OK"
 	 * button in the edit storage unit view.
@@ -76,7 +76,7 @@ public class EditStorageUnitController extends Controller
 	 * Loads data into the controller's view.
 	 * 
 	 *  {@pre None}
-	 *  
+	 * 
 	 *  {@post The controller has loaded data into its view}
 	 */
 	@Override

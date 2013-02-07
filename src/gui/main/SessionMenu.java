@@ -21,37 +21,41 @@ public class SessionMenu extends JMenu {
 
 	public SessionMenu(GUI parent) {
 		super("Session");
-		
-		this._parent = parent;
 
-		this.addMenuListener(new MenuListener() {
+		_parent = parent;
+
+		addMenuListener(new MenuListener() {
+			@Override
 			public void menuCanceled(MenuEvent e) {
 				return;
 			}
-			
+
+			@Override
 			public void menuDeselected(MenuEvent e) {
 				return;
 			}
-			
+
+			@Override
 			public void menuSelected(MenuEvent e) {
 				enableMenuItems();
-			}			
+			}
 		});
 
 		ActionListener actionListener = new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent evt) {
 				if (evt.getSource() == _exitMenuItem) {
 					exit();
 				}
 			}
 		};
-		
+
 		_exitMenuItem = new JMenuItem("Exit");
 		_exitMenuItem.setFont(View.createFont(_exitMenuItem.getFont(), View.MenuFontSize));
 		_exitMenuItem.addActionListener(actionListener);
 		add(_exitMenuItem);
 	}
-	
+
 	public void setController(IMainController value) {
 		_controller = value;
 	}
@@ -63,7 +67,7 @@ public class SessionMenu extends JMenu {
 	private void enableMenuItems() {
 		_exitMenuItem.setEnabled(_controller.canExit());
 	}
-	
+
 	void exit() {
 		_controller.exit();
 		_parent.dispose();

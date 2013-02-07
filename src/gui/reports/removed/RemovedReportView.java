@@ -112,7 +112,7 @@ public class RemovedReportView extends DialogView implements IRemovedReportView 
 	public Date getSinceDateValue() {
 
 		// return (Date) _sinceDateSpinnerModel.getValue();
-	
+
 		String sinceDateText = _sinceDateSpinnerEditor.getTextField().getText();
 		if (sinceDateText == null) {
 			return null;
@@ -122,7 +122,7 @@ public class RemovedReportView extends DialogView implements IRemovedReportView 
 		}
 		catch (ParseException e) {
 			return null;
-		}	
+		}
 	}
 
 	@Override
@@ -201,22 +201,23 @@ public class RemovedReportView extends DialogView implements IRemovedReportView 
 	private void createButtonsPanel() {
 		_buttonsPanel = new ButtonBankPanel(new String[] { "OK", "Cancel" },
 				new ButtonBankListener() {
-					public void buttonPressed(int index, String label) {
-						switch (index) {
-						case 0:
-							ok();
-							_dialog.dispose();
-							break;
-						case 1:
-							cancel();
-							_dialog.dispose();
-							break;
-						default:
-							assert false;
-							break;
-						}
-					}
-				});
+			@Override
+			public void buttonPressed(int index, String label) {
+				switch (index) {
+				case 0:
+					ok();
+					_dialog.dispose();
+					break;
+				case 1:
+					cancel();
+					_dialog.dispose();
+					break;
+				default:
+					assert false;
+					break;
+				}
+			}
+		});
 
 		_okButton = _buttonsPanel.getButtons()[0];
 		_dialog.getRootPane().setDefaultButton(_okButton);
@@ -232,6 +233,7 @@ public class RemovedReportView extends DialogView implements IRemovedReportView 
 		_formatBox.addItem(FileFormat.HTML);
 		_formatBox.setMaximumSize(_formatBox.getPreferredSize());
 		_formatBox.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent evt) {
 				if (eventsAreDisabled()) {
 					return;
@@ -275,41 +277,41 @@ public class RemovedReportView extends DialogView implements IRemovedReportView 
 		_sinceDateSpinner.setEditor(_sinceDateSpinnerEditor);
 		_sinceDateSpinner.setMaximumSize(_sinceDateSpinner.getPreferredSize());
 		_sinceDateSpinnerEditor.getTextField().getDocument()
-				.addDocumentListener(new DocumentListener() {
+		.addDocumentListener(new DocumentListener() {
 
-					@Override
-					public void changedUpdate(DocumentEvent e) {
-						return;
-					}
+			@Override
+			public void changedUpdate(DocumentEvent e) {
+				return;
+			}
 
-					@Override
-					public void insertUpdate(DocumentEvent e) {
-						processChange(e);
-					}
+			@Override
+			public void insertUpdate(DocumentEvent e) {
+				processChange(e);
+			}
 
-					@Override
-					public void removeUpdate(DocumentEvent e) {
-						processChange(e);
-					}
+			@Override
+			public void removeUpdate(DocumentEvent e) {
+				processChange(e);
+			}
 
-					private void processChange(DocumentEvent e) {
-						if (eventsAreDisabled()) {
-							return;
-						}
-						if (_sinceDateSpinnerEditor.getTextField().hasFocus()) {
-							valuesChanged();
-						}
-					}
-				});
-//		_sinceDateSpinner.addChangeListener(new ChangeListener() {
-//			@Override
-//			public void stateChanged(ChangeEvent arg0) {
-//				if (eventsAreDisabled()) {
-//					return;
-//				}
-//				valuesChanged();
-//			}
-//		});
+			private void processChange(DocumentEvent e) {
+				if (eventsAreDisabled()) {
+					return;
+				}
+				if (_sinceDateSpinnerEditor.getTextField().hasFocus()) {
+					valuesChanged();
+				}
+			}
+		});
+		//		_sinceDateSpinner.addChangeListener(new ChangeListener() {
+		//			@Override
+		//			public void stateChanged(ChangeEvent arg0) {
+		//				if (eventsAreDisabled()) {
+		//					return;
+		//				}
+		//				valuesChanged();
+		//			}
+		//		});
 
 		_buttonGroup = new ButtonGroup();
 		_buttonGroup.add(_sinceLastButton);
@@ -332,7 +334,7 @@ public class RemovedReportView extends DialogView implements IRemovedReportView 
 
 		JPanel sinceLastPanel = new JPanel();
 		sinceLastPanel
-				.setLayout(new BoxLayout(sinceLastPanel, BoxLayout.X_AXIS));
+		.setLayout(new BoxLayout(sinceLastPanel, BoxLayout.X_AXIS));
 		sinceLastPanel.add(Box.createHorizontalStrut(MARGIN_SPACING));
 		sinceLastPanel.add(_sinceLastButton);
 		sinceLastPanel.add(Box.createHorizontalStrut(MARGIN_SPACING));
@@ -340,7 +342,7 @@ public class RemovedReportView extends DialogView implements IRemovedReportView 
 
 		JPanel sinceDatePanel = new JPanel();
 		sinceDatePanel
-				.setLayout(new BoxLayout(sinceDatePanel, BoxLayout.X_AXIS));
+		.setLayout(new BoxLayout(sinceDatePanel, BoxLayout.X_AXIS));
 		sinceDatePanel.add(Box.createHorizontalStrut(MARGIN_SPACING));
 		sinceDatePanel.add(_sinceDateButton);
 		sinceDatePanel.add(Box.createHorizontalStrut(5));

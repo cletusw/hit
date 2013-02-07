@@ -19,7 +19,7 @@ public class Item implements Comparable<Object>, Serializable {
 	private Date expirationDate;
 	private Date exitTime;
 	private ProductContainer container;
-	
+
 	/** Constructs a new Item with the specified barcode, product, and container.
 	 * @param barcode the Item's barcode
 	 * @param product this Item's corresponding Product
@@ -33,22 +33,22 @@ public class Item implements Comparable<Object>, Serializable {
 	 * @post this.container != null
 	 * 
 	 */
-	public Item(Barcode barcode, Product product, ProductContainer container, 
+	public Item(Barcode barcode, Product product, ProductContainer container,
 			Date entryDate, ItemManager manager){
 		assert(barcode != null);
 		assert(product != null);
 		assert(container != null);
 		assert(manager != null);
-		
+
 		this.product = product;
 		this.container = container;
 		this.barcode = barcode;
-		this.setEntryDate(entryDate);
-		this.setExpirationDate();
+		setEntryDate(entryDate);
+		setExpirationDate();
 		manager.manage(this);
 	}
-	
-	/** Constructs a new Item with the specified barcode, product, and container. 
+
+	/** Constructs a new Item with the specified barcode, product, and container.
 	 *  Sets entryDate to now.
 	 * @param barcode the Item's barcode
 	 * @param product this Item's corresponding Product
@@ -62,11 +62,11 @@ public class Item implements Comparable<Object>, Serializable {
 	 * @post this.container != null
 	 * 
 	 */
-	public Item(Barcode barcode, Product product, ProductContainer container, 
+	public Item(Barcode barcode, Product product, ProductContainer container,
 			ItemManager manager) {
 		this(barcode, product, container, new Date(), manager);
 	}
-	
+
 	/** Constructs a new Item with the specified data.
 	 * 
 	 * @param product This Item's Product
@@ -85,7 +85,7 @@ public class Item implements Comparable<Object>, Serializable {
 	public Item(Product product, Date entryDate, ProductContainer container, ItemManager manager) {
 		this(new Barcode(), product, container, entryDate, manager);
 	}
-	
+
 	/** Constructs a new Item with the specified data.
 	 * 
 	 * @param product This Item's Product
@@ -102,7 +102,7 @@ public class Item implements Comparable<Object>, Serializable {
 	public Item(Product product, ProductContainer container, ItemManager manager) {
 		this(new Barcode(), product, container, new Date(), manager);
 	}
-	
+
 	@Override
 	/** Compares this Item to another object
 	 * @param o the object to compare this Item to
@@ -118,7 +118,7 @@ public class Item implements Comparable<Object>, Serializable {
 		Item other = (Item) o;
 		return barcode.compareTo(other.barcode);
 	}
-	
+
 	/** Gets this Item's barcode
 	 * 
 	 * @return this item's barcode
@@ -129,7 +129,7 @@ public class Item implements Comparable<Object>, Serializable {
 	public String getBarcode() {
 		return barcode.getValue();
 	}
-	
+
 	/** Gets this Item's parent container
 	 * 
 	 * @return this Item's parent ProductContainer
@@ -141,7 +141,7 @@ public class Item implements Comparable<Object>, Serializable {
 	public ProductContainer getContainer() {
 		return container;
 	}
-	
+
 	/** Gets this Item's entry date
 	 * 
 	 * @return this item's entry date
@@ -152,7 +152,7 @@ public class Item implements Comparable<Object>, Serializable {
 	public Date getEntryDate() {
 		return entryDate;
 	}
-	
+
 	/** Gets this Item's exit time
 	 * 
 	 * @return the Item's exit time
@@ -161,10 +161,10 @@ public class Item implements Comparable<Object>, Serializable {
 	 * @post true
 	 */
 	public Date getExitTime() {
-		assert(this.container == null);
+		assert(container == null);
 		return exitTime;
 	}
-	
+
 	/** Gets this Item's expiration date
 	 * 
 	 * @return the Item's expiration date
@@ -174,9 +174,9 @@ public class Item implements Comparable<Object>, Serializable {
 	 * 
 	 */
 	public Date getExpirationDate() {
-		return this.expirationDate;
+		return expirationDate;
 	}
-	
+
 	/** Gets this Item's Product
 	 * 
 	 * @return this Item's Product
@@ -188,7 +188,7 @@ public class Item implements Comparable<Object>, Serializable {
 	public Product getProduct() {
 		return product;
 	}
-	
+
 	/** Gets this Item's Product barcode
 	 * 
 	 * @return Product (String) barcode
@@ -200,7 +200,7 @@ public class Item implements Comparable<Object>, Serializable {
 	public String getProductBarcode() {
 		return product.getBarcode();
 	}
-	
+
 	/**
 	 * Sets exit time to now, container to null
 	 * 
@@ -209,11 +209,11 @@ public class Item implements Comparable<Object>, Serializable {
 	 * @post container == null
 	 */
 	public void remove(){
-		this.exitTime = new Date();
-		this.container = null;
+		exitTime = new Date();
+		container = null;
 	}
-	
-	
+
+
 	// private setters
 	@SuppressWarnings("deprecation")
 	private void setEntryDate(Date date) {
@@ -221,20 +221,20 @@ public class Item implements Comparable<Object>, Serializable {
 		// Must be non-empty. Cannot be in the
 		// future or prior to 1/1/2000.
 		if(date == null){
-			this.entryDate = new Date();
+			entryDate = new Date();
 			return;
 		}
-		
+
 		if(date.after(new Date()) || date.before(new Date(100, 0, 0, 0, 0, 0))){
 			throw new IllegalArgumentException("Date must not be in future");
 		}
-		this.entryDate = date;
+		entryDate = date;
 	}
-	
+
 	@SuppressWarnings("deprecation")
 	private void setExpirationDate(){
-		Date d = this.entryDate;
-		this.expirationDate = new Date(d.getYear(), d.getMonth() + this.product.getShelfLife(),
+		Date d = entryDate;
+		expirationDate = new Date(d.getYear(), d.getMonth() + product.getShelfLife(),
 				d.getDate(), d.getHours(), d.getMinutes(), d.getSeconds());
 	}
 }

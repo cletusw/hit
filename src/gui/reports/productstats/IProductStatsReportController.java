@@ -12,12 +12,12 @@ public interface IProductStatsReportController extends IController {
 	 * button in the product statistics report view.
 	 */
 	void display();
-	
+
 	/**
 	 * This method is called when any of the fields in the
 	 * product statistics report view is changed by the user.
 	 */
 	void valuesChanged();
-	
+
 }
 

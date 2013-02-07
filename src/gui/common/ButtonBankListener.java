@@ -11,7 +11,7 @@ public interface ButtonBankListener {
 	/**
 	 * Callback method indicating that a button was pressed in the
 	 * owning {@link ButtonBankPanel}.
-	 *  
+	 * 
 	 * @param index zero-based index of the button that was pressed
 	 * @param label label of the button that was pressed
 	 * 

@@ -7,8 +7,8 @@ import gui.common.IView;
  * Controller class for the add item view.
  */
 public class AddProductController extends Controller implements
-		IAddProductController {
-	
+IAddProductController {
+
 	/**
 	 * Constructor.
 	 * 
@@ -17,14 +17,14 @@ public class AddProductController extends Controller implements
 	 */
 	public AddProductController(IView view, String barcode) {
 		super(view);
-		
+
 		construct();
 	}
 
 	//
 	// Controller overrides
 	//
-	
+
 	/**
 	 * This method is called when the user clicks the "OK"
 	 * button in the add product view.
@@ -58,7 +58,7 @@ public class AddProductController extends Controller implements
 	//
 	// IAddProductController overrides
 	//
-	
+
 	/**
 	 * Returns a reference to the view for this controller.
 	 * 
@@ -70,12 +70,12 @@ public class AddProductController extends Controller implements
 	protected IAddProductView getView() {
 		return (IAddProductView)super.getView();
 	}
-	
+
 	/**
 	 * Loads data into the controller's view.
 	 * 
 	 *  {@pre None}
-	 *  
+	 * 
 	 *  {@post The controller has loaded data into its view}
 	 */
 	@Override

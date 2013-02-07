@@ -22,21 +22,21 @@ public class ItemTest {
 	private final ItemManager itemManager = new MockItemManager();
 	private final ProductManager productManager = new MockProductManager();
 	private final ProductQuantity pq = new ProductQuantity(2.2f, Unit.FLUID_OUNCES);
-	private final Product product = new Product("validBarcode", "A product", 
+	private final Product product = new Product("validBarcode", "A product",
 			3, 3, pq, productManager);
-	private final ProductGroup productGroup = new ProductGroup("Test product group", 
+	private final ProductGroup productGroup = new ProductGroup("Test product group",
 			pq, Unit.GALLONS, new StorageUnit("Test storage unit"));
 	private final Date entryDateLastMonth = new Date(113, 0, 1, 12, 45, 45);
-	
+
 	private Item item;
-	
+
 	/**
 	 * @throws java.lang.Exception
 	 */
 	@Before
 	public void setUp() throws Exception {
 		item = new Item(validUPCABarcode, product, productGroup, entryDateLastMonth, itemManager);
-		
+
 		// test Invariants
 		assertTrue(item.getProduct() != null);
 		assertTrue(item.getBarcode() != null);
@@ -62,12 +62,12 @@ public class ItemTest {
 	@Test
 	public void testCompareTo() {
 		Item sameItem = new Item(validUPCABarcode, product, productGroup, itemManager);
-		Item newItem = new Item(new Barcode("412345688919"), new Product("abc", "abcd", 
+		Item newItem = new Item(new Barcode("412345688919"), new Product("abc", "abcd",
 				3, 3, pq, productManager), productGroup, itemManager);
 		assertTrue(item.compareTo(sameItem) == 0);
 		assertTrue(item.compareTo(newItem) != 0);
 	}
-	
+
 	/**
 	 * Test method for {@link model.Item#Item(model.Barcode, model.Product,
 	 * model.ProductContainer, Date entryDate, ItemManager itemManager)}.
@@ -77,29 +77,29 @@ public class ItemTest {
 		assertTrue(item.getBarcode().equals(validUPCABarcode.getValue()));
 		assertTrue(item.getProduct().compareTo(product) == 0);
 		assertTrue(item.getContainer().equals(productGroup));
-		
+
 		assertTrue(item.getExitTime() == null);
-		
+
 		Date expiration = item.getExpirationDate();
 		Date entry = item.getEntryDate();
 		assertTrue(expiration != null);
 		assertTrue(entry != null);
-		
+
 		assertTrue(entry.getYear() == entryDateLastMonth.getYear());
 		assertTrue(entry.getMonth() == entryDateLastMonth.getMonth());
 		assertTrue(entry.getDate() == entryDateLastMonth.getDate());
 		assertTrue(entry.getHours() == entryDateLastMonth.getHours());
 		assertTrue(entry.getMinutes() == entryDateLastMonth.getMinutes());
-		
+
 		assertTrue(expiration.getYear() == entryDateLastMonth.getYear());
 		assertTrue(expiration.getMonth() == entryDateLastMonth.getMonth() + product.getShelfLife());
 		assertTrue(expiration.getDate() == entryDateLastMonth.getDate());
 		assertTrue(expiration.getHours() == entryDateLastMonth.getHours());
 		assertTrue(expiration.getMinutes() == entryDateLastMonth.getMinutes());
 	}
-	
+
 	/**
-	 * Test method for {@link model.Item#Item(java.lang.String, 
+	 * Test method for {@link model.Item#Item(java.lang.String,
 	 * model.Product, model.ProductContainer)}.
 	 */
 	@Test
@@ -108,7 +108,7 @@ public class ItemTest {
 	}
 
 	/**
-	 * Test method for {@link model.Item#Item(model.Product, model.ProductContainer, 
+	 * Test method for {@link model.Item#Item(model.Product, model.ProductContainer,
 	 * ItemManager itemManager)}.
 	 */
 	@Test
@@ -117,14 +117,14 @@ public class ItemTest {
 		assertTrue(!item.getBarcode().equals(validUPCABarcode));
 		assertTrue(item.getProduct().compareTo(product) == 0);
 		assertTrue(item.getContainer().equals(productGroup));
-		
+
 		assertTrue(item.getExitTime() == null);
-		
+
 		Date expiration = item.getExpirationDate();
 		Date entry = item.getEntryDate();
 		assertTrue(expiration != null);
 		assertTrue(entry != null);
-		
+
 		assertTrue(entry.after(entryDateLastMonth));
 
 		assertTrue(expiration.getYear() == entry.getYear());
@@ -133,7 +133,7 @@ public class ItemTest {
 		assertTrue(expiration.getHours() == entry.getHours());
 		assertTrue(expiration.getMinutes() == entry.getMinutes());
 	}
-	
+
 	/**
 	 * Test method for {@link model.Item#remove()}.
 	 */

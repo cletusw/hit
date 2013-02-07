@@ -12,7 +12,7 @@ import javax.swing.JPanel;
 
 
 /**
- * ButtonBankPanel can be used to easily create a horizontal bank of buttons, 
+ * ButtonBankPanel can be used to easily create a horizontal bank of buttons,
  * and to respond to the action events generated when the buttons are pressed.
  */
 @SuppressWarnings("serial")
@@ -22,12 +22,12 @@ public class ButtonBankPanel extends JPanel {
 	 * Listener object that is notified when one of the buttons is pressed
 	 */
 	private ButtonBankListener _listener;
-	
+
 	/**
 	 * List of labels for the buttons in the button bank
 	 */
 	private String[] _labels;
-	
+
 	/**
 	 * List of buttons in the bank
 	 */
@@ -38,7 +38,7 @@ public class ButtonBankPanel extends JPanel {
 	 * and lays the buttons out horizontally.
 	 * 
 	 * @param labels list of labels for the buttons to be created
-	 * @param listener listener object to be notified when one of the 
+	 * @param listener listener object to be notified when one of the
 	 * 	buttons is pressed
 	 * 
 	 * {@pre labels != null AND labels.length > 0}
@@ -50,8 +50,8 @@ public class ButtonBankPanel extends JPanel {
 	 * {@post labels array has been cloned to avoid sharing with the caller}
 	 */
 	public ButtonBankPanel(String[] labels, ButtonBankListener listener) {
-		this._labels = labels.clone();
-		this._listener = listener;
+		_labels = labels.clone();
+		_listener = listener;
 
 		setBorder(BorderFactory.createEmptyBorder(5,5,5,5));
 
@@ -71,6 +71,7 @@ public class ButtonBankPanel extends JPanel {
 	 */
 	private void createComponents() {
 		ActionListener actionListener = new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent evt) {
 				for (int i=0; i < _buttons.length; ++i) {
 					if (evt.getSource() == _buttons[i]) {
@@ -78,15 +79,15 @@ public class ButtonBankPanel extends JPanel {
 						break;
 					}
 				}
-			}			
-		};	
+			}
+		};
 		_buttons = new JButton[_labels.length];
 		for (int i=0; i < _labels.length; ++i) {
 			_buttons[i] = new JButton(_labels[i]);
 			_buttons[i].addActionListener(actionListener);
 		}
 	}
-	
+
 	/**
 	 * Lays out the buttons in the panel.
 	 */
@@ -101,7 +102,7 @@ public class ButtonBankPanel extends JPanel {
 			}
 			add(_buttons[i]);
 		}
-		
+
 		add(Box.createHorizontalGlue());
 	}
 

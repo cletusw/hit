@@ -10,12 +10,12 @@ public class TransferItemBatchView extends ItemBatchView implements ITransferIte
 
 	@SuppressWarnings("unused")
 	private ProductContainerData _target;
-	
+
 	public TransferItemBatchView(GUI parent, DialogBox dialog, ProductContainerData target) {
 		super(parent, dialog);
-	
+
 		_target = target;
-		
+
 		construct();
 
 		_controller = new TransferItemBatchController(this, target);
@@ -34,7 +34,7 @@ public class TransferItemBatchView extends ItemBatchView implements ITransferIte
 	protected void barcodeChanged() {
 		getController().barcodeChanged();
 	}
-	
+
 	@Override
 	protected void done() {
 		getController().done();
@@ -49,12 +49,12 @@ public class TransferItemBatchView extends ItemBatchView implements ITransferIte
 	protected String getItemActionName() {
 		return "Transfer Item";
 	}
-	
+
 	@Override
 	protected void itemAction() {
 		getController().transferItem();
 	}
-	
+
 	@Override
 	protected void redo() {
 		getController().redo();
@@ -69,7 +69,7 @@ public class TransferItemBatchView extends ItemBatchView implements ITransferIte
 	protected void selectedProductChanged() {
 		getController().selectedProductChanged();
 	}
-	
+
 	@Override
 	protected void undo() {
 		getController().undo();

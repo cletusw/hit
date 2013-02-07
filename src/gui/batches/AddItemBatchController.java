@@ -8,7 +8,7 @@ import gui.inventory.ProductContainerData;
  * Controller class for the add item batch view.
  */
 public class AddItemBatchController extends Controller implements
-		IAddItemBatchController {
+IAddItemBatchController {
 
 	/**
 	 * Constructor.
@@ -18,7 +18,7 @@ public class AddItemBatchController extends Controller implements
 	 */
 	public AddItemBatchController(IView view, ProductContainerData target) {
 		super(view);
-		
+
 		construct();
 	}
 
@@ -94,7 +94,7 @@ public class AddItemBatchController extends Controller implements
 	@Override
 	public void useScannerChanged() {
 	}
-	
+
 	/**
 	 * Sets the enable/disable state of all components in the controller's view.
 	 * A component should be enabled only if the user is currently
@@ -121,12 +121,12 @@ public class AddItemBatchController extends Controller implements
 	 * Loads data into the controller's view.
 	 * 
 	 *  {@pre None}
-	 *  
+	 * 
 	 *  {@post The controller has loaded data into its view}
 	 */
 	@Override
 	protected void loadValues() {
 	}
-	
+
 }
 

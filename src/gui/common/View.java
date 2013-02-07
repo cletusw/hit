@@ -16,7 +16,7 @@ import javax.swing.table.TableColumn;
 
 /**
  * View is a base class that provides common functionality required
- * by all views in the program (i.e., view classes extend View 
+ * by all views in the program (i.e., view classes extend View
  * instead of {@link javax.swing.JPanel JPanel}).
  * <P>
  * The functionality provided by View to its subclasses includes:
@@ -28,7 +28,7 @@ import javax.swing.table.TableColumn;
  * <LI>Methods for displaying various types of messages to users
  * <LI>Utility methods for creating fonts, borders, and other UI objects.
  * <LI>An abstract method interface that must be supported by all subclasses
- * <LI>A template method that defines a standard algorithm for constructing 
+ * <LI>A template method that defines a standard algorithm for constructing
  * subclass instances
  * </UL>
  * <P>
@@ -36,20 +36,20 @@ import javax.swing.table.TableColumn;
  * <UL>
  * <LI>{@link #createComponents() createComponents}
  * <LI>{@link #layoutComponents() layoutComponents}
-  * </UL>
+ * </UL>
  * <P>
  * Subclasses should also call {@link #construct() construct} from their
  * constructors.
- * Subclass constructors should also initialize the view's controller; 
+ * Subclass constructors should also initialize the view's controller;
  */
 public abstract class View extends JPanel implements IView {
-	
+
 	/**
 	 * Table cell renderer used to draw table cells.
 	 */
-	@SuppressWarnings("serial") 
+	@SuppressWarnings("serial")
 	private static class StringCellRenderer extends DefaultTableCellRenderer {
-		
+
 		/**
 		 * Font to be used to draw table cells.
 		 */
@@ -66,7 +66,7 @@ public abstract class View extends JPanel implements IView {
 		 * specified custom font.}
 		 */
 		public StringCellRenderer(Font customFont) {
-			this._customFont = customFont;
+			_customFont = customFont;
 			setFont(customFont);
 		}
 
@@ -80,8 +80,8 @@ public abstract class View extends JPanel implements IView {
 	}
 	/**
 	 * Table cell renderer used to draw table headers.
-	 */	
-	@SuppressWarnings("serial") 
+	 */
+	@SuppressWarnings("serial")
 	private static class TableHeaderRenderer extends StringCellRenderer {
 
 		/**
@@ -97,7 +97,7 @@ public abstract class View extends JPanel implements IView {
 		public TableHeaderRenderer(Font customFont) {
 			super(customFont);
 		}
-		
+
 		/**
 		 * Returns the background color used to draw table headers.
 		 */
@@ -111,7 +111,7 @@ public abstract class View extends JPanel implements IView {
 	public static final int ContentFontSize = 12;
 
 	public static final int ContextInfoFontSize = 14;
-	
+
 	public static final Color TableColumnHeaderColor = new Color(153, 204, 255);
 
 	/**
@@ -127,13 +127,13 @@ public abstract class View extends JPanel implements IView {
 	public static Font createFont(Font prototype, int size) {
 		return new Font(prototype.getName(), prototype.getStyle(), size);
 	}
-	
+
 	/**
 	 * Creates a table column.
 	 * 
 	 * @param columnIndex Index for the new table column.
-	 * @param columnTitle Title text for the new table column. 
-	 * @param size font size for the column title. 
+	 * @param columnTitle Title text for the new table column.
+	 * @param size font size for the column title.
 	 * 
 	 * {@pre columnIndex >= 0, columnTitle != null, size > 0}
 	 * 
@@ -148,7 +148,7 @@ public abstract class View extends JPanel implements IView {
 		column.setHeaderValue(columnTitle);
 		return column;
 	}
-	
+
 	/**
 	 * Creates a titled border.
 	 * 
@@ -165,17 +165,17 @@ public abstract class View extends JPanel implements IView {
 		border.setTitleFont(createFont(UIManager.getFont("TitledBorder.font") , size));
 		return border;
 	}
-	
+
 	/**
 	 * Owning {@link gui.main.GUI GUI} object.
 	 */
 	protected GUI _parent;
-	
+
 	/**
 	 * Controller for this view.
 	 */
 	protected IController _controller;
-	
+
 	/**
 	 * Flag indicating whether event notifications are currently disabled
 	 */
@@ -192,50 +192,53 @@ public abstract class View extends JPanel implements IView {
 	 * {@post The View has been initialized with the specified parent.}
 	 */
 	protected View(GUI parent) {
-		this._parent = parent;
-		this._controller = null;
+		_parent = parent;
+		_controller = null;
 	}
-	
-	
+
+
 	/**
 	 * {@inheritDoc}
 	 */
+	@Override
 	public void displayErrorMessage(String message) {
 		if (_parent != null)
 			_parent.displayErrorMessage(message);
 	}
 
 
-//	@SuppressWarnings("serial") 
-//	private static class NumberCellRenderer extends StringCellRenderer {
-//		
-//		public NumberCellRenderer(Font customFont) {
-//			super(customFont);
-//			setHorizontalAlignment(SwingConstants.RIGHT);
-//		}
-//	} 
-	
+	//	@SuppressWarnings("serial")
+	//	private static class NumberCellRenderer extends StringCellRenderer {
+	//
+	//		public NumberCellRenderer(Font customFont) {
+	//			super(customFont);
+	//			setHorizontalAlignment(SwingConstants.RIGHT);
+	//		}
+	//	}
+
 	//
 	// Abstract subclass interface
 	//
-	
+
 	/**
 	 * {@inheritDoc}
 	 */
+	@Override
 	public void displayInformationMessage(String message) {
 		if (_parent != null)
 			_parent.displayInformationMessage(message);
-		
+
 	}
-	
+
 	/**
 	 * {@inheritDoc}
 	 */
+	@Override
 	public void displayWarningMessage(String message) {
 		if (_parent != null)
 			_parent.displayWarningMessage(message);
 	}
-	
+
 	/**
 	 * Returns the controller for this view.
 	 * 
@@ -246,14 +249,14 @@ public abstract class View extends JPanel implements IView {
 	public IController getController() {
 		return _controller;
 	}
- 	
+
 	//
 	// Event enable/disable routines
 	//
-	
+
 	/**
-	 * This is a template method that defines the construction process 
-	 * for all subclasses.  Subclasses should call this method from their 
+	 * This is a template method that defines the construction process
+	 * for all subclasses.  Subclasses should call this method from their
 	 * constructors in order to properly initialize themselves.
 	 * 
 	 * {@pre None}
@@ -265,11 +268,11 @@ public abstract class View extends JPanel implements IView {
 		createComponents();
 		layoutComponents();
 	}
-	
+
 	/**
 	 * Creates and initializes the components that populate this view.
 	 * This method should only create/initialize the component objects, but not actually
-	 * add them to the panel.  Laying out the components on the panel is done by 
+	 * add them to the panel.  Laying out the components on the panel is done by
 	 * the {@link #layoutComponents() layoutComponents} method.
 	 * 
 	 * {@pre None}

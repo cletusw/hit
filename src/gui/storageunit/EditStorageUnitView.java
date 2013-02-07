@@ -11,7 +11,7 @@ public class EditStorageUnitView extends StorageUnitView implements IEditStorage
 	public EditStorageUnitView(GUI parent, DialogBox dialog, ProductContainerData target) {
 		super(parent, dialog);
 
-		construct();		
+		construct();
 
 		_controller = new EditStorageUnitController(this, target);
 	}

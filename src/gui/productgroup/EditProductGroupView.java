@@ -11,7 +11,7 @@ public class EditProductGroupView extends ProductGroupView implements IEditProdu
 	public EditProductGroupView(GUI parent, DialogBox dialog, ProductContainerData target) {
 		super(parent, dialog);
 
-		construct();		
+		construct();
 
 		_controller = new EditProductGroupController(this, target);
 	}

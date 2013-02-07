@@ -10,7 +10,7 @@ public class EditProductView extends ProductView implements IEditProductView {
 	public EditProductView(GUI parent, DialogBox dialog, ProductData target) {
 		super(parent, dialog);
 
-		construct();		
+		construct();
 
 		_controller = new EditProductController(this, target);
 	}

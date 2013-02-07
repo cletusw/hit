@@ -8,7 +8,7 @@ import com.sun.tools.doclets.Taglet;
 
 public class PreTaglet implements Taglet {
 
-    @SuppressWarnings("unchecked")
+	@SuppressWarnings("unchecked")
 	public static void register(Map tagletMap) {
 		PreTaglet tag = new PreTaglet();
 		Taglet t = (Taglet) tagletMap.get(tag.getName());
@@ -17,10 +17,10 @@ public class PreTaglet implements Taglet {
 		}
 		tagletMap.put(tag.getName(), tag);
 	}
-    
-    public PreTaglet() {
-    	return;
-    }
+
+	public PreTaglet() {
+		return;
+	}
 
 	@Override
 	public String getName() {

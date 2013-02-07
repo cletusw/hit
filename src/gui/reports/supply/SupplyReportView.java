@@ -34,12 +34,12 @@ public class SupplyReportView extends DialogView implements ISupplyReportView {
 	private JTextField _monthsField;
 	private ButtonBankPanel _buttonsPanel;
 	protected JButton _okButton;
-	
+
 	public SupplyReportView(GUI parent, DialogBox dialog) {
 		super(parent, dialog);
 
 		construct();
-		
+
 		_controller = new SupplyReportController(this);
 	}
 
@@ -47,17 +47,17 @@ public class SupplyReportView extends DialogView implements ISupplyReportView {
 	public void enableFormat(boolean value) {
 		_formatBox.setEnabled(value);
 	}
-	
+
 	@Override
 	public void enableMonths(boolean value) {
 		_monthsField.setEnabled(value);
 	}
-	
+
 	@Override
 	public void enableOK(boolean value) {
 		_okButton.setEnabled(value);
 	}
-	
+
 	@Override
 	public ISupplyReportController getController() {
 		return (ISupplyReportController)super.getController();
@@ -72,7 +72,7 @@ public class SupplyReportView extends DialogView implements ISupplyReportView {
 	public String getMonths() {
 		return _monthsField.getText();
 	}
-	
+
 	@Override
 	public void setFormat(FileFormat value) {
 		boolean disabledEvents = disableEvents();
@@ -90,7 +90,7 @@ public class SupplyReportView extends DialogView implements ISupplyReportView {
 	public void setMonths(String value) {
 		_monthsField.setText(value);
 	}
-	
+
 	private void cancel() {
 		return;
 	}
@@ -98,23 +98,24 @@ public class SupplyReportView extends DialogView implements ISupplyReportView {
 	private void createButtonsPanel() {
 		_buttonsPanel = new ButtonBankPanel(new String[]{"OK", "Cancel"},
 				new ButtonBankListener() {
-					public void buttonPressed(int index, String label) {
-						switch (index) {
-							case 0:
-								ok();
-								_dialog.dispose();
-								break;
-							case 1:
-								cancel();
-								_dialog.dispose();
-								break;
-							default:
-								assert false;
-								break;
-						}
-					}
+			@Override
+			public void buttonPressed(int index, String label) {
+				switch (index) {
+				case 0:
+					ok();
+					_dialog.dispose();
+					break;
+				case 1:
+					cancel();
+					_dialog.dispose();
+					break;
+				default:
+					assert false;
+					break;
 				}
-			);
+			}
+		}
+				);
 
 		_okButton = _buttonsPanel.getButtons()[0];
 		_dialog.getRootPane().setDefaultButton(_okButton);
@@ -122,13 +123,14 @@ public class SupplyReportView extends DialogView implements ISupplyReportView {
 
 	private void createValuesPanel() {
 		_valuesPanel = new JPanel();
-		
+
 		_formatLabel = new JLabel("Format:");
-		
+
 		_formatBox = new JComboBox();
 		_formatBox.addItem(FileFormat.PDF);
 		_formatBox.addItem(FileFormat.HTML);
 		_formatBox.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent evt) {
 				if (eventsAreDisabled()) {
 					return;
@@ -136,9 +138,9 @@ public class SupplyReportView extends DialogView implements ISupplyReportView {
 				valuesChanged();
 			}
 		});
-		
+
 		_monthsLabel = new JLabel("Months:");
-		
+
 		_monthsField = new JTextField(4);
 		_monthsField.addKeyListener(new KeyListener() {
 			@Override
@@ -152,7 +154,7 @@ public class SupplyReportView extends DialogView implements ISupplyReportView {
 			@Override
 			public void keyTyped(KeyEvent arg0) {
 				return;
-			}			
+			}
 		});
 	}
 
@@ -182,7 +184,7 @@ public class SupplyReportView extends DialogView implements ISupplyReportView {
 		c.place(2, 1, 1, 1);
 		_valuesPanel.add(_monthsField, c);
 	}
-	
+
 	private void ok() {
 		getController().display();
 	}
@@ -190,16 +192,16 @@ public class SupplyReportView extends DialogView implements ISupplyReportView {
 	private void valuesChanged() {
 		getController().valuesChanged();
 	}
-	
+
 	@Override
 	protected void createComponents() {
 		createValuesPanel();
 		createButtonsPanel();
 	}
-	
+
 	@Override
 	protected void layoutComponents() {
-		layoutValuesPanel();	
+		layoutValuesPanel();
 
 		setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 		add(Box.createVerticalStrut(15));

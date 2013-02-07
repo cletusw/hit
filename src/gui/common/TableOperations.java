@@ -46,7 +46,7 @@ public final class TableOperations {
 			selectTableRow(table, rowIndex);
 		}
 	}
-	
+
 	/**
 	 * Private Constructor.
 	 */

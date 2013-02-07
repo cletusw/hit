@@ -7,7 +7,7 @@ import gui.common.IView;
  * Controller class for the removed items report view.
  */
 public class RemovedReportController extends Controller implements
-		IRemovedReportController {
+IRemovedReportController {
 
 	/**
 	 * Constructor.
@@ -74,7 +74,7 @@ public class RemovedReportController extends Controller implements
 	 * Loads data into the controller's view.
 	 * 
 	 *  {@pre None}
-	 *  
+	 * 
 	 *  {@post The controller has loaded data into its view}
 	 */
 	@Override

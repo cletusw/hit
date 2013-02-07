@@ -15,14 +15,14 @@ public interface IEditItemView extends IView {
 	 * @param value New enable/disable value
 	 */
 	void enableBarcode(boolean value);
-	
+
 	/**
 	 * Sets the enable/disable state of the "Description" field.
 	 * 
 	 * @param value New enable/disable value
 	 */
 	void enableDescription(boolean value);
-	
+
 	/**
 	 * Sets the enable/disable state of the "Entry Date" field.
 	 * 
@@ -36,12 +36,12 @@ public interface IEditItemView extends IView {
 	 * @param value New enable/disable value
 	 */
 	void enableOK(boolean value);
-	
+
 	/**
 	 * Returns the value of the "Barcode" field.
 	 */
 	String getBarcode();
-	
+
 	/**
 	 * Returns the value of the "Description" field.
 	 */
@@ -52,21 +52,21 @@ public interface IEditItemView extends IView {
 	 * the field's value is invalid.
 	 */
 	Date getEntryDate();
-	
+
 	/**
 	 * Sets the value of the "Barcode" field.
 	 * 
 	 * @param value New "Barcode" value
 	 */
 	void setBarcode(String value);
-	
+
 	/**
 	 * Sets the value of the "Description" field.
 	 * 
 	 * @param value New "Description" value
 	 */
 	void setDescription(String value);
-	
+
 	/**
 	 * Sets the value of the "Entry Date" field.
 	 * 

@@ -14,31 +14,31 @@ public interface ISupplyReportView extends IView {
 	 * @param value New enable/disable value
 	 */
 	void enableFormat(boolean value);
-	
+
 	/**
 	 * Sets the enable/disable state of the "Months" field.
 	 * 
 	 * @param value New enable/disable value
 	 */
 	void enableMonths(boolean value);
-	
+
 	/**
 	 * Sets the enable/disable state of the "OK" button.
 	 * 
 	 * @param value New enable/disable value
 	 */
 	void enableOK(boolean value);
-	
+
 	/**
 	 * Returns the value of the "Format" field.
 	 */
 	FileFormat getFormat();
-	
+
 	/**
 	 * Returns the value of the "Months" field.
 	 */
 	String getMonths();
-	
+
 	/**
 	 * Sets the value of the "Format" field.
 	 * 

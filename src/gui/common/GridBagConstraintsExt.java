@@ -4,7 +4,7 @@ package gui.common;
 import java.awt.GridBagConstraints;
 
 /**
- * GridBagConstraintsExt is an extension of 
+ * GridBagConstraintsExt is an extension of
  * {@link java.awt.GridBagConstraints GridBagConstraints} with an
  * additional operation which makes it easy to reset the
  * (x, y, width, height) properties in one shot.

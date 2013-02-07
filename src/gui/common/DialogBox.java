@@ -17,7 +17,7 @@ public class DialogBox extends JDialog {
 	 * Owning GUI object.
 	 */
 	private GUI _parent;
-	
+
 	/**
 	 * Constructor.
 	 * 
@@ -31,10 +31,10 @@ public class DialogBox extends JDialog {
 	 */
 	public DialogBox(GUI parent, String title) {
 		super(parent, title, true);
-		
+
 		_parent = parent;
 	}
-	
+
 	/**
 	 * Displays the specified DialogView in a dialog box.
 	 * 
@@ -48,17 +48,18 @@ public class DialogBox extends JDialog {
 	 * modal dialog box on the screen.  The dialog box is resizable
 	 * iff resizable is true.}
 	 */
-	public void display(DialogView content, boolean resizable) {		
+	public void display(DialogView content, boolean resizable) {
 		setResizable(resizable);
 		addWindowListener(new WindowAdapter() {
+			@Override
 			public void windowClosing(WindowEvent evt) {
 				dispose();
-			}		
+			}
 		});
-		setContentPane(content);		
+		setContentPane(content);
 		pack();
 		setLocationRelativeTo(_parent);
-		setVisible(true);		
+		setVisible(true);
 	}
 
 }
