@@ -13,12 +13,13 @@ import java.util.Observer;
  */
 public class ProductController implements Observer {
 
-	@Override
-	/** Method intended to notify the view when ProductManager
-	 * sends a "change" notice. 
+	/**
+	 * Method intended to notify the view when ProductManager sends a "change" notice.
 	 * 
-	 * @param o The 
-	 * @param arg Object passed to the view so the view can determine which changes to make
+	 * @param o
+	 *            The
+	 * @param arg
+	 *            Object passed to the view so the view can determine which changes to make
 	 * 
 	 * @pre o != null
 	 * @pre arg != null
@@ -26,6 +27,7 @@ public class ProductController implements Observer {
 	 * @post true
 	 * 
 	 */
+	@Override
 	public void update(Observable o, Object arg) {
 		// TODO Auto-generated method stub
 
