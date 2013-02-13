@@ -7,7 +7,7 @@ import java.util.Observer;
  * Controller object that acts as a liaison between the model's StorageUnitManager and the GUI
  * view.
  * 
- * @author Matt
+ * @author Matt Hess
  * @version 1.0 CS 340 Group 4 Phase 2
  * 
  */
