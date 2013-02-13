@@ -1,7 +1,6 @@
 package model;
 
 import java.io.Serializable;
-import java.util.Collection;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Observable;
@@ -73,7 +72,7 @@ public class ConcreteItemManager extends Observable implements ItemManager, Seri
 	public void manage(Item item) {
 		assert (item != null);
 
-		Collection<Item> found = productsToItems.get(item.getProduct());
+		Set<Item> found = productsToItems.get(item.getProduct());
 		if (found != null)
 			found.add(item);
 		else {
@@ -119,7 +118,7 @@ public class ConcreteItemManager extends Observable implements ItemManager, Seri
 		if (item == null)
 			throw new IllegalArgumentException("Item to unmanage can't be null.");
 
-		Collection<Item> found = productsToItems.get(item.getProduct());
+		Set<Item> found = productsToItems.get(item.getProduct());
 		found.remove(item);
 		if (found.isEmpty())
 			productsToItems.remove(item.getProduct());
