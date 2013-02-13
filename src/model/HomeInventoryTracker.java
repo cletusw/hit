@@ -119,12 +119,7 @@ public class HomeInventoryTracker implements Serializable {
 	 * @post true
 	 */
 	public boolean canRemove(Product product) {
-		// From the Data Dictionary: A Product can be removed from the system
-		// only if
-		// the system contains no Items of the Product
-		assert (product != null);
-
-		return !itemManager.productHasItems(product);
+		return true;
 	}
 
 	/**

@@ -1,15 +1,16 @@
 package model;
 
 import java.util.Iterator;
+import java.util.Set;
 
 /**
  * @author Clayton Watts
  * 
  */
 public interface ItemManager {
-	public void manage(Item item);
+	public Set<Item> getItemsByProduct(Product product);
 
-	public boolean productHasItems(Product product);
+	public void manage(Item item);
 
 	public Iterator<Item> removedItemsIterator();
 

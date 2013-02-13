@@ -1,11 +1,11 @@
 package model;
 
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Observable;
+import java.util.Set;
 import java.util.TreeMap;
 import java.util.TreeSet;
 
@@ -22,9 +22,9 @@ import java.util.TreeSet;
  */
 @SuppressWarnings("serial")
 public class ConcreteItemManager extends Observable implements ItemManager, Serializable {
-	private Collection<Item> items;
-	private Collection<Item> removedItems;
-	private Map<Product, Collection<Item>> productsToItems;
+	private Set<Item> items;
+	private Set<Item> removedItems;
+	private Map<Product, Set<Item>> productsToItems;
 
 	/**
 	 * Constructor
@@ -34,9 +34,27 @@ public class ConcreteItemManager extends Observable implements ItemManager, Seri
 	 * 
 	 */
 	public ConcreteItemManager() {
-		items = new ArrayList<Item>();
+		items = new TreeSet<Item>();
 		removedItems = new TreeSet<Item>();
-		productsToItems = new TreeMap<Product, Collection<Item>>();
+		productsToItems = new TreeMap<Product, Set<Item>>();
+	}
+
+	/**
+	 * Gets all the items of a given Product from the system
+	 * 
+	 * @param product
+	 *            The Product whose Items we want
+	 * @return Set<Item> All the items in the system of Product product
+	 * 
+	 * @pre product != null
+	 */
+	@Override
+	public Set<Item> getItemsByProduct(Product product) {
+		if (product == null) {
+			throw new IllegalArgumentException("Null Product product");
+		}
+
+		return productsToItems.get(product);
 	}
 
 	/**
@@ -65,30 +83,6 @@ public class ConcreteItemManager extends Observable implements ItemManager, Seri
 		}
 
 		items.add(item);
-	}
-
-	/**
-	 * Determines whether a given product has items in the system.
-	 * 
-	 * @param product
-	 *            The Product to test
-	 * @return true if the specified product has items that use it, false otherwise
-	 * 
-	 * @pre product != null
-	 * @post true
-	 */
-	@Override
-	public boolean productHasItems(Product product) {
-		assert (product != null);
-
-		if (product == null)
-			throw new IllegalArgumentException("Null product given to find");
-
-		Collection<Item> found = productsToItems.get(product);
-		if (found == null)
-			return false;
-
-		return !found.isEmpty();
 	}
 
 	/**

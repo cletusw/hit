@@ -1,15 +1,17 @@
 package model;
 
 import java.util.Iterator;
+import java.util.Set;
+import java.util.TreeSet;
 
 public class MockItemManager implements ItemManager {
 	@Override
-	public void manage(Item item) {
+	public Set<Item> getItemsByProduct(Product product) {
+		return new TreeSet<Item>();
 	}
 
 	@Override
-	public boolean productHasItems(Product product) {
-		return false;
+	public void manage(Item item) {
 	}
 
 	@Override
