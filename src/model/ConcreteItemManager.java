@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.Map;
+import java.util.Observable;
 import java.util.TreeMap;
 import java.util.TreeSet;
 
@@ -20,7 +21,7 @@ import java.util.TreeSet;
  * 
  */
 @SuppressWarnings("serial")
-public class ConcreteItemManager implements ItemManager, Serializable {
+public class ConcreteItemManager extends Observable implements ItemManager, Serializable {
 	private Collection<Item> items;
 	private Collection<Item> removedItems;
 	private Map<Product, Collection<Item>> productsToItems;

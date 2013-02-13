@@ -2,11 +2,13 @@ package model;
 
 import java.io.Serializable;
 import java.util.Iterator;
+import java.util.Observable;
 import java.util.Set;
 import java.util.TreeSet;
 
 @SuppressWarnings("serial")
-public class ConcreteStorageUnitManager implements Serializable, StorageUnitManager {
+public class ConcreteStorageUnitManager extends Observable implements Serializable,
+		StorageUnitManager {
 	private Set<StorageUnit> rootStorageUnits;
 
 	/**

@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Map;
+import java.util.Observable;
 import java.util.TreeMap;
 
 /**
@@ -11,7 +12,7 @@ import java.util.TreeMap;
  * 
  */
 @SuppressWarnings("serial")
-public class ConcreteProductManager implements ProductManager, Serializable {
+public class ConcreteProductManager extends Observable implements ProductManager, Serializable {
 	private Collection<Product> products;
 	private Map<String, Product> barcodesToProducts;
 
