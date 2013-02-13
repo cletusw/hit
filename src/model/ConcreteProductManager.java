@@ -1,11 +1,11 @@
 package model;
 
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Map;
 import java.util.Observable;
+import java.util.Set;
 import java.util.TreeMap;
+import java.util.TreeSet;
 
 /**
  * @author Clayton Watts
@@ -13,14 +13,14 @@ import java.util.TreeMap;
  */
 @SuppressWarnings("serial")
 public class ConcreteProductManager extends Observable implements ProductManager, Serializable {
-	private Collection<Product> products;
+	private Set<Product> products;
 	private Map<String, Product> barcodesToProducts;
 
 	/**
 	 * Creates an empty ConcreteProductManager
 	 */
 	public ConcreteProductManager() {
-		products = new ArrayList<Product>();
+		products = new TreeSet<Product>();
 		barcodesToProducts = new TreeMap<String, Product>();
 	}
 
