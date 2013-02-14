@@ -49,6 +49,7 @@ public class HomeInventoryTracker implements Serializable {
 	 * @pre entryDate != null
 	 * @pre storageUnit != null
 	 */
+	//TODO: Deleteme!
 	public Item addItem(Product product, Date entryDate, StorageUnit storageUnit) {
 		assert (product != null);
 		assert (entryDate != null);
@@ -73,6 +74,7 @@ public class HomeInventoryTracker implements Serializable {
 	 * @pre product != null
 	 * @post container.contains(product)
 	 */
+	//TODO: Deleteme!
 	public void addProductToContainer(Product product,
 			ProductContainer container) {
 		assert (container != null);
@@ -91,6 +93,7 @@ public class HomeInventoryTracker implements Serializable {
 	 * @pre true
 	 * @post true
 	 */
+	//TODO: Deleteme!
 	public boolean canAddStorageUnit(String storageUnitName) {
 		return productContainerManager.isValidStorageUnitName(storageUnitName);
 	}
@@ -105,6 +108,7 @@ public class HomeInventoryTracker implements Serializable {
 	 * @pre product != null
 	 * @post true
 	 */
+	//TODO: Deleteme!
 	public boolean canRemove(Product product) {
 		return true;
 	}
