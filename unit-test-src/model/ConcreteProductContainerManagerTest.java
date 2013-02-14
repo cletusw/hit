@@ -6,7 +6,7 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-public class ConcreteStorageUnitManagerTest {
+public class ConcreteProductContainerManagerTest {
 
 	@Before
 	public void setUp() throws Exception {
