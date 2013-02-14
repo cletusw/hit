@@ -5,8 +5,8 @@ import java.io.Serializable;
 import java.util.Date;
 
 /**
- * HomeInventoryTracker: Home Inventory Tracker (HIT) is a system for tracking home storage
- * inventories.
+ * HomeInventoryTracker: Home Inventory Tracker (HIT) is a system for tracking
+ * home storage inventories.
  * 
  * @author Seth Stewart
  * @version 1.0 - Snell 340 Group 4 Phase 1
@@ -20,7 +20,7 @@ import java.util.Date;
 public class HomeInventoryTracker implements Serializable {
 	private ItemManager itemManager;
 	private ProductManager productManager;
-	private StorageUnitManager storageUnitManager;
+	private ProductContainerManager productContainerManager;
 
 	/**
 	 * Initializes the HomeInventoryTracker.
@@ -31,7 +31,7 @@ public class HomeInventoryTracker implements Serializable {
 	public HomeInventoryTracker() {
 		itemManager = new ConcreteItemManager();
 		productManager = new ConcreteProductManager();
-		storageUnitManager = new ConcreteStorageUnitManager();
+		productContainerManager = new ConcreteProductContainerManager();
 	}
 
 	/**
@@ -73,29 +73,16 @@ public class HomeInventoryTracker implements Serializable {
 	 * @pre product != null
 	 * @post container.contains(product)
 	 */
-	public void addProductToContainer(Product product, ProductContainer container) {
+	public void addProductToContainer(Product product,
+			ProductContainer container) {
 		assert (container != null);
 		assert (product != null);
 		container.add(product);
 	}
 
 	/**
-	 * Add a Storage Unit to the system with the specified name
-	 * 
-	 * @param storageUnit
-	 *            The Storage Unit to add to the system
-	 * 
-	 * @pre canAddStorageUnit(storageUnit.getName())
-	 * @post true
-	 */
-	public void addStorageUnit(StorageUnit storageUnit) {
-		assert (canAddStorageUnit(storageUnit.getName()));
-
-		storageUnitManager.add(storageUnit);
-	}
-
-	/**
-	 * Determines whether a storage unit with the given name can be added to the system.
+	 * Determines whether a storage unit with the given name can be added to the
+	 * system.
 	 * 
 	 * @param storageUnitName
 	 *            the name of the storage unit to test
@@ -105,7 +92,7 @@ public class HomeInventoryTracker implements Serializable {
 	 * @post true
 	 */
 	public boolean canAddStorageUnit(String storageUnitName) {
-		return storageUnitManager.isValidStorageUnitName(storageUnitName);
+		return productContainerManager.isValidStorageUnitName(storageUnitName);
 	}
 
 	/**
@@ -127,7 +114,8 @@ public class HomeInventoryTracker implements Serializable {
 	 * 
 	 * @param product
 	 *            The Product to check
-	 * @return true if the product exists in the home inventory system, false otherwise.
+	 * @return true if the product exists in the home inventory system, false
+	 *         otherwise.
 	 * 
 	 * @pre product != null
 	 * @post true
@@ -151,12 +139,12 @@ public class HomeInventoryTracker implements Serializable {
 	 * @pre getProductByBarcode(barcode) == null
 	 * @post getProductByBarcode(barcode) != null
 	 */
-	public Product createProduct(String barcode, String description, int shelfLife,
-			int threeMonthSupply, ProductQuantity productQuantity) {
+	public Product createProduct(String barcode, String description,
+			int shelfLife, int threeMonthSupply, ProductQuantity productQuantity) {
 		assert (getProductByBarcode(barcode) == null);
 
-		return new Product(barcode, description, shelfLife, threeMonthSupply, productQuantity,
-				productManager);
+		return new Product(barcode, description, shelfLife, threeMonthSupply,
+				productQuantity, productManager);
 	}
 
 	/**
@@ -175,8 +163,20 @@ public class HomeInventoryTracker implements Serializable {
 	}
 
 	/**
-	 * Determines whether the specified Storage Unit name is valid for adding a new Storage
-	 * Unit.
+	 * member getter for productContainerManager
+	 * 
+	 * @return ProductContainerManager
+	 * 
+	 * @pre true
+	 * @post true
+	 */
+	public ProductContainerManager getProductContainerManager() {
+		return productContainerManager;
+	}
+
+	/**
+	 * Determines whether the specified Storage Unit name is valid for adding a
+	 * new Storage Unit.
 	 * 
 	 * @param name
 	 *            The name to be tested
@@ -188,7 +188,7 @@ public class HomeInventoryTracker implements Serializable {
 	public boolean isValidStorageUnitName(String name) {
 		assert (name != null);
 
-		return storageUnitManager.isValidStorageUnitName(name);
+		return productContainerManager.isValidStorageUnitName(name);
 	}
 
 	/**
@@ -205,7 +205,8 @@ public class HomeInventoryTracker implements Serializable {
 	 * @pre source.contains(item)
 	 * @post destination.contains(item) && !source.contains(item)
 	 */
-	public void move(ProductContainer source, ProductContainer destination, Item item) {
+	public void move(ProductContainer source, ProductContainer destination,
+			Item item) {
 		assert (source != null);
 		assert (destination != null);
 		assert (item != null);
@@ -225,7 +226,8 @@ public class HomeInventoryTracker implements Serializable {
 	 * @pre item != null && container != null
 	 * @post !containsItem(item)
 	 */
-	public void remove(Item item, ProductContainer container) throws IllegalStateException {
+	public void remove(Item item, ProductContainer container)
+			throws IllegalStateException {
 		assert (item != null);
 		assert (container != null);
 
@@ -248,39 +250,22 @@ public class HomeInventoryTracker implements Serializable {
 			throw new IllegalStateException(
 					"Cannot remove product from the system; it still has items that refer to it");
 		productManager.unmanage(product);
-		storageUnitManager.remove(product);
 	}
 
 	/**
-	 * Removes a ProductGroup from the system
+	 * Removes a ProductContainer from the system
 	 * 
-	 * @param productGroup
-	 *            the ProductGroup to remove
+	 * @param productContainer
+	 *            the ProductContainer to remove
 	 * 
-	 * @pre productGroup != null
-	 * @pre productGroup.canRemove()
+	 * @pre productContainer != null
+	 * @pre productContainer.canRemove()
 	 */
-	public void remove(ProductGroup productGroup) {
-		assert (productGroup != null);
-		assert (productGroup.canRemove());
+	public void remove(ProductContainer productContainer) {
+		assert (productContainer != null);
+		assert (productContainer.canRemove());
 
-		storageUnitManager.remove(productGroup);
-	}
-
-	/**
-	 * Removes a Storage Unit from the system
-	 * 
-	 * @param storageUnit
-	 *            The Storage Unit to remove
-	 * 
-	 * @pre storageUnit != null
-	 * @pre storageUnit.canRemove()
-	 */
-	public void remove(StorageUnit storageUnit) {
-		assert (storageUnit != null);
-		assert (storageUnit.canRemove());
-
-		storageUnitManager.remove(storageUnit);
+		productContainerManager.unmanage(productContainer);
 	}
 
 	/**
@@ -312,10 +297,12 @@ public class HomeInventoryTracker implements Serializable {
 	 * @pre canAddStorageUnit(newStorageUnitName)
 	 * @post true
 	 */
-	public void renameStorageUnit(StorageUnit storageUnit, String newStorageUnitName) {
+	public void renameStorageUnit(StorageUnit storageUnit,
+			String newStorageUnitName) {
 		assert (canAddStorageUnit(newStorageUnitName));
 
-		storageUnitManager.renameStorageUnit(storageUnit, newStorageUnitName);
+		productContainerManager.renameStorageUnit(storageUnit,
+				newStorageUnitName);
 	}
 
 	/**

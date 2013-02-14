@@ -23,8 +23,8 @@ public class StorageUnit extends ProductContainer {
 	 * @post true
 	 * 
 	 */
-	public StorageUnit(String pcName) {
-		super(pcName);
+	public StorageUnit(String pcName, ProductContainerManager manager) {
+		super(pcName, manager);
 	}
 
 	/**
@@ -32,8 +32,8 @@ public class StorageUnit extends ProductContainer {
 	 * 
 	 * @param i
 	 *            - the Item object to add to the collection
-	 * @return true if the item was added to this container or one of its children, false
-	 *         otherwise.
+	 * @return true if the item was added to this container or one of its
+	 *         children, false otherwise.
 	 * @pre i != null
 	 * @post items.size() == items.size()@pre + 1
 	 * @post items.contains(i)
@@ -42,7 +42,8 @@ public class StorageUnit extends ProductContainer {
 	public boolean add(Item i) {
 		assert (i != null);
 		if (items.containsKey(i.getBarcode()))
-			throw new IllegalStateException("Cannot have two items with same barcode");
+			throw new IllegalStateException(
+					"Cannot have two items with same barcode");
 
 		// A new item is added to the same Product Container that contains the
 		// Item's Product
@@ -66,7 +67,8 @@ public class StorageUnit extends ProductContainer {
 	}
 
 	/**
-	 * Determines whether or not the specified Product Group can be added to this Storage Unit.
+	 * Determines whether or not the specified Product Group can be added to
+	 * this Storage Unit.
 	 * 
 	 * @param pGroup
 	 *            the Product Group to test

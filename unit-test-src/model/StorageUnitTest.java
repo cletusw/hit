@@ -7,6 +7,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 public class StorageUnitTest {
+	private ProductContainerManager mockManager = new MockProductContainerManager();
 
 	@Before
 	public void setUp() throws Exception {
@@ -18,14 +19,14 @@ public class StorageUnitTest {
 
 	@Test
 	public void testEqualStorageNames() {
-		StorageUnit unit1 = new StorageUnit("Unit1");
-		StorageUnit unit2 = new StorageUnit("Unit1");
+
+		StorageUnit unit1 = new StorageUnit("Unit1", mockManager);
+		StorageUnit unit2 = new StorageUnit("Unit1", mockManager);
 		assertTrue(unit1.equals(unit2));
 	}
 
 	@Test
 	public void testValidStorageUnitName() {
-		new StorageUnit("Unit1");
+		new StorageUnit("Unit1", mockManager);
 	}
-
 }

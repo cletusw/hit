@@ -18,11 +18,10 @@ public class ConcreteStorageUnitManagerTest {
 
 	@Test
 	public void testIsValidStorageUnitName() {
-		ConcreteStorageUnitManager manager = new ConcreteStorageUnitManager();
+		ConcreteProductContainerManager manager = new ConcreteProductContainerManager();
 		String storageUnitName = "Pantry";
 		assertTrue(manager.isValidStorageUnitName(storageUnitName));
-		StorageUnit storageUnit = new StorageUnit(storageUnitName);
-		manager.add(storageUnit);
+		StorageUnit storageUnit = new StorageUnit(storageUnitName, manager);
 		String newStorageUnitName = "Downstairs Pantry";
 		assertTrue(manager.isValidStorageUnitName(newStorageUnitName));
 	}

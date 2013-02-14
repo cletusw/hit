@@ -26,8 +26,8 @@ public class HomeInventoryTrackerTest {
 		// Mess around with some Storage Units
 		String storageUnitName = "Pantry";
 		assertTrue(tracker.canAddStorageUnit(storageUnitName));
-		StorageUnit storageUnit = new StorageUnit(storageUnitName);
-		tracker.addStorageUnit(storageUnit);
+		StorageUnit storageUnit = new StorageUnit(storageUnitName,
+				tracker.getProductContainerManager());
 		assertFalse(tracker.canAddStorageUnit(storageUnitName));
 
 		String newStorageUnitName = "Downstairs Pantry";
@@ -36,8 +36,8 @@ public class HomeInventoryTrackerTest {
 		assertFalse(tracker.canAddStorageUnit(newStorageUnitName));
 
 		assertTrue(tracker.canAddStorageUnit(storageUnitName));
-		StorageUnit storageUnit2 = new StorageUnit(storageUnitName);
-		tracker.addStorageUnit(storageUnit2);
+		StorageUnit storageUnit2 = new StorageUnit(storageUnitName,
+				tracker.getProductContainerManager());
 		assertFalse(tracker.canAddStorageUnit(storageUnitName));
 
 		// "Scan" a product barcode
@@ -69,5 +69,4 @@ public class HomeInventoryTrackerTest {
 		tracker.remove(item, storageUnit2);
 		assertFalse(storageUnit2.contains(item));
 	}
-
 }

@@ -9,6 +9,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 public class ProductContainerTest {
+	private ProductContainerManager pcManager;
 	private ItemManager itemManager;
 	private ProductManager productManager;
 	private StorageUnit storageUnit1;
@@ -23,22 +24,27 @@ public class ProductContainerTest {
 
 	@Before
 	public void setUp() throws Exception {
+		pcManager = new MockProductContainerManager();
 		itemManager = new MockItemManager();
 		productManager = new MockProductManager();
-		storageUnit1 = new StorageUnit("Cookie Jar");
-		storageUnit2 = new StorageUnit("Playdough Bin");
-		productGroup1 = new ProductGroup("Cookies", new ProductQuantity(1, Unit.COUNT),
-				Unit.KILOGRAMS, storageUnit1);
-		productGroup2 = new ProductGroup("Chocolate Chip Cookies", new ProductQuantity(1,
-				Unit.COUNT), Unit.KILOGRAMS, storageUnit1);
+		storageUnit1 = new StorageUnit("Cookie Jar", pcManager);
+		storageUnit2 = new StorageUnit("Playdough Bin", pcManager);
+		productGroup1 = new ProductGroup("Cookies", new ProductQuantity(1,
+				Unit.COUNT), Unit.KILOGRAMS, storageUnit1, pcManager);
+		productGroup2 = new ProductGroup("Chocolate Chip Cookies",
+				new ProductQuantity(1, Unit.COUNT), Unit.KILOGRAMS,
+				storageUnit1, pcManager);
 		productGroup3 = new ProductGroup("No-Bake Cookies",
-				new ProductQuantity(1, Unit.COUNT), Unit.KILOGRAMS, storageUnit1);
-		product1 = new Product("PROD1BARCODE", "Smelly socks", 0, 4, new ProductQuantity(2,
-				Unit.COUNT), productManager);
-		product2 = new Product("PROD2BARCODE00", "Green Jell-O", 365, 12, new ProductQuantity(
-				3, Unit.OUNCES), productManager);
-		item1 = new Item(new Barcode("400000001968"), product1, null, itemManager);
-		item1Copy = new Item(new Barcode("400000001968"), product1, null, itemManager);
+				new ProductQuantity(1, Unit.COUNT), Unit.KILOGRAMS,
+				storageUnit1, pcManager);
+		product1 = new Product("PROD1BARCODE", "Smelly socks", 0, 4,
+				new ProductQuantity(2, Unit.COUNT), productManager);
+		product2 = new Product("PROD2BARCODE00", "Green Jell-O", 365, 12,
+				new ProductQuantity(3, Unit.OUNCES), productManager);
+		item1 = new Item(new Barcode("400000001968"), product1, null,
+				itemManager);
+		item1Copy = new Item(new Barcode("400000001968"), product1, null,
+				itemManager);
 	}
 
 	@After
@@ -81,8 +87,8 @@ public class ProductContainerTest {
 	public void testAddDuplicateProducts() {
 		productGroup1.add(product1);
 
-		Product product1Copy = new Product("PROD1BARCODE", "Smelly socks", 0, 4,
-				new ProductQuantity(2, Unit.COUNT), productManager);
+		Product product1Copy = new Product("PROD1BARCODE", "Smelly socks", 0,
+				4, new ProductQuantity(2, Unit.COUNT), productManager);
 
 		productGroup1.add(product1Copy);
 	}
@@ -152,13 +158,16 @@ public class ProductContainerTest {
 		productGroup1.add(productGroup2);
 		productGroup2.add(product1);
 		storageUnit1.add(item1);
-		storageUnit1.add(new Item(new Barcode("400000001920"), product1, null, itemManager));
-		System.out.println("Supply: " + storageUnit1.getCurrentSupply(item1.getProduct()));
+		storageUnit1.add(new Item(new Barcode("400000001920"), product1, null,
+				itemManager));
+		System.out.println("Supply: "
+				+ storageUnit1.getCurrentSupply(item1.getProduct()));
 		assertTrue(storageUnit1.getCurrentSupply(item1.getProduct()).equals(
 				new ProductQuantity(4, Unit.COUNT)));
 		assertTrue(productGroup1.getCurrentSupply(item1.getProduct()).equals(
 				new ProductQuantity(2, Unit.COUNT)));
-		Item item2 = new Item(new Barcode("400000001999"), product2, null, itemManager);
+		Item item2 = new Item(new Barcode("400000001999"), product2, null,
+				itemManager);
 		assertTrue(storageUnit1.getCurrentSupply(item2.getProduct()).equals(
 				new ProductQuantity(0, Unit.OUNCES)));
 	}
@@ -292,7 +301,8 @@ public class ProductContainerTest {
 		assertEquals(1, productGroup1.getProductsSize());
 		assertTrue(productGroup1.getProductsIterator().next().equals(product2));
 
-		assertTrue(productGroup1.getProduct(product2.getBarcode()).equals(product2));
+		assertTrue(productGroup1.getProduct(product2.getBarcode()).equals(
+				product2));
 		assertTrue(productGroup1.getProduct(product1.getBarcode()) == null);
 
 		System.out.println("done.");
