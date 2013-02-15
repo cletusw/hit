@@ -8,3 +8,7 @@
 ## java
 build
 *.class
+
+## ant
+dist
+style-reports
