@@ -1,9 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
 	<classpathentry kind="src" output="build" path="src"/>
-	<classpathentry kind="src" path="unit-test-src"/>
-	<classpathentry kind="src" path="integration-test-src"/>
-	<classpathentry kind="src" path="mocks"/>
+	<classpathentry kind="src" path="test-src"/>
 	<classpathentry kind="lib" path="lib/itext-5.1.0/itextpdf-5.1.0.jar"/>
 	<classpathentry kind="lib" path="lib/sqlitejdbc-v056/sqlitejdbc-v056.jar"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>

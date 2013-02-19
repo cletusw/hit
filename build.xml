@@ -21,10 +21,8 @@
 	<property name="lib" location="lib"/>
 	<property name="doc" location="doc"/>
 	
-	<property name="unit-test-src" location="unit-test-src"/>
-	<property name="integration-test-src" location="integration-test-src"/>
-	<property name="unit-test-build" location="unit-test-build"/>
-	<property name="integration-test-build" location="integration-test-build"/>
+	<property name="test-src" location="test-src"/>
+	<property name="test-build" location="test-build"/>
 	<property name="test-reports" location="test-reports"/>
 	
 	<property name="checkstyle-home" location="${lib}/checkstyle-5.3"/>
@@ -103,8 +101,7 @@
 		<tstamp/>
 		<mkdir dir="${build}"/>
 		<mkdir dir="${dist}"/>
-		<mkdir dir="${unit-test-build}"/>
-		<mkdir dir="${integration-test-build}"/>
+		<mkdir dir="${test-build}"/>
 		<mkdir dir="${test-reports}"/>
 		<mkdir dir="${style-reports}"/>
 		<mkdir dir="${coverage-build}"/>
@@ -116,8 +113,7 @@
         description="clean build files" >
 		<delete dir="${build}"/>
 		<delete dir="${dist}"/>
-		<delete dir="${unit-test-build}"/>
-		<delete dir="${integration-test-build}"/>
+		<delete dir="${test-build}"/>
 		<delete dir="${test-reports}"/>
 		<delete dir="${style-reports}"/>
 		<delete dir="${coverage-build}"/>
@@ -251,23 +247,7 @@
 	
 	<target name="compile-tests" depends="instrument"
 		description="compile unit tests " >
-		<javac srcdir="mocks" destdir="${build}" debug="true">
-			<classpath>
-				<pathelement location="${coverage-build}"/>
-				<pathelement location="${build}"/>
-			</classpath>
-			<classpath refid="junit-classpath" />
-			<classpath refid="cobertura-classpath" />
-		</javac>
-		<javac srcdir="${unit-test-src}" destdir="${unit-test-build}" debug="true">
-			<classpath>
-				<pathelement location="${coverage-build}"/>
-				<pathelement location="${build}"/>
-			</classpath>
-			<classpath refid="junit-classpath" />
-			<classpath refid="cobertura-classpath" />
-		</javac>
-		<javac srcdir="${integration-test-src}" destdir="${integration-test-build}" debug="true">
+		<javac srcdir="${test-src}" destdir="${test-build}" debug="true">
 			<classpath>
 				<pathelement location="${coverage-build}"/>
 				<pathelement location="${build}"/>
@@ -284,8 +264,7 @@
 			<classpath>
 				<pathelement location="${coverage-build}"/>
 				<pathelement location="${build}"/>
-				<pathelement location="${unit-test-build}"/>
-				<pathelement location="${integration-test-build}"/>
+				<pathelement location="${test-build}"/>
 			</classpath>
 			<classpath refid="cobertura-classpath" />
 			<classpath refid="junit-classpath" />
@@ -298,10 +277,7 @@
 			<formatter type="plain"/>
 			
 			<batchtest fork="yes" todir="${test-reports}">
-				<fileset dir="${unit-test-src}">
-					<include name="**/*.java"/>
-				</fileset>
-				<fileset dir="${integration-test-src}">
+				<fileset dir="${test-src}">
 					<include name="**/*.java"/>
 				</fileset>
 			</batchtest>

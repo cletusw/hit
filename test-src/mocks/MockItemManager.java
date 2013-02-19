@@ -1,8 +1,12 @@
-package model;
+package mocks;
 
 import java.util.Iterator;
 import java.util.Set;
 import java.util.TreeSet;
+
+import model.Item;
+import model.ItemManager;
+import model.Product;
 
 public class MockItemManager implements ItemManager {
 	@Override

@@ -2,6 +2,8 @@ package model;
 
 import static org.junit.Assert.assertTrue;
 
+import mocks.MockProductContainerManager;
+
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
