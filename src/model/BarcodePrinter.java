@@ -61,13 +61,13 @@ public class BarcodePrinter {
 	 * @post itemsToPrint.size() == 0
 	 * @post new pdf saved to Labels directory
 	 */
-	public NonNullString printBatch() {
+	public NonEmptyString printBatch() {
 		// print barcodes -- see example @
 		// http://itextpdf.com/examples/iia.php?id=297
 		// pick new filename (labels-date.pdf)
 		// save barcodes
 		// empty list
 		// return filename
-		return new NonNullString("");
+		return new NonEmptyString("");
 	}
 }

@@ -6,8 +6,8 @@ import java.util.Set;
 import java.util.TreeSet;
 
 @SuppressWarnings("serial")
-public class ConcreteProductContainerManager extends Observable implements
-		Serializable, ProductContainerManager {
+public class ConcreteProductContainerManager extends Observable implements Serializable,
+		ProductContainerManager {
 	private Set<StorageUnit> rootStorageUnits;
 
 	/**
@@ -19,8 +19,8 @@ public class ConcreteProductContainerManager extends Observable implements
 	}
 
 	/**
-	 * Determines whether the specified Storage Unit name is valid for adding a
-	 * new Storage Unit.
+	 * Determines whether the specified Storage Unit name is valid for adding a new Storage
+	 * Unit.
 	 * 
 	 * @param name
 	 *            The name to be tested
@@ -38,7 +38,7 @@ public class ConcreteProductContainerManager extends Observable implements
 		// Storage Units.
 
 		for (StorageUnit su : rootStorageUnits) {
-			if (su.name.getValue().equals(name))
+			if (name.equals(su.name))
 				return false;
 		}
 
@@ -46,8 +46,8 @@ public class ConcreteProductContainerManager extends Observable implements
 	}
 
 	/**
-	 * If pc is a StorageUnit, it is added to the list of StorageUnits managed.
-	 * Notifies observers of a change.
+	 * If pc is a StorageUnit, it is added to the list of StorageUnits managed. Notifies
+	 * observers of a change.
 	 * 
 	 * @param pc
 	 *            ProductContainer to be managed
@@ -77,8 +77,7 @@ public class ConcreteProductContainerManager extends Observable implements
 	 * @post rootStorageUnits.contains(newStorageUnitName)
 	 */
 	@Override
-	public void renameStorageUnit(StorageUnit storageUnit,
-			String newStorageUnitName) {
+	public void renameStorageUnit(StorageUnit storageUnit, String newStorageUnitName) {
 		assert (rootStorageUnits.contains(storageUnit));
 		assert (isValidStorageUnitName(newStorageUnitName));
 

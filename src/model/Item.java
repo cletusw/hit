@@ -151,7 +151,7 @@ public class Item implements Comparable<Object>, Serializable {
 	 * @post true
 	 */
 	public String getBarcode() {
-		return barcode.getValue();
+		return barcode.toString();
 	}
 
 	/**
