@@ -1,5 +1,6 @@
 package gui.batches;
 
+import model.Item;
 import gui.common.Controller;
 import gui.common.IView;
 import gui.inventory.ProductContainerData;
@@ -29,6 +30,13 @@ public class AddItemBatchController extends Controller implements IAddItemBatchC
 	 */
 	@Override
 	public void addItem() {
+		//Item item = new Item();
+		
+		// if view.getController().
+		getView().displayAddProductView();
+		
+		//target.addItem(item);
+		
 	}
 
 	/**

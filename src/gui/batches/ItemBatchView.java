@@ -403,6 +403,9 @@ public abstract class ItemBatchView extends DialogView {
 				redo();
 			}
 		});
+		// Undo /redo disabled for phase 2
+		enableUndo(false);
+		enableRedo(false);
 	}
 
 	@SuppressWarnings("serial")
