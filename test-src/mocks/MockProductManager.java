@@ -1,4 +1,7 @@
-package model;
+package mocks;
+
+import model.Product;
+import model.ProductManager;
 
 public class MockProductManager implements ProductManager {
 	@Override

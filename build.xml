@@ -247,14 +247,6 @@
 	
 	<target name="compile-tests" depends="instrument"
 		description="compile unit tests " >
-		<javac srcdir="mocks" destdir="${build}" debug="true">
-			<classpath>
-				<pathelement location="${coverage-build}"/>
-				<pathelement location="${build}"/>
-			</classpath>
-			<classpath refid="junit-classpath" />
-			<classpath refid="cobertura-classpath" />
-		</javac>
 		<javac srcdir="${test-src}" destdir="${test-build}" debug="true">
 			<classpath>
 				<pathelement location="${coverage-build}"/>

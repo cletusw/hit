@@ -1,4 +1,8 @@
-package model;
+package mocks;
+
+import model.ProductContainer;
+import model.ProductContainerManager;
+import model.StorageUnit;
 
 public class MockProductContainerManager implements ProductContainerManager {
 
