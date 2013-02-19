@@ -39,7 +39,7 @@ public class NonEmptyString implements Serializable, Comparable<Object> {
 	 * Compare this NonEmptyString to another using String.compareTo(String other)
 	 * 
 	 * @param other
-	 *            Another NonNullString or String to compare to
+	 *            Another NonEmptyString or String to compare to
 	 * @return the value 0 if the argument string is equal to this string; a value less than 0
 	 *         if this string is lexicographically less than the string argument; and a value
 	 *         greater than 0 if this string is lexicographically greater than the string
@@ -51,6 +51,21 @@ public class NonEmptyString implements Serializable, Comparable<Object> {
 	@Override
 	public int compareTo(Object other) {
 		return value.compareTo(other.toString());
+	}
+
+	/**
+	 * Compare this NonEmptyString to another
+	 * 
+	 * @param other
+	 *            Another NonEmptyString or String to compare to
+	 * @return true if this NonEmptyString and the one provided have the same String contents
+	 * 
+	 * @pre true
+	 * @post true
+	 */
+	@Override
+	public boolean equals(Object other) {
+		return value.compareTo(other.toString()) == 0;
 	}
 
 	/**

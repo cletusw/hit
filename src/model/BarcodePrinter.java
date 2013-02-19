@@ -55,7 +55,7 @@ public class BarcodePrinter {
 	 * format labels-(Date).pdf and is saved in the "Labels" directory. If the
 	 * director does not exist, the directory will first be created.
 	 * 
-	 * @return NonNullString filename where the batch was saved
+	 * @return NonEmptyString filename where the batch was saved
 	 * 
 	 * @pre true
 	 * @post itemsToPrint.size() == 0

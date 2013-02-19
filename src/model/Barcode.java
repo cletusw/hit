@@ -12,7 +12,6 @@ import java.util.Random;
  */
 @SuppressWarnings("serial")
 public class Barcode extends NonEmptyString {
-
 	/**
 	 * Checks to see if a given barcode string is valid.
 	 * 
@@ -25,8 +24,6 @@ public class Barcode extends NonEmptyString {
 	 * 
 	 */
 	public static boolean isValidBarcode(String s) {
-		if (s.length() != 12)
-			return false;
 		if (s == null || s.length() != 12 || s.charAt(0) != '4')
 			return false;
 
@@ -104,19 +101,15 @@ public class Barcode extends NonEmptyString {
 	 * 
 	 * @param s
 	 *            string to set as barcode
-	 * @throws IllegalArgumentException
-	 *             if s is not a valid barcode
 	 * 
-	 * @pre s != null
-	 * @pre s.length() > 0
+	 * @pre isValidBarcode(s)
 	 * @post barcode.equals(s)
 	 * @post isValidBarcode(barcode) == true
 	 * 
 	 */
-	public Barcode(String s) throws IllegalArgumentException {
+	public Barcode(String s) {
 		super(s);
-		assert (s != null);
-		assert (s.length() > 0);
+
 		if (!isValidBarcode(s))
 			throw new IllegalArgumentException("Invalid barcode: " + s);
 	}
