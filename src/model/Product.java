@@ -350,6 +350,21 @@ public class Product implements Comparable<Object>, Serializable {
 		return threeMonthSupply;
 	}
 
+	/**
+	 * Sets the description for this product object.
+	 * 
+	 * @param descr
+	 *            The (String) description to apply to this product.
+	 * 
+	 * @pre descr != null
+	 * @pre !descr.isEmpty("")
+	 * @post true
+	 * 
+	 */
+	public void setDescription(String descr) {
+		description = new NonNullString(descr);
+	}
+
 	private void setBarcode(String barcode) {
 		this.barcode = new NonNullString(barcode);
 	}
