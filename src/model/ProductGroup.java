@@ -34,7 +34,7 @@ public class ProductGroup extends ProductContainer {
 			ProductContainerManager manager) {
 		super(pcName, manager);
 		container = parent;
-		threeMonthSupply = tmSupply;
+		setThreeMonthSupply(tmSupply);
 		this.groupUnit = groupUnit;
 	}
 
@@ -168,6 +168,9 @@ public class ProductGroup extends ProductContainer {
 	 * @post this.threeMonthSupply.equals(threeMonthSupply)
 	 */
 	public void setThreeMonthSupply(ProductQuantity threeMonthSupply) {
+		if (!isValidThreeMonthSupply(threeMonthSupply)) {
+			throw new IllegalStateException("Invalid Product Quantity for Product Group");
+		}
 		this.threeMonthSupply = threeMonthSupply;
 	}
 }

@@ -105,7 +105,7 @@ public class Product implements Comparable<Object>, Serializable {
 	private int threeMonthSupply;
 	private Set<ProductContainer> productContainers;
 	private Set<Item> items;
-	private ProductQuantity size;
+	private ProductQuantity productQuantity;
 
 	/**
 	 * Constructs a Product using the given barcode, description, shelfLife, creationDate,
@@ -149,7 +149,7 @@ public class Product implements Comparable<Object>, Serializable {
 		setThreeMonthSupply(tms);
 		productContainers = new TreeSet<ProductContainer>();
 		items = new TreeSet<Item>();
-		size = pq;
+		setProductQuantity(pq);
 		manager.manage(this);
 	}
 
@@ -334,7 +334,7 @@ public class Product implements Comparable<Object>, Serializable {
 	 * 
 	 */
 	public ProductQuantity getSize() {
-		return size;
+		return productQuantity;
 	}
 
 	/**
@@ -348,6 +348,38 @@ public class Product implements Comparable<Object>, Serializable {
 	 */
 	public int getThreeMonthSupply() {
 		return threeMonthSupply;
+	}
+	
+	private void setThreeMonthSupply(int threeMonthSupply) {
+		if (threeMonthSupply < 0)
+			throw new IllegalArgumentException("Three Month Supply must be non-negative");
+		
+		this.threeMonthSupply = threeMonthSupply;
+	}
+	
+	/**
+	 * Sets the ProductQuantity of this Product.
+	 * @param pq the ProductQuantity to set
+	 * @throws IllegalStateException if the ProductQuantity is invalid
+	 */
+	public void setProductQuantity(ProductQuantity pq) {
+		if (!isValidProductQuantity(pq)) {
+			throw new IllegalStateException("Product quantity for product is invalid");
+		}
+		productQuantity = pq;
+	}
+	
+	/** Determines whether the specified product quantity is valid
+	 * 
+	 * @param pq the ProductQuantity to check
+	 * 
+	 * @pre pq != null
+	 * @post Returns true if pq is a valid Product Quantity for Products
+	 */
+	public boolean isValidProductQuantity(ProductQuantity pq) {
+		if (pq.getUnits() == Unit.COUNT && pq.getQuantity() != 1)
+			return false;
+		return true;
 	}
 
 	private void setBarcode(String barcode) {
@@ -368,12 +400,5 @@ public class Product implements Comparable<Object>, Serializable {
 			throw new IllegalArgumentException("ShelfLife must be non-negative");
 
 		this.shelfLife = shelfLife;
-	}
-
-	private void setThreeMonthSupply(int threeMonthSupply) {
-		if (threeMonthSupply < 0)
-			throw new IllegalArgumentException("Three Month Supply must be non-negative");
-
-		this.threeMonthSupply = threeMonthSupply;
 	}
 }
