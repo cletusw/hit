@@ -8,7 +8,8 @@ import java.util.Random;
  * @author Matt Hess
  * @version 1.0 -- Snell CS 340 Phase 1.0
  * 
- * @invariant value.length() == 12
+ * @invariant toString().length() == 12
+ * @invariant isValidBarcode(toString())
  */
 @SuppressWarnings("serial")
 public class Barcode extends NonEmptyString {
@@ -89,8 +90,7 @@ public class Barcode extends NonEmptyString {
 	 * Default constructor - generates a new, unique UPC-A barcode
 	 * 
 	 * @pre true
-	 * @post getValue() != null
-	 * @post isValidBarcode(barcode) == true
+	 * @post true
 	 */
 	public Barcode() {
 		this(generateBarcode());
@@ -103,33 +103,12 @@ public class Barcode extends NonEmptyString {
 	 *            string to set as barcode
 	 * 
 	 * @pre isValidBarcode(s)
-	 * @post barcode.equals(s)
-	 * @post isValidBarcode(barcode) == true
-	 * 
+	 * @post toString() == s
 	 */
 	public Barcode(String s) {
 		super(s);
 
 		if (!isValidBarcode(s))
 			throw new IllegalArgumentException("Invalid barcode: " + s);
-	}
-
-	/**
-	 * Compare this not-null string to another using String.compareTo(String other)
-	 * 
-	 * @param other
-	 *            NotNullString to compare
-	 * @return the value 0 if the argument string is equal to this string; a value less than 0
-	 *         if this string is lexicographically less than the string argument; and a value
-	 *         greater than 0 if this string is lexicographically greater than the string
-	 *         argument.
-	 * 
-	 * @pre other != null
-	 * @post true
-	 */
-	public int compareTo(Barcode other) {
-		assert (other != null);
-
-		return toString().compareTo(other.toString());
 	}
 }
