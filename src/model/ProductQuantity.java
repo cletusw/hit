@@ -60,7 +60,9 @@ public class ProductQuantity implements Serializable {
 	 * @post isValidProductQuantity(this.units, this.quantity)
 	 */
 	public ProductQuantity(float q, Unit u) {
-		assert (q >= 0);
+		if (q < 0.0) {
+			throw new IllegalArgumentException("q less than 0.0");
+		}
 
 		units = u;
 		unitType = Unit.typeMap.get(units);
@@ -76,18 +78,14 @@ public class ProductQuantity implements Serializable {
 	 * @param otherQuantity
 	 *            - ProductQuantity to add to this ProductQuantity
 	 * 
-	 * @throws IllegalArgumentException
-	 *             If this ProductQuantity's UnitType does not match incoming ProductQuantity
-	 *             UnitType
-	 * 
-	 * @pre otherQuantity UnitType.equals(units.UnitType)
+	 * @pre otherQuantity != null
+	 * @pre unitType.equals(otherQuantity.unitType)
 	 * @post quantity.equals(quantity + quantityToAdd.quantity)
 	 */
-	public void add(ProductQuantity otherQuantity) throws IllegalArgumentException {
-		assert (otherQuantity != null);
-		assert (!unitType.equals(otherQuantity.unitType));
-
-		unitType.equals(otherQuantity.unitType);
+	public void add(ProductQuantity otherQuantity) {
+		if (otherQuantity == null) {
+			throw new NullPointerException("Null ProductQuantity otherQuantity");
+		}
 		if (!unitType.equals(otherQuantity.unitType)) {
 			throw new IllegalArgumentException(
 					"Cannot add quantities with different unit types.");
@@ -104,18 +102,21 @@ public class ProductQuantity implements Serializable {
 	 *            the Object to test for equality
 	 * @return true if the objects are equal, false otherwise.
 	 * 
-	 * @pre other != null
-	 * @pre other instanceof ProductQuantity
+	 * @pre true
 	 * @post true
-	 * 
 	 */
 	@Override
 	public boolean equals(Object other) {
-		assert (other != null);
-		assert (other instanceof ProductQuantity);
+		if (other == null) {
+			return false;
+		}
 
-		ProductQuantity pq = (ProductQuantity) other;
-		return quantity == pq.quantity && units == pq.units;
+		if (other instanceof ProductQuantity) {
+			ProductQuantity pq = (ProductQuantity) other;
+			return quantity == pq.quantity && units == pq.units;
+		} else {
+			return super.equals(other);
+		}
 	}
 
 	/**
@@ -156,7 +157,6 @@ public class ProductQuantity implements Serializable {
 	 * @post quantity.equals(q)
 	 */
 	public void setQuantity(float q) throws IllegalArgumentException {
-		assert (isValidProductQuantity(q, units));
 		if (!isValidProductQuantity(q, units)) {
 			throw new IllegalArgumentException("Invalid quantity: " + quantity);
 		}
@@ -171,26 +171,23 @@ public class ProductQuantity implements Serializable {
 	 *            - ProductQuantity to subtract from this ProductQuantity, must have
 	 *            non-negative quantity
 	 * 
-	 * @throws IllegalArgumentException
-	 *             If this ProductQuantity's Unit does not match incoming ProductQuantity Unit
-	 * @throws IllegalArgumentException
-	 *             If the resulting quantity < 0
-	 * 
 	 * @pre otherQuantity != null
+	 * @pre unitType.equals(otherQuantity.unitType)
 	 * @pre quantity - otherQuantity.quantity >= 0.0
 	 * @post quantity.equals(quantity - otherQuantity.quantity)
 	 */
 	public void subtract(ProductQuantity otherQuantity) {
-		assert (otherQuantity != null);
+		if (otherQuantity == null) {
+			throw new NullPointerException("Null ProductQuantity otherQuantity");
+		}
 		if (!unitType.equals(otherQuantity.unitType)) {
 			throw new IllegalArgumentException(
 					"Cannot add quantities with different unit types.");
 		}
 
 		float conversionFactor = Unit.getConversionFactor(otherQuantity.units, units);
-		assert (!(quantity - (otherQuantity.quantity * conversionFactor) < 0));
 		if (quantity - (otherQuantity.quantity * conversionFactor) < 0) {
-			throw new IllegalArgumentException("Resulting Subtraction would be negative");
+			throw new IllegalArgumentException("Subtraction result would be negative");
 		}
 
 		quantity -= (otherQuantity.quantity * conversionFactor);
