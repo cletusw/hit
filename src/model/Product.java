@@ -25,15 +25,11 @@ public class Product implements Comparable<Object>, Serializable {
 	 *            the string to test
 	 * @return true if the barcode is valid, false otherwise.
 	 * 
-	 * @pre barcode != null
-	 * @pre !barcode.equals("")
+	 * @pre true
 	 * @post true
 	 * 
 	 */
 	public static boolean isValidBarcode(String barcode) {
-		assert (barcode != null);
-		assert (!barcode.equals(""));
-
 		try {
 			new NonEmptyString(barcode);
 			return true;
@@ -49,14 +45,10 @@ public class Product implements Comparable<Object>, Serializable {
 	 *            the string to test
 	 * @return true if the string is valid, false otherwise.
 	 * 
-	 * @pre desc != null
-	 * @pre !desc.equals("")
+	 * @pre true
 	 * @post true
 	 */
 	public static boolean isValidDescription(String desc) {
-		assert (desc != null);
-		assert (!desc.equals(""));
-
 		try {
 			new NonEmptyString(desc);
 			return true;
@@ -199,7 +191,9 @@ public class Product implements Comparable<Object>, Serializable {
 	 * 
 	 */
 	public void addContainer(ProductContainer pc) {
-		assert (pc != null);
+		if (pc == null) {
+			throw new NullPointerException("Null ProductContainer pc");
+		}
 
 		productContainers.add(pc);
 	}
@@ -215,7 +209,9 @@ public class Product implements Comparable<Object>, Serializable {
 	 * 
 	 */
 	public void addItem(Item item) {
-		assert (item != null);
+		if (item == null) {
+			throw new NullPointerException("Null Item item");
+		}
 
 		items.add(item);
 	}
@@ -240,12 +236,18 @@ public class Product implements Comparable<Object>, Serializable {
 	 *            the other object to be compared to
 	 * 
 	 * @pre o != null
+	 * @pre o instanceof Product || o instanceof NonEmptyString
 	 * @post true
 	 * 
 	 */
 	@Override
 	public int compareTo(Object o) {
-		assert (o != null);
+		if (o == null) {
+			throw new NullPointerException("Null Object o");
+		}
+		if (!(o instanceof Product) && !(o instanceof NonEmptyString)) {
+			throw new ClassCastException("Invalid class for Object o");
+		}
 
 		NonEmptyString otherBarcode;
 
@@ -271,7 +273,9 @@ public class Product implements Comparable<Object>, Serializable {
 	 * 
 	 */
 	public boolean equals(Product p) {
-		assert (p != null);
+		if (p == null) {
+			throw new NullPointerException("Null Product p");
+		}
 
 		return p.barcode.toString().equals(barcode.toString());
 	}
