@@ -116,6 +116,21 @@ public class ProductTest {
 		new Product("", validDescription, 3, 3, size, productManager);
 	}
 
+	@Test
+	public void testIsValidProductQuantity() {
+		assertTrue(product.isValidProductQuantity(new ProductQuantity(1, Unit.COUNT)));
+		assertFalse(product.isValidProductQuantity(new ProductQuantity(3, Unit.COUNT)));
+		ProductQuantity pq = new ProductQuantity(15, Unit.LITERS);
+		product.setProductQuantity(pq);
+		assertTrue(product.getProductQuantity().equals(pq));
+	}
+
+	
+	@Test(expected = IllegalArgumentException.class)
+	public void testInvalidProductQuantity() {
+		product.setProductQuantity(new ProductQuantity(3, Unit.COUNT));
+	}
+	
 	@Test(expected = IllegalArgumentException.class)
 	public void testProductInvalidDescription() {
 		new Product(validBarcode, "", 3, 3, size, productManager);

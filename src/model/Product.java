@@ -364,9 +364,20 @@ public class Product implements Comparable<Object>, Serializable {
 	 */
 	public void setProductQuantity(ProductQuantity pq) {
 		if (!isValidProductQuantity(pq)) {
-			throw new IllegalStateException("Product quantity for product is invalid");
+			throw new IllegalArgumentException("Product quantity for product is invalid");
 		}
 		productQuantity = pq;
+	}
+	
+	/**
+	 * Gets the ProductQuantity of this Product.
+	 * 
+	 * @return the Product Quantity of this Product.
+	 * @pre true
+	 * @post true
+	 */
+	public ProductQuantity getProductQuantity() {
+		return productQuantity;
 	}
 	
 	/** Determines whether the specified product quantity is valid
@@ -377,7 +388,7 @@ public class Product implements Comparable<Object>, Serializable {
 	 * @post Returns true if pq is a valid Product Quantity for Products
 	 */
 	public boolean isValidProductQuantity(ProductQuantity pq) {
-		if (pq.getUnits() == Unit.COUNT && pq.getQuantity() != 1)
+		if (pq.getUnits().equals(Unit.COUNT) && pq.getQuantity() != 1)
 			return false;
 		return true;
 	}

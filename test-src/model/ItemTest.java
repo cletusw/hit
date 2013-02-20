@@ -30,7 +30,7 @@ public class ItemTest {
 		validUPCABarcode = new Barcode("494180175762");
 		itemManager = new MockItemManager();
 		productManager = new MockProductManager();
-		pq = new ProductQuantity(2.2f, Unit.FLUID_OUNCES);
+		//pq = new ProductQuantity(2.2d, Unit.FLUID_OUNCES);
 		product = new Product("validBarcode", "A product", 3, 3, pq,
 				productManager);
 		productGroup = new ProductGroup("Test product group", pq, Unit.GALLONS,

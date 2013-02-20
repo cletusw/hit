@@ -15,7 +15,7 @@ public class ProductQuantityTest {
 	@Before
 	public void setUp() throws Exception {
 		fluid = new ProductQuantity(3.2f, Unit.FLUID_OUNCES);
-		count = new ProductQuantity(0, Unit.COUNT);
+		count = new ProductQuantity(1, Unit.COUNT);
 
 		// test invariants
 		assertTrue(fluid.getQuantity() >= 0);
@@ -75,7 +75,8 @@ public class ProductQuantityTest {
 		assertTrue(ProductQuantity.isValidProductQuantity(3.2f, Unit.FLUID_OUNCES));
 		assertTrue(ProductQuantity.isValidProductQuantity(0f, Unit.FLUID_OUNCES));
 		assertFalse(ProductQuantity.isValidProductQuantity(-1.4f, Unit.FLUID_OUNCES));
-		assertTrue(ProductQuantity.isValidProductQuantity(3, Unit.COUNT));
+		assertTrue(ProductQuantity.isValidProductQuantity(1, Unit.COUNT));
+		assertFalse(ProductQuantity.isValidProductQuantity(3, Unit.COUNT));
 		assertFalse(ProductQuantity.isValidProductQuantity(3.1f, Unit.COUNT));
 	}
 
