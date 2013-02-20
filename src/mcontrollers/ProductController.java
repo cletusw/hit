@@ -1,8 +1,5 @@
 package mcontrollers;
 
-import gui.common.Controller;
-import gui.common.IView;
-
 import java.util.Observable;
 import java.util.Observer;
 
@@ -14,18 +11,7 @@ import java.util.Observer;
  * @version 1.0 CS 340 Group 4 Phase 2
  * 
  */
-public class ProductController extends Controller implements Observer {
-
-	/**
-	 * Constructor.
-	 * 
-	 * @param view
-	 *            the view for this controller
-	 */
-	protected ProductController(IView view) {
-		super(view);
-		// TODO Auto-generated constructor stub
-	}
+public class ProductController implements Observer {
 
 	/**
 	 * Method intended to notify the view when ProductManager sends a "change" notice.
