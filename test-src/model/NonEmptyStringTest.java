@@ -6,7 +6,7 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-public class NonNullStringTest {
+public class NonEmptyStringTest {
 
 	@Before
 	public void setUp() throws Exception {
@@ -18,32 +18,32 @@ public class NonNullStringTest {
 
 	@Test
 	public void testCompareTo() {
-		NonNullString one = new NonNullString("one");
-		NonNullString two = new NonNullString("two");
-		NonNullString copyOfOne = new NonNullString("one");
+		NonEmptyString one = new NonEmptyString("one");
+		NonEmptyString two = new NonEmptyString("two");
+		NonEmptyString copyOfOne = new NonEmptyString("one");
 		assertTrue(one.compareTo(two) != 0);
-		assertTrue(one.compareTo(two.getValue()) != 0);
+		assertTrue(one.compareTo(two.toString()) != 0);
 		assertTrue(one.compareTo(copyOfOne) == 0);
-		assertTrue(one.compareTo(copyOfOne.getValue()) == 0);
+		assertTrue(one.compareTo(copyOfOne.toString()) == 0);
 	}
 
 	@Test(expected = IllegalArgumentException.class)
 	public void testEmptyStringConstructor() {
-		new NonNullString("");
+		new NonEmptyString("");
 	}
 
 	@Test(expected = IllegalArgumentException.class)
 	public void testNullConstructor() {
-		new NonNullString(null);
+		new NonEmptyString(null);
 	}
 
 	@Test
 	public void validConstructorTest() {
-		NonNullString one = new NonNullString("one");
-		assertTrue(one.value.equals("one"));
+		NonEmptyString one = new NonEmptyString("one");
+		assertTrue(one.toString().equals("one"));
 
-		NonNullString two = new NonNullString("two");
-		assertTrue(two.value.equals("two"));
+		NonEmptyString two = new NonEmptyString("two");
+		assertTrue(two.toString().equals("two"));
 	}
 
 }

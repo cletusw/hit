@@ -64,13 +64,13 @@ public class ConcreteItemManager extends Observable implements ItemManager, Seri
 	 * 
 	 * @pre item != null
 	 * @post items.contains(item)
-	 * @post productHasItems(item.getProduct()) != null
-	 * @post !productHasItems(item.getProduct()).isEmpty()
-	 * 
+	 * @post productsToItems.get(item.getProduct()).contains(item)
 	 */
 	@Override
 	public void manage(Item item) {
-		assert (item != null);
+		if (item == null) {
+			throw new IllegalArgumentException("Null Item item");
+		}
 
 		Set<Item> found = productsToItems.get(item.getProduct());
 		if (found != null)
@@ -106,17 +106,21 @@ public class ConcreteItemManager extends Observable implements ItemManager, Seri
 	 *            The ProductContainer to add the Item to
 	 * 
 	 * @pre item != null
+	 * @pre items.contains(item)
 	 * @pre productsToItems.get(item.getProduct()).contains(item)
 	 * @post removedItems.contains(item)
+	 * @post !items.contains(item)
 	 * 
 	 */
 	@Override
 	public void unmanage(Item item) {
-		assert (item != null);
-		assert (productsToItems.get(item.getProduct()).contains(item));
-
 		if (item == null)
 			throw new IllegalArgumentException("Item to unmanage can't be null.");
+		if (!items.contains(item) || !productsToItems.get(item.getProduct()).contains(item)) {
+			throw new IllegalStateException("unmanage() being called before manage()");
+		}
+
+		items.remove(item);
 
 		Set<Item> found = productsToItems.get(item.getProduct());
 		found.remove(item);

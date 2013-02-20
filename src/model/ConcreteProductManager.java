@@ -35,7 +35,9 @@ public class ConcreteProductManager extends Observable implements ProductManager
 	 */
 	@Override
 	public boolean contains(Product product) {
-		assert (product != null);
+		if (product == null) {
+			throw new IllegalArgumentException("Null Product product");
+		}
 
 		return products.contains(product);
 	}
@@ -51,7 +53,9 @@ public class ConcreteProductManager extends Observable implements ProductManager
 	 */
 	@Override
 	public Product getByBarcode(String barcode) {
-		assert (barcode != null);
+		if (barcode == null) {
+			throw new IllegalArgumentException("Null Barcode barcode");
+		}
 
 		return barcodesToProducts.get(barcode);
 	}
@@ -68,7 +72,9 @@ public class ConcreteProductManager extends Observable implements ProductManager
 	 */
 	@Override
 	public void manage(Product product) {
-		assert (product != null);
+		if (product == null) {
+			throw new IllegalArgumentException("Null Product product");
+		}
 
 		products.add(product);
 		barcodesToProducts.put(product.getBarcode(), product);
@@ -86,7 +92,9 @@ public class ConcreteProductManager extends Observable implements ProductManager
 	 */
 	@Override
 	public void unmanage(Product product) {
-		assert (product != null);
+		if (product == null) {
+			throw new IllegalArgumentException("Null Product product");
+		}
 
 		products.remove(product);
 		barcodesToProducts.remove(product.getBarcode());

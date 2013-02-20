@@ -31,13 +31,12 @@ public class ItemTest {
 		itemManager = new MockItemManager();
 		productManager = new MockProductManager();
 		pq = new ProductQuantity(2.2f, Unit.FLUID_OUNCES);
-		product = new Product("validBarcode", "A product", 3, 3, pq,
-				productManager);
+		product = new Product("validBarcode", "A product", 3, 3, pq, productManager);
 		productGroup = new ProductGroup("Test product group", pq, Unit.GALLONS,
 				new StorageUnit("Test storage unit", pcManager), pcManager);
 		entryDateLastMonth = new Date(113, 0, 1, 12, 45, 45);
-		item = new Item(validUPCABarcode, product, productGroup,
-				entryDateLastMonth, itemManager);
+		item = new Item(validUPCABarcode, product, productGroup, entryDateLastMonth,
+				itemManager);
 
 		// test Invariants
 		assertTrue(item.getProduct() != null);
@@ -57,21 +56,18 @@ public class ItemTest {
 
 	@Test
 	public void testCompareTo() {
-		Item sameItem = new Item(validUPCABarcode, product, productGroup,
-				itemManager);
-		Item newItem = new Item(new Barcode("412345688919"), new Product("abc",
-				"abcd", 3, 3, pq, productManager), productGroup, itemManager);
+		Item sameItem = new Item(validUPCABarcode, product, productGroup, itemManager);
+		Item newItem = new Item(new Barcode("412345688919"), new Product("abc", "abcd", 3, 3,
+				pq, productManager), productGroup, itemManager);
 		assertTrue(item.compareTo(sameItem) == 0);
 		assertTrue(item.compareTo(newItem) != 0);
 	}
 
 	@Test
 	public void testItem() {
-		assertTrue(item.getBarcode().equals(validUPCABarcode.getValue()));
+		assertTrue(item.getBarcode().equals(validUPCABarcode.toString()));
 		assertTrue(item.getProduct().compareTo(product) == 0);
 		assertTrue(item.getContainer().equals(productGroup));
-
-		assertTrue(item.getExitTime() == null);
 
 		Date expiration = item.getExpirationDate();
 		Date entry = item.getEntryDate();
@@ -94,8 +90,8 @@ public class ItemTest {
 
 	@Test
 	public void testItemInvalidBarcode() {
-		item = new Item(validUPCABarcode, product, productGroup,
-				entryDateLastMonth, itemManager);
+		item = new Item(validUPCABarcode, product, productGroup, entryDateLastMonth,
+				itemManager);
 	}
 
 	@Test
@@ -105,8 +101,6 @@ public class ItemTest {
 		assertTrue(item.getProduct().compareTo(product) == 0);
 		assertTrue(item.getContainer().equals(productGroup));
 
-		assertTrue(item.getExitTime() == null);
-
 		Date expiration = item.getExpirationDate();
 		Date entry = item.getEntryDate();
 		assertTrue(expiration != null);
@@ -115,8 +109,7 @@ public class ItemTest {
 		assertTrue(entry.after(entryDateLastMonth));
 
 		assertTrue(expiration.getYear() == entry.getYear());
-		assertTrue(expiration.getMonth() == entry.getMonth()
-				+ product.getShelfLife());
+		assertTrue(expiration.getMonth() == entry.getMonth() + product.getShelfLife());
 		assertTrue(expiration.getDate() == entry.getDate());
 		assertTrue(expiration.getHours() == entry.getHours());
 		assertTrue(expiration.getMinutes() == entry.getMinutes());

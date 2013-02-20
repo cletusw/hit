@@ -25,17 +25,13 @@ public class Product implements Comparable<Object>, Serializable {
 	 *            the string to test
 	 * @return true if the barcode is valid, false otherwise.
 	 * 
-	 * @pre barcode != null
-	 * @pre !barcode.equals("")
+	 * @pre true
 	 * @post true
 	 * 
 	 */
 	public static boolean isValidBarcode(String barcode) {
-		assert (barcode != null);
-		assert (!barcode.equals(""));
-
 		try {
-			new NonNullString(barcode);
+			new NonEmptyString(barcode);
 			return true;
 		} catch (IllegalArgumentException ex) {
 		}
@@ -49,16 +45,12 @@ public class Product implements Comparable<Object>, Serializable {
 	 *            the string to test
 	 * @return true if the string is valid, false otherwise.
 	 * 
-	 * @pre desc != null
-	 * @pre !desc.equals("")
+	 * @pre true
 	 * @post true
 	 */
 	public static boolean isValidDescription(String desc) {
-		assert (desc != null);
-		assert (!desc.equals(""));
-
 		try {
-			new NonNullString(desc);
+			new NonEmptyString(desc);
 			return true;
 		} catch (IllegalArgumentException ex) {
 		}
@@ -98,8 +90,8 @@ public class Product implements Comparable<Object>, Serializable {
 	}
 
 	// member variables
-	private NonNullString barcode;
-	private NonNullString description;
+	private NonEmptyString barcode;
+	private NonEmptyString description;
 	private Date creationDate;
 	private int shelfLife;
 	private int threeMonthSupply;
@@ -143,7 +135,7 @@ public class Product implements Comparable<Object>, Serializable {
 	public Product(String barcode, String description, Date creationDate, int shelfLife,
 			int tms, ProductQuantity pq, ProductManager manager) {
 		setBarcode(barcode);
-		this.description = new NonNullString(description);
+		this.description = new NonEmptyString(description);
 		setCreationDate(creationDate);
 		setShelfLife(shelfLife);
 		setThreeMonthSupply(tms);
@@ -199,7 +191,9 @@ public class Product implements Comparable<Object>, Serializable {
 	 * 
 	 */
 	public void addContainer(ProductContainer pc) {
-		assert (pc != null);
+		if (pc == null) {
+			throw new NullPointerException("Null ProductContainer pc");
+		}
 
 		productContainers.add(pc);
 	}
@@ -215,7 +209,9 @@ public class Product implements Comparable<Object>, Serializable {
 	 * 
 	 */
 	public void addItem(Item item) {
-		assert (item != null);
+		if (item == null) {
+			throw new NullPointerException("Null Item item");
+		}
 
 		items.add(item);
 	}
@@ -240,40 +236,53 @@ public class Product implements Comparable<Object>, Serializable {
 	 *            the other object to be compared to
 	 * 
 	 * @pre o != null
+	 * @pre o instanceof Product || o instanceof NonEmptyString
 	 * @post true
 	 * 
 	 */
 	@Override
 	public int compareTo(Object o) {
-		assert (o != null);
+		if (o == null) {
+			throw new NullPointerException("Null Object o");
+		}
+		if (!(o instanceof Product) && !(o instanceof NonEmptyString)) {
+			throw new ClassCastException("Invalid class for Object o");
+		}
 
-		NonNullString otherBarcode;
+		NonEmptyString otherBarcode;
 
 		if (o instanceof Product) {
 			otherBarcode = ((Product) o).barcode;
 		} else {
-			otherBarcode = (NonNullString) o;
+			otherBarcode = (NonEmptyString) o;
 		}
 
-		return barcode.value.compareToIgnoreCase(otherBarcode.value);
+		return barcode.toString().compareToIgnoreCase(otherBarcode.toString());
 	}
 
 	/**
 	 * Compare 2 Products to see if their barcodes are equal. Uses String.equals() on the
 	 * product barcodes.
 	 * 
-	 * @param p
+	 * @param o
 	 *            Product to compare
 	 * @return true if this.barcode.equals(p.barcode), false otherwise
 	 * 
-	 * @pre p != null
+	 * @pre true
 	 * @post true
-	 * 
 	 */
-	public boolean equals(Product p) {
-		assert (p != null);
+	@Override
+	public boolean equals(Object o) {
+		if (o == null) {
+			return false;
+		}
 
-		return p.barcode.getValue().equals(barcode.getValue());
+		if (o instanceof Product) {
+			Product other = (Product) o;
+			return barcode.toString().equals(other.barcode.toString());
+		} else {
+			return super.equals(o);
+		}
 	}
 
 	/**
@@ -282,7 +291,7 @@ public class Product implements Comparable<Object>, Serializable {
 	 * @return this Product's barcode
 	 */
 	public String getBarcode() {
-		return barcode.getValue();
+		return barcode.toString();
 	}
 
 	/**
@@ -308,7 +317,7 @@ public class Product implements Comparable<Object>, Serializable {
 	 * 
 	 */
 	public String getDescription() {
-		return description.getValue();
+		return description.toString();
 	}
 
 	/**
@@ -405,11 +414,11 @@ public class Product implements Comparable<Object>, Serializable {
 	 * 
 	 */
 	public void setDescription(String descr) {
-		description = new NonNullString(descr);
+		description = new NonEmptyString(descr);
 	}
 
 	private void setBarcode(String barcode) {
-		this.barcode = new NonNullString(barcode);
+		this.barcode = new NonEmptyString(barcode);
 	}
 
 	private void setCreationDate(Date date) {

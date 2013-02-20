@@ -40,10 +40,18 @@ public class Item implements Comparable<Object>, Serializable {
 	 */
 	public Item(Barcode barcode, Product product, ProductContainer container, Date entryDate,
 			ItemManager manager) {
-		assert (barcode != null);
-		assert (product != null);
-		assert (container != null);
-		assert (manager != null);
+		if (barcode == null) {
+			throw new NullPointerException("Null Barcode barcode");
+		}
+		if (product == null) {
+			throw new NullPointerException("Null Product product");
+		}
+		if (container == null) {
+			throw new NullPointerException("Null Container container");
+		}
+		if (manager == null) {
+			throw new NullPointerException("Null Manager manager");
+		}
 
 		this.product = product;
 		this.container = container;
@@ -136,8 +144,13 @@ public class Item implements Comparable<Object>, Serializable {
 	 */
 	@Override
 	public int compareTo(Object o) {
-		assert (o != null);
-		assert (o instanceof Item);
+		if (o == null) {
+			throw new NullPointerException("Null Object o");
+		}
+		if (!(o instanceof Item)) {
+			throw new ClassCastException("Illegal object type for Object o");
+		}
+
 		Item other = (Item) o;
 		return barcode.compareTo(other.barcode);
 	}
@@ -151,7 +164,7 @@ public class Item implements Comparable<Object>, Serializable {
 	 * @post true
 	 */
 	public String getBarcode() {
-		return barcode.getValue();
+		return barcode.toString();
 	}
 
 	/**
@@ -188,7 +201,9 @@ public class Item implements Comparable<Object>, Serializable {
 	 * @post true
 	 */
 	public Date getExitTime() {
-		assert (container == null);
+		if (container != null) {
+			throw new IllegalStateException("Container container should be null");
+		}
 		return exitTime;
 	}
 

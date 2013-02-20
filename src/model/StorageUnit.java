@@ -32,18 +32,21 @@ public class StorageUnit extends ProductContainer {
 	 * 
 	 * @param i
 	 *            - the Item object to add to the collection
-	 * @return true if the item was added to this container or one of its
-	 *         children, false otherwise.
+	 * @return true if the item was added to this container or one of its children, false
+	 *         otherwise.
+	 * 
 	 * @pre i != null
+	 * @pre !items.containsKey(i.getBarcode())
 	 * @post items.size() == items.size()@pre + 1
 	 * @post items.contains(i)
 	 * 
 	 */
 	public boolean add(Item i) {
-		assert (i != null);
+		if (i == null) {
+			throw new NullPointerException("Null Item i");
+		}
 		if (items.containsKey(i.getBarcode()))
-			throw new IllegalStateException(
-					"Cannot have two items with same barcode");
+			throw new IllegalStateException("Cannot have two items with same barcode");
 
 		// A new item is added to the same Product Container that contains the
 		// Item's Product
@@ -67,8 +70,7 @@ public class StorageUnit extends ProductContainer {
 	}
 
 	/**
-	 * Determines whether or not the specified Product Group can be added to
-	 * this Storage Unit.
+	 * Determines whether or not the specified Product Group can be added to this Storage Unit.
 	 * 
 	 * @param pGroup
 	 *            the Product Group to test
@@ -81,8 +83,9 @@ public class StorageUnit extends ProductContainer {
 	public boolean canAddProductGroup(ProductGroup pGroup) {
 		// From the Data Dictionary: A Storage Unit cannot have two top-level
 		// Product Groups of the same name.
-		assert (pGroup != null);
-
+		if (pGroup == null) {
+			throw new NullPointerException("Null ProductGroup pGroup");
+		}
 		return (getProductGroup(pGroup.getName()) == null);
 	}
 

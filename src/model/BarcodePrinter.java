@@ -55,19 +55,19 @@ public class BarcodePrinter {
 	 * format labels-(Date).pdf and is saved in the "Labels" directory. If the
 	 * director does not exist, the directory will first be created.
 	 * 
-	 * @return NonNullString filename where the batch was saved
+	 * @return NonEmptyString filename where the batch was saved
 	 * 
 	 * @pre true
 	 * @post itemsToPrint.size() == 0
 	 * @post new pdf saved to Labels directory
 	 */
-	public NonNullString printBatch() {
+	public NonEmptyString printBatch() {
 		// print barcodes -- see example @
 		// http://itextpdf.com/examples/iia.php?id=297
 		// pick new filename (labels-date.pdf)
 		// save barcodes
 		// empty list
 		// return filename
-		return new NonNullString("");
+		return new NonEmptyString("");
 	}
 }

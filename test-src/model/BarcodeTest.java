@@ -20,20 +20,20 @@ public class BarcodeTest {
 	@Test
 	public void testBarcodeConstructor() {
 		Barcode b = new Barcode();
-		assertTrue(b.getValue() != null);
-		assertTrue(b.getValue().length() == 12);
-		assertTrue(Barcode.isValidBarcode(b.getValue()));
+		assertTrue(b.toString() != null);
+		assertTrue(b.toString().length() == 12);
+		assertTrue(Barcode.isValidBarcode(b.toString()));
 
-		Barcode c = new Barcode(b.getValue());
-		assertTrue(c.getValue() != null);
-		assertTrue(c.getValue().equals(b.getValue()));
-		assertTrue(Barcode.isValidBarcode(c.getValue()));
+		Barcode c = new Barcode(b.toString());
+		assertTrue(c.toString() != null);
+		assertTrue(c.toString().equals(b.toString()));
+		assertTrue(Barcode.isValidBarcode(c.toString()));
 	}
 
 	@Test
 	public void testCompareTo() {
 		Barcode b = new Barcode();
-		Barcode c = new Barcode(b.getValue());
+		Barcode c = new Barcode(b.toString());
 		assertTrue(b.compareTo(c) == 0);
 	}
 
