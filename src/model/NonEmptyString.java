@@ -62,7 +62,7 @@ public class NonEmptyString implements Serializable, Comparable<Object> {
 	/**
 	 * Compare this NonEmptyString to another
 	 * 
-	 * @param other
+	 * @param o
 	 *            Another NonEmptyString or String to compare to
 	 * @return true if this NonEmptyString and the one provided have the same String contents
 	 * 
@@ -70,8 +70,20 @@ public class NonEmptyString implements Serializable, Comparable<Object> {
 	 * @post true
 	 */
 	@Override
-	public boolean equals(Object other) {
-		return value.compareTo(other.toString()) == 0;
+	public boolean equals(Object o) {
+		if (o == null) {
+			return false;
+		}
+
+		if (o instanceof NonEmptyString) {
+			NonEmptyString other = (NonEmptyString) o;
+			return value.equals(other.value);
+		} else if (o instanceof String) {
+			String other = (String) o;
+			return value.equals(other);
+		} else {
+			return super.equals(o);
+		}
 	}
 
 	/**

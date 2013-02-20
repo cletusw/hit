@@ -338,15 +338,12 @@ public abstract class ProductContainer implements Comparable<ProductContainer>, 
 			return false;
 		}
 
-		String otherName;
-
 		if (o instanceof ProductContainer) {
-			otherName = ((ProductContainer) o).getName();
+			ProductContainer other = (ProductContainer) o;
+			return getName().equals(other.getName());
 		} else {
-			otherName = o.toString();
+			return super.equals(o);
 		}
-
-		return getName().equals(otherName);
 	}
 
 	/**

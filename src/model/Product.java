@@ -264,20 +264,25 @@ public class Product implements Comparable<Object>, Serializable {
 	 * Compare 2 Products to see if their barcodes are equal. Uses String.equals() on the
 	 * product barcodes.
 	 * 
-	 * @param p
+	 * @param o
 	 *            Product to compare
 	 * @return true if this.barcode.equals(p.barcode), false otherwise
 	 * 
-	 * @pre p != null
+	 * @pre true
 	 * @post true
-	 * 
 	 */
-	public boolean equals(Product p) {
-		if (p == null) {
-			throw new NullPointerException("Null Product p");
+	@Override
+	public boolean equals(Object o) {
+		if (o == null) {
+			return false;
 		}
 
-		return p.barcode.toString().equals(barcode.toString());
+		if (o instanceof Product) {
+			Product other = (Product) o;
+			return barcode.toString().equals(other.barcode.toString());
+		} else {
+			return super.equals(o);
+		}
 	}
 
 	/**
