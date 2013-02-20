@@ -23,13 +23,14 @@ import model.ConcreteProductContainerManager;
  * Controller class for inventory view.
  * 
  * @invariant itemManager != null
- * @invariant productManager != null 
- * @invariant productContainerManager != null 
+ * @invariant productManager != null
+ * @invariant productContainerManager != null
  */
-public class InventoryController extends Controller implements IInventoryController, Serializable {
+public class InventoryController extends Controller implements IInventoryController,
+		Serializable {
 	private ItemManager itemManager;
 	private ProductManager productManager;
-	private ProductContainerManager productContainerManager;	
+	private ProductContainerManager productContainerManager;
 	private Random rand = new Random();
 
 	/**
@@ -37,7 +38,7 @@ public class InventoryController extends Controller implements IInventoryControl
 	 * 
 	 * @param view
 	 *            Reference to the inventory view
-	 *            
+	 * 
 	 * @pre view != null
 	 * @post true
 	 */
@@ -62,8 +63,10 @@ public class InventoryController extends Controller implements IInventoryControl
 
 	/**
 	 * This method is called when the user selects the "Add Product Group" menu item.
+	 * 
 	 * @pre true
-	 * @post All ProductGroups added through the AddProductGroupView now exist in the selected ProductContainer 
+	 * @post All ProductGroups added through the AddProductGroupView now exist in the selected
+	 *       ProductContainer
 	 */
 	@Override
 	public void addProductGroup() {
@@ -92,8 +95,10 @@ public class InventoryController extends Controller implements IInventoryControl
 
 	/**
 	 * This method is called when the user selects the "Add Storage Unit" menu item.
+	 * 
 	 * @pre true
-	 * @post If the user added a Storage Unit, the Storage Unit with that name now exists in the ProductContainerManager 
+	 * @post If the user added a Storage Unit, the Storage Unit with that name now exists in
+	 *       the ProductContainerManager
 	 */
 	@Override
 	public void addStorageUnit() {
@@ -102,6 +107,7 @@ public class InventoryController extends Controller implements IInventoryControl
 
 	/**
 	 * Returns true if and only if the "Add Items" menu item should be enabled.
+	 * 
 	 * @pre true
 	 * @post Returns true if view.getSelectedProductContainer().getTag() instanceof StorageUnit
 	 */
@@ -112,8 +118,10 @@ public class InventoryController extends Controller implements IInventoryControl
 
 	/**
 	 * Returns true if and only if the "Add Product Group" menu item should be enabled.
+	 * 
 	 * @pre true
-	 * @post Returns true if view.getSelectedProductContainer() != null and the ProductGroup's name is non-null and unique within the selected ProductContainer
+	 * @post Returns true if view.getSelectedProductContainer() != null and the ProductGroup's
+	 *       name is non-null and unique within the selected ProductContainer
 	 */
 	@Override
 	public boolean canAddProductGroup() {
@@ -122,8 +130,10 @@ public class InventoryController extends Controller implements IInventoryControl
 
 	/**
 	 * Returns true if and only if the "Add Storage Unit" menu item should be enabled.
+	 * 
 	 * @pre true
-	 * @post Returns true if view.getSelectedProductContainer() != null and the StorageUnit's name is non-null and unique within the system
+	 * @post Returns true if view.getSelectedProductContainer() != null and the StorageUnit's
+	 *       name is non-null and unique within the system
 	 */
 	@Override
 	public boolean canAddStorageUnit() {
@@ -132,8 +142,10 @@ public class InventoryController extends Controller implements IInventoryControl
 
 	/**
 	 * Returns true if and only if the "Delete Product" menu item should be enabled.
+	 * 
 	 * @pre true
-	 * @post Returns true if view.getSelectedProduct() != null and there are no Items with references to view.getSelectedProduct()
+	 * @post Returns true if view.getSelectedProduct() != null and there are no Items with
+	 *       references to view.getSelectedProduct()
 	 */
 	@Override
 	public boolean canDeleteProduct() {
@@ -142,8 +154,10 @@ public class InventoryController extends Controller implements IInventoryControl
 
 	/**
 	 * Returns true if and only if the "Delete Product Group" menu item should be enabled.
+	 * 
 	 * @pre true
-	 * @post Returns true if view.getSelectedProductContainer() != null && view.getSelectedProductContainer().getChildCount() == 0
+	 * @post Returns true if view.getSelectedProductContainer() != null &&
+	 *       view.getSelectedProductContainer().getChildCount() == 0
 	 */
 	@Override
 	public boolean canDeleteProductGroup() {
@@ -152,6 +166,7 @@ public class InventoryController extends Controller implements IInventoryControl
 
 	/**
 	 * Returns true if and only if the "Delete Storage Unit" menu item should be enabled.
+	 * 
 	 * @pre true
 	 * @post Returns true if there are no Items in the selected StorageUnit
 	 */
@@ -162,6 +177,7 @@ public class InventoryController extends Controller implements IInventoryControl
 
 	/**
 	 * Returns true if and only if the "Edit Item" menu item should be enabled.
+	 * 
 	 * @pre true
 	 * @post Returns true if view.getSelectedItem() != null
 	 */
@@ -172,6 +188,7 @@ public class InventoryController extends Controller implements IInventoryControl
 
 	/**
 	 * Returns true if and only if the "Edit Product" menu item should be enabled.
+	 * 
 	 * @pre true
 	 * @post Returns true if view.getSelectedProduct() != null
 	 */
@@ -182,8 +199,10 @@ public class InventoryController extends Controller implements IInventoryControl
 
 	/**
 	 * Returns true if and only if the "Edit Product Group" menu item should be enabled.
+	 * 
 	 * @pre true
-	 * @post Returns true if view.getSelectedProductContainer() != null && view.getSelectedProductContainer().getTag() instanceof ProductGroup
+	 * @post Returns true if view.getSelectedProductContainer() != null &&
+	 *       view.getSelectedProductContainer().getTag() instanceof ProductGroup
 	 */
 	@Override
 	public boolean canEditProductGroup() {
@@ -192,8 +211,10 @@ public class InventoryController extends Controller implements IInventoryControl
 
 	/**
 	 * Returns true if and only if the "Edit Storage Unit" menu item should be enabled.
+	 * 
 	 * @pre true
-	 * @post Returns true if view.getSelectedProductContainer() != null && view.getSelectedProductContainer().getTag() instanceof StorageUnit 
+	 * @post Returns true if view.getSelectedProductContainer() != null &&
+	 *       view.getSelectedProductContainer().getTag() instanceof StorageUnit
 	 */
 	@Override
 	public boolean canEditStorageUnit() {
@@ -202,6 +223,7 @@ public class InventoryController extends Controller implements IInventoryControl
 
 	/**
 	 * Returns true if and only if the "Remove Item" menu item should be enabled.
+	 * 
 	 * @pre true
 	 * @post Returns true if view.getSelectedItem() != null
 	 */
@@ -212,6 +234,7 @@ public class InventoryController extends Controller implements IInventoryControl
 
 	/**
 	 * Returns true if and only if the "Remove Items" menu item should be enabled.
+	 * 
 	 * @pre true
 	 * @post Returns true if view.getSelectedProductContainer() == null
 	 */
@@ -222,8 +245,10 @@ public class InventoryController extends Controller implements IInventoryControl
 
 	/**
 	 * Returns true if and only if the "Transfer Items" menu item should be enabled.
+	 * 
 	 * @pre true
-	 * @post Returns true if view.getSelectedProductContainer() != null && view.getSelectedProductContainer().getTag() instanceof StorageUnit 
+	 * @post Returns true if view.getSelectedProductContainer() != null &&
+	 *       view.getSelectedProductContainer().getTag() instanceof StorageUnit
 	 */
 	@Override
 	public boolean canTransferItems() {
@@ -232,6 +257,7 @@ public class InventoryController extends Controller implements IInventoryControl
 
 	/**
 	 * This method is called when the user selects the "Delete Product" menu item.
+	 * 
 	 * @pre canDeleteProduct()
 	 * @post !productManager.contains(old(view.getSelectedProduct().getTag()));
 	 */
@@ -241,8 +267,11 @@ public class InventoryController extends Controller implements IInventoryControl
 
 	/**
 	 * This method is called when the user selects the "Delete Product Group" menu item.
+	 * 
 	 * @pre canDeleteProductGroup()
-	 * @post !productContainerManager.contains(old(view.getSelectedProductContainer().getTag()));
+	 * @post 
+	 *       !productContainerManager.contains(old(view.getSelectedProductContainer().getTag()))
+	 *       ;
 	 */
 	@Override
 	public void deleteProductGroup() {
@@ -250,8 +279,11 @@ public class InventoryController extends Controller implements IInventoryControl
 
 	/**
 	 * This method is called when the user selects the "Delete Storage Unit" menu item.
+	 * 
 	 * @pre canDeleteStorageUnit()
-	 * @post !productContainerManager.contains(old(view.getSelectedProductContainer().getTag()));
+	 * @post 
+	 *       !productContainerManager.contains(old(view.getSelectedProductContainer().getTag()))
+	 *       ;
 	 */
 	@Override
 	public void deleteStorageUnit() {
@@ -259,6 +291,7 @@ public class InventoryController extends Controller implements IInventoryControl
 
 	/**
 	 * This method is called when the user selects the "Edit Item" menu item.
+	 * 
 	 * @pre canEditItem()
 	 * @post itemManager.contains(old(view.getSelectedItem().getTag()))
 	 */
@@ -269,6 +302,7 @@ public class InventoryController extends Controller implements IInventoryControl
 
 	/**
 	 * This method is called when the user selects the "Edit Product" menu item.
+	 * 
 	 * @pre canEditProduct()
 	 * @post productManager.contains(old(view.getSelectedProduct().getTag()))
 	 */
@@ -279,6 +313,7 @@ public class InventoryController extends Controller implements IInventoryControl
 
 	/**
 	 * This method is called when the user selects the "Edit Product Group" menu item.
+	 * 
 	 * @pre canEditProductGroup()
 	 * @post productContainerManager.contains(old(view.getSelectedProductContainer().getTag()))
 	 */
@@ -289,6 +324,7 @@ public class InventoryController extends Controller implements IInventoryControl
 
 	/**
 	 * This method is called when the user selects the "Edit Storage Unit" menu item.
+	 * 
 	 * @pre canEditStorageUnit()
 	 * @post productContainerManager.contains(old(view.getSelectedProductContainer().getTag()))
 	 */
@@ -299,6 +335,7 @@ public class InventoryController extends Controller implements IInventoryControl
 
 	/**
 	 * This method is called when the selected item changes.
+	 * 
 	 * @pre true
 	 * @post view.getSelectedItem() != old(view.getSelectedItem())
 	 */
@@ -326,6 +363,7 @@ public class InventoryController extends Controller implements IInventoryControl
 
 	/**
 	 * This method is called when the selected item container changes.
+	 * 
 	 * @pre true
 	 * @post old(view.getSelectedProductContainer()) != view.getSelectedProductContainer()
 	 */
@@ -355,6 +393,7 @@ public class InventoryController extends Controller implements IInventoryControl
 
 	/**
 	 * This method is called when the selected item changes.
+	 * 
 	 * @pre true
 	 * @post old(view.getSelectedProduct()) != view.getSelectedProduct()
 	 */
@@ -385,6 +424,7 @@ public class InventoryController extends Controller implements IInventoryControl
 
 	/**
 	 * This method is called when the user selects the "Remove Item" menu item.
+	 * 
 	 * @pre canRemoveItem()
 	 * @post !itemManager.contains(old(view.getSelectedItem().getTag()))
 	 */
@@ -394,8 +434,10 @@ public class InventoryController extends Controller implements IInventoryControl
 
 	/**
 	 * This method is called when the user selects the "Remove Items" menu item.
+	 * 
 	 * @pre canRemoveItems()
-	 * @post itemManager no longer contains any of the items matching those removed by the user.
+	 * @post itemManager no longer contains any of the items matching those removed by the
+	 *       user.
 	 */
 	@Override
 	public void removeItems() {
@@ -404,10 +446,11 @@ public class InventoryController extends Controller implements IInventoryControl
 
 	/**
 	 * This method is called when the user selects the "Transfer Items" menu item.
+	 * 
 	 * @pre canTransferItems()
 	 * @post the current storage unit no longer contains the items specified by the user
-	 * @post the target storage unit(s) now contain the items specified by the user according 
-	 * 		to where they were put
+	 * @post the target storage unit(s) now contain the items specified by the user according
+	 *       to where they were put
 	 */
 	@Override
 	public void transferItems() {
