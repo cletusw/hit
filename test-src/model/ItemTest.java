@@ -69,8 +69,6 @@ public class ItemTest {
 		assertTrue(item.getProduct().compareTo(product) == 0);
 		assertTrue(item.getContainer().equals(productGroup));
 
-		assertTrue(item.getExitTime() == null);
-
 		Date expiration = item.getExpirationDate();
 		Date entry = item.getEntryDate();
 		assertTrue(expiration != null);
@@ -102,8 +100,6 @@ public class ItemTest {
 		assertTrue(!item.getBarcode().equals(validUPCABarcode));
 		assertTrue(item.getProduct().compareTo(product) == 0);
 		assertTrue(item.getContainer().equals(productGroup));
-
-		assertTrue(item.getExitTime() == null);
 
 		Date expiration = item.getExpirationDate();
 		Date entry = item.getEntryDate();
