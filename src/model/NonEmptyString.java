@@ -11,6 +11,17 @@ import java.io.Serializable;
  */
 @SuppressWarnings("serial")
 public class NonEmptyString implements Serializable, Comparable<Object> {
+	/**
+	 * Determines if the given string is non-null and non-empty
+	 * 
+	 * @param s
+	 *            String to test
+	 * @return true if s is non-null and non-empty; false otherwise
+	 */
+	public static boolean isValid(String s) {
+		return s != null && !s.isEmpty();
+	}
+
 	private String value;
 
 	/**
@@ -19,12 +30,11 @@ public class NonEmptyString implements Serializable, Comparable<Object> {
 	 * @param s
 	 *            non-null, non-empty string.
 	 * 
-	 * @pre s != null
-	 * @pre !s.isEmpty()
+	 * @pre isValid(s)
 	 * @post toString() == s
 	 */
 	public NonEmptyString(String s) {
-		if (s == null || s.isEmpty()) {
+		if (!isValid(s)) {
 			throw new IllegalArgumentException("Empty or null string");
 		}
 
