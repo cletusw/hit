@@ -1,5 +1,8 @@
 package mcontrollers;
 
+import gui.common.Controller;
+import gui.common.IView;
+
 import java.util.Observable;
 import java.util.Observer;
 
@@ -11,7 +14,18 @@ import java.util.Observer;
  * @version 1.0 CS 340 Group 4 Phase 2
  * 
  */
-public class StorageUnitController implements Observer {
+public class StorageUnitController extends Controller implements Observer {
+
+	/**
+	 * Constructor.
+	 * 
+	 * @param view
+	 *            the view for this controller
+	 */
+	protected StorageUnitController(IView view) {
+		super(view);
+		// TODO Auto-generated constructor stub
+	}
 
 	/**
 	 * Method intended to notify the view when StorageUnitManager sends a "change" notice.
