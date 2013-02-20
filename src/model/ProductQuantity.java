@@ -84,10 +84,9 @@ public class ProductQuantity implements Serializable {
 	 * @post quantity.equals(quantity + quantityToAdd.quantity)
 	 */
 	public void add(ProductQuantity otherQuantity) throws IllegalArgumentException {
-		assert (otherQuantity != null);
-		assert (!unitType.equals(otherQuantity.unitType));
-
-		unitType.equals(otherQuantity.unitType);
+		if (otherQuantity == null)
+			throw new IllegalArgumentException("Cannot add a null productQuantity");
+		
 		if (!unitType.equals(otherQuantity.unitType)) {
 			throw new IllegalArgumentException(
 					"Cannot add quantities with different unit types.");
@@ -111,8 +110,11 @@ public class ProductQuantity implements Serializable {
 	 */
 	@Override
 	public boolean equals(Object other) {
-		assert (other != null);
-		assert (other instanceof ProductQuantity);
+		if (other == null) 
+			return false;
+		if (!(other instanceof ProductQuantity)) {
+			return super.equals(other);
+		}
 
 		ProductQuantity pq = (ProductQuantity) other;
 		return quantity == pq.quantity && units == pq.units;
@@ -156,7 +158,6 @@ public class ProductQuantity implements Serializable {
 	 * @post quantity.equals(q)
 	 */
 	public void setQuantity(float q) throws IllegalArgumentException {
-		assert (isValidProductQuantity(q, units));
 		if (!isValidProductQuantity(q, units)) {
 			throw new IllegalArgumentException("Invalid quantity: " + quantity);
 		}

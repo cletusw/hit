@@ -76,7 +76,7 @@ public class ProductQuantityTest {
 		assertTrue(ProductQuantity.isValidProductQuantity(0f, Unit.FLUID_OUNCES));
 		assertFalse(ProductQuantity.isValidProductQuantity(-1.4f, Unit.FLUID_OUNCES));
 		assertTrue(ProductQuantity.isValidProductQuantity(1, Unit.COUNT));
-		assertFalse(ProductQuantity.isValidProductQuantity(3, Unit.COUNT));
+		assertTrue(ProductQuantity.isValidProductQuantity(3, Unit.COUNT));
 		assertFalse(ProductQuantity.isValidProductQuantity(3.1f, Unit.COUNT));
 	}
 
@@ -93,7 +93,7 @@ public class ProductQuantityTest {
 		assertTrue(ProductQuantity.isValidProductQuantity(fluid.getQuantity(),
 				fluid.getUnits()));
 
-		assertTrue(count.getQuantity() == 0);
+		assertTrue(count.getQuantity() == 1);
 		assertTrue(count.getUnits().equals(Unit.COUNT));
 		assertTrue(ProductQuantity.isValidProductQuantity(count.getQuantity(),
 				count.getUnits()));
@@ -126,13 +126,13 @@ public class ProductQuantityTest {
 	@Test
 	public void testToString() {
 		assertTrue(fluid.toString().equals("3.2 Fluid_ounces"));
-		assertTrue(count.toString().equals("0 Count"));
+		assertTrue(count.toString().equals("1 Count"));
 	}
 
 	@Test
 	public void testValidAddCount() {
 		count.add(new ProductQuantity(4.0f, Unit.COUNT));
-		assertTrue(count.getQuantity() == 4f);
+		assertTrue(count.getQuantity() == 5.0f);
 		assertTrue(count.getUnits().equals(Unit.COUNT));
 	}
 
