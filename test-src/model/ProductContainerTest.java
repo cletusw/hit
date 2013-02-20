@@ -38,10 +38,10 @@ public class ProductContainerTest {
 				Unit.COUNT), Unit.KILOGRAMS, storageUnit1, pcManager);
 		productGroup3 = new ProductGroup("No-Bake Cookies",
 				new ProductQuantity(1, Unit.COUNT), Unit.KILOGRAMS, storageUnit1, pcManager);
-		product1 = new Product("PROD1BARCODE", "Smelly socks", 0, 4, new ProductQuantity(2,
+		product1 = new Product("PROD1BARCODE", "Smelly socks", 0, 4, new ProductQuantity(1,
 				Unit.COUNT), productManager);
 		product2 = new Product("PROD2BARCODE00", "Green Jell-O", 365, 12, new ProductQuantity(
-				3, Unit.OUNCES), productManager);
+				3.5f, Unit.OUNCES), productManager);
 		item1 = new Item(new Barcode("400000001968"), product1, storageUnit1, itemManager);
 		item1Copy = new Item(new Barcode("400000001968"), product1, storageUnit1, itemManager);
 	}

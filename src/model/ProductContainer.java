@@ -27,7 +27,7 @@ public abstract class ProductContainer implements Comparable<ProductContainer>, 
 	protected Map<String, Product> products;
 	protected Map<String, ProductGroup> productGroups;
 	// TODO: Implement this map for all descendant nodes
-	private Map<Product, Set<Item>> productsToItems;
+	private final Map<Product, Set<Item>> productsToItems;
 	protected ProductContainerManager manager;
 
 	/**
@@ -485,6 +485,24 @@ public abstract class ProductContainer implements Comparable<ProductContainer>, 
 	}
 
 	/**
+	 * Internal method: Used to determine whether it is possible to add a Product
+	 * 
+	 * @param productBarcode
+	 *            Product to look for
+	 * @return
+	 */
+	protected boolean hasDescendantProduct(String productBarcode) {
+		if (containsProduct(productBarcode)) {
+			return true;
+		}
+		for (ProductGroup productGroup : productGroups.values()) {
+			if (productGroup.hasDescendantProduct(productBarcode))
+				return true;
+		}
+		return false;
+	}
+
+	/**
 	 * Removes the specified item from this ProductContainer. Use this only
 	 * 
 	 * @param item
@@ -518,6 +536,24 @@ public abstract class ProductContainer implements Comparable<ProductContainer>, 
 
 		unregisterItem(item);
 		destination.registerItem(item);
+	}
+
+	/**
+	 * Helper method for adding items
+	 * 
+	 * @param i
+	 *            Item to add
+	 */
+	protected void registerItem(Item i) {
+		items.put(i.getBarcode(), i);
+		Set<Item> newItemsForProduct;
+		if (productsToItems.containsKey(i.getProduct())) {
+			newItemsForProduct = productsToItems.get(i.getProduct());
+		} else {
+			newItemsForProduct = new TreeSet<Item>();
+		}
+		newItemsForProduct.add(i);
+		productsToItems.put(i.getProduct(), newItemsForProduct);
 	}
 
 	/**
@@ -613,42 +649,6 @@ public abstract class ProductContainer implements Comparable<ProductContainer>, 
 		}
 
 		this.name = new NonEmptyString(name);
-	}
-
-	/**
-	 * Internal method: Used to determine whether it is possible to add a Product
-	 * 
-	 * @param productBarcode
-	 *            Product to look for
-	 * @return
-	 */
-	protected boolean hasDescendantProduct(String productBarcode) {
-		if (containsProduct(productBarcode)) {
-			return true;
-		}
-		for (ProductGroup productGroup : productGroups.values()) {
-			if (productGroup.hasDescendantProduct(productBarcode))
-				return true;
-		}
-		return false;
-	}
-
-	/**
-	 * Helper method for adding items
-	 * 
-	 * @param i
-	 *            Item to add
-	 */
-	protected void registerItem(Item i) {
-		items.put(i.getBarcode(), i);
-		Set<Item> newItemsForProduct;
-		if (productsToItems.containsKey(i.getProduct())) {
-			newItemsForProduct = productsToItems.get(i.getProduct());
-		} else {
-			newItemsForProduct = new TreeSet<Item>();
-		}
-		newItemsForProduct.add(i);
-		productsToItems.put(i.getProduct(), newItemsForProduct);
 	}
 
 	/**
