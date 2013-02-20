@@ -32,7 +32,7 @@ public class HomeInventoryTrackerTest {
 
 		String newStorageUnitName = "Downstairs Pantry";
 		assertTrue(tracker.canAddStorageUnit(newStorageUnitName));
-		tracker.renameStorageUnit(storageUnit, newStorageUnitName);
+		storageUnit.setName(newStorageUnitName);
 		assertFalse(tracker.canAddStorageUnit(newStorageUnitName));
 
 		assertTrue(tracker.canAddStorageUnit(storageUnitName));

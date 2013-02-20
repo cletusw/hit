@@ -567,11 +567,16 @@ public abstract class ProductContainer implements Comparable<ProductContainer>, 
 	 * @param name
 	 *            Name to set to
 	 * 
-	 * @pre name != null
+	 * @pre manager.isValidStorageUnitName(name)
 	 * @post getName() == name
+	 * 
 	 */
 	public void setName(String name) {
-		assert (name != null);
+		if (!manager.isValidStorageUnitName(name)) {
+			throw new IllegalStateException(
+					"Invalid Storage Unit name. A Storage Unit with this name may already exist");
+		}
+
 		this.name = new NonEmptyString(name);
 	}
 

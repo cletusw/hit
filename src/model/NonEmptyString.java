@@ -31,10 +31,6 @@ public class NonEmptyString implements Serializable, Comparable<Object> {
 		value = s;
 	}
 
-	protected NonEmptyString() {
-
-	}
-
 	/**
 	 * Compare this NonEmptyString to another using String.compareTo(String other)
 	 * 

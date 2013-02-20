@@ -6,8 +6,5 @@ public interface ProductContainerManager {
 
 	public void manage(ProductContainer pc);
 
-	public void renameStorageUnit(StorageUnit storageUnit,
-			String newStorageUnitName);
-
 	public void unmanage(ProductContainer pc);
 }

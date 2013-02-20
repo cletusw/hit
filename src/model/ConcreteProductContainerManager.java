@@ -64,27 +64,6 @@ public class ConcreteProductContainerManager extends Observable implements Seria
 	}
 
 	/**
-	 * Rename a Storage Unit
-	 * 
-	 * @param storageUnit
-	 *            The Storage Unit to rename
-	 * @param newStorageUnitName
-	 *            New name to be given to Storage Unit
-	 * 
-	 * @pre rootStorageUnits.contains(storageUnitName)
-	 * @pre isValidStorageUnitName(newStorageUnitName)
-	 * @post !rootStorageUnits.contains(storageUnitName)
-	 * @post rootStorageUnits.contains(newStorageUnitName)
-	 */
-	@Override
-	public void renameStorageUnit(StorageUnit storageUnit, String newStorageUnitName) {
-		assert (rootStorageUnits.contains(storageUnit));
-		assert (isValidStorageUnitName(newStorageUnitName));
-
-		storageUnit.setName(newStorageUnitName);
-	}
-
-	/**
 	 * Remove pc from set of managed objects and notify observers of a change.
 	 * 
 	 * @param pc
