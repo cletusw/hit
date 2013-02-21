@@ -13,8 +13,8 @@ import java.util.Date;
  */
 @SuppressWarnings("serial")
 public class Item implements Comparable<Object>, Serializable {
-	private Product product;
-	private Barcode barcode;
+	private final Product product;
+	private final Barcode barcode;
 	private Date entryDate;
 	private Date expirationDate;
 	private Date exitTime;
@@ -32,11 +32,7 @@ public class Item implements Comparable<Object>, Serializable {
 	 * 
 	 * @pre barcode != null
 	 * @pre product != null
-	 * @pre container != null
 	 * @pre manager != null
-	 * 
-	 * @post this.container != null
-	 * 
 	 */
 	public Item(Barcode barcode, Product product, ProductContainer container, Date entryDate,
 			ItemManager manager) {
@@ -46,15 +42,13 @@ public class Item implements Comparable<Object>, Serializable {
 		if (product == null) {
 			throw new NullPointerException("Null Product product");
 		}
-		if (container == null) {
-			throw new NullPointerException("Null Container container");
-		}
+		// The container can be null if the item is not contained in any container
 		if (manager == null) {
 			throw new NullPointerException("Null Manager manager");
 		}
 
 		this.product = product;
-		this.container = container;
+		setContainer(container);
 		this.barcode = barcode;
 		setEntryDate(entryDate);
 		setExpirationDate();
@@ -256,6 +250,19 @@ public class Item implements Comparable<Object>, Serializable {
 	public void remove() {
 		exitTime = new Date();
 		container = null;
+	}
+
+	/**
+	 * Sets this Item's parent ProductContainer
+	 * 
+	 * @param productContainer
+	 *            the new parent container
+	 * @pre true
+	 * @post container = productContainer
+	 */
+	public void setContainer(ProductContainer productContainer) {
+		// productContainer can be null if the item has been removed from the system.
+		container = productContainer;
 	}
 
 	// private setters
