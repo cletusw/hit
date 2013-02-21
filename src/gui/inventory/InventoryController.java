@@ -4,7 +4,6 @@ import gui.common.Controller;
 import gui.item.ItemData;
 import gui.product.ProductData;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -12,12 +11,12 @@ import java.util.GregorianCalendar;
 import java.util.List;
 import java.util.Random;
 
-import model.ItemManager;
-import model.ProductManager;
-import model.ProductContainerManager;
 import model.ConcreteItemManager;
-import model.ConcreteProductManager;
 import model.ConcreteProductContainerManager;
+import model.ConcreteProductManager;
+import model.ItemManager;
+import model.ProductContainerManager;
+import model.ProductManager;
 
 /**
  * Controller class for inventory view.
@@ -26,8 +25,7 @@ import model.ConcreteProductContainerManager;
  * @invariant productManager != null
  * @invariant productContainerManager != null
  */
-public class InventoryController extends Controller implements IInventoryController,
-		Serializable {
+public class InventoryController extends Controller implements IInventoryController {
 	private ItemManager itemManager;
 	private ProductManager productManager;
 	private ProductContainerManager productContainerManager;
