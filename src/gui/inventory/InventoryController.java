@@ -267,8 +267,8 @@ public class InventoryController extends Controller implements IInventoryControl
 	/**
 	 * This method is called when the user selects the "Delete Product" menu item.
 	 * 
-	 * @pre canDeleteProduct()
-	 * @post !productManager.contains(old(view.getSelectedProduct().getTag()));
+	 * @pre true
+	 * @post !productManager.contains(PREVIOUS getView().getSelectedProduct().getTag());
 	 */
 	@Override
 	public void deleteProduct() {
@@ -278,9 +278,8 @@ public class InventoryController extends Controller implements IInventoryControl
 	 * This method is called when the user selects the "Delete Product Group" menu item.
 	 * 
 	 * @pre canDeleteProductGroup()
-	 * @post 
-	 *       !productContainerManager.contains(old(view.getSelectedProductContainer().getTag()))
-	 *       ;
+	 * @post !productContainerManager.contains(PREVIOUS
+	 *       getView().getSelectedProductContainer().getTag());
 	 */
 	@Override
 	public void deleteProductGroup() {
