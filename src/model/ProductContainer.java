@@ -22,13 +22,13 @@ import java.util.TreeSet;
  */
 @SuppressWarnings("serial")
 public abstract class ProductContainer implements Comparable<ProductContainer>, Serializable {
-	protected NonEmptyString name;
-	protected Map<String, Item> items;
-	protected Map<String, Product> products;
-	protected Map<String, ProductGroup> productGroups;
+	private NonEmptyString name;
+	private final Map<String, Item> items;
+	private final Map<String, Product> products;
+	private final Map<String, ProductGroup> productGroups;
 	// TODO: Implement this map for all descendant nodes
 	private final Map<Product, Set<Item>> productsToItems;
-	protected ProductContainerManager manager;
+	private final ProductContainerManager manager;
 
 	/**
 	 * Constructor
@@ -56,6 +56,49 @@ public abstract class ProductContainer implements Comparable<ProductContainer>, 
 		productsToItems = new TreeMap<Product, Set<Item>>();
 		this.manager = manager;
 		this.manager.manage(this);
+	}
+
+	/**
+	 * Method that adds an Item to the collection.
+	 * 
+	 * @param i
+	 *            - the Item object to add to the collection
+	 * @return true if the item was added to this container or one of its children, false
+	 *         otherwise.
+	 * 
+	 * @pre i != null
+	 * @pre !items.containsKey(i.getBarcode())
+	 * @post items.size() == items.size()@pre + 1
+	 * @post items.contains(i)
+	 * 
+	 */
+	public boolean add(Item i) {
+		if (i == null) {
+			throw new NullPointerException("Null Item i");
+		}
+		if (items.containsKey(i.getBarcode()))
+			throw new IllegalStateException("Cannot have two items with same barcode");
+
+		// A new item is added to the same Product Container that contains the
+		// Item's Product
+		// within the target Storage Unit
+		if (!contains(i.getProduct())) {
+			for (ProductGroup productGroup : productGroups.values()) {
+				if (productGroup.contains(i.getProduct())) {
+					productGroup.registerItem(i);
+					return true;
+				}
+			}
+		} else {
+			// This container contains the Item's Product; add it here.
+			registerItem(i);
+			return true;
+		}
+		// Product not found anywhere else; add Item here
+		if (canAddProduct(i.getProduct().getBarcode()))
+			add(i.getProduct());
+		registerItem(i);
+		return true;
 	}
 
 	/**
@@ -546,6 +589,7 @@ public abstract class ProductContainer implements Comparable<ProductContainer>, 
 	 */
 	protected void registerItem(Item i) {
 		items.put(i.getBarcode(), i);
+		i.setContainer(this);
 		Set<Item> newItemsForProduct;
 		if (productsToItems.containsKey(i.getProduct())) {
 			newItemsForProduct = productsToItems.get(i.getProduct());
@@ -583,6 +627,7 @@ public abstract class ProductContainer implements Comparable<ProductContainer>, 
 		}
 
 		manager.unmanage(item);
+		item.setContainer(null);
 		Set<Item> newItemsForProduct = productsToItems.get(item.getProduct());
 		newItemsForProduct.remove(item);
 		productsToItems.put(item.getProduct(), newItemsForProduct);

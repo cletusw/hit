@@ -8,7 +8,7 @@ import java.util.TreeSet;
 @SuppressWarnings("serial")
 public class ConcreteProductContainerManager extends Observable implements Serializable,
 		ProductContainerManager {
-	private Set<StorageUnit> rootStorageUnits;
+	private final Set<StorageUnit> rootStorageUnits;
 
 	/**
 	 * Constructor
@@ -38,7 +38,7 @@ public class ConcreteProductContainerManager extends Observable implements Seria
 		// Storage Units.
 
 		for (StorageUnit su : rootStorageUnits) {
-			if (name.equals(su.name))
+			if (name.equals(su.getName()))
 				return false;
 		}
 
