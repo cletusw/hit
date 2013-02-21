@@ -26,6 +26,9 @@ public class AddStorageUnitController extends Controller implements IAddStorageU
 
 	/**
 	 * This method is called when the user clicks the "OK" button in the add storage unit view.
+	 * 
+	 * @post A new Storage Unit with the specified name now exists in the
+	 *       ProductContainerManager
 	 */
 	@Override
 	public void addStorageUnit() {
