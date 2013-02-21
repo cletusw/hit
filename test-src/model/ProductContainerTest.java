@@ -86,8 +86,8 @@ public class ProductContainerTest {
 	public void testAddDuplicateProducts() {
 		productGroup1.add(product1);
 
-		Product product1Copy = new Product("PROD1BARCODE", "Smelly socks", 0, 4,
-				new ProductQuantity(2, Unit.COUNT), productManager);
+		Product product1Copy = new Product("PROD1BARCODE", "Pair of Smelly socks", 0, 4,
+				new ProductQuantity(1, Unit.COUNT), productManager);
 
 		productGroup1.add(product1Copy);
 	}

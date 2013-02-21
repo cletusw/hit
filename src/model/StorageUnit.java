@@ -64,7 +64,8 @@ public class StorageUnit extends ProductContainer {
 			return true;
 		}
 		// Product not found anywhere else; add Item here
-		add(i.getProduct());
+		if (canAddProduct(i.getProduct().getBarcode()))
+			add(i.getProduct());
 		registerItem(i);
 		return true;
 	}
