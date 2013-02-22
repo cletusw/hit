@@ -203,7 +203,6 @@ public class InventoryController extends Controller implements IInventoryControl
 		ProductContainer containerTag = (ProductContainer) selectedContainer.getTag();
 		if (containerTag == null)
 			throw new RuntimeException("ProductContainer tag is null");
-
 		Product productTag = (Product) selectedProduct.getTag();
 		if (productTag == null)
 			throw new RuntimeException("Product tag is null");
