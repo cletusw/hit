@@ -61,6 +61,7 @@ public class ProductGroup extends ProductContainer {
 		while (parent instanceof ProductGroup) {
 			parent = ((ProductGroup) parent).container;
 		}
+
 		return !parent.hasDescendantProduct(productBarcode);
 	}
 

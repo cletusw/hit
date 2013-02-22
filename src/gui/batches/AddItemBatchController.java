@@ -1,6 +1,5 @@
 package gui.batches;
 
-import model.Item;
 import gui.common.Controller;
 import gui.common.IView;
 import gui.inventory.ProductContainerData;
@@ -27,16 +26,19 @@ public class AddItemBatchController extends Controller implements IAddItemBatchC
 	/**
 	 * This method is called when the user clicks the "Add Item" button in the add item batch
 	 * view.
+	 * 
+	 * @post The item specified by the fields on AddItemBatchView now exists in the selected
+	 *       StorageUnit
 	 */
 	@Override
 	public void addItem() {
-		//Item item = new Item();
-		
+		// Item item = new Item();
+
 		// if view.getController().
 		getView().displayAddProductView();
-		
-		//target.addItem(item);
-		
+
+		// target.addItem(item);
+
 	}
 
 	/**

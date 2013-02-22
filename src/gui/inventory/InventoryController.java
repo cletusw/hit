@@ -52,7 +52,7 @@ public class InventoryController extends Controller implements IInventoryControl
 	 * This method is called when the user selects the "Add Items" menu item.
 	 * 
 	 * @pre true
-	 * @post All Items added through the AddItemBatchView now exist in the selected StorageUnit
+	 * @post true
 	 */
 	@Override
 	public void addItems() {
@@ -63,8 +63,7 @@ public class InventoryController extends Controller implements IInventoryControl
 	 * This method is called when the user selects the "Add Product Group" menu item.
 	 * 
 	 * @pre true
-	 * @post All ProductGroups added through the AddProductGroupView now exist in the selected
-	 *       ProductContainer
+	 * @post true
 	 */
 	@Override
 	public void addProductGroup() {
@@ -95,8 +94,7 @@ public class InventoryController extends Controller implements IInventoryControl
 	 * This method is called when the user selects the "Add Storage Unit" menu item.
 	 * 
 	 * @pre true
-	 * @post If the user added a Storage Unit, the Storage Unit with that name now exists in
-	 *       the ProductContainerManager
+	 * @post true
 	 */
 	@Override
 	public void addStorageUnit() {
@@ -107,10 +105,11 @@ public class InventoryController extends Controller implements IInventoryControl
 	 * Returns true if and only if the "Add Items" menu item should be enabled.
 	 * 
 	 * @pre true
-	 * @post Returns true if view.getSelectedProductContainer().getTag() instanceof StorageUnit
+	 * @post true
 	 */
 	@Override
 	public boolean canAddItems() {
+		// Always enabled per Functional Spec p17
 		return true;
 	}
 
@@ -118,11 +117,11 @@ public class InventoryController extends Controller implements IInventoryControl
 	 * Returns true if and only if the "Add Product Group" menu item should be enabled.
 	 * 
 	 * @pre true
-	 * @post Returns true if view.getSelectedProductContainer() != null and the ProductGroup's
-	 *       name is non-null and unique within the selected ProductContainer
+	 * @post true
 	 */
 	@Override
 	public boolean canAddProductGroup() {
+		// Always enabled per Functional Spec p15
 		return true;
 	}
 
@@ -130,11 +129,11 @@ public class InventoryController extends Controller implements IInventoryControl
 	 * Returns true if and only if the "Add Storage Unit" menu item should be enabled.
 	 * 
 	 * @pre true
-	 * @post Returns true if view.getSelectedProductContainer() != null and the StorageUnit's
-	 *       name is non-null and unique within the system
+	 * @post true
 	 */
 	@Override
 	public boolean canAddStorageUnit() {
+		// Always enabled per Functional Spec p14
 		return true;
 	}
 
@@ -142,11 +141,12 @@ public class InventoryController extends Controller implements IInventoryControl
 	 * Returns true if and only if the "Delete Product" menu item should be enabled.
 	 * 
 	 * @pre true
-	 * @post Returns true if view.getSelectedProduct() != null and there are no Items with
-	 *       references to view.getSelectedProduct()
+	 * @post true
 	 */
 	@Override
 	public boolean canDeleteProduct() {
+		// TODO: 3 cases depending on getView().getSelectedProductContainer().
+		// See Functional Spec p21-22
 		return true;
 	}
 
@@ -154,11 +154,13 @@ public class InventoryController extends Controller implements IInventoryControl
 	 * Returns true if and only if the "Delete Product Group" menu item should be enabled.
 	 * 
 	 * @pre true
-	 * @post Returns true if view.getSelectedProductContainer() != null &&
-	 *       view.getSelectedProductContainer().getChildCount() == 0
+	 * @post true
 	 */
 	@Override
 	public boolean canDeleteProductGroup() {
+		// TODO: Enabled only if getView().getSelectedProductContainer() does not contain any
+		// items (including it's sub Product Groups)
+		// See Functional Spec p17
 		return true;
 	}
 
@@ -166,10 +168,13 @@ public class InventoryController extends Controller implements IInventoryControl
 	 * Returns true if and only if the "Delete Storage Unit" menu item should be enabled.
 	 * 
 	 * @pre true
-	 * @post Returns true if there are no Items in the selected StorageUnit
+	 * @post true
 	 */
 	@Override
 	public boolean canDeleteStorageUnit() {
+		// TODO: Enabled only if getView().getSelectedProductContainer() does not contain any
+		// items (including it's Product Groups)
+		// See Functional Spec p15
 		return true;
 	}
 
@@ -177,10 +182,12 @@ public class InventoryController extends Controller implements IInventoryControl
 	 * Returns true if and only if the "Edit Item" menu item should be enabled.
 	 * 
 	 * @pre true
-	 * @post Returns true if view.getSelectedItem() != null
+	 * @post true
 	 */
 	@Override
 	public boolean canEditItem() {
+		// Always enabled, since it is only called when the Item context menu is displayed
+		// See Functional Spec p22
 		return true;
 	}
 
@@ -188,10 +195,12 @@ public class InventoryController extends Controller implements IInventoryControl
 	 * Returns true if and only if the "Edit Product" menu item should be enabled.
 	 * 
 	 * @pre true
-	 * @post Returns true if view.getSelectedProduct() != null
+	 * @post true
 	 */
 	@Override
 	public boolean canEditProduct() {
+		// Always enabled, since it is only called when the Product context menu is displayed
+		// See Functional Spec p21
 		return true;
 	}
 
@@ -199,11 +208,11 @@ public class InventoryController extends Controller implements IInventoryControl
 	 * Returns true if and only if the "Edit Product Group" menu item should be enabled.
 	 * 
 	 * @pre true
-	 * @post Returns true if view.getSelectedProductContainer() != null &&
-	 *       view.getSelectedProductContainer().getTag() instanceof ProductGroup
+	 * @post true
 	 */
 	@Override
 	public boolean canEditProductGroup() {
+		// Always enabled per Functional Spec p16
 		return true;
 	}
 
@@ -211,11 +220,11 @@ public class InventoryController extends Controller implements IInventoryControl
 	 * Returns true if and only if the "Edit Storage Unit" menu item should be enabled.
 	 * 
 	 * @pre true
-	 * @post Returns true if view.getSelectedProductContainer() != null &&
-	 *       view.getSelectedProductContainer().getTag() instanceof StorageUnit
+	 * @post true
 	 */
 	@Override
 	public boolean canEditStorageUnit() {
+		// Always enabled per Functional Spec p14
 		return true;
 	}
 
@@ -223,10 +232,11 @@ public class InventoryController extends Controller implements IInventoryControl
 	 * Returns true if and only if the "Remove Item" menu item should be enabled.
 	 * 
 	 * @pre true
-	 * @post Returns true if view.getSelectedItem() != null
+	 * @post true
 	 */
 	@Override
 	public boolean canRemoveItem() {
+		// Always enabled per Functional Spec p26
 		return true;
 	}
 
@@ -234,10 +244,11 @@ public class InventoryController extends Controller implements IInventoryControl
 	 * Returns true if and only if the "Remove Items" menu item should be enabled.
 	 * 
 	 * @pre true
-	 * @post Returns true if view.getSelectedProductContainer() == null
+	 * @post true
 	 */
 	@Override
 	public boolean canRemoveItems() {
+		// Always enabled per Functional Spec p26
 		return true;
 	}
 
@@ -245,19 +256,19 @@ public class InventoryController extends Controller implements IInventoryControl
 	 * Returns true if and only if the "Transfer Items" menu item should be enabled.
 	 * 
 	 * @pre true
-	 * @post Returns true if view.getSelectedProductContainer() != null &&
-	 *       view.getSelectedProductContainer().getTag() instanceof StorageUnit
+	 * @post true
 	 */
 	@Override
 	public boolean canTransferItems() {
+		// Always enabled per Functional Spec p24
 		return true;
 	}
 
 	/**
 	 * This method is called when the user selects the "Delete Product" menu item.
 	 * 
-	 * @pre canDeleteProduct()
-	 * @post !productManager.contains(old(view.getSelectedProduct().getTag()));
+	 * @pre true
+	 * @post !productManager.contains(PREVIOUS getView().getSelectedProduct().getTag());
 	 */
 	@Override
 	public void deleteProduct() {
@@ -267,9 +278,8 @@ public class InventoryController extends Controller implements IInventoryControl
 	 * This method is called when the user selects the "Delete Product Group" menu item.
 	 * 
 	 * @pre canDeleteProductGroup()
-	 * @post 
-	 *       !productContainerManager.contains(old(view.getSelectedProductContainer().getTag()))
-	 *       ;
+	 * @post !productContainerManager.contains(PREVIOUS
+	 *       getView().getSelectedProductContainer().getTag());
 	 */
 	@Override
 	public void deleteProductGroup() {

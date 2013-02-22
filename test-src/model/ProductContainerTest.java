@@ -117,22 +117,14 @@ public class ProductContainerTest {
 		productGroup1.add(productGroup2);
 	}
 
-	@Test(expected = IllegalStateException.class)
-	public void testCannotRemoveProductGroup() {
-		storageUnit1.add(product1);
-		productGroup1.add(productGroup2);
-		storageUnit1.add(item1);
-		productGroup1.remove(productGroup2);
-	}
-
 	@Test
 	public void testCanRemove() {
 		assertTrue(productGroup1.canRemove());
 		assertTrue(storageUnit1.canRemove());
 		productGroup1.add(productGroup2);
 		productGroup2.add(product1);
-		storageUnit1.add(item1);
 		storageUnit1.add(productGroup1);
+		storageUnit1.add(item1);
 		assertFalse(productGroup1.canRemove());
 		assertFalse(storageUnit1.canRemove());
 		productGroup2.remove(item1, itemManager);
@@ -151,6 +143,17 @@ public class ProductContainerTest {
 		assertTrue(productGroup1.canRemove(product1));
 	}
 
+	@Test(expected = IllegalStateException.class)
+	public void testCanRemoveProductGroup() {
+		productGroup2.add(product1);
+		productGroup1.add(productGroup2);
+		storageUnit1.add(productGroup1);
+		storageUnit1.add(item1);
+		assertFalse(productGroup1.canRemove());
+		assertFalse(productGroup2.canRemove());
+		productGroup1.remove(productGroup2);
+	}
+
 	@Test
 	public void testGetCurrentSupply() {
 		storageUnit1.add(productGroup1);
@@ -161,10 +164,10 @@ public class ProductContainerTest {
 				itemManager));
 		System.out.println("Supply: " + storageUnit1.getCurrentSupply(item1.getProduct()));
 		assertTrue(storageUnit1.getCurrentSupply(item1.getProduct()).equals(
-				new ProductQuantity(4, Unit.COUNT)));
+				new ProductQuantity(2, Unit.COUNT)));
 		assertTrue(productGroup1.getCurrentSupply(item1.getProduct()).equals(
 				new ProductQuantity(2, Unit.COUNT)));
-		Item item2 = new Item(new Barcode("400000001999"), product2, null, itemManager);
+		Item item2 = new Item(new Barcode("400000001999"), product2, storageUnit1, itemManager);
 		assertTrue(storageUnit1.getCurrentSupply(item2.getProduct()).equals(
 				new ProductQuantity(0, Unit.OUNCES)));
 	}
@@ -307,6 +310,9 @@ public class ProductContainerTest {
 	@Test
 	public void testStorageUnitCanAddProduct() {
 		storageUnit1.add(productGroup1);
+		// This is a fairly large issue. When we add pg2 to su2, we expect pg2 to know its
+		// container
+		// is su2. But, in its constructor we set pg2 in su1...
 		storageUnit2.add(productGroup2);
 		productGroup2.add(productGroup3);
 		productGroup3.add(product1);

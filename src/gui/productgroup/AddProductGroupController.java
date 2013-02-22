@@ -31,6 +31,9 @@ public class AddProductGroupController extends Controller implements
 	/**
 	 * This method is called when the user clicks the "OK" button in the add product group
 	 * view.
+	 * 
+	 * @post The ProductGroup specified by the AddProductGroupView now exists in the selected
+	 *       ProductContainer
 	 */
 	@Override
 	public void addProductGroup() {
