@@ -158,13 +158,13 @@ public class ProductContainerTest {
 		productGroup1.add(productGroup2);
 		productGroup2.add(product1);
 		storageUnit1.add(item1);
-		storageUnit1.add(new Item(new Barcode("400000001920"), product1, null, itemManager));
+		storageUnit1.add(new Item(new Barcode("400000001920"), product1, storageUnit1, itemManager));
 		System.out.println("Supply: " + storageUnit1.getCurrentSupply(item1.getProduct()));
 		assertTrue(storageUnit1.getCurrentSupply(item1.getProduct()).equals(
-				new ProductQuantity(4, Unit.COUNT)));
+				new ProductQuantity(2, Unit.COUNT)));
 		assertTrue(productGroup1.getCurrentSupply(item1.getProduct()).equals(
 				new ProductQuantity(2, Unit.COUNT)));
-		Item item2 = new Item(new Barcode("400000001999"), product2, null, itemManager);
+		Item item2 = new Item(new Barcode("400000001999"), product2, storageUnit1, itemManager);
 		assertTrue(storageUnit1.getCurrentSupply(item2.getProduct()).equals(
 				new ProductQuantity(0, Unit.OUNCES)));
 	}
