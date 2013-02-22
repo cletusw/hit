@@ -18,6 +18,7 @@ import model.ItemManager;
 import model.ProductContainerManager;
 import model.ProductGroup;
 import model.ProductManager;
+import model.StorageUnit;
 
 /**
  * Controller class for inventory view.
@@ -163,7 +164,7 @@ public class InventoryController extends Controller implements IInventoryControl
 	/**
 	 * Returns true if and only if the "Delete Product Group" menu item should be enabled.
 	 * 
-	 * @pre getView().getSelectedProductContainer() != null
+	 * @pre getView().getSelectedProductContainer().getTag() instanceof ProductGroup
 	 * @post true
 	 */
 	@Override
@@ -172,11 +173,7 @@ public class InventoryController extends Controller implements IInventoryControl
 		// items (including it's sub Product Groups)
 		// See Functional Spec p17
 
-		ProductContainerData selectedPC = getView().getSelectedProductContainer();
-		if (selectedPC == null)
-			throw new NullPointerException("selected container is null");
-
-		Object selectedTag = selectedPC.getTag();
+		Object selectedTag = getSelectedProductContainerTag();
 		if (selectedTag instanceof ProductGroup) {
 			ProductGroup selected = (ProductGroup) selectedTag;
 			return selected.canRemove();
@@ -187,7 +184,7 @@ public class InventoryController extends Controller implements IInventoryControl
 	/**
 	 * Returns true if and only if the "Delete Storage Unit" menu item should be enabled.
 	 * 
-	 * @pre true
+	 * @pre getView().getSelectedProductContainer().getTag() instanceof StorageUnit
 	 * @post true
 	 */
 	@Override
@@ -195,7 +192,13 @@ public class InventoryController extends Controller implements IInventoryControl
 		// TODO: Enabled only if getView().getSelectedProductContainer() does not contain any
 		// items (including it's Product Groups)
 		// See Functional Spec p15
-		return true;
+
+		Object selectedTag = getSelectedProductContainerTag();
+		if (selectedTag instanceof StorageUnit) {
+			StorageUnit selected = (StorageUnit) selectedTag;
+			return selected.canRemove();
+		} else
+			throw new RuntimeException("selected container is not a storage unit");
 	}
 
 	/**
@@ -528,6 +531,14 @@ public class InventoryController extends Controller implements IInventoryControl
 			barcode.append(((Integer) rand.nextInt(10)).toString());
 		}
 		return barcode.toString();
+	}
+
+	private Object getSelectedProductContainerTag() {
+		ProductContainerData selectedPC = getView().getSelectedProductContainer();
+		if (selectedPC == null)
+			throw new NullPointerException("selected container is null");
+
+		return selectedPC.getTag();
 	}
 
 	/**
