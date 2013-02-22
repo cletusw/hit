@@ -1,12 +1,10 @@
 package test.model;
 
+import static org.easymock.EasyMock.createMock;
 import static org.junit.Assert.assertTrue;
 
 import java.util.Date;
 
-import mocks.MockItemManager;
-import mocks.MockProductContainerManager;
-import mocks.MockProductManager;
 import model.Barcode;
 import model.Item;
 import model.ItemManager;
@@ -36,10 +34,10 @@ public class ItemTest {
 
 	@Before
 	public void setUp() throws Exception {
-		ProductContainerManager pcManager = new MockProductContainerManager();
+		ProductContainerManager pcManager = createMock(ProductContainerManager.class);
 		validUPCABarcode = new Barcode("494180175762");
-		itemManager = new MockItemManager();
-		productManager = new MockProductManager();
+		itemManager = createMock(ItemManager.class);
+		productManager = createMock(ProductManager.class);
 		pq = new ProductQuantity(2.2f, Unit.FLUID_OUNCES);
 		product = new Product("validBarcode", "A product", 3, 3, pq, productManager);
 		productGroup = new ProductGroup("Test product group", pq, Unit.GALLONS,

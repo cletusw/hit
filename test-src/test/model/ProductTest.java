@@ -1,11 +1,11 @@
 package test.model;
 
+import static org.easymock.EasyMock.createMock;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
 import java.util.Date;
 
-import mocks.MockProductManager;
 import model.Product;
 import model.ProductManager;
 import model.ProductQuantity;
@@ -27,7 +27,7 @@ public class ProductTest {
 
 	@Before
 	public void setUp() throws Exception {
-		productManager = new MockProductManager();
+		productManager = createMock(ProductManager.class);
 		size = new ProductQuantity(2.3f, Unit.GALLONS);
 		product = new Product(validBarcode, validDescription, shelfLife, threeMonthSupply,
 				size, productManager);
@@ -76,6 +76,11 @@ public class ProductTest {
 		assertTrue(createDate.getMinutes() == today.getMinutes());
 	}
 
+	@Test(expected = IllegalArgumentException.class)
+	public void testInvalidProductQuantity() {
+		product.setProductQuantity(new ProductQuantity(3, Unit.COUNT));
+	}
+
 	@Test
 	public void testIsValidBarcode() {
 		assertTrue(Product.isValidBarcode(validBarcode));
@@ -88,6 +93,15 @@ public class ProductTest {
 		assertTrue(Product.isValidDescription(validDescription));
 		assertFalse(Product.isValidDescription(""));
 		assertFalse(Product.isValidDescription(null));
+	}
+
+	@Test
+	public void testIsValidProductQuantity() {
+		assertTrue(product.isValidProductQuantity(new ProductQuantity(1, Unit.COUNT)));
+		assertFalse(product.isValidProductQuantity(new ProductQuantity(3, Unit.COUNT)));
+		ProductQuantity pq = new ProductQuantity(15, Unit.LITERS);
+		product.setProductQuantity(pq);
+		assertTrue(product.getProductQuantity().equals(pq));
 	}
 
 	@Test
@@ -120,21 +134,6 @@ public class ProductTest {
 		new Product("", validDescription, 3, 3, size, productManager);
 	}
 
-	@Test
-	public void testIsValidProductQuantity() {
-		assertTrue(product.isValidProductQuantity(new ProductQuantity(1, Unit.COUNT)));
-		assertFalse(product.isValidProductQuantity(new ProductQuantity(3, Unit.COUNT)));
-		ProductQuantity pq = new ProductQuantity(15, Unit.LITERS);
-		product.setProductQuantity(pq);
-		assertTrue(product.getProductQuantity().equals(pq));
-	}
-
-	
-	@Test(expected = IllegalArgumentException.class)
-	public void testInvalidProductQuantity() {
-		product.setProductQuantity(new ProductQuantity(3, Unit.COUNT));
-	}
-	
 	@Test(expected = IllegalArgumentException.class)
 	public void testProductInvalidDescription() {
 		new Product(validBarcode, "", 3, 3, size, productManager);

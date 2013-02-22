@@ -207,7 +207,11 @@ public class InventoryController extends Controller implements IInventoryControl
 		// items (including it's sub Product Groups)
 		// See Functional Spec p17
 
-		return ((ProductGroup) getSelectedProductContainerTag()).canRemove();
+		ProductGroup selected = (ProductGroup) getSelectedProductContainerTag();
+		if (selected == null)
+			return false;
+
+		return selected.canRemove();
 	}
 
 	/**
@@ -222,7 +226,11 @@ public class InventoryController extends Controller implements IInventoryControl
 		// items (including it's Product Groups)
 		// See Functional Spec p15
 
-		return ((StorageUnit) getSelectedProductContainerTag()).canRemove();
+		StorageUnit selected = (StorageUnit) getSelectedProductContainerTag();
+		if (selected == null)
+			return false;
+
+		return selected.canRemove();
 	}
 
 	/**
