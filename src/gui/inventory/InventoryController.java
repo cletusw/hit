@@ -158,6 +158,14 @@ public class InventoryController extends Controller implements IInventoryControl
 	public boolean canDeleteProduct() {
 		// TODO: 3 cases depending on getView().getSelectedProductContainer().
 		// See Functional Spec p21-22
+
+		// case 1:
+		ProductContainerData selected = getView().getSelectedProductContainer();
+		if (selected == null)
+			return false;
+
+		// case 2:
+
 		return true;
 	}
 
@@ -173,12 +181,7 @@ public class InventoryController extends Controller implements IInventoryControl
 		// items (including it's sub Product Groups)
 		// See Functional Spec p17
 
-		Object selectedTag = getSelectedProductContainerTag();
-		if (selectedTag instanceof ProductGroup) {
-			ProductGroup selected = (ProductGroup) selectedTag;
-			return selected.canRemove();
-		} else
-			throw new RuntimeException("selected container is not a ProductGroup");
+		return ((ProductGroup) getSelectedProductContainerTag()).canRemove();
 	}
 
 	/**
@@ -189,16 +192,11 @@ public class InventoryController extends Controller implements IInventoryControl
 	 */
 	@Override
 	public boolean canDeleteStorageUnit() {
-		// TODO: Enabled only if getView().getSelectedProductContainer() does not contain any
+		// Enabled only if getView().getSelectedProductContainer() does not contain any
 		// items (including it's Product Groups)
 		// See Functional Spec p15
 
-		Object selectedTag = getSelectedProductContainerTag();
-		if (selectedTag instanceof StorageUnit) {
-			StorageUnit selected = (StorageUnit) selectedTag;
-			return selected.canRemove();
-		} else
-			throw new RuntimeException("selected container is not a storage unit");
+		return ((StorageUnit) getSelectedProductContainerTag()).canRemove();
 	}
 
 	/**
