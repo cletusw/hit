@@ -16,6 +16,7 @@ import model.ConcreteItemManager;
 import model.ConcreteProductContainerManager;
 import model.ConcreteProductManager;
 import model.ItemManager;
+import model.Product;
 import model.ProductContainer;
 import model.ProductContainerManager;
 import model.ProductGroup;
@@ -177,22 +178,39 @@ public class InventoryController extends Controller implements IInventoryControl
 	/**
 	 * Returns true if and only if the "Delete Product" menu item should be enabled.
 	 * 
-	 * @pre true
+	 * @pre getView().getSelectedProduct() != null
+	 * @pre getView().getSelectedProduct().getTag() != null
+	 * @pre if(getView().getSelectedProductContainer() != null)
+	 *      getView().getSelectedProductContainer().getTag() != null
 	 * @post true
+	 * 
 	 */
 	@Override
 	public boolean canDeleteProduct() {
-		// TODO: 3 cases depending on getView().getSelectedProductContainer().
+		// 3 cases depending on getView().getSelectedProductContainer().
 		// See Functional Spec p21-22
 
-		// case 1:
-		ProductContainerData selected = getView().getSelectedProductContainer();
-		if (selected == null)
+		ProductContainerData selectedContainer = getView().getSelectedProductContainer();
+		ProductData selectedProduct = getView().getSelectedProduct();
+		if (selectedProduct == null)
+			throw new RuntimeException("Selected product is null");
+
+		// case 1: No product container is selected
+		if (selectedContainer == null)
 			return false;
 
-		// case 2:
+		// case 2: selected product container is the root node
+		ProductContainer containerTag = (ProductContainer) selectedContainer.getTag();
+		if (containerTag == null)
+			throw new RuntimeException("ProductContainer tag is null");
 
-		return true;
+		Product productTag = (Product) selectedProduct.getTag();
+		if (productTag == null)
+			throw new RuntimeException("Product tag is null");
+
+		// case 3: selected product container is a child StorageUnit or ProductGroup
+		else
+			return containerTag.canRemove(productTag);
 	}
 
 	/**
