@@ -1,4 +1,4 @@
-package model;
+package test.model;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
@@ -6,6 +6,16 @@ import static org.junit.Assert.assertTrue;
 import mocks.MockItemManager;
 import mocks.MockProductContainerManager;
 import mocks.MockProductManager;
+import model.Barcode;
+import model.Item;
+import model.ItemManager;
+import model.Product;
+import model.ProductContainerManager;
+import model.ProductGroup;
+import model.ProductManager;
+import model.ProductQuantity;
+import model.StorageUnit;
+import model.Unit;
 
 import org.junit.After;
 import org.junit.Before;

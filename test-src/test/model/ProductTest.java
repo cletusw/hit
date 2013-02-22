@@ -1,4 +1,4 @@
-package model;
+package test.model;
 
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
@@ -6,6 +6,10 @@ import static org.junit.Assert.assertTrue;
 import java.util.Date;
 
 import mocks.MockProductManager;
+import model.Product;
+import model.ProductManager;
+import model.ProductQuantity;
+import model.Unit;
 
 import org.junit.After;
 import org.junit.Before;

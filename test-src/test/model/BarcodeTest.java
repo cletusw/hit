@@ -1,7 +1,9 @@
-package model;
+package test.model;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
+
+import model.Barcode;
 
 import org.junit.After;
 import org.junit.Before;

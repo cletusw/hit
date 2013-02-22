@@ -1,7 +1,12 @@
-package model;
+package test.model;
 
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
+
+import model.ConcreteProductManager;
+import model.Product;
+import model.ProductQuantity;
+import model.Unit;
 
 import org.junit.Before;
 import org.junit.Test;

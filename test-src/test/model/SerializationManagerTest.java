@@ -1,10 +1,15 @@
-package model;
+package test.model;
 
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.fail;
 
 import java.io.File;
 import java.io.IOException;
+
+import model.HomeInventoryTracker;
+import model.ProductContainerManager;
+import model.SerializationManager;
+import model.StorageUnit;
 
 import org.junit.After;
 import org.junit.Before;

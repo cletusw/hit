@@ -1,6 +1,9 @@
-package model;
+package test.model;
 
 import static org.junit.Assert.assertTrue;
+
+import model.ConcreteProductContainerManager;
+import model.StorageUnit;
 
 import org.junit.After;
 import org.junit.Before;

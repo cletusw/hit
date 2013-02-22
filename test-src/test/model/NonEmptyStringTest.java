@@ -1,6 +1,8 @@
-package model;
+package test.model;
 
 import static org.junit.Assert.assertTrue;
+
+import model.NonEmptyString;
 
 import org.junit.After;
 import org.junit.Before;

@@ -1,7 +1,10 @@
-package model;
+package test.model;
 
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
+
+import model.ProductQuantity;
+import model.Unit;
 
 import org.junit.After;
 import org.junit.Before;
