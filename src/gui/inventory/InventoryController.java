@@ -51,22 +51,28 @@ public class InventoryController extends Controller implements IInventoryControl
 	/**
 	 * This method is called when the user selects the "Add Items" menu item.
 	 * 
-	 * @pre true
+	 * @pre canAddItems()
 	 * @post true
 	 */
 	@Override
 	public void addItems() {
+		if (!canAddItems()) {
+			throw new IllegalStateException("Unable to add Items");
+		}
 		getView().displayAddItemBatchView();
 	}
 
 	/**
 	 * This method is called when the user selects the "Add Product Group" menu item.
 	 * 
-	 * @pre true
+	 * @pre canAddProductGroup()
 	 * @post true
 	 */
 	@Override
 	public void addProductGroup() {
+		if (!canAddProductGroup()) {
+			throw new IllegalStateException("Unable to add Product Groups");
+		}
 		getView().displayAddProductGroupView();
 	}
 
@@ -93,11 +99,14 @@ public class InventoryController extends Controller implements IInventoryControl
 	/**
 	 * This method is called when the user selects the "Add Storage Unit" menu item.
 	 * 
-	 * @pre true
+	 * @pre canAddStorageUnit()
 	 * @post true
 	 */
 	@Override
 	public void addStorageUnit() {
+		if (!canAddStorageUnit()) {
+			throw new IllegalStateException("Unable to add Storage Units");
+		}
 		getView().displayAddStorageUnitView();
 	}
 
@@ -267,11 +276,14 @@ public class InventoryController extends Controller implements IInventoryControl
 	/**
 	 * This method is called when the user selects the "Delete Product" menu item.
 	 * 
-	 * @pre true
-	 * @post !productManager.contains(PREVIOUS getView().getSelectedProduct().getTag());
+	 * @pre canDeleteProduct()
+	 * @post !productManager.contains(old(getView().getSelectedProduct().getTag()))
 	 */
 	@Override
 	public void deleteProduct() {
+		if (!canDeleteProduct()) {
+			throw new IllegalStateException("Unable to delete Product");
+		}
 	}
 
 	/**
@@ -279,32 +291,40 @@ public class InventoryController extends Controller implements IInventoryControl
 	 * 
 	 * @pre canDeleteProductGroup()
 	 * @post !productContainerManager.contains(PREVIOUS
-	 *       getView().getSelectedProductContainer().getTag());
+	 *       getView().getSelectedProductContainer().getTag())
 	 */
 	@Override
 	public void deleteProductGroup() {
+		if (!canDeleteProductGroup()) {
+			throw new IllegalStateException("Unable to delete Product Group");
+		}
 	}
 
 	/**
 	 * This method is called when the user selects the "Delete Storage Unit" menu item.
 	 * 
 	 * @pre canDeleteStorageUnit()
-	 * @post 
-	 *       !productContainerManager.contains(old(view.getSelectedProductContainer().getTag()))
-	 *       ;
+	 * @post !productContainerManager.contains(PREVIOUS
+	 *       getView().getSelectedProductContainer().getTag())
 	 */
 	@Override
 	public void deleteStorageUnit() {
+		if (!canDeleteStorageUnit()) {
+			throw new IllegalStateException("Unable to delete Storage Unit");
+		}
 	}
 
 	/**
 	 * This method is called when the user selects the "Edit Item" menu item.
 	 * 
 	 * @pre canEditItem()
-	 * @post itemManager.contains(old(view.getSelectedItem().getTag()))
+	 * @post itemManager.contains(old(getView().getSelectedItem().getTag()))
 	 */
 	@Override
 	public void editItem() {
+		if (!canEditItem()) {
+			throw new IllegalStateException("Unable to edit Item");
+		}
 		getView().displayEditItemView();
 	}
 
@@ -312,10 +332,13 @@ public class InventoryController extends Controller implements IInventoryControl
 	 * This method is called when the user selects the "Edit Product" menu item.
 	 * 
 	 * @pre canEditProduct()
-	 * @post productManager.contains(old(view.getSelectedProduct().getTag()))
+	 * @post productManager.contains(old(getView().getSelectedProduct().getTag()))
 	 */
 	@Override
 	public void editProduct() {
+		if (!canEditProduct()) {
+			throw new IllegalStateException("Unable to edit Product");
+		}
 		getView().displayEditProductView();
 	}
 
@@ -323,10 +346,14 @@ public class InventoryController extends Controller implements IInventoryControl
 	 * This method is called when the user selects the "Edit Product Group" menu item.
 	 * 
 	 * @pre canEditProductGroup()
-	 * @post productContainerManager.contains(old(view.getSelectedProductContainer().getTag()))
+	 * @post productContainerManager.contains(PREVIOUS
+	 *       getView().getSelectedProductContainer().getTag())
 	 */
 	@Override
 	public void editProductGroup() {
+		if (!canEditProductGroup()) {
+			throw new IllegalStateException("Unable to edit Product Group");
+		}
 		getView().displayEditProductGroupView();
 	}
 
@@ -334,10 +361,14 @@ public class InventoryController extends Controller implements IInventoryControl
 	 * This method is called when the user selects the "Edit Storage Unit" menu item.
 	 * 
 	 * @pre canEditStorageUnit()
-	 * @post productContainerManager.contains(old(view.getSelectedProductContainer().getTag()))
+	 * @post productContainerManager.contains(PREVIOUS
+	 *       getView().getSelectedProductContainer().getTag())
 	 */
 	@Override
 	public void editStorageUnit() {
+		if (!canEditStorageUnit()) {
+			throw new IllegalStateException("Unable to edit Storage Unit");
+		}
 		getView().displayEditStorageUnitView();
 	}
 
@@ -345,10 +376,11 @@ public class InventoryController extends Controller implements IInventoryControl
 	 * This method is called when the selected item changes.
 	 * 
 	 * @pre true
-	 * @post view.getSelectedItem() != old(view.getSelectedItem())
+	 * @post true
 	 */
 	@Override
 	public void itemSelectionChanged() {
+		// Shouldn't really be anything to do here, but I'm not sure.
 		return;
 	}
 
@@ -359,10 +391,12 @@ public class InventoryController extends Controller implements IInventoryControl
 	 *            Item dragged into the target product container
 	 * @param containerData
 	 *            Target product container
-	 * @pre view.getSelectedProductContainer() != null
+	 * @pre getView().getSelectedProductContainer() != null
 	 * @pre itemData != null
 	 * @pre containerData != null
-	 * @post !old(view.getSelectedProductContainer().getTag().contains(itemData.getTag()))
+	 * @pre getView().getSelectedProductContainer().getTag().contains(itemData.getTag())
+	 * @pre !containerData.getTag().contains(itemData.getTag())
+	 * @post !old(getView().getSelectedProductContainer().getTag().contains(itemData.getTag()))
 	 * @post containerData.getTag().contains(itemData.getTag())
 	 */
 	@Override
@@ -373,10 +407,11 @@ public class InventoryController extends Controller implements IInventoryControl
 	 * This method is called when the selected item container changes.
 	 * 
 	 * @pre true
-	 * @post old(view.getSelectedProductContainer()) != view.getSelectedProductContainer()
+	 * @post true
 	 */
 	@Override
 	public void productContainerSelectionChanged() {
+		// TODO: load productDataList from Model
 		List<ProductData> productDataList = new ArrayList<ProductData>();
 		ProductContainerData selectedContainer = getView().getSelectedProductContainer();
 		if (selectedContainer != null) {
@@ -396,17 +431,20 @@ public class InventoryController extends Controller implements IInventoryControl
 		}
 		getView().setProducts(productDataList.toArray(new ProductData[0]));
 
-		getView().setItems(new ItemData[0]);
+		// TODO: Load itemDataList from Model
+		List<ItemData> itemDataList = new ArrayList<ItemData>();
+		getView().setItems(itemDataList.toArray(new ItemData[0]));
 	}
 
 	/**
-	 * This method is called when the selected item changes.
+	 * This method is called when the selected product changes.
 	 * 
 	 * @pre true
-	 * @post old(view.getSelectedProduct()) != view.getSelectedProduct()
+	 * @post true
 	 */
 	@Override
 	public void productSelectionChanged() {
+		// TODO: Load itemDataList from Model
 		List<ItemData> itemDataList = new ArrayList<ItemData>();
 		ProductData selectedProduct = getView().getSelectedProduct();
 		if (selectedProduct != null) {
@@ -434,10 +472,13 @@ public class InventoryController extends Controller implements IInventoryControl
 	 * This method is called when the user selects the "Remove Item" menu item.
 	 * 
 	 * @pre canRemoveItem()
-	 * @post !itemManager.contains(old(view.getSelectedItem().getTag()))
+	 * @post !itemManager.contains(old(getView().getSelectedItem().getTag()))
 	 */
 	@Override
 	public void removeItem() {
+		if (!canRemoveItem()) {
+			throw new IllegalStateException("Unable to remove Item");
+		}
 	}
 
 	/**
@@ -449,6 +490,9 @@ public class InventoryController extends Controller implements IInventoryControl
 	 */
 	@Override
 	public void removeItems() {
+		if (!canRemoveItems()) {
+			throw new IllegalStateException("Unable to remove Items");
+		}
 		getView().displayRemoveItemBatchView();
 	}
 
@@ -456,12 +500,13 @@ public class InventoryController extends Controller implements IInventoryControl
 	 * This method is called when the user selects the "Transfer Items" menu item.
 	 * 
 	 * @pre canTransferItems()
-	 * @post the current storage unit no longer contains the items specified by the user
-	 * @post the target storage unit(s) now contain the items specified by the user according
-	 *       to where they were put
+	 * @post true
 	 */
 	@Override
 	public void transferItems() {
+		if (!canTransferItems()) {
+			throw new IllegalStateException("Unable to edit Storage Unit");
+		}
 		getView().displayTransferItemBatchView();
 	}
 
@@ -505,6 +550,7 @@ public class InventoryController extends Controller implements IInventoryControl
 	 */
 	@Override
 	protected void loadValues() {
+		// TODO: Load real data
 		ProductContainerData root = new ProductContainerData();
 
 		ProductContainerData basementCloset = new ProductContainerData("Basement Closet");
