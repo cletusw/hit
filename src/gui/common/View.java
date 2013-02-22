@@ -13,6 +13,10 @@ import javax.swing.border.TitledBorder;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.TableColumn;
 
+import model.ItemManager;
+import model.ProductContainerManager;
+import model.ProductManager;
+
 /**
  * View is a base class that provides common functionality required by all views in the program
  * (i.e., view classes extend View instead of {@link javax.swing.JPanel JPanel}).
@@ -258,6 +262,21 @@ public abstract class View extends JPanel implements IView {
 	//
 	// Event enable/disable routines
 	//
+
+	@Override
+	public ItemManager getItemManager() {
+		return _parent.getItemManager();
+	}
+
+	@Override
+	public ProductContainerManager getProductContainerManager() {
+		return _parent.getProductContainerManager();
+	}
+
+	@Override
+	public ProductManager getProductManager() {
+		return _parent.getProductManager();
+	}
 
 	/**
 	 * This is a template method that defines the construction process for all subclasses.

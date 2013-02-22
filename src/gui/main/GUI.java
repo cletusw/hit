@@ -19,6 +19,13 @@ import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 import javax.swing.WindowConstants;
 
+import model.ConcreteItemManager;
+import model.ConcreteProductContainerManager;
+import model.ConcreteProductManager;
+import model.ItemManager;
+import model.ProductContainerManager;
+import model.ProductManager;
+
 @SuppressWarnings("serial")
 public final class GUI extends JFrame implements IMainView {
 
@@ -43,6 +50,9 @@ public final class GUI extends JFrame implements IMainView {
 	private ReportsMenu _reportsMenu;
 
 	private InventoryView _inventoryView;
+	private ItemManager _itemManager;
+	private ProductManager _productManager;
+	private ProductContainerManager _productContainerManager;
 
 	private GUI(String[] args) {
 		super("Home Inventory Tracker");
@@ -82,10 +92,6 @@ public final class GUI extends JFrame implements IMainView {
 		displayMessage(message, JOptionPane.INFORMATION_MESSAGE);
 	}
 
-	//
-	// IView overrides
-	//
-
 	@Override
 	public void displayNoticesReportView() {
 		DialogBox dialog = new DialogBox(this, "Notices Report");
@@ -111,10 +117,6 @@ public final class GUI extends JFrame implements IMainView {
 		dialog.display(new SupplyReportView(this, dialog), false);
 	}
 
-	//
-	// IMainView overrides
-	//
-
 	@Override
 	public void displayWarningMessage(String message) {
 		displayMessage(message, JOptionPane.WARNING_MESSAGE);
@@ -124,8 +126,24 @@ public final class GUI extends JFrame implements IMainView {
 		return _controller;
 	}
 
+	public ItemManager getItemManager() {
+		return _itemManager;
+	}
+
+	public ProductContainerManager getProductContainerManager() {
+		return _productContainerManager;
+	}
+
+	public ProductManager getProductManager() {
+		return _productManager;
+	}
+
 	private void createInventoryView() {
-		_inventoryView = new InventoryView(this);
+		_itemManager = new ConcreteItemManager();
+		_productManager = new ConcreteProductManager();
+		_productContainerManager = new ConcreteProductContainerManager();
+		_inventoryView = new InventoryView(this, _itemManager, _productManager,
+				_productContainerManager);
 		setContentPane(_inventoryView);
 	}
 
@@ -149,10 +167,6 @@ public final class GUI extends JFrame implements IMainView {
 		pack();
 		setVisible(true);
 	}
-
-	//
-	// Main
-	//
 
 	private void displayMessage(final String message, final int messageType) {
 

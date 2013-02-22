@@ -43,10 +43,34 @@ public class InventoryController extends Controller implements IInventoryControl
 	 * @post true
 	 */
 	public InventoryController(IInventoryView view) {
+		this(view, new ConcreteItemManager(), new ConcreteProductManager(),
+				new ConcreteProductContainerManager());
+	}
+
+	/**
+	 * Constructor.
+	 * 
+	 * @param view
+	 *            Reference to the inventory view
+	 * @param itemManager
+	 *            Reference to the item manager
+	 * @param productManager
+	 *            Reference to the product manager
+	 * @param productContainerManager
+	 *            Reference to the product container manager
+	 * 
+	 * @pre view != null
+	 * @pre itemManager != null
+	 * @pre productManager != null
+	 * @pre productContainerManager != null
+	 * @post true
+	 */
+	public InventoryController(IInventoryView view, ItemManager itemManager,
+			ProductManager productManager, ProductContainerManager productContainerManager) {
 		super(view);
-		itemManager = new ConcreteItemManager();
-		productManager = new ConcreteProductManager();
-		productContainerManager = new ConcreteProductContainerManager();
+		this.itemManager = itemManager;
+		this.productManager = productManager;
+		this.productContainerManager = productContainerManager;
 		construct();
 	}
 

@@ -1,5 +1,9 @@
 package gui.common;
 
+import model.ItemManager;
+import model.ProductContainerManager;
+import model.ProductManager;
+
 /**
  * IView defines functionality that is supported by all views in the program. Controllers
  * invoke this functionality on their views.
@@ -41,4 +45,10 @@ public interface IView {
 	 *            {@post The user has viewed the warning message.}
 	 */
 	void displayWarningMessage(String message);
+
+	ItemManager getItemManager();
+
+	ProductContainerManager getProductContainerManager();
+
+	ProductManager getProductManager();
 }
