@@ -4,17 +4,17 @@ import java.util.Observable;
 import java.util.Observer;
 
 /**
- * Controller object that acts as a liaison between the model's StorageUnitManager and the GUI
+ * Controller object that acts as a liaison between the model's ProductManager and the GUI
  * view.
  * 
  * @author Matt Hess
  * @version 1.0 CS 340 Group 4 Phase 2
  * 
  */
-public class StorageUnitController implements Observer {
+public class ProductListener implements Observer {
 
 	/**
-	 * Method intended to notify the view when StorageUnitManager sends a "change" notice.
+	 * Method intended to notify the view when ProductManager sends a "change" notice.
 	 * 
 	 * @param o
 	 *            The
@@ -23,13 +23,13 @@ public class StorageUnitController implements Observer {
 	 * 
 	 * @pre o != null
 	 * @pre arg != null
-	 * @pre o instanceof StorageUnitManager
+	 * @pre o instanceof ProductManager
 	 * @post true
 	 * 
 	 */
 	@Override
 	public void update(Observable o, Object arg) {
-		// StorageUnitManager manager = (StorageUnitmanager) o;
+		// TODO Auto-generated method stub
 
 	}
 
