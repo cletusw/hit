@@ -121,7 +121,7 @@ public abstract class ProductContainer implements Comparable<ProductContainer>, 
 		if (containsProduct(productBarcode))
 			return false;
 		for (ProductGroup productGroup : productGroups.values()) {
-			if (!productGroup.canAddProduct(productBarcode))
+			if(productGroup.hasProductNested(productBarcode))
 				return false;
 		}
 		return true;

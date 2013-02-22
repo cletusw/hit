@@ -119,8 +119,9 @@ public class ProductContainerTest {
 
 	@Test(expected = IllegalStateException.class)
 	public void testCannotRemoveProductGroup() {
-		storageUnit1.add(product1);
+		productGroup2.add(product1);
 		productGroup1.add(productGroup2);
+		storageUnit1.add(productGroup1);
 		storageUnit1.add(item1);
 		productGroup1.remove(productGroup2);
 	}

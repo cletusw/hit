@@ -180,20 +180,20 @@ public class ProductGroup extends ProductContainer {
 	/**
 	 * Determines if this productGroup contains the given product, or if one of
 	 * its children contains the product (recursively).
-	 * @param product Product to find
+	 * @param productBarcode String representation of the product barcode to find
 	 * @return true if product is contained in this product group or one of its children (recursively)
 	 * @pre true
 	 */
-	public boolean hasProductNested(Product product){
+	public boolean hasProductNested(String productBarcode){
 		if(this.productGroups == null) return false;
 
-		if(this.containsProduct(product.getBarcode())){
+		if(this.containsProduct(productBarcode)){
 			return true;
 		}
 		
 		if(!this.productGroups.isEmpty()){
 			for(ProductGroup productGroup : this.productGroups.values()){
-				return productGroup.hasProductNested(product);
+				return productGroup.hasProductNested(productBarcode);
 			}
 		}
 		
