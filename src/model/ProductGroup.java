@@ -32,6 +32,7 @@ public class ProductGroup extends ProductContainer {
 			ProductContainer parent, ProductContainerManager manager) {
 		super(pcName, manager);
 		container = parent;
+		container.add(this);
 		setThreeMonthSupply(tmSupply);
 		this.groupUnit = groupUnit;
 	}

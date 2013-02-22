@@ -123,7 +123,8 @@ public abstract class ProductContainer implements Comparable<ProductContainer>, 
 	}
 
 	/**
-	 * Method that adds a ProductGroup object to the collection.
+	 * Method that adds a ProductGroup object to the collection. This method should only be
+	 * called from the ProductGroup constructor.
 	 * 
 	 * @param productGroup
 	 *            - the ProductGroup object to add to the collection
@@ -134,7 +135,7 @@ public abstract class ProductContainer implements Comparable<ProductContainer>, 
 	 * @post pGroups.contains(productGroup)
 	 * 
 	 */
-	public void add(ProductGroup productGroup) {
+	protected void add(ProductGroup productGroup) {
 		if (productGroup == null) {
 			throw new NullPointerException("Null ProductGroup productGroup");
 		}
@@ -163,24 +164,10 @@ public abstract class ProductContainer implements Comparable<ProductContainer>, 
 		if (containsProduct(productBarcode))
 			return false;
 		for (ProductGroup productGroup : productGroups.values()) {
-			if(productGroup.hasDescendantProduct(productBarcode))
+			if (productGroup.hasDescendantProduct(productBarcode))
 				return false;
 		}
 		return true;
-	}
-
-	/**
-	 * Determines whether the specified ProductGroup can be added to this ProductContainer.
-	 * 
-	 * @param productGroup
-	 *            - the ProductGroup to test
-	 * @return true if the ProductGroup can safely be added, false otherwise.
-	 * 
-	 * @pre true
-	 * @post true
-	 */
-	public boolean canAddProductGroup(ProductGroup productGroup) {
-		return canAddProductGroup(productGroup.getName());
 	}
 
 	/**
@@ -582,6 +569,33 @@ public abstract class ProductContainer implements Comparable<ProductContainer>, 
 	}
 
 	/**
+	 * Helper Method for adding items to this productContainer or any of its children
+	 * (recursively). If no product matching i's product is found, no item is registered.
+	 * 
+	 * @param i
+	 *            Item to add
+	 * 
+	 * @return true if item is registered, false if otherwise.
+	 */
+	protected boolean recursivelyRegisterItem(Item i) {
+		if (productGroups == null)
+			return false;
+
+		if (containsProduct(i.getProductBarcode())) {
+			registerItem(i);
+			return true;
+		}
+
+		if (!productGroups.isEmpty()) {
+			for (ProductContainer container : productGroups.values()) {
+				return container.recursivelyRegisterItem(i);
+			}
+		}
+
+		return false;
+	}
+
+	/**
 	 * Helper method for adding items
 	 * 
 	 * @param i
@@ -598,34 +612,6 @@ public abstract class ProductContainer implements Comparable<ProductContainer>, 
 		}
 		newItemsForProduct.add(i);
 		productsToItems.put(i.getProduct(), newItemsForProduct);
-	}
-	
-	/**
-	 * Helper Method for adding items to this productContainer or
-	 * any of its children (recursively). If no product matching i's
-	 * product is found, no item is registered.
-	 *  
-	 * @param i
-	 * 			  Item to add
-	 * 
-	 * @return
-	 * 			  true if item is registered, false if otherwise.
-	 */
-	protected boolean recursivelyRegisterItem(Item i){
-		if(this.productGroups == null) return false;
-		
-		if(this.containsProduct(i.getProductBarcode())){
-			this.registerItem(i);
-			return true;
-		}
-		
-		if(!this.productGroups.isEmpty()){
-			for(ProductContainer container : this.productGroups.values()){
-				return container.recursivelyRegisterItem(i);
-			}
-		}
-		
-		return false;
 	}
 
 	/**

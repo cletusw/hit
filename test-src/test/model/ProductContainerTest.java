@@ -27,9 +27,6 @@ public class ProductContainerTest {
 	private ProductManager productManager;
 	private StorageUnit storageUnit1;
 	private StorageUnit storageUnit2;
-	private ProductGroup productGroup1;
-	private ProductGroup productGroup2;
-	private ProductGroup productGroup3;
 	private Product product1;
 	private Product product2;
 	private Item item1;
@@ -42,12 +39,6 @@ public class ProductContainerTest {
 		productManager = new MockProductManager();
 		storageUnit1 = new StorageUnit("Cookie Jar", pcManager);
 		storageUnit2 = new StorageUnit("Playdough Bin", pcManager);
-		productGroup1 = new ProductGroup("Cookies", new ProductQuantity(1, Unit.COUNT),
-				Unit.KILOGRAMS, storageUnit1, pcManager);
-		productGroup2 = new ProductGroup("Chocolate Chip Cookies", new ProductQuantity(1,
-				Unit.COUNT), Unit.KILOGRAMS, storageUnit1, pcManager);
-		productGroup3 = new ProductGroup("No-Bake Cookies",
-				new ProductQuantity(1, Unit.COUNT), Unit.KILOGRAMS, storageUnit1, pcManager);
 		product1 = new Product("PROD1BARCODE", "Smelly socks", 0, 4, new ProductQuantity(1,
 				Unit.COUNT), productManager);
 		product2 = new Product("PROD2BARCODE00", "Green Jell-O", 365, 12, new ProductQuantity(
@@ -59,11 +50,6 @@ public class ProductContainerTest {
 	@After
 	public void tearDown() throws Exception {
 		// Test the invariants!
-		assertFalse(productGroup1.getName() == null);
-		assertFalse(productGroup1.getName().equals(""));
-		assertTrue(productGroup1.getItemsSize() >= 0);
-		assertTrue(productGroup1.getProductsSize() >= 0);
-		assertTrue(productGroup1.getProductGroupsSize() >= 0);
 		assertFalse(storageUnit1.getName() == null);
 		assertFalse(storageUnit1.getName().equals(""));
 		assertTrue(storageUnit1.getItemsSize() >= 0);
@@ -80,20 +66,13 @@ public class ProductContainerTest {
 	@Test(expected = IllegalStateException.class)
 	public void testAddDuplicateItems2() {
 		storageUnit1.add(item1);
-		productGroup1.add(productGroup2);
-		productGroup2.add(product1);
-		storageUnit1.add(productGroup2);
 		storageUnit1.add(item1Copy);
 	}
 
 	@Test(expected = IllegalStateException.class)
-	public void testAddDuplicateProductGroups() {
-		productGroup1.add(productGroup2);
-		productGroup1.add(productGroup2);
-	}
-
-	@Test(expected = IllegalStateException.class)
 	public void testAddDuplicateProducts() {
+		ProductGroup productGroup1 = new ProductGroup("Cookies", new ProductQuantity(1,
+				Unit.COUNT), Unit.KILOGRAMS, storageUnit1, pcManager);
 		productGroup1.add(product1);
 
 		Product product1Copy = new Product("PROD1BARCODE", "Pair of Smelly socks", 0, 4,
@@ -104,8 +83,10 @@ public class ProductContainerTest {
 
 	@Test
 	public void testAddItem() {
-		storageUnit1.add(productGroup1);
-		productGroup1.add(productGroup2);
+		ProductGroup productGroup1 = new ProductGroup("Cookies", new ProductQuantity(1,
+				Unit.COUNT), Unit.KILOGRAMS, storageUnit1, pcManager);
+		ProductGroup productGroup2 = new ProductGroup("Chocolate Chip Cookies",
+				new ProductQuantity(1, Unit.COUNT), Unit.KILOGRAMS, productGroup1, pcManager);
 		productGroup2.add(product1);
 		assertTrue(storageUnit1.add(item1));
 		assertTrue(productGroup2.contains(item1));
@@ -113,27 +94,25 @@ public class ProductContainerTest {
 
 	@Test
 	public void testAddItem2() {
-		storageUnit1.add(productGroup1);
-		productGroup1.add(productGroup2);
+		ProductGroup productGroup1 = new ProductGroup("Cookies", new ProductQuantity(1,
+				Unit.COUNT), Unit.KILOGRAMS, storageUnit1, pcManager);
+		ProductGroup productGroup2 = new ProductGroup("Chocolate Chip Cookies",
+				new ProductQuantity(1, Unit.COUNT), Unit.KILOGRAMS, productGroup1, pcManager);
 		assertTrue(storageUnit1.add(item1));
 		assertFalse(productGroup2.contains(item1));
 		assertFalse(productGroup1.contains(item1));
 		assertTrue(storageUnit1.contains(item1));
 	}
 
-	@Test(expected = IllegalStateException.class)
-	public void testAddTwoIdenticalProductGroups() {
-		productGroup1.add(productGroup2);
-		productGroup1.add(productGroup2);
-	}
-
 	@Test
 	public void testCanRemove() {
-		assertTrue(productGroup1.canRemove());
 		assertTrue(storageUnit1.canRemove());
-		productGroup1.add(productGroup2);
+		ProductGroup productGroup1 = new ProductGroup("Cookies", new ProductQuantity(1,
+				Unit.COUNT), Unit.KILOGRAMS, storageUnit1, pcManager);
+		assertTrue(productGroup1.canRemove());
+		ProductGroup productGroup2 = new ProductGroup("Chocolate Chip Cookies",
+				new ProductQuantity(1, Unit.COUNT), Unit.KILOGRAMS, productGroup1, pcManager);
 		productGroup2.add(product1);
-		storageUnit1.add(productGroup1);
 		storageUnit1.add(item1);
 		assertFalse(productGroup1.canRemove());
 		assertFalse(storageUnit1.canRemove());
@@ -144,7 +123,8 @@ public class ProductContainerTest {
 
 	@Test
 	public void testCanRemoveProduct() {
-		storageUnit1.add(productGroup1);
+		ProductGroup productGroup1 = new ProductGroup("Cookies", new ProductQuantity(1,
+				Unit.COUNT), Unit.KILOGRAMS, storageUnit1, pcManager);
 		productGroup1.add(product1);
 		assertTrue(productGroup1.canRemove(product1));
 		storageUnit1.add(item1);
@@ -155,9 +135,11 @@ public class ProductContainerTest {
 
 	@Test(expected = IllegalStateException.class)
 	public void testCanRemoveProductGroup() {
+		ProductGroup productGroup1 = new ProductGroup("Cookies", new ProductQuantity(1,
+				Unit.COUNT), Unit.KILOGRAMS, storageUnit1, pcManager);
+		ProductGroup productGroup2 = new ProductGroup("Chocolate Chip Cookies",
+				new ProductQuantity(1, Unit.COUNT), Unit.KILOGRAMS, productGroup1, pcManager);
 		productGroup2.add(product1);
-		productGroup1.add(productGroup2);
-		storageUnit1.add(productGroup1);
 		storageUnit1.add(item1);
 		assertFalse(productGroup1.canRemove());
 		assertFalse(productGroup2.canRemove());
@@ -166,8 +148,10 @@ public class ProductContainerTest {
 
 	@Test
 	public void testGetCurrentSupply() {
-		storageUnit1.add(productGroup1);
-		productGroup1.add(productGroup2);
+		ProductGroup productGroup1 = new ProductGroup("Cookies", new ProductQuantity(1,
+				Unit.COUNT), Unit.KILOGRAMS, storageUnit1, pcManager);
+		ProductGroup productGroup2 = new ProductGroup("Chocolate Chip Cookies",
+				new ProductQuantity(1, Unit.COUNT), Unit.KILOGRAMS, productGroup1, pcManager);
 		productGroup2.add(product1);
 		storageUnit1.add(item1);
 		storageUnit1.add(new Item(new Barcode("400000001920"), product1, storageUnit1,
@@ -184,24 +168,30 @@ public class ProductContainerTest {
 
 	@Test
 	public void testGetName() {
+		ProductGroup productGroup1 = new ProductGroup("Cookies", new ProductQuantity(1,
+				Unit.COUNT), Unit.KILOGRAMS, storageUnit1, pcManager);
 		assertTrue(productGroup1.getName().equals("Cookies"));
 		assertTrue(storageUnit1.getName().equals("Cookie Jar"));
 	}
 
 	@Test(expected = IllegalStateException.class)
 	public void testIllegalProductAdd() {
-		storageUnit1.add(productGroup1);
+		ProductGroup productGroup1 = new ProductGroup("Cookies", new ProductQuantity(1,
+				Unit.COUNT), Unit.KILOGRAMS, storageUnit1, pcManager);
 		assertTrue(storageUnit1.canAddProduct(product1.getBarcode()));
 		productGroup1.add(product1);
-		productGroup1.add(productGroup2);
+		ProductGroup productGroup2 = new ProductGroup("Chocolate Chip Cookies",
+				new ProductQuantity(1, Unit.COUNT), Unit.KILOGRAMS, productGroup1, pcManager);
 		assertFalse(productGroup2.canAddProduct(product1.getBarcode()));
 		productGroup2.add(product1);
 	}
 
 	@Test(expected = IllegalStateException.class)
 	public void testIllegalProductAdd2() {
-		storageUnit1.add(productGroup1);
-		productGroup1.add(productGroup2);
+		ProductGroup productGroup1 = new ProductGroup("Cookies", new ProductQuantity(1,
+				Unit.COUNT), Unit.KILOGRAMS, storageUnit1, pcManager);
+		ProductGroup productGroup2 = new ProductGroup("Chocolate Chip Cookies",
+				new ProductQuantity(1, Unit.COUNT), Unit.KILOGRAMS, productGroup1, pcManager);
 		assertTrue(storageUnit1.canAddProduct(product1.getBarcode()));
 		productGroup2.add(product1);
 		assertFalse(storageUnit1.canAddProduct(product1.getBarcode()));
@@ -210,17 +200,20 @@ public class ProductContainerTest {
 
 	@Test(expected = IllegalStateException.class)
 	public void testIllegalProductAdd3() {
-		storageUnit1.add(productGroup1);
+		ProductGroup productGroup1 = new ProductGroup("Cookies", new ProductQuantity(1,
+				Unit.COUNT), Unit.KILOGRAMS, storageUnit1, pcManager);
 		assertTrue(storageUnit1.canAddProduct(product1.getBarcode()));
 		storageUnit1.add(product1);
-		productGroup1.add(productGroup2);
+		ProductGroup productGroup2 = new ProductGroup("Chocolate Chip Cookies",
+				new ProductQuantity(1, Unit.COUNT), Unit.KILOGRAMS, productGroup1, pcManager);
 		assertFalse(productGroup2.canAddProduct(product1.getBarcode()));
 		productGroup2.add(product1);
 	}
 
 	@Test(expected = IllegalStateException.class)
 	public void testIllegalRemoveProduct() {
-		storageUnit1.add(productGroup1);
+		ProductGroup productGroup1 = new ProductGroup("Cookies", new ProductQuantity(1,
+				Unit.COUNT), Unit.KILOGRAMS, storageUnit1, pcManager);
 		productGroup1.add(product1);
 		storageUnit1.add(item1);
 		productGroup1.remove(product1);
@@ -228,6 +221,8 @@ public class ProductContainerTest {
 
 	@Test
 	public void testInvariants() {
+		ProductGroup productGroup1 = new ProductGroup("Cookies", new ProductQuantity(1,
+				Unit.COUNT), Unit.KILOGRAMS, storageUnit1, pcManager);
 		assertFalse(productGroup1.getName() == null);
 		assertFalse(productGroup1.getName().equals(""));
 		assertTrue(productGroup1.getItemsSize() >= 0);
@@ -237,9 +232,12 @@ public class ProductContainerTest {
 
 	@Test
 	public void testMoveIntoContainer() {
-		storageUnit1.add(productGroup1);
+		ProductGroup productGroup1 = new ProductGroup("Cookies", new ProductQuantity(1,
+				Unit.COUNT), Unit.KILOGRAMS, storageUnit1, pcManager);
 		productGroup1.add(product1);
 		storageUnit1.add(item1);
+		ProductGroup productGroup2 = new ProductGroup("Chocolate Chip Cookies",
+				new ProductQuantity(1, Unit.COUNT), Unit.KILOGRAMS, storageUnit1, pcManager);
 		productGroup1.moveIntoContainer(item1, productGroup2);
 		assertTrue(productGroup2.contains(item1));
 		assertFalse(productGroup1.contains(item1));
@@ -254,13 +252,18 @@ public class ProductContainerTest {
 
 	@Test(expected = IllegalStateException.class)
 	public void testMoveIntoContainerFromEmpty() {
+		ProductGroup productGroup1 = new ProductGroup("Cookies", new ProductQuantity(1,
+				Unit.COUNT), Unit.KILOGRAMS, storageUnit1, pcManager);
+		ProductGroup productGroup2 = new ProductGroup("Chocolate Chip Cookies",
+				new ProductQuantity(1, Unit.COUNT), Unit.KILOGRAMS, storageUnit2, pcManager);
 		productGroup1.moveIntoContainer(item1, productGroup2);
 	}
 
 	@Test
 	public void testProductGroupItems() {
 		System.out.print("Testing ProductGroup Item logic...");
-		storageUnit1.add(productGroup1);
+		ProductGroup productGroup1 = new ProductGroup("Cookies", new ProductQuantity(1,
+				Unit.COUNT), Unit.KILOGRAMS, storageUnit1, pcManager);
 		productGroup1.add(item1.getProduct());
 		assertEquals(0, productGroup1.getItemsSize());
 		assertFalse(productGroup1.contains(item1));
@@ -271,20 +274,25 @@ public class ProductContainerTest {
 	@Test
 	public void testProductGroupProductGroups() {
 		System.out.print("Testing ProductGroup ProductGroup logic...");
+		ProductGroup productGroup1 = new ProductGroup("Cookies", new ProductQuantity(1,
+				Unit.COUNT), Unit.KILOGRAMS, storageUnit1, pcManager);
 		assertEquals(0, productGroup1.getProductGroupsSize());
-		assertTrue(productGroup1.canAddProductGroup(productGroup2));
-		productGroup1.add(productGroup2);
-		assertFalse(productGroup1.canAddProductGroup(productGroup2));
+		String productGroup2Name = "Chocolate Chip Cookies";
+		assertTrue(productGroup1.canAddProductGroup(productGroup2Name));
+		ProductGroup productGroup2 = new ProductGroup("Chocolate Chip Cookies",
+				new ProductQuantity(1, Unit.COUNT), Unit.KILOGRAMS, productGroup1, pcManager);
+		assertFalse(productGroup1.canAddProductGroup(productGroup2Name));
 		assertTrue(productGroup1.contains(productGroup2));
 		assertEquals(1, productGroup1.getProductGroupsSize());
-		assertFalse(productGroup1.contains(productGroup3));
-		productGroup1.add(productGroup3);
+		String productGroup3Name = "No-Bake Cookies";
+		assertFalse(productGroup1.containsProductGroup(productGroup3Name));
+		ProductGroup productGroup3 = new ProductGroup("No-Bake Cookies", new ProductQuantity(
+				1, Unit.COUNT), Unit.KILOGRAMS, productGroup1, pcManager);
 		assertTrue(productGroup1.contains(productGroup3));
 		assertTrue(productGroup1.containsProductGroup(productGroup3.getName()));
 		assertFalse(productGroup1.canAddProductGroup(productGroup3.getName()));
 		assertEquals(2, productGroup1.getProductGroupsSize());
-		// Don't allow duplicate PGs in a PG
-		assertFalse(productGroup1.canAddProductGroup(productGroup2));
+		assertFalse(productGroup1.canAddProductGroup(productGroup2.getName()));
 		assertTrue(productGroup1.getProductGroup(productGroup3.getName())
 				.equals(productGroup3));
 		assertTrue(productGroup1.getProductGroup(productGroup2.getName())
@@ -296,7 +304,8 @@ public class ProductContainerTest {
 	@Test
 	public void testProductGroupProducts() {
 		System.out.print("Testing ProductGroup Product logic...");
-
+		ProductGroup productGroup1 = new ProductGroup("Cookies", new ProductQuantity(1,
+				Unit.COUNT), Unit.KILOGRAMS, storageUnit1, pcManager);
 		assertEquals(0, productGroup1.getProductsSize());
 		assertFalse(productGroup1.contains(product1));
 		productGroup1.add(product1);
@@ -319,12 +328,12 @@ public class ProductContainerTest {
 
 	@Test
 	public void testStorageUnitCanAddProduct() {
-		storageUnit1.add(productGroup1);
-		// This is a fairly large issue. When we add pg2 to su2, we expect pg2 to know its
-		// container
-		// is su2. But, in its constructor we set pg2 in su1...
-		storageUnit2.add(productGroup2);
-		productGroup2.add(productGroup3);
+		ProductGroup productGroup1 = new ProductGroup("Cookies", new ProductQuantity(1,
+				Unit.COUNT), Unit.KILOGRAMS, storageUnit1, pcManager);
+		ProductGroup productGroup2 = new ProductGroup("Chocolate Chip Cookies",
+				new ProductQuantity(1, Unit.COUNT), Unit.KILOGRAMS, storageUnit2, pcManager);
+		ProductGroup productGroup3 = new ProductGroup("No-Bake Cookies", new ProductQuantity(
+				1, Unit.COUNT), Unit.KILOGRAMS, productGroup2, pcManager);
 		productGroup3.add(product1);
 		assertTrue(storageUnit1.canAddProduct(product1.getBarcode()));
 		assertTrue(productGroup1.canAddProduct(product1.getBarcode()));
