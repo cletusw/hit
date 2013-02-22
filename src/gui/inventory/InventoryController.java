@@ -207,11 +207,7 @@ public class InventoryController extends Controller implements IInventoryControl
 		// items (including it's sub Product Groups)
 		// See Functional Spec p17
 
-		ProductGroup selected = (ProductGroup) getSelectedProductContainerTag();
-		if (selected == null)
-			return false;
-
-		return selected.canRemove();
+		return getSelectedProductContainerTag().canRemove();
 	}
 
 	/**
@@ -226,11 +222,7 @@ public class InventoryController extends Controller implements IInventoryControl
 		// items (including it's Product Groups)
 		// See Functional Spec p15
 
-		StorageUnit selected = (StorageUnit) getSelectedProductContainerTag();
-		if (selected == null)
-			return false;
-
-		return selected.canRemove();
+		return getSelectedProductContainerTag().canRemove();
 	}
 
 	/**
@@ -419,45 +411,6 @@ public class InventoryController extends Controller implements IInventoryControl
 	}
 
 	/**
-	 * Sets the enable/disable state of all components in the controller's view. A component
-	 * should be enabled only if the user is currently allowed to interact with that component.
-	 * 
-	 * {@pre None}
-	 * 
-	 * {@post The enable/disable state of all components in the controller's view have been set
-	 * appropriately.}
-	 */
-	@Override
-	protected void enableComponents() {
-		return;
-	}
-
-	private String getRandomBarcode() {
-		Random rand = new Random();
-		StringBuilder barcode = new StringBuilder();
-		for (int i = 0; i < 12; ++i) {
-			barcode.append(((Integer) rand.nextInt(10)).toString());
-		}
-		return barcode.toString();
-	}
-
-	private Object getSelectedProductContainerTag() {
-		ProductContainerData selectedPC = getView().getSelectedProductContainer();
-		if (selectedPC == null)
-			throw new NullPointerException("selected container is null");
-
-		return selectedPC.getTag();
-	}
-
-	/**
-	 * Returns a reference to the view for this controller.
-	 */
-	@Override
-	protected IInventoryView getView() {
-		return (IInventoryView) super.getView();
-	}
-
-	/**
 	 * This method is called when the selected item changes.
 	 * 
 	 * @pre true
@@ -467,54 +420,6 @@ public class InventoryController extends Controller implements IInventoryControl
 	public void itemSelectionChanged() {
 		// Shouldn't really be anything to do here, but I'm not sure.
 		return;
-	}
-
-	/**
-	 * Loads data into the controller's view.
-	 * 
-	 * {@pre None}
-	 * 
-	 * {@post The controller has loaded data into its view}
-	 */
-	@Override
-	protected void loadValues() {
-		// TODO: Load real data
-		ProductContainerData root = new ProductContainerData();
-		ProductContainerManager manager = getView().getProductContainerManager();
-		Iterator<StorageUnit> storageUnitIterator = manager.getStorageUnitIterator();
-		while (storageUnitIterator.hasNext()) {
-			ProductContainer pc = storageUnitIterator.next();
-			ProductContainerData suData = new ProductContainerData(pc.getName());
-			suData.setTag(pc);
-			root.addChild(suData);
-			ArrayList<ProductGroup> childProductGroupStack = new ArrayList<ProductGroup>();
-			// ArrayList<ProductContainerData> productContainerDataStack = new
-			// ArrayList<ProductContainerData>();
-			do {
-				Iterator<ProductGroup> productGroupIterator = pc.getProductGroupIterator();
-				// for ()
-			} while (!childProductGroupStack.isEmpty());
-		}
-		ProductContainerData basementCloset = new ProductContainerData("Basement Closet");
-
-		ProductContainerData toothpaste = new ProductContainerData("Toothpaste");
-		toothpaste.addChild(new ProductContainerData("Kids"));
-		toothpaste.addChild(new ProductContainerData("Parents"));
-		basementCloset.addChild(toothpaste);
-
-		root.addChild(basementCloset);
-
-		ProductContainerData foodStorage = new ProductContainerData("Food Storage Room");
-
-		ProductContainerData soup = new ProductContainerData("Soup");
-		soup.addChild(new ProductContainerData("Chicken Noodle"));
-		soup.addChild(new ProductContainerData("Split Pea"));
-		soup.addChild(new ProductContainerData("Tomato"));
-		foodStorage.addChild(soup);
-
-		root.addChild(foodStorage);
-
-		getView().setProductContainers(root);
 	}
 
 	/**
@@ -641,6 +546,92 @@ public class InventoryController extends Controller implements IInventoryControl
 			throw new IllegalStateException("Unable to edit Storage Unit");
 		}
 		getView().displayTransferItemBatchView();
+	}
+
+	private String getRandomBarcode() {
+		Random rand = new Random();
+		StringBuilder barcode = new StringBuilder();
+		for (int i = 0; i < 12; ++i) {
+			barcode.append(((Integer) rand.nextInt(10)).toString());
+		}
+		return barcode.toString();
+	}
+
+	private ProductContainer getSelectedProductContainerTag() {
+		ProductContainerData selectedPC = getView().getSelectedProductContainer();
+		assert (selectedPC != null);
+
+		return (ProductContainer) selectedPC.getTag();
+	}
+
+	/**
+	 * Sets the enable/disable state of all components in the controller's view. A component
+	 * should be enabled only if the user is currently allowed to interact with that component.
+	 * 
+	 * {@pre None}
+	 * 
+	 * {@post The enable/disable state of all components in the controller's view have been set
+	 * appropriately.}
+	 */
+	@Override
+	protected void enableComponents() {
+		return;
+	}
+
+	/**
+	 * Returns a reference to the view for this controller.
+	 */
+	@Override
+	protected IInventoryView getView() {
+		return (IInventoryView) super.getView();
+	}
+
+	/**
+	 * Loads data into the controller's view.
+	 * 
+	 * {@pre None}
+	 * 
+	 * {@post The controller has loaded data into its view}
+	 */
+	@Override
+	protected void loadValues() {
+		// TODO: Load real data
+		ProductContainerData root = new ProductContainerData();
+		ProductContainerManager manager = getView().getProductContainerManager();
+		Iterator<StorageUnit> storageUnitIterator = manager.getStorageUnitIterator();
+		while (storageUnitIterator.hasNext()) {
+			ProductContainer pc = storageUnitIterator.next();
+			ProductContainerData suData = new ProductContainerData(pc.getName());
+			suData.setTag(pc);
+			root.addChild(suData);
+			ArrayList<ProductGroup> childProductGroupStack = new ArrayList<ProductGroup>();
+			// ArrayList<ProductContainerData> productContainerDataStack = new
+			// ArrayList<ProductContainerData>();
+			do {
+				Iterator<ProductGroup> productGroupIterator = pc.getProductGroupIterator();
+				// for ()
+			} while (!childProductGroupStack.isEmpty());
+		}
+		ProductContainerData basementCloset = new ProductContainerData("Basement Closet");
+
+		ProductContainerData toothpaste = new ProductContainerData("Toothpaste");
+		toothpaste.addChild(new ProductContainerData("Kids"));
+		toothpaste.addChild(new ProductContainerData("Parents"));
+		basementCloset.addChild(toothpaste);
+
+		root.addChild(basementCloset);
+
+		ProductContainerData foodStorage = new ProductContainerData("Food Storage Room");
+
+		ProductContainerData soup = new ProductContainerData("Soup");
+		soup.addChild(new ProductContainerData("Chicken Noodle"));
+		soup.addChild(new ProductContainerData("Split Pea"));
+		soup.addChild(new ProductContainerData("Tomato"));
+		foodStorage.addChild(soup);
+
+		root.addChild(foodStorage);
+
+		getView().setProductContainers(root);
 	}
 
 }
