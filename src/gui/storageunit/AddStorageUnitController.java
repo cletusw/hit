@@ -2,6 +2,8 @@ package gui.storageunit;
 
 import gui.common.Controller;
 import gui.common.IView;
+import model.ProductContainerManager;
+import model.StorageUnit;
 
 /**
  * Controller class for the add storage unit view.
@@ -32,14 +34,8 @@ public class AddStorageUnitController extends Controller implements IAddStorageU
 	 */
 	@Override
 	public void addStorageUnit() {
-	}
-
-	/**
-	 * This method is called when any of the fields in the add storage unit view is changed by
-	 * the user.
-	 */
-	@Override
-	public void valuesChanged() {
+		ProductContainerManager manager = getView().getProductContainerManager();
+		manager.manage(new StorageUnit(getView().getStorageUnitName(), manager));
 	}
 
 	/**
@@ -53,11 +49,10 @@ public class AddStorageUnitController extends Controller implements IAddStorageU
 	 */
 	@Override
 	protected void enableComponents() {
+		getView().enableStorageUnitName(true);
+		ProductContainerManager manager = getView().getProductContainerManager();
+		getView().enableOK(manager.isValidStorageUnitName(getView().getStorageUnitName()));
 	}
-
-	//
-	// IAddStorageUnitController overrides
-	//
 
 	/**
 	 * Returns a reference to the view for this controller.
@@ -71,6 +66,10 @@ public class AddStorageUnitController extends Controller implements IAddStorageU
 		return (IAddStorageUnitView) super.getView();
 	}
 
+	//
+	// IAddStorageUnitController overrides
+	//
+
 	/**
 	 * Loads data into the controller's view.
 	 * 
@@ -80,6 +79,15 @@ public class AddStorageUnitController extends Controller implements IAddStorageU
 	 */
 	@Override
 	protected void loadValues() {
+		getView().setStorageUnitName("");
 	}
 
+	/**
+	 * This method is called when any of the fields in the add storage unit view is changed by
+	 * the user.
+	 */
+	@Override
+	public void valuesChanged() {
+		enableComponents();
+	}
 }
