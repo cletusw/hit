@@ -1,6 +1,7 @@
 package model;
 
 public interface ProductContainerManager {
+	public StorageUnit getStorageUnitByName(String name);
 
 	public boolean isValidStorageUnitName(String storageUnitName);
 

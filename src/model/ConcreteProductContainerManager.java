@@ -1,14 +1,17 @@
 package model;
 
 import java.io.Serializable;
+import java.util.Map;
 import java.util.Observable;
 import java.util.Set;
+import java.util.TreeMap;
 import java.util.TreeSet;
 
 @SuppressWarnings("serial")
 public class ConcreteProductContainerManager extends Observable implements Serializable,
 		ProductContainerManager {
 	private Set<StorageUnit> rootStorageUnits;
+	private Map<String, StorageUnit> nameToStorageUnit;
 
 	/**
 	 * Constructor
@@ -16,6 +19,20 @@ public class ConcreteProductContainerManager extends Observable implements Seria
 	 */
 	public ConcreteProductContainerManager() {
 		rootStorageUnits = new TreeSet<StorageUnit>();
+		nameToStorageUnit = new TreeMap<String, StorageUnit>();
+	}
+
+	/**
+	 * Gets the StorageUnit with the given name.
+	 * 
+	 * @return The StorageUnit with the given name, or null, if not found
+	 * 
+	 * @pre true
+	 * @post true
+	 */
+	@Override
+	public StorageUnit getStorageUnitByName(String name) {
+		return nameToStorageUnit.get(name);
 	}
 
 	/**
@@ -53,12 +70,15 @@ public class ConcreteProductContainerManager extends Observable implements Seria
 	 *            ProductContainer to be managed
 	 * 
 	 * @pre pc != null
-	 * @post if(pc instanceof StorageUnit) rootStorageUnits.contains(pc)
+	 * @post if(pc instanceof StorageUnit) getByName(pc.getName()) == pc
 	 */
 	@Override
 	public void manage(ProductContainer pc) {
-		if (pc instanceof StorageUnit)
-			rootStorageUnits.add((StorageUnit) pc);
+		if (pc instanceof StorageUnit) {
+			StorageUnit storageUnit = (StorageUnit) pc;
+			rootStorageUnits.add(storageUnit);
+			nameToStorageUnit.put(storageUnit.getName(), storageUnit);
+		}
 		setChanged();
 		this.notifyObservers();
 	}
@@ -70,12 +90,15 @@ public class ConcreteProductContainerManager extends Observable implements Seria
 	 *            ProductContainer to be unmanaged
 	 * 
 	 * @pre true
-	 * @post !rootStorageUnits.contains(pc)
+	 * @post getByName(pc.getName()) == null
 	 */
 	@Override
 	public void unmanage(ProductContainer pc) {
-		if (pc instanceof StorageUnit)
-			rootStorageUnits.remove(pc);
+		if (pc instanceof StorageUnit) {
+			StorageUnit storageUnit = (StorageUnit) pc;
+			rootStorageUnits.remove(storageUnit);
+			nameToStorageUnit.remove(storageUnit.getName());
+		}
 		setChanged();
 		this.notifyObservers();
 	}
