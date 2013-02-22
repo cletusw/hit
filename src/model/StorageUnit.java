@@ -53,7 +53,7 @@ public class StorageUnit extends ProductContainer {
 		// within the target Storage Unit
 		if (!contains(i.getProduct())) {
 			for (ProductGroup productGroup : productGroups.values()) {
-				if (productGroup.hasProductNested(i.getProduct().getBarcode())) {
+				if (productGroup.hasDescendantProduct(i.getProduct().getBarcode())) {
 					if(productGroup.recursivelyRegisterItem(i)) 
 						return true;
 				}

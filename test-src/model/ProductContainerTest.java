@@ -307,6 +307,8 @@ public class ProductContainerTest {
 	@Test
 	public void testStorageUnitCanAddProduct() {
 		storageUnit1.add(productGroup1);
+		// This is a fairly large issue. When we add pg2 to su2, we expect pg2 to know its container
+		// is su2. But, in its constructor we set pg2 in su1... 
 		storageUnit2.add(productGroup2);
 		productGroup2.add(productGroup3);
 		productGroup3.add(product1);

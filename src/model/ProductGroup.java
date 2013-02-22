@@ -61,6 +61,7 @@ public class ProductGroup extends ProductContainer {
 		while (parent instanceof ProductGroup) {
 			parent = ((ProductGroup) parent).container;
 		}
+
 		return !parent.hasDescendantProduct(productBarcode);
 	}
 
@@ -174,29 +175,5 @@ public class ProductGroup extends ProductContainer {
 			throw new IllegalStateException("Invalid Product Quantity for Product Group");
 		}
 		this.threeMonthSupply = threeMonthSupply;
-	}
-	
-	
-	/**
-	 * Determines if this productGroup contains the given product, or if one of
-	 * its children contains the product (recursively).
-	 * @param productBarcode String representation of the product barcode to find
-	 * @return true if product is contained in this product group or one of its children (recursively)
-	 * @pre true
-	 */
-	public boolean hasProductNested(String productBarcode){
-		if(this.productGroups == null) return false;
-
-		if(this.containsProduct(productBarcode)){
-			return true;
-		}
-		
-		if(!this.productGroups.isEmpty()){
-			for(ProductGroup productGroup : this.productGroups.values()){
-				return productGroup.hasProductNested(productBarcode);
-			}
-		}
-		
-		return false;
 	}
 }
