@@ -16,6 +16,7 @@ import model.ConcreteProductContainerManager;
 import model.ConcreteProductManager;
 import model.ItemManager;
 import model.ProductContainerManager;
+import model.ProductGroup;
 import model.ProductManager;
 
 /**
@@ -162,15 +163,25 @@ public class InventoryController extends Controller implements IInventoryControl
 	/**
 	 * Returns true if and only if the "Delete Product Group" menu item should be enabled.
 	 * 
-	 * @pre true
+	 * @pre getView().getSelectedProductContainer() != null
 	 * @post true
 	 */
 	@Override
 	public boolean canDeleteProductGroup() {
-		// TODO: Enabled only if getView().getSelectedProductContainer() does not contain any
+		// Enabled only if getView().getSelectedProductContainer() does not contain any
 		// items (including it's sub Product Groups)
 		// See Functional Spec p17
-		return true;
+
+		ProductContainerData selectedPC = getView().getSelectedProductContainer();
+		if (selectedPC == null)
+			throw new NullPointerException("selected container is null");
+
+		Object selectedTag = selectedPC.getTag();
+		if (selectedTag instanceof ProductGroup) {
+			ProductGroup selected = (ProductGroup) selectedTag;
+			return selected.canRemove();
+		} else
+			throw new RuntimeException("selected container is not a ProductGroup");
 	}
 
 	/**
