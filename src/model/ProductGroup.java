@@ -175,4 +175,28 @@ public class ProductGroup extends ProductContainer {
 		}
 		this.threeMonthSupply = threeMonthSupply;
 	}
+	
+	
+	/**
+	 * Determines if this productGroup contains the given product, or if one of
+	 * its children contains the product (recursively).
+	 * @param product Product to find
+	 * @return true if product is contained in this product group or one of its children (recursively)
+	 * @pre true
+	 */
+	public boolean hasProductNested(Product product){
+		if(this.productGroups == null) return false;
+
+		if(this.containsProduct(product.getBarcode())){
+			return true;
+		}
+		
+		if(!this.productGroups.isEmpty()){
+			for(ProductGroup productGroup : this.productGroups.values()){
+				return productGroup.hasProductNested(product);
+			}
+		}
+		
+		return false;
+	}
 }

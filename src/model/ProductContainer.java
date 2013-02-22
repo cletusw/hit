@@ -555,6 +555,34 @@ public abstract class ProductContainer implements Comparable<ProductContainer>, 
 		newItemsForProduct.add(i);
 		productsToItems.put(i.getProduct(), newItemsForProduct);
 	}
+	
+	/**
+	 * Helper Method for adding items to this productContainer or
+	 * any of its children (recursively). If no product matching i's
+	 * product is found, no item is registered.
+	 *  
+	 * @param i
+	 * 			  Item to add
+	 * 
+	 * @return
+	 * 			  true if item is registered, false if otherwise.
+	 */
+	protected boolean recursivelyRegisterItem(Item i){
+		if(this.productGroups == null) return false;
+		
+		if(this.containsProduct(i.getProductBarcode())){
+			this.registerItem(i);
+			return true;
+		}
+		
+		if(!this.productGroups.isEmpty()){
+			for(ProductContainer container : this.productGroups.values()){
+				return container.recursivelyRegisterItem(i);
+			}
+		}
+		
+		return false;
+	}
 
 	/**
 	 * Removes the specified item from this ProductContainer.
