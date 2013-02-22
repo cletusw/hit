@@ -38,7 +38,7 @@ public class ConcreteProductContainerManager extends Observable implements Seria
 		// Storage Units.
 
 		for (StorageUnit su : rootStorageUnits) {
-			if (name.equals(su.name))
+			if (name.equals(su.name.toString()))
 				return false;
 		}
 
