@@ -1,6 +1,7 @@
 package model;
 
 import java.io.Serializable;
+import java.util.Iterator;
 import java.util.Map;
 import java.util.Observable;
 import java.util.Set;
@@ -33,6 +34,11 @@ public class ConcreteProductContainerManager extends Observable implements Seria
 	@Override
 	public StorageUnit getStorageUnitByName(String name) {
 		return nameToStorageUnit.get(name);
+	}
+
+	@Override
+	public Iterator<StorageUnit> getStorageUnitIterator() {
+		return rootStorageUnits.iterator();
 	}
 
 	/**

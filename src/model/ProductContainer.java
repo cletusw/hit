@@ -476,6 +476,15 @@ public abstract class ProductContainer implements Comparable<ProductContainer>, 
 	}
 
 	/**
+	 * Gets an iterator for this ProductContainer's child Product Groups
+	 * 
+	 * @return an Iterator of the child Product Groups
+	 */
+	public Iterator<ProductGroup> getProductGroupIterator() {
+		return productGroups.values().iterator();
+	}
+
+	/**
 	 * Gets the size of the productGroups collection
 	 * 
 	 * @return int - the number of elements in the pGroups collection.
