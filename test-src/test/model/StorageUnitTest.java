@@ -1,20 +1,20 @@
 package test.model;
 
 import static org.junit.Assert.assertTrue;
-
-import mocks.MockProductContainerManager;
 import model.ProductContainerManager;
 import model.StorageUnit;
 
+import org.easymock.EasyMock;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
 public class StorageUnitTest {
-	private ProductContainerManager mockManager = new MockProductContainerManager();
+	private ProductContainerManager mockManager;
 
 	@Before
 	public void setUp() throws Exception {
+		mockManager = EasyMock.createMock(ProductContainerManager.class);
 	}
 
 	@After
