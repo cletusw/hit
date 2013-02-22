@@ -131,8 +131,8 @@ public class ProductContainerTest {
 		assertTrue(storageUnit1.canRemove());
 		productGroup1.add(productGroup2);
 		productGroup2.add(product1);
-		storageUnit1.add(item1);
 		storageUnit1.add(productGroup1);
+		storageUnit1.add(item1);
 		assertFalse(productGroup1.canRemove());
 		assertFalse(storageUnit1.canRemove());
 		productGroup2.remove(item1, itemManager);
