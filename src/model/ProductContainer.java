@@ -79,21 +79,19 @@ public abstract class ProductContainer implements Comparable<ProductContainer>, 
 		if (items.containsKey(i.getBarcode()))
 			throw new IllegalStateException("Cannot have two items with same barcode");
 
-		// A new item is added to the same Product Container that contains the
-		// Item's Product
+		// A new item is added to the same Product Container that contains the Item's Product
 		// within the target Storage Unit
 		if (!contains(i.getProduct())) {
 			for (ProductGroup productGroup : productGroups.values()) {
-				if (productGroup.contains(i.getProduct())) {
-					productGroup.registerItem(i);
+				if (productGroup.add(i)) {
 					return true;
 				}
 			}
-		} else {
-			// This container contains the Item's Product; add it here.
-			registerItem(i);
-			return true;
+			if (this instanceof ProductGroup)
+				return false;
 		}
+		// This container either contains the Item's Product or is the storage unit; add it
+		// here.
 		// Product not found anywhere else; add Item here
 		if (canAddProduct(i.getProduct().getBarcode()))
 			add(i.getProduct());
@@ -144,6 +142,7 @@ public abstract class ProductContainer implements Comparable<ProductContainer>, 
 			throw new IllegalStateException(
 					"Cannot add two product groups of the same name into a container");
 		productGroups.put(productGroup.getName(), productGroup);
+		productGroup.setContainer(this);
 	}
 
 	/**
@@ -417,7 +416,8 @@ public abstract class ProductContainer implements Comparable<ProductContainer>, 
 
 		// add product quantity of items in this container
 		if (productsToItems.containsKey(p)) {
-			for (Item item : productsToItems.get(p)) {
+			for (@SuppressWarnings("unused")
+			Item item : productsToItems.get(p)) {
 				total.add(new ProductQuantity(pSize.getQuantity(), pSize.getUnits()));
 			}
 		}

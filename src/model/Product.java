@@ -95,8 +95,8 @@ public class Product implements Comparable<Object>, Serializable {
 	private Date creationDate;
 	private int shelfLife;
 	private int threeMonthSupply;
-	private Set<ProductContainer> productContainers;
-	private Set<Item> items;
+	private final Set<ProductContainer> productContainers;
+	private final Set<Item> items;
 	private ProductQuantity productQuantity;
 
 	/**
@@ -194,7 +194,9 @@ public class Product implements Comparable<Object>, Serializable {
 		if (pc == null) {
 			throw new NullPointerException("Null ProductContainer pc");
 		}
-
+		if (!pc.canAddProduct(getBarcode()))
+			throw new IllegalArgumentException(
+					"Specified product container cannot contain this product");
 		productContainers.add(pc);
 	}
 
@@ -321,6 +323,17 @@ public class Product implements Comparable<Object>, Serializable {
 	}
 
 	/**
+	 * Gets the ProductQuantity of this Product.
+	 * 
+	 * @return the Product Quantity of this Product.
+	 * @pre true
+	 * @post true
+	 */
+	public ProductQuantity getProductQuantity() {
+		return productQuantity;
+	}
+
+	/**
 	 * Gets this Product's shelf life
 	 * 
 	 * @return this Product's shelf life
@@ -358,40 +371,12 @@ public class Product implements Comparable<Object>, Serializable {
 	public int getThreeMonthSupply() {
 		return threeMonthSupply;
 	}
-	
-	private void setThreeMonthSupply(int threeMonthSupply) {
-		if (threeMonthSupply < 0)
-			throw new IllegalArgumentException("Three Month Supply must be non-negative");
-		
-		this.threeMonthSupply = threeMonthSupply;
-	}
-	
+
 	/**
-	 * Sets the ProductQuantity of this Product.
-	 * @param pq the ProductQuantity to set
-	 * @throws IllegalStateException if the ProductQuantity is invalid
-	 */
-	public void setProductQuantity(ProductQuantity pq) {
-		if (!isValidProductQuantity(pq)) {
-			throw new IllegalArgumentException("Product quantity for product is invalid");
-		}
-		productQuantity = pq;
-	}
-	
-	/**
-	 * Gets the ProductQuantity of this Product.
+	 * Determines whether the specified product quantity is valid
 	 * 
-	 * @return the Product Quantity of this Product.
-	 * @pre true
-	 * @post true
-	 */
-	public ProductQuantity getProductQuantity() {
-		return productQuantity;
-	}
-	
-	/** Determines whether the specified product quantity is valid
-	 * 
-	 * @param pq the ProductQuantity to check
+	 * @param pq
+	 *            the ProductQuantity to check
 	 * 
 	 * @pre pq != null
 	 * @post Returns true if pq is a valid Product Quantity for Products
@@ -400,6 +385,37 @@ public class Product implements Comparable<Object>, Serializable {
 		if (pq.getUnits().equals(Unit.COUNT) && pq.getQuantity() != 1)
 			return false;
 		return true;
+	}
+
+	/**
+	 * Add a ProductContainer to this Product's set of containers.
+	 * 
+	 * @param pc
+	 *            ProductContainer to add.
+	 * 
+	 * @pre pc != null
+	 * @post productContainers.contains(pc)
+	 * 
+	 */
+	public void removeContainer(ProductContainer pc) {
+		if (pc == null) {
+			throw new NullPointerException("Null ProductContainer pc");
+		}
+
+		productContainers.remove(pc);
+	}
+
+	private void setBarcode(String barcode) {
+		this.barcode = new NonEmptyString(barcode);
+	}
+
+	private void setCreationDate(Date date) {
+		Date now = new Date();
+		if (!date.after(now)) {
+			creationDate = date;
+		} else {
+			throw new IllegalArgumentException("CreationDate cannot be in the future");
+		}
 	}
 
 	/**
@@ -417,17 +433,19 @@ public class Product implements Comparable<Object>, Serializable {
 		description = new NonEmptyString(descr);
 	}
 
-	private void setBarcode(String barcode) {
-		this.barcode = new NonEmptyString(barcode);
-	}
-
-	private void setCreationDate(Date date) {
-		Date now = new Date();
-		if (!date.after(now)) {
-			creationDate = date;
-		} else {
-			throw new IllegalArgumentException("CreationDate cannot be in the future");
+	/**
+	 * Sets the ProductQuantity of this Product.
+	 * 
+	 * @param pq
+	 *            the ProductQuantity to set
+	 * @throws IllegalStateException
+	 *             if the ProductQuantity is invalid
+	 */
+	public void setProductQuantity(ProductQuantity pq) {
+		if (!isValidProductQuantity(pq)) {
+			throw new IllegalArgumentException("Product quantity for product is invalid");
 		}
+		productQuantity = pq;
 	}
 
 	private void setShelfLife(int shelfLife) {
@@ -435,5 +453,12 @@ public class Product implements Comparable<Object>, Serializable {
 			throw new IllegalArgumentException("ShelfLife must be non-negative");
 
 		this.shelfLife = shelfLife;
+	}
+
+	private void setThreeMonthSupply(int threeMonthSupply) {
+		if (threeMonthSupply < 0)
+			throw new IllegalArgumentException("Three Month Supply must be non-negative");
+
+		this.threeMonthSupply = threeMonthSupply;
 	}
 }
