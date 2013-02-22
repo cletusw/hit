@@ -1,5 +1,6 @@
 package test.model;
 
+import static org.easymock.EasyMock.createMock;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
@@ -10,7 +11,6 @@ import model.ProductManager;
 import model.ProductQuantity;
 import model.Unit;
 
-import org.easymock.EasyMock;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -27,7 +27,7 @@ public class ProductTest {
 
 	@Before
 	public void setUp() throws Exception {
-		productManager = EasyMock.createMock(ProductManager.class);
+		productManager = createMock(ProductManager.class);
 		size = new ProductQuantity(2.3f, Unit.GALLONS);
 		product = new Product(validBarcode, validDescription, shelfLife, threeMonthSupply,
 				size, productManager);

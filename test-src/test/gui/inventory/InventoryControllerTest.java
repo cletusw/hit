@@ -1,5 +1,6 @@
 package test.gui.inventory;
 
+import static org.easymock.EasyMock.createMock;
 import gui.inventory.IInventoryView;
 import gui.inventory.InventoryController;
 import model.ItemManager;
@@ -16,9 +17,9 @@ public class InventoryControllerTest {
 
 	@Before
 	public void setUp() throws Exception {
-		IInventoryView view = EasyMock.createMock(IInventoryView.class);
-		ItemManager itemManager = EasyMock.createMock(ItemManager.class);
-		ProductManager productManager = EasyMock.createMock(ProductManager.class);
+		IInventoryView view = createMock(IInventoryView.class);
+		ItemManager itemManager = createMock(ItemManager.class);
+		ProductManager productManager = createMock(ProductManager.class);
 		ProductContainerManager productContainerManager = EasyMock
 				.createMock(ProductContainerManager.class);
 		inventoryController = new InventoryController(view, itemManager, productManager,

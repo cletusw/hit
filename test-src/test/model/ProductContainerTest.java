@@ -14,7 +14,7 @@ import model.ProductQuantity;
 import model.StorageUnit;
 import model.Unit;
 
-import org.easymock.EasyMock;
+import static org.easymock.EasyMock.createMock;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -32,9 +32,9 @@ public class ProductContainerTest {
 
 	@Before
 	public void setUp() throws Exception {
-		pcManager = EasyMock.createMock(ProductContainerManager.class);
-		itemManager = EasyMock.createMock(ItemManager.class);
-		productManager = EasyMock.createMock(ProductManager.class);
+		pcManager = createMock(ProductContainerManager.class);
+		itemManager = createMock(ItemManager.class);
+		productManager = createMock(ProductManager.class);
 		storageUnit1 = new StorageUnit("Cookie Jar", pcManager);
 		storageUnit2 = new StorageUnit("Playdough Bin", pcManager);
 		product1 = new Product("PROD1BARCODE", "Smelly socks", 0, 4, new ProductQuantity(1,

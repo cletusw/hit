@@ -1,5 +1,6 @@
 package test.model;
 
+import static org.easymock.EasyMock.createMock;
 import static org.junit.Assert.assertTrue;
 
 import java.util.Date;
@@ -15,7 +16,6 @@ import model.ProductQuantity;
 import model.StorageUnit;
 import model.Unit;
 
-import org.easymock.EasyMock;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -34,10 +34,10 @@ public class ItemTest {
 
 	@Before
 	public void setUp() throws Exception {
-		ProductContainerManager pcManager = EasyMock.createMock(ProductContainerManager.class);
+		ProductContainerManager pcManager = createMock(ProductContainerManager.class);
 		validUPCABarcode = new Barcode("494180175762");
-		itemManager = EasyMock.createMock(ItemManager.class);
-		productManager = EasyMock.createMock(ProductManager.class);
+		itemManager = createMock(ItemManager.class);
+		productManager = createMock(ProductManager.class);
 		pq = new ProductQuantity(2.2f, Unit.FLUID_OUNCES);
 		product = new Product("validBarcode", "A product", 3, 3, pq, productManager);
 		productGroup = new ProductGroup("Test product group", pq, Unit.GALLONS,
