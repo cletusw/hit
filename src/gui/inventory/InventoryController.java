@@ -136,6 +136,7 @@ public class InventoryController extends Controller implements IInventoryControl
 			throw new IllegalStateException("Unable to add Storage Units");
 		}
 		getView().displayAddStorageUnitView();
+		loadValues();
 	}
 
 	/**
@@ -469,6 +470,19 @@ public class InventoryController extends Controller implements IInventoryControl
 		return;
 	}
 
+	private ProductContainerData loadProductContainerData(ProductContainerData parentData,
+			ProductContainer container) {
+		ProductContainerData pcData = new ProductContainerData(container.getName());
+		pcData.setTag(container);
+		parentData.addChild(pcData);
+		Iterator<ProductGroup> productGroupIterator = container.getProductGroupIterator();
+		while (productGroupIterator.hasNext()) {
+			ProductGroup child = productGroupIterator.next();
+			pcData = loadProductContainerData(pcData, child);
+		}
+		return parentData;
+	}
+
 	/**
 	 * Loads data into the controller's view.
 	 * 
@@ -480,40 +494,13 @@ public class InventoryController extends Controller implements IInventoryControl
 	protected void loadValues() {
 		// TODO: Load real data
 		ProductContainerData root = new ProductContainerData();
+		root.setTag(null);
 		ProductContainerManager manager = getView().getProductContainerManager();
 		Iterator<StorageUnit> storageUnitIterator = manager.getStorageUnitIterator();
 		while (storageUnitIterator.hasNext()) {
 			ProductContainer pc = storageUnitIterator.next();
-			ProductContainerData suData = new ProductContainerData(pc.getName());
-			suData.setTag(pc);
-			root.addChild(suData);
-			ArrayList<ProductGroup> childProductGroupStack = new ArrayList<ProductGroup>();
-			// ArrayList<ProductContainerData> productContainerDataStack = new
-			// ArrayList<ProductContainerData>();
-			do {
-				Iterator<ProductGroup> productGroupIterator = pc.getProductGroupIterator();
-				// for ()
-			} while (!childProductGroupStack.isEmpty());
+			root = loadProductContainerData(root, pc);
 		}
-		ProductContainerData basementCloset = new ProductContainerData("Basement Closet");
-
-		ProductContainerData toothpaste = new ProductContainerData("Toothpaste");
-		toothpaste.addChild(new ProductContainerData("Kids"));
-		toothpaste.addChild(new ProductContainerData("Parents"));
-		basementCloset.addChild(toothpaste);
-
-		root.addChild(basementCloset);
-
-		ProductContainerData foodStorage = new ProductContainerData("Food Storage Room");
-
-		ProductContainerData soup = new ProductContainerData("Soup");
-		soup.addChild(new ProductContainerData("Chicken Noodle"));
-		soup.addChild(new ProductContainerData("Split Pea"));
-		soup.addChild(new ProductContainerData("Tomato"));
-		foodStorage.addChild(soup);
-
-		root.addChild(foodStorage);
-
 		getView().setProductContainers(root);
 	}
 
