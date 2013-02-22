@@ -16,6 +16,7 @@ import model.ConcreteItemManager;
 import model.ConcreteProductContainerManager;
 import model.ConcreteProductManager;
 import model.ItemManager;
+import model.Product;
 import model.ProductContainer;
 import model.ProductContainerManager;
 import model.ProductGroup;
@@ -178,22 +179,38 @@ public class InventoryController extends Controller implements IInventoryControl
 	/**
 	 * Returns true if and only if the "Delete Product" menu item should be enabled.
 	 * 
-	 * @pre true
+	 * @pre getView().getSelectedProduct() != null
+	 * @pre getView().getSelectedProduct().getTag() != null
+	 * @pre if(getView().getSelectedProductContainer() != null)
+	 *      getView().getSelectedProductContainer().getTag() != null
 	 * @post true
+	 * 
 	 */
 	@Override
 	public boolean canDeleteProduct() {
-		// TODO: 3 cases depending on getView().getSelectedProductContainer().
+		// 3 cases depending on getView().getSelectedProductContainer().
 		// See Functional Spec p21-22
 
-		// case 1:
-		ProductContainerData selected = getView().getSelectedProductContainer();
-		if (selected == null)
+		ProductContainerData selectedContainer = getView().getSelectedProductContainer();
+		ProductData selectedProduct = getView().getSelectedProduct();
+		if (selectedProduct == null)
+			throw new RuntimeException("Selected product is null");
+
+		// case 1: No product container is selected
+		if (selectedContainer == null)
 			return false;
 
-		// case 2:
+		// case 2: selected product container is the root node
+		ProductContainer containerTag = (ProductContainer) selectedContainer.getTag();
+		if (containerTag == null)
+			throw new RuntimeException("ProductContainer tag is null");
+		Product productTag = (Product) selectedProduct.getTag();
+		if (productTag == null)
+			throw new RuntimeException("Product tag is null");
 
-		return true;
+		// case 3: selected product container is a child StorageUnit or ProductGroup
+		else
+			return containerTag.canRemove(productTag);
 	}
 
 	/**
@@ -208,11 +225,7 @@ public class InventoryController extends Controller implements IInventoryControl
 		// items (including it's sub Product Groups)
 		// See Functional Spec p17
 
-		ProductGroup selected = (ProductGroup) getSelectedProductContainerTag();
-		if (selected == null)
-			return false;
-
-		return selected.canRemove();
+		return getSelectedProductContainerTag().canRemove();
 	}
 
 	/**
@@ -227,11 +240,7 @@ public class InventoryController extends Controller implements IInventoryControl
 		// items (including it's Product Groups)
 		// See Functional Spec p15
 
-		StorageUnit selected = (StorageUnit) getSelectedProductContainerTag();
-		if (selected == null)
-			return false;
-
-		return selected.canRemove();
+		return getSelectedProductContainerTag().canRemove();
 	}
 
 	/**
@@ -420,45 +429,6 @@ public class InventoryController extends Controller implements IInventoryControl
 	}
 
 	/**
-	 * Sets the enable/disable state of all components in the controller's view. A component
-	 * should be enabled only if the user is currently allowed to interact with that component.
-	 * 
-	 * {@pre None}
-	 * 
-	 * {@post The enable/disable state of all components in the controller's view have been set
-	 * appropriately.}
-	 */
-	@Override
-	protected void enableComponents() {
-		return;
-	}
-
-	private String getRandomBarcode() {
-		Random rand = new Random();
-		StringBuilder barcode = new StringBuilder();
-		for (int i = 0; i < 12; ++i) {
-			barcode.append(((Integer) rand.nextInt(10)).toString());
-		}
-		return barcode.toString();
-	}
-
-	private Object getSelectedProductContainerTag() {
-		ProductContainerData selectedPC = getView().getSelectedProductContainer();
-		if (selectedPC == null)
-			throw new NullPointerException("selected container is null");
-
-		return selectedPC.getTag();
-	}
-
-	/**
-	 * Returns a reference to the view for this controller.
-	 */
-	@Override
-	protected IInventoryView getView() {
-		return (IInventoryView) super.getView();
-	}
-
-	/**
 	 * This method is called when the selected item changes.
 	 * 
 	 * @pre true
@@ -468,40 +438,6 @@ public class InventoryController extends Controller implements IInventoryControl
 	public void itemSelectionChanged() {
 		// Shouldn't really be anything to do here, but I'm not sure.
 		return;
-	}
-
-	private ProductContainerData loadProductContainerData(ProductContainerData parentData,
-			ProductContainer container) {
-		ProductContainerData pcData = new ProductContainerData(container.getName());
-		pcData.setTag(container);
-		parentData.addChild(pcData);
-		Iterator<ProductGroup> productGroupIterator = container.getProductGroupIterator();
-		while (productGroupIterator.hasNext()) {
-			ProductGroup child = productGroupIterator.next();
-			pcData = loadProductContainerData(pcData, child);
-		}
-		return parentData;
-	}
-
-	/**
-	 * Loads data into the controller's view.
-	 * 
-	 * {@pre None}
-	 * 
-	 * {@post The controller has loaded data into its view}
-	 */
-	@Override
-	protected void loadValues() {
-		// TODO: Load real data
-		ProductContainerData root = new ProductContainerData();
-		root.setTag(null);
-		ProductContainerManager manager = getView().getProductContainerManager();
-		Iterator<StorageUnit> storageUnitIterator = manager.getStorageUnitIterator();
-		while (storageUnitIterator.hasNext()) {
-			ProductContainer pc = storageUnitIterator.next();
-			root = loadProductContainerData(root, pc);
-		}
-		getView().setProductContainers(root);
 	}
 
 	/**
@@ -630,4 +566,75 @@ public class InventoryController extends Controller implements IInventoryControl
 		getView().displayTransferItemBatchView();
 	}
 
+	private String getRandomBarcode() {
+		Random rand = new Random();
+		StringBuilder barcode = new StringBuilder();
+		for (int i = 0; i < 12; ++i) {
+			barcode.append(((Integer) rand.nextInt(10)).toString());
+		}
+		return barcode.toString();
+	}
+
+	private ProductContainer getSelectedProductContainerTag() {
+		ProductContainerData selectedPC = getView().getSelectedProductContainer();
+		assert (selectedPC != null);
+
+		return (ProductContainer) selectedPC.getTag();
+	}
+
+	private ProductContainerData loadProductContainerData(ProductContainerData parentData,
+			ProductContainer container) {
+		ProductContainerData pcData = new ProductContainerData(container.getName());
+		pcData.setTag(container);
+		parentData.addChild(pcData);
+		Iterator<ProductGroup> productGroupIterator = container.getProductGroupIterator();
+		while (productGroupIterator.hasNext()) {
+			ProductGroup child = productGroupIterator.next();
+			pcData = loadProductContainerData(pcData, child);
+		}
+		return parentData;
+	}
+
+	/**
+	 * Sets the enable/disable state of all components in the controller's view. A component
+	 * should be enabled only if the user is currently allowed to interact with that component.
+	 * 
+	 * {@pre None}
+	 * 
+	 * {@post The enable/disable state of all components in the controller's view have been set
+	 * appropriately.}
+	 */
+	@Override
+	protected void enableComponents() {
+		return;
+	}
+
+	/**
+	 * Returns a reference to the view for this controller.
+	 */
+	@Override
+	protected IInventoryView getView() {
+		return (IInventoryView) super.getView();
+	}
+
+	/**
+	 * Loads data into the controller's view.
+	 * 
+	 * {@pre None}
+	 * 
+	 * {@post The controller has loaded data into its view}
+	 */
+	@Override
+	protected void loadValues() {
+		// TODO: Load real data
+		ProductContainerData root = new ProductContainerData();
+		root.setTag(null);
+		ProductContainerManager manager = getView().getProductContainerManager();
+		Iterator<StorageUnit> storageUnitIterator = manager.getStorageUnitIterator();
+		while (storageUnitIterator.hasNext()) {
+			ProductContainer pc = storageUnitIterator.next();
+			root = loadProductContainerData(root, pc);
+		}
+		getView().setProductContainers(root);
+	}
 }
