@@ -518,7 +518,7 @@ public class InventoryController extends Controller implements IInventoryControl
 	 */
 	@Override
 	public void productContainerSelectionChanged() {
-		// TODO: load productDataList from Model
+		// Load Products in selected ProductContainer
 		List<ProductData> productDataList = new ArrayList<ProductData>();
 		ProductContainerData selectedContainer = getView().getSelectedProductContainer();
 		if (selectedContainer != null) {
@@ -533,7 +533,7 @@ public class InventoryController extends Controller implements IInventoryControl
 		}
 		getView().setProducts(productDataList.toArray(new ProductData[0]));
 
-		// TODO: Load itemDataList from Model
+		// Clear ItemTable
 		List<ItemData> itemDataList = new ArrayList<ItemData>();
 		getView().setItems(itemDataList.toArray(new ItemData[0]));
 	}
