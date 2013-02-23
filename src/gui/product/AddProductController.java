@@ -41,7 +41,7 @@ public class AddProductController extends Controller implements IAddProductContr
 	 */
 	@Override
 	public void addProduct() {
-		ProductManager productManager = getView().getProductManager();
+		ProductManager productManager = getProductManager();
 		String barcode = getView().getBarcode();
 		String description = getView().getDescription();
 		int shelfLife = 0;

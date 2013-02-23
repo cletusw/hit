@@ -48,7 +48,7 @@ public class AddProductGroupController extends Controller implements
 		int tmsQuantity = Integer.parseInt(getView().getSupplyValue());
 		Unit tmsUnit = Unit.convertToUnit(getView().getSupplyUnit().toString());
 		ProductQuantity threeMonthSupply = new ProductQuantity(tmsQuantity, tmsUnit);
-		ProductContainerManager manager = getView().getProductContainerManager();
+		ProductContainerManager manager = getProductContainerManager();
 		ProductContainer parent = (ProductContainer) parentContainerData.getTag();
 
 		ProductGroup productGroup = new ProductGroup(pgName, threeMonthSupply, tmsUnit,
@@ -78,7 +78,7 @@ public class AddProductGroupController extends Controller implements
 		getView().enableProductGroupName(true);
 		getView().enableSupplyUnit(true);
 		getView().enableSupplyValue(true);
-		ProductContainerManager manager = getView().getProductContainerManager();
+		ProductContainerManager manager = getProductContainerManager();
 		boolean enableOk = true;
 		int supplyValue = 0;
 		try {
