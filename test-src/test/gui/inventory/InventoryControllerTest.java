@@ -32,25 +32,17 @@ public class InventoryControllerTest {
 	private IInventoryView mockView;
 
 	private StorageUnit storageUnit;
+	private ProductContainerData storageUnitData;
 	private ProductGroup productGroup;
+	private ProductContainerData productGroupData;
 	private Product product;
 	private Item item;
 
 	@Before
 	public void setUp() throws Exception {
-		ProductManager productManager = createNiceMock(ProductManager.class);
-		ItemManager itemManager = createNiceMock(ItemManager.class);
+		setUpModelFixtures();
+
 		ProductContainerManager mockProductContainerManager = createNiceMock(ProductContainerManager.class);
-
-		// Fixtures
-		storageUnit = new StorageUnit("Test Storage Unit", mockProductContainerManager);
-		productGroup = new ProductGroup("Test Product Group", new ProductQuantity(1,
-				Unit.COUNT), Unit.COUNT, storageUnit, mockProductContainerManager);
-		product = new Product("Test Barcode", "Test Description", 1, 1, new ProductQuantity(1,
-				Unit.COUNT), productManager);
-		item = new Item(product, storageUnit, itemManager);
-
-		reset(mockProductContainerManager);
 		mockView = createNiceMock(IInventoryView.class);
 		expect(mockView.getProductContainerManager()).andStubReturn(
 				mockProductContainerManager);
@@ -117,9 +109,6 @@ public class InventoryControllerTest {
 
 	@Test
 	public void testCanDeleteStorageUnit() {
-		ProductContainerData storageUnitData = new ProductContainerData();
-		storageUnitData.setTag(storageUnit);
-
 		expect(mockView.getSelectedProductContainer()).andStubReturn(storageUnitData);
 		replay(mockView);
 
@@ -231,6 +220,25 @@ public class InventoryControllerTest {
 	@Test
 	public void testTransferItems() {
 		// TODO
+	}
+
+	private void setUpModelFixtures() {
+		ProductManager productManager = createNiceMock(ProductManager.class);
+		ItemManager itemManager = createNiceMock(ItemManager.class);
+		ProductContainerManager mockProductContainerManager = createNiceMock(ProductContainerManager.class);
+
+		storageUnit = new StorageUnit("Test Storage Unit", mockProductContainerManager);
+		storageUnitData = new ProductContainerData();
+		storageUnitData.setTag(storageUnit);
+
+		productGroup = new ProductGroup("Test Product Group", new ProductQuantity(1,
+				Unit.COUNT), Unit.COUNT, storageUnit, mockProductContainerManager);
+		productGroupData = new ProductContainerData();
+		productGroupData.setTag(productGroup);
+		product = new Product("Test Barcode", "Test Description", 1, 1, new ProductQuantity(1,
+				Unit.COUNT), productManager);
+		item = new Item(product, storageUnit, itemManager);
+
 	}
 
 }
