@@ -1,13 +1,21 @@
 package gui.product;
 
+import model.Product;
+import model.ProductManager;
+import model.ProductQuantity;
+import model.Unit;
 import gui.common.Controller;
 import gui.common.IView;
+import gui.common.SizeUnits;
+import gui.common.View;
 
 /**
  * Controller class for the edit product view.
  */
 public class EditProductController extends Controller implements IEditProductController {
 
+	private ProductData target;
+	
 	/**
 	 * Constructor.
 	 * 
@@ -18,7 +26,7 @@ public class EditProductController extends Controller implements IEditProductCon
 	 */
 	public EditProductController(IView view, ProductData target) {
 		super(view);
-
+		this.target = target;
 		construct();
 	}
 
@@ -31,6 +39,30 @@ public class EditProductController extends Controller implements IEditProductCon
 	 */
 	@Override
 	public void editProduct() {
+		ProductManager productManager = getProductManager();
+		String barcode = getView().getBarcode();
+		String description = getView().getDescription();
+		int shelfLife = 0;
+		try {
+			shelfLife = Integer.parseInt(getView().getShelfLife());
+		} catch (NumberFormatException e) {
+		}
+		int threeMonthSupply = 0;
+		try {
+			threeMonthSupply = Integer.parseInt(getView().getSupply());
+		} catch (NumberFormatException e) {
+		}
+		float quantity = 1;
+		try {
+			quantity = (float) Double.parseDouble(getView().getSizeValue());
+		} catch (NumberFormatException e) {
+		}
+
+		Unit unit = Unit.convertFromSizeUnits(getView().getSizeUnit());
+		ProductQuantity pq = new ProductQuantity(quantity, unit);
+
+		Product product = new Product(barcode, description, shelfLife, threeMonthSupply, pq,
+				productManager);
 	}
 
 	/**
@@ -39,6 +71,9 @@ public class EditProductController extends Controller implements IEditProductCon
 	 */
 	@Override
 	public void valuesChanged() {
+		if (getView().getSizeUnit().equals(SizeUnits.Count))
+			getView().setSizeValue("1");
+		enableComponents();
 	}
 
 	/**
@@ -52,6 +87,13 @@ public class EditProductController extends Controller implements IEditProductCon
 	 */
 	@Override
 	protected void enableComponents() {
+		getView().enableBarcode(false);
+		getView().enableDescription(true);
+		getView().enableOK(isAllDataValid());
+		getView().enableShelfLife(true);
+		getView().enableSizeUnit(true);
+		getView().enableSizeValue(!getView().getSizeUnit().equals(SizeUnits.Count));
+		getView().enableSupply(true);
 	}
 
 	//
@@ -79,6 +121,49 @@ public class EditProductController extends Controller implements IEditProductCon
 	 */
 	@Override
 	protected void loadValues() {
+		getView().setBarcode(target.getBarcode());
+		getView().setDescription(target.getDescription());
+		getView().setShelfLife(target.getShelfLife());
+		String unitString = ((Product)target.getTag()).getProductQuantity().getUnits().toString();
+		if (unitString.contains(" "))
+			unitString = unitString.replace(" ", "");
+
+		getView().setSizeUnit(SizeUnits.valueOf(unitString));
+		getView().setSizeValue(target.getCount());
+		getView().setSupply(target.getSupply());
+	}
+	
+	
+	private boolean isAllDataValid() {
+		int shelfLife = 0;
+		try {
+			shelfLife = Integer.parseInt(getView().getShelfLife());
+			if (!Product.isValidShelfLife(shelfLife))
+				return false;
+		} catch (NumberFormatException e) {
+			return false;
+		}
+		double sizeValue = 1;
+		try {
+			sizeValue = Double.parseDouble(getView().getSizeValue());
+			Unit unit = Unit.convertFromSizeUnits(getView().getSizeUnit());
+			if (!ProductQuantity.isValidProductQuantity((float) sizeValue, unit))
+				return false;
+			ProductQuantity pq = new ProductQuantity((float) sizeValue, unit);
+			if (!Product.isValidProductQuantity(pq))
+				return false;
+		} catch (NumberFormatException e) {
+			return false;
+		}
+		int tms = 0;
+		try {
+			tms = Integer.parseInt(getView().getSupply());
+			if (!Product.isValidThreeMonthSupply(tms))
+				return false;
+		} catch (NumberFormatException e) {
+			return false;
+		}
+		return (!getView().getBarcode().equals("") && !getView().getDescription().equals(""));
 	}
 
 }
