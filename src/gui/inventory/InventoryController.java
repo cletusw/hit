@@ -15,7 +15,6 @@ import java.util.Random;
 import model.Item;
 import model.Product;
 import model.ProductContainer;
-import model.ProductContainerManager;
 import model.ProductGroup;
 import model.StorageUnit;
 
@@ -708,8 +707,8 @@ public class InventoryController extends Controller implements IInventoryControl
 	protected void loadValues() {
 		ProductContainerData root = new ProductContainerData();
 		root.setTag(null);
-		ProductContainerManager manager = getView().getProductContainerManager();
-		Iterator<StorageUnit> storageUnitIterator = manager.getStorageUnitIterator();
+		Iterator<StorageUnit> storageUnitIterator = getProductContainerManager()
+				.getStorageUnitIterator();
 		while (storageUnitIterator.hasNext()) {
 			ProductContainer pc = storageUnitIterator.next();
 			root = loadProductContainerData(root, pc);
