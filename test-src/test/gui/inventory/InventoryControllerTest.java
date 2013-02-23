@@ -31,6 +31,8 @@ public class InventoryControllerTest {
 	private InventoryController inventoryController;
 	private IInventoryView mockView;
 
+	private ItemManager itemManager;
+
 	private StorageUnit storageUnit;
 	private ProductContainerData storageUnitData;
 	private ProductGroup productGroup;
@@ -112,9 +114,9 @@ public class InventoryControllerTest {
 		expect(mockView.getSelectedProductContainer()).andStubReturn(storageUnitData);
 		replay(mockView);
 
-		assertTrue(inventoryController.canDeleteStorageUnit());
-		storageUnit.add(item);
 		assertFalse(inventoryController.canDeleteStorageUnit());
+		storageUnit.remove(item, itemManager);
+		assertTrue(inventoryController.canDeleteStorageUnit());
 	}
 
 	@Test
@@ -224,7 +226,7 @@ public class InventoryControllerTest {
 
 	private void setUpModelFixtures() {
 		ProductManager productManager = createNiceMock(ProductManager.class);
-		ItemManager itemManager = createNiceMock(ItemManager.class);
+		itemManager = createNiceMock(ItemManager.class);
 		ProductContainerManager mockProductContainerManager = createNiceMock(ProductContainerManager.class);
 
 		storageUnit = new StorageUnit("Test Storage Unit", mockProductContainerManager);
@@ -238,7 +240,7 @@ public class InventoryControllerTest {
 		product = new Product("Test Barcode", "Test Description", 1, 1, new ProductQuantity(1,
 				Unit.COUNT), productManager);
 		item = new Item(product, storageUnit, itemManager);
-
+		storageUnit.add(item);
 	}
 
 }
