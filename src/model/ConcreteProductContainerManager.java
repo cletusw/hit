@@ -86,7 +86,7 @@ public class ConcreteProductContainerManager extends Observable implements Seria
 			nameToStorageUnit.put(storageUnit.getName(), storageUnit);
 		}
 		setChanged();
-		this.notifyObservers();
+		this.notifyObservers(pc);
 	}
 
 	/**
@@ -94,6 +94,7 @@ public class ConcreteProductContainerManager extends Observable implements Seria
 	 * @param name
 	 * @param su
 	 */
+	@Override
 	public void setStorageUnitName(String name, StorageUnit su) {
 		if (name.equals(su.getName()))
 			return;

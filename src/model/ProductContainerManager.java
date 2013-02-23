@@ -1,6 +1,7 @@
 package model;
 
 import java.util.Iterator;
+import java.util.Observer;
 
 public interface ProductContainerManager {
 	public StorageUnit getStorageUnitByName(String name);
@@ -14,4 +15,6 @@ public interface ProductContainerManager {
 	public void setStorageUnitName(String name, StorageUnit su);
 
 	public void unmanage(ProductContainer pc);
+
+	void addObserver(Observer o);
 }
