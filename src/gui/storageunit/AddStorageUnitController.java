@@ -34,7 +34,7 @@ public class AddStorageUnitController extends Controller implements IAddStorageU
 	 */
 	@Override
 	public void addStorageUnit() {
-		ProductContainerManager manager = getView().getProductContainerManager();
+		ProductContainerManager manager = getProductContainerManager();
 		new StorageUnit(getView().getStorageUnitName(), manager);
 	}
 
@@ -59,7 +59,7 @@ public class AddStorageUnitController extends Controller implements IAddStorageU
 	@Override
 	protected void enableComponents() {
 		getView().enableStorageUnitName(true);
-		ProductContainerManager manager = getView().getProductContainerManager();
+		ProductContainerManager manager = getProductContainerManager();
 		getView().enableOK(manager.isValidStorageUnitName(getView().getStorageUnitName()));
 	}
 

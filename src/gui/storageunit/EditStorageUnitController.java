@@ -39,7 +39,7 @@ public class EditStorageUnitController extends Controller implements
 	 */
 	@Override
 	public void editStorageUnit() {
-		ProductContainerManager manager = getView().getProductContainerManager();
+		ProductContainerManager manager = getProductContainerManager();
 		ProductContainer su = manager.getStorageUnitByName(container.getName());
 		manager.setStorageUnitName(getView().getStorageUnitName(), (StorageUnit) su);
 	}
@@ -65,7 +65,7 @@ public class EditStorageUnitController extends Controller implements
 	@Override
 	protected void enableComponents() {
 		getView().enableStorageUnitName(true);
-		ProductContainerManager manager = getView().getProductContainerManager();
+		ProductContainerManager manager = getProductContainerManager();
 		getView().enableOK(
 				getView().getStorageUnitName().equals(container.getName())
 						|| manager.isValidStorageUnitName(getView().getStorageUnitName()));
