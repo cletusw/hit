@@ -1,6 +1,7 @@
 package gui.batches;
 
 import gui.common.Controller;
+import gui.common.DataWrapper;
 import gui.common.IView;
 import gui.inventory.ProductContainerData;
 import gui.item.ItemData;
@@ -52,23 +53,30 @@ public class AddItemBatchController extends Controller implements IAddItemBatchC
 	 */
 	@Override
 	public void addItem() {
+		ProductData selectedProduct = getView().getSelectedProduct();
+		ItemData selectedItem = getView().getSelectedItem();
 		String productBarcode = getView().getBarcode();
 		ProductManager productManager = getProductManager();
 		Product product = null;
 		ProductData productData = null;
 		if (productManager.containsProduct(productBarcode)) {
 			product = productManager.getByBarcode(productBarcode);
+			boolean found = false;
 			for (ProductData pd : products) {
-				if (pd.getBarcode().equals(product.getBarcode()))
+				if (pd.getBarcode().equals(product.getBarcode())) {
 					productData = pd;
+					found = true;
+				}
+			}
+			if (!found) {
+				productData = addProduct(product);
 			}
 		} else {
 			getView().displayAddProductView();
 			product = productManager.getByBarcode(productBarcode);
-			productData = new ProductData(product);
-			products.add(productData);
-			items.add(new ArrayList<ItemData>());
-			refreshProducts();
+			if (product == null)
+				return;
+			productData = addProduct(product);
 		}
 		int count = Integer.parseInt(productData.getCount());
 		int itemCount = Integer.parseInt(getView().getCount());
@@ -92,7 +100,12 @@ public class AddItemBatchController extends Controller implements IAddItemBatchC
 		// Clear the view for the next item!
 		getView().setBarcode("");
 		refreshItems();
+		refreshProducts();
 		enableComponents();
+		if (selectedProduct != null)
+			getView().selectProduct(selectedProduct);
+		if (selectedItem != null)
+			getView().selectItem(selectedItem);
 		getView().giveBarcodeFocus();
 	}
 
@@ -161,6 +174,14 @@ public class AddItemBatchController extends Controller implements IAddItemBatchC
 		if (getView().getUseScanner()) {
 			getView().setBarcode("");
 		}
+	}
+
+	private ProductData addProduct(Product product) {
+		ProductData productData = DataWrapper.wrap(product, 0);
+		products.add(productData);
+		items.add(new ArrayList<ItemData>());
+		// refreshProducts();
+		return productData;
 	}
 
 	private void refreshItems() {
