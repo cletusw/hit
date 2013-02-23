@@ -26,6 +26,15 @@ public class ConcreteProductContainerManager extends Observable implements Seria
 	}
 
 	@Override
+	public void editProductGroup(StorageUnit root, String oldName, String newName,
+			ProductQuantity newTMS) {
+		ProductGroup pg = root.editProductGroup(oldName, newName, newTMS);
+		setChanged();
+		Action a = new Action(pg, ActionType.EDIT);
+		this.notifyObservers(a);
+	}
+
+	@Override
 	public StorageUnit getRootStorageUnitByName(String productGroupName) {
 		for (StorageUnit su : rootStorageUnits) {
 			if (su.getName().equals(productGroupName)
