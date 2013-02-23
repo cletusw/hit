@@ -160,6 +160,13 @@ public class ConcreteProductContainerManager extends Observable implements Seria
 			StorageUnit storageUnit = (StorageUnit) pc;
 			rootStorageUnits.remove(storageUnit);
 			nameToStorageUnit.remove(storageUnit.getName());
+		} else {
+			ProductGroup pg = (ProductGroup) pc;
+			for (StorageUnit su : rootStorageUnits) {
+				if (su.containsProductGroup(pg.getName())) {
+					su.remove(pg);
+				}
+			}
 		}
 		setChanged();
 		Action a = new Action(pc, ActionType.DELETE);
