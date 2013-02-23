@@ -8,6 +8,8 @@ import java.util.Set;
 import java.util.TreeMap;
 import java.util.TreeSet;
 
+import model.Action.ActionType;
+
 /**
  * Class that manages Items
  * 
@@ -82,6 +84,10 @@ public class ConcreteItemManager extends Observable implements ItemManager, Seri
 		}
 
 		items.add(item);
+		
+		setChanged();
+		Action action = new Action(item, ActionType.CREATE);
+		this.notifyObservers(action);
 	}
 
 	/**
@@ -129,6 +135,9 @@ public class ConcreteItemManager extends Observable implements ItemManager, Seri
 
 		item.remove();
 		removedItems.add(item);
+		setChanged();
+		Action action = new Action(item, ActionType.DELETE);
+		this.notifyObservers(action);
 	}
 
 }
