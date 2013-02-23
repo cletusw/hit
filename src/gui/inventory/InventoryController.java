@@ -106,14 +106,13 @@ public class InventoryController extends Controller implements IInventoryControl
 		if (container == null)
 			throw new IllegalStateException("ProductContainer must have a tag.");
 
-		ProductContainer oldContainer = (ProductContainer) getView()
-				.getSelectedProductContainer().getTag();
+		ProductContainer oldContainer = getSelectedProductContainerTag();
 		if (productToAdd.hasContainer(container))
 			return;
 		productToAdd.addContainer(container);
 		container.add(productToAdd);
 		productToAdd.removeContainer(oldContainer);
-		ItemManager itemManager = getView().getItemManager();
+		ItemManager itemManager = getItemManager();
 		Set<Item> itemsToMove = itemManager.getItemsByProduct(productToAdd);
 		for (Item item : itemsToMove) {
 			if (item.getContainer().equals(oldContainer))
