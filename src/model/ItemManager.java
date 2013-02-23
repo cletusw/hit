@@ -1,6 +1,7 @@
 package model;
 
 import java.util.Iterator;
+import java.util.Observer;
 import java.util.Set;
 
 /**
@@ -13,6 +14,8 @@ public interface ItemManager {
 	public void manage(Item item);
 
 	public Iterator<Item> removedItemsIterator();
+	
+	void addObserver(Observer o);
 
 	public void unmanage(Item item);
 }

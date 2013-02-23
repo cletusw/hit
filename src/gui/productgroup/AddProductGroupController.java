@@ -45,7 +45,7 @@ public class AddProductGroupController extends Controller implements
 	@Override
 	public void addProductGroup() {
 		String pgName = getView().getProductGroupName();
-		int tmsQuantity = Integer.parseInt(getView().getSupplyValue());
+		float tmsQuantity = Float.parseFloat(getView().getSupplyValue());
 		Unit tmsUnit = Unit.convertToUnit(getView().getSupplyUnit().toString());
 		ProductQuantity threeMonthSupply = new ProductQuantity(tmsQuantity, tmsUnit);
 		ProductContainerManager manager = getProductContainerManager();
@@ -80,9 +80,9 @@ public class AddProductGroupController extends Controller implements
 		getView().enableSupplyValue(true);
 		ProductContainerManager manager = getProductContainerManager();
 		boolean enableOk = true;
-		int supplyValue = 0;
+		float supplyValue = 0;
 		try {
-			supplyValue = Integer.parseInt(getView().getSupplyValue());
+			supplyValue = Float.parseFloat(getView().getSupplyValue());
 			if (!ProductQuantity.isValidProductQuantity(supplyValue,
 					Unit.convertToUnit(getView().getSupplyUnit().toString()))) {
 				enableOk = false;

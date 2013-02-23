@@ -326,6 +326,16 @@ public abstract class ProductContainer implements Comparable<ProductContainer>, 
 		return productGroups.containsKey(productGroupName);
 	}
 
+	public ProductGroup editProductGroup(String oldName, String newName,
+			ProductQuantity newThreeMonthSupply) {
+		ProductGroup pg = productGroups.get(oldName);
+		productGroups.remove(oldName);
+		pg.setName(newName);
+		pg.setThreeMonthSupply(newThreeMonthSupply);
+		productGroups.put(newName, pg);
+		return pg;
+	}
+
 	/**
 	 * Defines equality with another ProductContainer descendant.
 	 * 
@@ -529,7 +539,7 @@ public abstract class ProductContainer implements Comparable<ProductContainer>, 
 			throw new IllegalStateException(
 					"Destination container already contains the item to be moved");
 		}
-		
+
 		unregisterItem(item);
 		destination.registerItem(item);
 	}
