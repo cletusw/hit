@@ -309,6 +309,14 @@ public enum Unit implements Serializable {
 	@Override
 	public String toString() {
 		String s = super.toString();
+		if (s.contains("_")) {
+			// FLUID_OUNCES -> Fluid Ounces
+			String ounces = s.substring(s.indexOf('_') + 1);
+			String fluid = s.substring(0, s.indexOf('_'));
+			String finished = fluid.substring(0, 1) + fluid.substring(1).toLowerCase() + " "
+					+ ounces.substring(0, 1) + ounces.substring(1).toLowerCase();
+			return finished;
+		}
 		return s.substring(0, 1) + s.substring(1).toLowerCase();
 	}
 }
