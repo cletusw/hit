@@ -1,6 +1,7 @@
 package gui.product;
 
 import gui.common.Tagable;
+import model.Product;
 
 /**
  * Display data class for products.
@@ -52,6 +53,19 @@ public class ProductData extends Tagable {
 		_shelfLife = "";
 		_supply = "";
 		_barcode = "";
+	}
+
+	/**
+	 * Constructor with a Product
+	 */
+	public ProductData(Product product) {
+		_description = product.getDescription();
+		_size = "" + product.getSize().getQuantity();
+		_count = "" + 0;
+		_shelfLife = "" + product.getShelfLife();
+		_supply = "" + product.getThreeMonthSupply();
+		_barcode = "" + product.getBarcode();
+		setTag(product);
 	}
 
 	/**

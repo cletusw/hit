@@ -19,7 +19,7 @@ import model.Unit;
  * Controller class for the add item batch view.
  */
 public class AddItemBatchController extends Controller implements IAddItemBatchController {
-	ArrayList<ItemData> items;
+	ArrayList<ArrayList<ItemData>> items;
 	ArrayList<ProductData> products;
 	ProductContainer container;
 
@@ -36,7 +36,7 @@ public class AddItemBatchController extends Controller implements IAddItemBatchC
 		// Phase 2: not using the scanner
 		getView().setUseScanner(false);
 		getView().setCount("1");
-		items = new ArrayList<ItemData>();
+		items = new ArrayList<ArrayList<ItemData>>();
 		products = new ArrayList<ProductData>();
 		container = (ProductContainer) target.getTag();
 		getView().giveBarcodeFocus();
@@ -53,31 +53,47 @@ public class AddItemBatchController extends Controller implements IAddItemBatchC
 	@Override
 	public void addItem() {
 		String productBarcode = getView().getBarcode();
-		ProductManager productManager = getView().getProductManager();
+		ProductManager productManager = getProductManager();
 		Product product = null;
-		if (productManager.containsProduct(productBarcode))
+		ProductData productData = null;
+		if (productManager.containsProduct(productBarcode)) {
 			product = productManager.getByBarcode(productBarcode);
-		else {
+			for (ProductData pd : products) {
+				if (pd.getBarcode().equals(product.getBarcode()))
+					productData = pd;
+			}
+		} else {
 			getView().displayAddProductView();
+			product = productManager.getByBarcode(productBarcode);
+			productData = new ProductData(product);
+			products.add(productData);
+			items.add(new ArrayList<ItemData>());
+			refreshProducts();
 		}
+		int count = Integer.parseInt(productData.getCount());
+		int itemCount = Integer.parseInt(getView().getCount());
+		count += itemCount;
+		productData.setCount("" + count);
 
-		Item item = new Item(product, container, getView().getItemManager());
-		// TODO: Needs to go through the manager in order to allow notifications!
-		container.add(item);
+		for (int i = 0; i < itemCount; i++) {
+			Item item = new Item(product, container, getView().getItemManager());
+			// TODO: Needs to go through the manager in order to allow notify!
+			container.add(item);
 
-		ItemData id = new ItemData();
-		id.setTag(item);
-		id.setBarcode(item.getBarcode());
-		id.setEntryDate(item.getEntryDate());
-		id.setExpirationDate(item.getExpirationDate());
-		id.setStorageUnit(container.getName());
-		id.setProductGroup(item.getContainer().getName());
-		items.add(id);
-
+			ItemData id = new ItemData();
+			id.setTag(item);
+			id.setBarcode(item.getBarcode());
+			id.setEntryDate(item.getEntryDate());
+			id.setExpirationDate(item.getExpirationDate());
+			id.setStorageUnit(container.getName());
+			id.setProductGroup(item.getContainer().getName());
+			items.get(products.indexOf(productData)).add(id);
+		}
 		// Clear the view for the next item!
 		getView().setBarcode("");
-		loadValues();
+		refreshItems();
 		enableComponents();
+		getView().giveBarcodeFocus();
 	}
 
 	/**
@@ -126,8 +142,7 @@ public class AddItemBatchController extends Controller implements IAddItemBatchC
 	 */
 	@Override
 	public void selectedProductChanged() {
-		// TODO: Need to update the items shown in the Items pane
-		loadValues();
+		refreshItems();
 	}
 
 	/**
@@ -146,6 +161,18 @@ public class AddItemBatchController extends Controller implements IAddItemBatchC
 		if (getView().getUseScanner()) {
 			getView().setBarcode("");
 		}
+	}
+
+	private void refreshItems() {
+		ItemData[] id = new ItemData[0];
+		int index = products.indexOf(getView().getSelectedProduct());
+		if (index >= 0)
+			getView().setItems(items.get(index).toArray(id));
+	}
+
+	private void refreshProducts() {
+		ProductData[] pd = new ProductData[0];
+		getView().setProducts(products.toArray(pd));
 	}
 
 	/**
@@ -189,10 +216,8 @@ public class AddItemBatchController extends Controller implements IAddItemBatchC
 	 */
 	@Override
 	protected void loadValues() {
-		ProductData[] pd = new ProductData[0];
-		ItemData[] id = new ItemData[0];
-		getView().setProducts(products.toArray(pd));
-		getView().setItems(items.toArray(id));
+		refreshProducts();
+		refreshItems();
 	}
 
 }
