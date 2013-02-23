@@ -126,8 +126,14 @@ public class ConcreteProductContainerManager extends Observable implements Seria
 			return;
 		if (!isValidStorageUnitName(name))
 			throw new IllegalArgumentException("Illegal storage unit name");
+		rootStorageUnits.remove(su);
+		nameToStorageUnit.remove(su.getName());
 		su.setName(name);
-		notifyObservers();
+		rootStorageUnits.add(su);
+		nameToStorageUnit.put(name, su);
+		setChanged();
+		Action a = new Action(su, ActionType.EDIT);
+		this.notifyObservers(a);
 	}
 
 	/**
@@ -147,6 +153,7 @@ public class ConcreteProductContainerManager extends Observable implements Seria
 			nameToStorageUnit.remove(storageUnit.getName());
 		}
 		setChanged();
-		this.notifyObservers();
+		Action a = new Action(pc, ActionType.DELETE);
+		this.notifyObservers(a);
 	}
 }
