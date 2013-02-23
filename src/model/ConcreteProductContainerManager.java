@@ -8,6 +8,8 @@ import java.util.Set;
 import java.util.TreeMap;
 import java.util.TreeSet;
 
+import model.Action.ActionType;
+
 @SuppressWarnings("serial")
 public class ConcreteProductContainerManager extends Observable implements Serializable,
 		ProductContainerManager {
@@ -109,7 +111,8 @@ public class ConcreteProductContainerManager extends Observable implements Seria
 			nameToStorageUnit.put(storageUnit.getName(), storageUnit);
 		}
 		setChanged();
-		this.notifyObservers(pc);
+		Action a = new Action(pc, ActionType.CREATE);
+		this.notifyObservers(a);
 	}
 
 	/**
@@ -123,9 +126,14 @@ public class ConcreteProductContainerManager extends Observable implements Seria
 			return;
 		if (!isValidStorageUnitName(name))
 			throw new IllegalArgumentException("Illegal storage unit name");
-		unmanage(su);
+		rootStorageUnits.remove(su);
+		nameToStorageUnit.remove(su.getName());
 		su.setName(name);
-		manage(su);
+		rootStorageUnits.add(su);
+		nameToStorageUnit.put(name, su);
+		setChanged();
+		Action a = new Action(su, ActionType.EDIT);
+		this.notifyObservers(a);
 	}
 
 	/**
@@ -145,6 +153,7 @@ public class ConcreteProductContainerManager extends Observable implements Seria
 			nameToStorageUnit.remove(storageUnit.getName());
 		}
 		setChanged();
-		this.notifyObservers();
+		Action a = new Action(pc, ActionType.DELETE);
+		this.notifyObservers(a);
 	}
 }
