@@ -58,6 +58,23 @@ public class Product implements Comparable<Object>, Serializable {
 	}
 
 	/**
+	 * Determines whether the specified product quantity is valid
+	 * 
+	 * @param pq
+	 *            the ProductQuantity to check
+	 * 
+	 * @pre pq != null
+	 * @post Returns true if pq is a valid Product Quantity for Products
+	 */
+	public static boolean isValidProductQuantity(ProductQuantity pq) {
+		if (pq.getQuantity() <= 0)
+			return false;
+		if (pq.getUnits().equals(Unit.COUNT) && pq.getQuantity() != 1)
+			return false;
+		return true;
+	}
+
+	/**
 	 * Determines whether the given integer is a valid shelf life.
 	 * 
 	 * @param sl
@@ -97,6 +114,7 @@ public class Product implements Comparable<Object>, Serializable {
 	private int threeMonthSupply;
 	private final Set<ProductContainer> productContainers;
 	private final Set<Item> items;
+
 	private ProductQuantity productQuantity;
 
 	/**
@@ -380,21 +398,6 @@ public class Product implements Comparable<Object>, Serializable {
 	 */
 	public boolean hasContainer(ProductContainer container) {
 		return productContainers.contains(container);
-	}
-
-	/**
-	 * Determines whether the specified product quantity is valid
-	 * 
-	 * @param pq
-	 *            the ProductQuantity to check
-	 * 
-	 * @pre pq != null
-	 * @post Returns true if pq is a valid Product Quantity for Products
-	 */
-	public boolean isValidProductQuantity(ProductQuantity pq) {
-		if (pq.getUnits().equals(Unit.COUNT) && pq.getQuantity() != 1)
-			return false;
-		return true;
 	}
 
 	/**

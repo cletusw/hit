@@ -1,5 +1,7 @@
 package model;
 
+import gui.common.SizeUnits;
+
 import java.io.Serializable;
 import java.util.Map;
 import java.util.TreeMap;
@@ -24,6 +26,24 @@ public enum Unit implements Serializable {
 		typeMap.put(Unit.PINTS, UnitType.VOLUME);
 		typeMap.put(Unit.FLUID_OUNCES, UnitType.VOLUME);
 		typeMap.put(Unit.LITERS, UnitType.VOLUME);
+	}
+
+	public static final Map<SizeUnits, Unit> sizeUnitsMap = new TreeMap<SizeUnits, Unit>();
+	static {
+		sizeUnitsMap.put(SizeUnits.Count, Unit.COUNT);
+		sizeUnitsMap.put(SizeUnits.Pounds, Unit.POUNDS);
+		sizeUnitsMap.put(SizeUnits.Ounces, Unit.OUNCES);
+		sizeUnitsMap.put(SizeUnits.Grams, Unit.GRAMS);
+		sizeUnitsMap.put(SizeUnits.Kilograms, Unit.KILOGRAMS);
+		sizeUnitsMap.put(SizeUnits.Gallons, Unit.GALLONS);
+		sizeUnitsMap.put(SizeUnits.Quarts, Unit.QUARTS);
+		sizeUnitsMap.put(SizeUnits.Pints, Unit.PINTS);
+		sizeUnitsMap.put(SizeUnits.FluidOunces, Unit.FLUID_OUNCES);
+		sizeUnitsMap.put(SizeUnits.Liters, Unit.LITERS);
+	}
+
+	public static Unit convertFromSizeUnits(SizeUnits sizeUnit) {
+		return sizeUnitsMap.get(sizeUnit);
 	}
 
 	public static Unit convertToUnit(String s) {

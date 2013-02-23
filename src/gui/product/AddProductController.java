@@ -2,7 +2,11 @@ package gui.product;
 
 import gui.common.Controller;
 import gui.common.IView;
+import gui.common.SizeUnits;
+import model.Product;
 import model.ProductManager;
+import model.ProductQuantity;
+import model.Unit;
 
 /**
  * Controller class for the add item view.
@@ -20,6 +24,11 @@ public class AddProductController extends Controller implements IAddProductContr
 	public AddProductController(IView view, String barcode) {
 		super(view);
 
+		getView().setBarcode(barcode);
+		getView().setSizeUnit(SizeUnits.Count);
+		getView().setSizeValue("1");
+		getView().setSupply("0");
+		getView().setShelfLife("0");
 		construct();
 	}
 
@@ -50,13 +59,14 @@ public class AddProductController extends Controller implements IAddProductContr
 			quantity = (float) Double.parseDouble(getView().getSizeValue());
 		} catch (NumberFormatException e) {
 		}
-		/*
-		 * Unit unit = new Unit(getView().getSizeUnit());
-		 * 
-		 * ProductQuantity pq = new ProductQuantity(); Product product = new Product(barcode,
-		 * description, shelfLife, threeMonthSupply, new ProductQuantity() shelfLife, int tms,
-		 * ProductQuantity pq, ProductManager manager) productManager.manage(product);
-		 */
+
+		Unit unit = Unit.convertFromSizeUnits(getView().getSizeUnit());
+		ProductQuantity pq = new ProductQuantity(quantity, unit);
+
+		Product product = new Product(barcode, description, shelfLife, threeMonthSupply, pq,
+				productManager);
+		productManager.manage(product);
+
 	}
 
 	/**
@@ -65,6 +75,41 @@ public class AddProductController extends Controller implements IAddProductContr
 	 */
 	@Override
 	public void valuesChanged() {
+		if (getView().getSizeUnit().equals(SizeUnits.Count))
+			getView().setSizeValue("1");
+		enableComponents();
+	}
+
+	private boolean isAllDataValid() {
+		int shelfLife = 0;
+		try {
+			shelfLife = Integer.parseInt(getView().getShelfLife());
+			if (!Product.isValidShelfLife(shelfLife))
+				return false;
+		} catch (NumberFormatException e) {
+			return false;
+		}
+		double sizeValue = 1;
+		try {
+			sizeValue = Double.parseDouble(getView().getSizeValue());
+			Unit unit = Unit.convertFromSizeUnits(getView().getSizeUnit());
+			if (!ProductQuantity.isValidProductQuantity((float) sizeValue, unit))
+				return false;
+			ProductQuantity pq = new ProductQuantity((float) sizeValue, unit);
+			if (!Product.isValidProductQuantity(pq))
+				return false;
+		} catch (NumberFormatException e) {
+			return false;
+		}
+		int tms = 0;
+		try {
+			tms = Integer.parseInt(getView().getSupply());
+			if (!Product.isValidThreeMonthSupply(tms))
+				return false;
+		} catch (NumberFormatException e) {
+			return false;
+		}
+		return (!getView().getBarcode().equals("") && !getView().getDescription().equals(""));
 	}
 
 	/**
@@ -78,6 +123,13 @@ public class AddProductController extends Controller implements IAddProductContr
 	 */
 	@Override
 	protected void enableComponents() {
+		getView().enableBarcode(false);
+		getView().enableDescription(true);
+		getView().enableOK(isAllDataValid());
+		getView().enableShelfLife(true);
+		getView().enableSizeUnit(true);
+		getView().enableSizeValue(!getView().getSizeUnit().equals(SizeUnits.Count));
+		getView().enableSupply(true);
 	}
 
 	//
@@ -106,5 +158,4 @@ public class AddProductController extends Controller implements IAddProductContr
 	@Override
 	protected void loadValues() {
 	}
-
 }
