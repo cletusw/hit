@@ -3,13 +3,12 @@ package mcontrollers;
 import gui.inventory.IInventoryView;
 import gui.inventory.ProductContainerData;
 
-import java.util.Iterator;
 import java.util.Observable;
 import java.util.Observer;
 
-import model.ProductContainer;
 import model.ProductContainerManager;
 import model.ProductGroup;
+import model.StorageUnit;
 
 /**
  * Controller object that acts as a liaison between the model's StorageUnitManager and the GUI
@@ -44,30 +43,30 @@ public class ProductContainerListener implements Observer {
 	 */
 	@Override
 	public void update(Observable o, Object arg) {
-		System.out.println("In PCListener.update()");
-		// ProductContainerManager manager = (ProductContainerManager) o;
 		if (arg instanceof ProductGroup) {
+			// Get data for inserted PC
 			ProductGroup newGroup = (ProductGroup) arg;
-			ProductContainer parentContainer = newGroup.getContainer();
-
-			ProductContainerData parentData = new ProductContainerData();
-			parentData.setName(parentContainer.getName());
-			parentData.setTag(parentContainer);
-			Iterator it = parentContainer.getProductGroupIterator();
-			while (it.hasNext()) {
-				ProductContainer container = (ProductContainer) it.next();
-				ProductContainerData childData = new ProductContainerData();
-				childData.setName(container.getName());
-				parentData.addChild(childData);
-			}
-
 			ProductContainerData newData = new ProductContainerData();
 			newData.setName(newGroup.getName());
 			newData.setTag(newGroup);
 
-			int index = parentData.getChildCount();
+			// Get data for parent PC
+			ProductContainerData parentData = view.getSelectedProductContainer();
 
-			view.insertProductContainer(parentData, newData, index);
+			// Insert
+			view.insertProductContainer(parentData, newData, parentData.getChildCount());
+		} else {
+			// Get data for new SU
+			StorageUnit newStorageUnit = (StorageUnit) arg;
+			ProductContainerData newData = new ProductContainerData();
+			newData.setName(newStorageUnit.getName());
+			newData.setTag(newStorageUnit);
+
+			// Get data for parent (main root)
+			ProductContainerData parent = view.getSelectedProductContainer();
+
+			// Insert
+			view.insertProductContainer(parent, newData, parent.getChildCount());
 		}
 	}
 }

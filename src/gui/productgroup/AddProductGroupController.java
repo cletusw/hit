@@ -61,6 +61,7 @@ public class AddProductGroupController extends Controller implements
 	 */
 	@Override
 	public void valuesChanged() {
+		enableComponents();
 	}
 
 	/**
@@ -74,6 +75,28 @@ public class AddProductGroupController extends Controller implements
 	 */
 	@Override
 	protected void enableComponents() {
+		getView().enableProductGroupName(true);
+		getView().enableSupplyUnit(true);
+		getView().enableSupplyValue(true);
+		ProductContainerManager manager = getView().getProductContainerManager();
+		boolean enableOk = false;
+		int supplyValue = 0;
+		try {
+			Integer.parseInt(getView().getSupplyValue());
+		} catch (NumberFormatException e) {
+		}
+
+		if (!ProductQuantity.isValidProductQuantity(supplyValue,
+				Unit.convertToUnit(getView().getSupplyUnit().toString()))) {
+			enableOk = false;
+		}
+
+		if (!manager.isValidProductGroupName(getView().getProductGroupName())) {
+			enableOk = false;
+		}
+
+		getView().enableOK(enableOk);
+
 	}
 
 	//
@@ -101,6 +124,6 @@ public class AddProductGroupController extends Controller implements
 	 */
 	@Override
 	protected void loadValues() {
+		getView().setProductGroupName("");
 	}
-
 }
