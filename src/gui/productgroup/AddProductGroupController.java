@@ -3,10 +3,10 @@ package gui.productgroup;
 import gui.common.Controller;
 import gui.common.IView;
 import gui.inventory.ProductContainerData;
+import model.ProductContainer;
 import model.ProductContainerManager;
 import model.ProductGroup;
 import model.ProductQuantity;
-import model.StorageUnit;
 import model.Unit;
 
 /**
@@ -15,7 +15,7 @@ import model.Unit;
 public class AddProductGroupController extends Controller implements
 		IAddProductGroupController {
 
-	ProductContainerData parentContainer;
+	ProductContainerData parentContainerData;
 
 	/**
 	 * Constructor.
@@ -27,7 +27,7 @@ public class AddProductGroupController extends Controller implements
 	 */
 	public AddProductGroupController(IView view, ProductContainerData container) {
 		super(view);
-		parentContainer = container;
+		parentContainerData = container;
 		construct();
 	}
 
@@ -49,10 +49,10 @@ public class AddProductGroupController extends Controller implements
 		Unit tmsUnit = Unit.convertToUnit(getView().getSupplyUnit().toString());
 		ProductQuantity threeMonthSupply = new ProductQuantity(tmsQuantity, tmsUnit);
 		ProductContainerManager manager = getView().getProductContainerManager();
-		StorageUnit parentSu = manager.getStorageUnitByName(parentContainer.getName());
+		ProductContainer parent = (ProductContainer) parentContainerData.getTag();
 
 		ProductGroup productGroup = new ProductGroup(pgName, threeMonthSupply, tmsUnit,
-				parentSu, manager);
+				parent, manager);
 	}
 
 	/**
@@ -79,15 +79,15 @@ public class AddProductGroupController extends Controller implements
 		getView().enableSupplyUnit(true);
 		getView().enableSupplyValue(true);
 		ProductContainerManager manager = getView().getProductContainerManager();
-		boolean enableOk = false;
+		boolean enableOk = true;
 		int supplyValue = 0;
 		try {
-			Integer.parseInt(getView().getSupplyValue());
+			supplyValue = Integer.parseInt(getView().getSupplyValue());
+			if (!ProductQuantity.isValidProductQuantity(supplyValue,
+					Unit.convertToUnit(getView().getSupplyUnit().toString()))) {
+				enableOk = false;
+			}
 		} catch (NumberFormatException e) {
-		}
-
-		if (!ProductQuantity.isValidProductQuantity(supplyValue,
-				Unit.convertToUnit(getView().getSupplyUnit().toString()))) {
 			enableOk = false;
 		}
 
@@ -96,7 +96,6 @@ public class AddProductGroupController extends Controller implements
 		}
 
 		getView().enableOK(enableOk);
-
 	}
 
 	//
@@ -125,5 +124,6 @@ public class AddProductGroupController extends Controller implements
 	@Override
 	protected void loadValues() {
 		getView().setProductGroupName("");
+		getView().setSupplyValue("0");
 	}
 }

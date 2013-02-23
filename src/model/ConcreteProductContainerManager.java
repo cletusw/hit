@@ -26,7 +26,8 @@ public class ConcreteProductContainerManager extends Observable implements Seria
 	@Override
 	public StorageUnit getRootStorageUnitByName(String productGroupName) {
 		for (StorageUnit su : rootStorageUnits) {
-			if (su.containsProductGroup(productGroupName))
+			if (su.getName().equals(productGroupName)
+					|| su.containsProductGroup(productGroupName))
 				return su;
 		}
 		return null;
