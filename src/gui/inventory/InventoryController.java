@@ -21,10 +21,6 @@ import model.StorageUnit;
 
 /**
  * Controller class for inventory view.
- * 
- * @invariant itemManager != null
- * @invariant productManager != null
- * @invariant productContainerManager != null
  */
 public class InventoryController extends Controller implements IInventoryController {
 	private final Random rand = new Random();
