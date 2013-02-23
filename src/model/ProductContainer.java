@@ -572,7 +572,7 @@ public abstract class ProductContainer implements Comparable<ProductContainer>, 
 			throw new IllegalStateException(
 					"Destination container already contains the item to be moved");
 		}
-
+		
 		unregisterItem(item);
 		destination.registerItem(item);
 	}

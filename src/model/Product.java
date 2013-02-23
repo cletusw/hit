@@ -373,6 +373,16 @@ public class Product implements Comparable<Object>, Serializable {
 	}
 
 	/**
+	 * Determines whether this Product has the specified ProductContainer as a parent.
+	 * 
+	 * @param container
+	 * @return
+	 */
+	public boolean hasContainer(ProductContainer container) {
+		return productContainers.contains(container);
+	}
+
+	/**
 	 * Determines whether the specified product quantity is valid
 	 * 
 	 * @param pq
@@ -405,19 +415,6 @@ public class Product implements Comparable<Object>, Serializable {
 		productContainers.remove(pc);
 	}
 
-	private void setBarcode(String barcode) {
-		this.barcode = new NonEmptyString(barcode);
-	}
-
-	private void setCreationDate(Date date) {
-		Date now = new Date();
-		if (!date.after(now)) {
-			creationDate = date;
-		} else {
-			throw new IllegalArgumentException("CreationDate cannot be in the future");
-		}
-	}
-
 	/**
 	 * Sets the description for this product object.
 	 * 
@@ -446,6 +443,19 @@ public class Product implements Comparable<Object>, Serializable {
 			throw new IllegalArgumentException("Product quantity for product is invalid");
 		}
 		productQuantity = pq;
+	}
+
+	private void setBarcode(String barcode) {
+		this.barcode = new NonEmptyString(barcode);
+	}
+
+	private void setCreationDate(Date date) {
+		Date now = new Date();
+		if (!date.after(now)) {
+			creationDate = date;
+		} else {
+			throw new IllegalArgumentException("CreationDate cannot be in the future");
+		}
 	}
 
 	private void setShelfLife(int shelfLife) {

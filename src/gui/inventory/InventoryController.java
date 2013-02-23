@@ -11,10 +11,12 @@ import java.util.GregorianCalendar;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Random;
+import java.util.Set;
 
 import model.ConcreteItemManager;
 import model.ConcreteProductContainerManager;
 import model.ConcreteProductManager;
+import model.Item;
 import model.ItemManager;
 import model.Product;
 import model.ProductContainer;
@@ -123,6 +125,22 @@ public class InventoryController extends Controller implements IInventoryControl
 	@Override
 	public void addProductToContainer(ProductData productData,
 			ProductContainerData containerData) {
+		Product product = (Product) productData.getTag();
+		ProductContainer oldContainer = (ProductContainer) getView()
+				.getSelectedProductContainer().getTag();
+		ProductContainer container = (ProductContainer) containerData.getTag();
+		if (product.hasContainer(container))
+			return;
+		product.addContainer(container);
+		product.removeContainer(oldContainer);
+		ItemManager itemManager = getView().getItemManager();
+		Set<Item> itemsToMove = itemManager.getItemsByProduct(product);
+		for (Item item : itemsToMove) {
+			if (item.getContainer().equals(oldContainer))
+				oldContainer.moveIntoContainer(item, container);
+		}
+		// Need to update the view to match the model
+		loadValues();
 	}
 
 	/**
