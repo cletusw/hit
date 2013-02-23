@@ -14,3 +14,6 @@ dist
 style-reports
 coverage-reports
 test-reports
+
+## app specific
+HomeInventoryTracker.ser

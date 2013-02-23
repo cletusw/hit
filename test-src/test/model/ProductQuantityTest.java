@@ -2,7 +2,6 @@ package test.model;
 
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
-
 import model.ProductQuantity;
 import model.Unit;
 
@@ -128,7 +127,7 @@ public class ProductQuantityTest {
 
 	@Test
 	public void testToString() {
-		assertTrue(fluid.toString().equals("3.2 Fluid_ounces"));
+		assertTrue(fluid.toString().equals("3.2 Fluid Ounces"));
 		assertTrue(count.toString().equals("1 Count"));
 	}
 

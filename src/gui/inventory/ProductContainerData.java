@@ -97,6 +97,31 @@ public class ProductContainerData extends Tagable {
 	}
 
 	/**
+	 * Get the index where a node with the given name would be stored in the sorted list of
+	 * this container's children
+	 * 
+	 * @param name
+	 *            Name to test
+	 * @return index where a node with the given name would be stored in the sorted list of
+	 *         this container's children
+	 */
+	public int getSortedIndex(String name) {
+		int size = _children.size();
+
+		if (size < 1) {
+			return 0;
+		}
+
+		for (int i = 0; i < size; i++) {
+			if (name.compareTo(_children.get(i).getName()) < 0) {
+				return i;
+			}
+		}
+
+		return size;
+	}
+
+	/**
 	 * Sets the Name property.
 	 * 
 	 * @param name
