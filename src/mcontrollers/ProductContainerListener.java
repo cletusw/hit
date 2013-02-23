@@ -6,6 +6,7 @@ import gui.inventory.ProductContainerData;
 import java.util.Observable;
 import java.util.Observer;
 
+import model.ProductContainer;
 import model.ProductContainerManager;
 import model.ProductGroup;
 import model.StorageUnit;
@@ -43,32 +44,24 @@ public class ProductContainerListener implements Observer {
 	 */
 	@Override
 	public void update(Observable o, Object arg) {
+		ProductContainer newContainer;
 		if (arg instanceof ProductGroup) {
 			// Get data for inserted PC
-			ProductGroup newGroup = (ProductGroup) arg;
-			ProductContainerData newData = new ProductContainerData();
-			newData.setName(newGroup.getName());
-			newData.setTag(newGroup);
-
-			// Get data for parent PC
-			ProductContainerData parentData = view.getSelectedProductContainer();
-
-			// Insert
-			view.insertProductContainer(parentData, newData, parentData.getChildCount());
-			view.selectProductContainer(newData);
+			newContainer = (ProductGroup) arg;
 		} else {
 			// Get data for new SU
-			StorageUnit newStorageUnit = (StorageUnit) arg;
-			ProductContainerData newData = new ProductContainerData();
-			newData.setName(newStorageUnit.getName());
-			newData.setTag(newStorageUnit);
-
-			// Get data for parent (main root)
-			ProductContainerData parent = view.getSelectedProductContainer();
-
-			// Insert
-			view.insertProductContainer(parent, newData, parent.getChildCount());
-			view.selectProductContainer(newData);
+			newContainer = (StorageUnit) arg;
 		}
+
+		ProductContainerData newData = new ProductContainerData();
+		newData.setName(newContainer.getName());
+		newData.setTag(newContainer);
+
+		// Get data for parent PC
+		ProductContainerData parentData = view.getSelectedProductContainer();
+
+		// Insert
+		view.insertProductContainer(parentData, newData, parentData.getChildCount());
+		view.selectProductContainer(newData);
 	}
 }
