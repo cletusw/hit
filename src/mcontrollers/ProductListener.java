@@ -70,8 +70,10 @@ public class ProductListener implements Observer {
 				productData.setSupply(String.valueOf(prod.getThreeMonthSupply()));
 				productData.setTag(prod);
 				products[i++] = productData;
-				// TODO: Set count to what?
-				//productData.setCount("999");
+				if(product.equals(prod))
+					productData.setCount("1");
+				else
+					productData.setCount(String.valueOf(container.getItemsForProduct(prod).size()));
 			}
 			
 			view.setProducts(products);
