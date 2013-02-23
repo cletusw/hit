@@ -37,6 +37,25 @@ public class SerializationManager implements PersistentStorageManager {
 		return tracker;
 	}
 
+	/**
+	 * Writes a HomeInventoryTracker to disk
+	 * 
+	 * @param filename
+	 *            the filename to write to
+	 * @pre true
+	 * @post true
+	 */
+	public static void write(HomeInventoryTracker hit, String filename) {
+		String target = assignTargetFilename(filename);
+
+		PersistentStorageManager persistentStorageManager = new SerializationManager();
+		try {
+			persistentStorageManager.writeObject(hit, target);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+
 	private static String assignTargetFilename(String filename) {
 		String target = null;
 		if (filename == null || filename.equals(""))

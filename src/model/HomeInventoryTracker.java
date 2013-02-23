@@ -148,6 +148,10 @@ public class HomeInventoryTracker implements Serializable {
 				productManager);
 	}
 
+	public ItemManager getItemManager() {
+		return itemManager;
+	}
+
 	/**
 	 * Get an existing Product from the system by its barcode
 	 * 
@@ -173,6 +177,10 @@ public class HomeInventoryTracker implements Serializable {
 	 */
 	public ProductContainerManager getProductContainerManager() {
 		return productContainerManager;
+	}
+
+	public ProductManager getProductManager() {
+		return productManager;
 	}
 
 	/**
@@ -283,6 +291,18 @@ public class HomeInventoryTracker implements Serializable {
 		assert (product != null);
 
 		container.remove(product);
+	}
+
+	public void setItemManager(ItemManager itemManager) {
+		this.itemManager = itemManager;
+	}
+
+	public void setProductContainerManager(ProductContainerManager productContainerManager) {
+		this.productContainerManager = productContainerManager;
+	}
+
+	public void setProductManager(ProductManager productManager) {
+		this.productManager = productManager;
 	}
 
 	/**

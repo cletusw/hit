@@ -19,12 +19,11 @@ import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 import javax.swing.WindowConstants;
 
-import model.ConcreteItemManager;
-import model.ConcreteProductContainerManager;
-import model.ConcreteProductManager;
+import model.HomeInventoryTracker;
 import model.ItemManager;
 import model.ProductContainerManager;
 import model.ProductManager;
+import model.SerializationManager;
 
 @SuppressWarnings("serial")
 public final class GUI extends JFrame implements IMainView {
@@ -50,21 +49,23 @@ public final class GUI extends JFrame implements IMainView {
 	private ReportsMenu _reportsMenu;
 
 	private InventoryView _inventoryView;
-	private ItemManager _itemManager;
-	private ProductManager _productManager;
-	private ProductContainerManager _productContainerManager;
+	private final ItemManager _itemManager;
+	private final ProductManager _productManager;
+	private final ProductContainerManager _productContainerManager;
+	private final HomeInventoryTracker _tracker;
 
 	public GUI(String[] args) {
 		super("Home Inventory Tracker");
-
-		_itemManager = new ConcreteItemManager();
-		_productManager = new ConcreteProductManager();
-		_productContainerManager = new ConcreteProductContainerManager();
+		_tracker = SerializationManager.create(null);
+		_itemManager = _tracker.getItemManager();
+		_productManager = _tracker.getProductManager();
+		_productContainerManager = _tracker.getProductContainerManager();
 
 		setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
 		addWindowListener(new WindowAdapter() {
 			@Override
 			public void windowClosing(WindowEvent evt) {
+				SerializationManager.write(_tracker, null);
 				_sessionMenu.exit();
 			}
 		});
