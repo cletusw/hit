@@ -1,7 +1,12 @@
 package mcontrollers;
 
+import gui.common.DataWrapper;
 import gui.inventory.IInventoryView;
+import gui.inventory.ProductContainerData;
+import gui.item.ItemData;
 
+import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.Observable;
 import java.util.Observer;
 
@@ -9,6 +14,8 @@ import model.Action;
 import model.Action.ActionType;
 import model.Item;
 import model.ItemManager;
+import model.ProductContainer;
+import model.ProductContainerManager;
 
 /**
  * Controller object that acts as a liaison between the model's ItemManager and the GUI view.
@@ -19,8 +26,8 @@ import model.ItemManager;
  */
 public class ItemListener implements Observer {
 
-	private IInventoryView view;
-	
+	private final IInventoryView view;
+
 	public ItemListener(IInventoryView view, ItemManager itemManager) {
 		itemManager.addObserver(this);
 		this.view = view;
@@ -42,12 +49,26 @@ public class ItemListener implements Observer {
 	 */
 	@Override
 	public void update(Observable arg0, Object arg1) {
-		Action action = (Action)arg1;
+		Action action = (Action) arg1;
 		ActionType type = action.getAction();
 		Item item = (Item) action.getObject();
-		
-		if(type.equals(ActionType.CREATE)){
-			
+
+		if (type.equals(ActionType.CREATE)) {
+			// ItemData id = DataWrapper.wrap(item);
+
+			// Get data for parent (main root)
+			ProductContainerData parent = view.getSelectedProductContainer();
+			ProductContainer pc = (ProductContainer) parent.getTag();
+			ArrayList<ItemData> itemsToDisplay = new ArrayList<ItemData>();
+			ItemData[] itemArray = new ItemData[0];
+			ProductContainerManager pcManager = view.getProductContainerManager();
+			Iterator<Item> itemIterator = pc.getItemsIterator();
+			while (itemIterator.hasNext()) {
+				ItemData id = DataWrapper.wrap(itemIterator.next());
+				itemsToDisplay.add(id);
+			}
+			view.setItems(itemsToDisplay.toArray(itemArray));
+			// view.selectItem(DataWrapper.wrap(item));
 		}
 	}
 }

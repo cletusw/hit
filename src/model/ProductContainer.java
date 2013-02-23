@@ -398,6 +398,19 @@ public abstract class ProductContainer implements Comparable<ProductContainer>, 
 	}
 
 	/**
+	 * Gets an iterator over this Container's Items
+	 * 
+	 * @return Iterator<Item> this Container's Item iterator
+	 * 
+	 * @pre true
+	 * @post true
+	 * 
+	 */
+	public Iterator<Item> getItemsIterator() {
+		return items.values().iterator();
+	}
+
+	/**
 	 * Gets the size of the items collection.
 	 * 
 	 * @return int - the number of elements in the items collection.
