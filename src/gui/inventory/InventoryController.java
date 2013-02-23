@@ -6,9 +6,6 @@ import gui.item.ItemData;
 import gui.product.ProductData;
 
 import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.GregorianCalendar;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Random;
@@ -199,6 +196,9 @@ public class InventoryController extends Controller implements IInventoryControl
 			return false;
 
 		ProductContainer containerTag = getSelectedProductContainerTag();
+		if (getView().getSelectedProduct() == null)
+			return false;
+
 		Product productTag = getSelectedProductTag();
 
 		// case 2: selected product container is the root node
@@ -253,9 +253,7 @@ public class InventoryController extends Controller implements IInventoryControl
 	 */
 	@Override
 	public boolean canEditItem() {
-		// Always enabled, since it is only called when the Item context menu is displayed
-		// See Functional Spec p22
-		return true;
+		return getView().getSelectedItem() != null;
 	}
 
 	/**
@@ -266,9 +264,7 @@ public class InventoryController extends Controller implements IInventoryControl
 	 */
 	@Override
 	public boolean canEditProduct() {
-		// Always enabled, since it is only called when the Product context menu is displayed
-		// See Functional Spec p21
-		return true;
+		return getView().getSelectedProduct() != null;
 	}
 
 	/**
@@ -279,8 +275,8 @@ public class InventoryController extends Controller implements IInventoryControl
 	 */
 	@Override
 	public boolean canEditProductGroup() {
-		// Always enabled per Functional Spec p16
-		return true;
+		ProductContainerData pcData = getView().getSelectedProductContainer();
+		return pcData != null && (pcData.getTag() instanceof ProductGroup);
 	}
 
 	/**
@@ -291,8 +287,8 @@ public class InventoryController extends Controller implements IInventoryControl
 	 */
 	@Override
 	public boolean canEditStorageUnit() {
-		// Always enabled per Functional Spec p14
-		return true;
+		ProductContainerData pcData = getView().getSelectedProductContainer();
+		return pcData != null && (pcData.getTag() instanceof StorageUnit);
 	}
 
 	/**
@@ -303,8 +299,8 @@ public class InventoryController extends Controller implements IInventoryControl
 	 */
 	@Override
 	public boolean canRemoveItem() {
-		// Always enabled per Functional Spec p26
-		return true;
+		ItemData id = getView().getSelectedItem();
+		return id != null && id.getTag() != null;
 	}
 
 	/**
@@ -315,8 +311,8 @@ public class InventoryController extends Controller implements IInventoryControl
 	 */
 	@Override
 	public boolean canRemoveItems() {
-		// Always enabled per Functional Spec p26
-		return true;
+		ProductContainerData pcData = getView().getSelectedProductContainer();
+		return (pcData.getName().equals("Storage Units"));
 	}
 
 	/**
@@ -468,8 +464,7 @@ public class InventoryController extends Controller implements IInventoryControl
 	 */
 	@Override
 	public void itemSelectionChanged() {
-		// Shouldn't really be anything to do here, but I'm not sure.
-		return;
+		enableComponents();
 	}
 
 	/**
@@ -549,28 +544,23 @@ public class InventoryController extends Controller implements IInventoryControl
 	 */
 	@Override
 	public void productSelectionChanged() {
-		// TODO: Load itemDataList from Model
-		List<ItemData> itemDataList = new ArrayList<ItemData>();
+		ArrayList<ItemData> itemsToDisplay = new ArrayList<ItemData>();
 		ProductData selectedProduct = getView().getSelectedProduct();
-		if (selectedProduct != null) {
-			Date now = new Date();
-			GregorianCalendar cal = new GregorianCalendar();
-			int itemCount = Integer.parseInt(selectedProduct.getCount());
-			for (int i = 1; i <= itemCount; ++i) {
-				cal.setTime(now);
-				ItemData itemData = new ItemData();
-				itemData.setBarcode(getRandomBarcode());
-				cal.add(Calendar.MONTH, -rand.nextInt(12));
-				itemData.setEntryDate(cal.getTime());
-				cal.add(Calendar.MONTH, 3);
-				itemData.setExpirationDate(cal.getTime());
-				itemData.setProductGroup("Some Group");
-				itemData.setStorageUnit("Some Unit");
 
-				itemDataList.add(itemData);
+		if (selectedProduct != null) {
+			Product product = (Product) selectedProduct.getTag();
+			ProductContainerData pcData = getView().getSelectedProductContainer();
+			assert (pcData != null);
+			ProductContainer container = (ProductContainer) pcData.getTag();
+			assert (container != null);
+
+			Iterator<Item> itemIterator = container.getItemsIteratorForProduct(product);
+			while (itemIterator.hasNext()) {
+				ItemData id = DataWrapper.wrap(itemIterator.next());
+				itemsToDisplay.add(id);
 			}
 		}
-		getView().setItems(itemDataList.toArray(new ItemData[0]));
+		getView().setItems(itemsToDisplay.toArray(new ItemData[0]));
 	}
 
 	/**
