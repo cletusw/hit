@@ -57,6 +57,10 @@ public final class GUI extends JFrame implements IMainView {
 	public GUI(String[] args) {
 		super("Home Inventory Tracker");
 
+		_itemManager = new ConcreteItemManager();
+		_productManager = new ConcreteProductManager();
+		_productContainerManager = new ConcreteProductContainerManager();
+
 		setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
 		addWindowListener(new WindowAdapter() {
 			@Override
@@ -69,9 +73,6 @@ public final class GUI extends JFrame implements IMainView {
 		createInventoryView();
 
 		_controller = new MainController(this);
-		_itemManager = new ConcreteItemManager();
-		_productManager = new ConcreteProductManager();
-		_productContainerManager = new ConcreteProductContainerManager();
 
 		_sessionMenu.setController(_controller);
 		_reportsMenu.setController(_controller);
