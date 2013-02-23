@@ -3,6 +3,9 @@ package gui.batches;
 import gui.common.Controller;
 import gui.common.IView;
 import gui.inventory.ProductContainerData;
+import model.Product;
+import model.ProductQuantity;
+import model.Unit;
 
 /**
  * Controller class for the add item batch view.
@@ -19,7 +22,9 @@ public class AddItemBatchController extends Controller implements IAddItemBatchC
 	 */
 	public AddItemBatchController(IView view, ProductContainerData target) {
 		super(view);
-
+		// Phase 2: not using the scanner
+		getView().setUseScanner(false);
+		getView().setCount("1");
 		construct();
 	}
 
@@ -39,6 +44,10 @@ public class AddItemBatchController extends Controller implements IAddItemBatchC
 
 		// target.addItem(item);
 
+		// Clear the view for the next item!
+		getView().setBarcode("");
+		loadValues();
+		enableComponents();
 	}
 
 	/**
@@ -47,6 +56,7 @@ public class AddItemBatchController extends Controller implements IAddItemBatchC
 	 */
 	@Override
 	public void barcodeChanged() {
+		enableComponents();
 	}
 
 	/**
@@ -55,6 +65,7 @@ public class AddItemBatchController extends Controller implements IAddItemBatchC
 	 */
 	@Override
 	public void countChanged() {
+		enableComponents();
 	}
 
 	/**
@@ -85,6 +96,8 @@ public class AddItemBatchController extends Controller implements IAddItemBatchC
 	 */
 	@Override
 	public void selectedProductChanged() {
+		// TODO: Need to update the items shown in the Items pane
+		loadValues();
 	}
 
 	/**
@@ -100,6 +113,9 @@ public class AddItemBatchController extends Controller implements IAddItemBatchC
 	 */
 	@Override
 	public void useScannerChanged() {
+		if (getView().getUseScanner()) {
+			getView().setBarcode("");
+		}
 	}
 
 	/**
@@ -113,6 +129,17 @@ public class AddItemBatchController extends Controller implements IAddItemBatchC
 	 */
 	@Override
 	protected void enableComponents() {
+		getView().enableUndo(false);
+		getView().enableRedo(false);
+		boolean isValidCount = true;
+		try {
+			int count = Integer.parseInt(getView().getCount());
+			isValidCount = ProductQuantity.isValidProductQuantity(count, Unit.COUNT);
+		} catch (NumberFormatException e) {
+			isValidCount = false;
+		}
+		getView().enableItemAction(
+				Product.isValidBarcode(getView().getBarcode()) && isValidCount);
 	}
 
 	/**
