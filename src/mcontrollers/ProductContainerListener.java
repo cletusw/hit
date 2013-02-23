@@ -7,6 +7,8 @@ import java.util.Iterator;
 import java.util.Observable;
 import java.util.Observer;
 
+import model.Action;
+import model.Action.ActionType;
 import model.ProductContainer;
 import model.ProductContainerManager;
 import model.ProductGroup;
@@ -45,57 +47,47 @@ public class ProductContainerListener implements Observer {
 	 */
 	@Override
 	public void update(Observable o, Object arg) {
-		ProductContainer newContainer;
-		ProductContainerData root = new ProductContainerData();
-		root.setTag(null);
-		ProductContainerManager manager = (ProductContainerManager) o;
-		Iterator<StorageUnit> storageUnitIterator = manager.getStorageUnitIterator();
-		while (storageUnitIterator.hasNext()) {
-			ProductContainer pc = storageUnitIterator.next();
-			root = loadProductContainerData(root, pc);
+		Action action = (Action) arg;
+		ActionType type = action.getAction();
+
+		if (action.getAction().equals(ActionType.CREATE)) {
+			Object pc = action.getObject();
+			if (pc instanceof ProductGroup) {
+				// Get data for inserted PC
+				ProductGroup newGroup = (ProductGroup) pc;
+				ProductContainerData newData = new ProductContainerData();
+				newData.setName(newGroup.getName());
+				newData.setTag(newGroup);
+
+				// Get data for parent PC
+				ProductContainerData parentData = view.getSelectedProductContainer();
+
+				// Insert
+				view.insertProductContainer(parentData, newData, parentData.getChildCount());
+				view.selectProductContainer(newData);
+			} else {
+				// Get data for new SU
+				StorageUnit newStorageUnit = (StorageUnit) pc;
+				ProductContainerData newData = new ProductContainerData();
+				newData.setName(newStorageUnit.getName());
+				newData.setTag(newStorageUnit);
+
+				// Get data for parent (main root)
+				ProductContainerData parent = view.getSelectedProductContainer();
+
+				// Insert
+				view.insertProductContainer(parent, newData, parent.getChildCount());
+				view.selectProductContainer(newData);
+			}
+		} else if (type.equals(ActionType.EDIT)) {
+			ProductContainerData data = view.getSelectedProductContainer();
+			ProductContainer container = (ProductContainer) action.getObject();
+			view.renameProductContainer(data, container.getName(), 0);
+			view.selectProductContainer(data);
+		} else if (type.equals(ActionType.DELETE)) {
+			ProductContainerData data = view.getSelectedProductContainer();
+			view.deleteProductContainer(data);
 		}
-		view.setProductContainers(root);
-
-		if (arg instanceof ProductGroup) {
-			// Get data for inserted PC
-			newContainer = (ProductGroup) arg;
-			ProductGroup newGroup = (ProductGroup) arg;
-			ProductContainerData newData = new ProductContainerData();
-			newData.setName(newGroup.getName());
-			newData.setTag(newGroup);
-
-			// Get data for parent PC
-			ProductContainerData parentData = view.getSelectedProductContainer();
-
-			// Insert
-			// view.insertProductContainer(parentData, newData, parentData.getChildCount());
-			view.selectProductContainer(newData);
-		} else {
-			newContainer = (StorageUnit) arg;
-			// Get data for new SU
-			StorageUnit newStorageUnit = (StorageUnit) arg;
-			ProductContainerData newData = new ProductContainerData();
-			newData.setName(newStorageUnit.getName());
-			newData.setTag(newStorageUnit);
-
-			// Get data for parent (main root)
-			ProductContainerData parent = view.getSelectedProductContainer();
-
-			// Insert
-			// view.insertProductContainer(parent, newData, parent.getChildCount());
-			view.selectProductContainer(newData);
-		}
-
-		ProductContainerData newData = new ProductContainerData();
-		newData.setName(newContainer.getName());
-		newData.setTag(newContainer);
-
-		// Get data for parent PC
-		ProductContainerData parentData = view.getSelectedProductContainer();
-
-		// Insert
-		view.insertProductContainer(parentData, newData, parentData.getChildCount());
-		view.selectProductContainer(newData);
 	}
 
 	private ProductContainerData loadProductContainerData(ProductContainerData parentData,
