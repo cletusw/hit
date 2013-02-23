@@ -12,17 +12,29 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Random;
 
+import model.ConcreteItemManager;
+import model.ConcreteProductContainerManager;
+import model.ConcreteProductManager;
 import model.Item;
+import model.ItemManager;
 import model.Product;
 import model.ProductContainer;
 import model.ProductContainerManager;
 import model.ProductGroup;
+import model.ProductManager;
 import model.StorageUnit;
 
 /**
  * Controller class for inventory view.
+ * 
+ * @invariant itemManager != null
+ * @invariant productManager != null
+ * @invariant productContainerManager != null
  */
 public class InventoryController extends Controller implements IInventoryController {
+	private final ItemManager itemManager;
+	private final ProductManager productManager;
+	private final ProductContainerManager productContainerManager;
 	private final Random rand = new Random();
 
 	/**
@@ -35,13 +47,42 @@ public class InventoryController extends Controller implements IInventoryControl
 	 * @post true
 	 */
 	public InventoryController(IInventoryView view) {
-		super(view);
+		this(view, new ConcreteItemManager(), new ConcreteProductManager(),
+				new ConcreteProductContainerManager());
+	}
 
+	/**
+	 * Constructor.
+	 * 
+	 * @param view
+	 *            Reference to the inventory view
+	 * @param itemManager
+	 *            Reference to the item manager
+	 * @param productManager
+	 *            Reference to the product manager
+	 * @param productContainerManager
+	 *            Reference to the product container manager
+	 * 
+	 * @pre view != null
+	 * @pre itemManager != null
+	 * @pre productManager != null
+	 * @pre productContainerManager != null
+	 * @post true
+	 */
+	public InventoryController(IInventoryView view, ItemManager itemManager,
+			ProductManager productManager, ProductContainerManager productContainerManager) {
+		super(view);
+		this.itemManager = itemManager;
+		this.productManager = productManager;
+		this.productContainerManager = productContainerManager;
 		construct();
 	}
 
 	/**
 	 * This method is called when the user selects the "Add Items" menu item.
+	 * 
+	 * @throws IllegalStateException
+	 *             if(!canAddItems())
 	 * 
 	 * @pre canAddItems()
 	 * @post true
@@ -57,6 +98,9 @@ public class InventoryController extends Controller implements IInventoryControl
 	/**
 	 * This method is called when the user selects the "Add Product Group" menu item.
 	 * 
+	 * @throws IllegalStateException
+	 *             if(!canAddProductGroup())
+	 * 
 	 * @pre canAddProductGroup()
 	 * @post true
 	 */
@@ -68,6 +112,10 @@ public class InventoryController extends Controller implements IInventoryControl
 		getView().displayAddProductGroupView();
 	}
 
+	//
+	// IInventoryController overrides
+	//
+
 	/**
 	 * This method is called when the user drags a product into a product container.
 	 * 
@@ -75,17 +123,38 @@ public class InventoryController extends Controller implements IInventoryControl
 	 *            Product dragged into the target product container
 	 * @param containerData
 	 *            Target product container
-	 * @pre productData != null
-	 * @pre containerData != null
+	 * @throws IllegalArgumentException
+	 *             if either parameter is null
+	 * @throws IllegalStateException
+	 *             if either parameter's getTag() == null
+	 * 
+	 * @pre productData != null && productData.getTag() != null
+	 * @pre containerData != null && containerData.getTag() != null
 	 * @post containerData.getChildCount() == old(getChildCount()) + 1
 	 */
 	@Override
 	public void addProductToContainer(ProductData productData,
 			ProductContainerData containerData) {
+		if (productData == null)
+			throw new IllegalArgumentException("ProductData should not be null");
+		if (containerData == null)
+			throw new IllegalArgumentException("ProductContainerData should not be null");
+
+		Product productToAdd = (Product) productData.getTag();
+		if (productToAdd == null)
+			throw new IllegalStateException("Product must have a tag.");
+		ProductContainer container = (ProductContainer) containerData.getTag();
+		if (container == null)
+			throw new IllegalStateException("ProductContainer must have a tag.");
+
+		container.add(productToAdd);
 	}
 
 	/**
 	 * This method is called when the user selects the "Add Storage Unit" menu item.
+	 * 
+	 * @throws IllegalStateException
+	 *             if(!canAddStorageUnit())
 	 * 
 	 * @pre canAddStorageUnit()
 	 * @post true
@@ -96,6 +165,7 @@ public class InventoryController extends Controller implements IInventoryControl
 			throw new IllegalStateException("Unable to add Storage Units");
 		}
 		getView().displayAddStorageUnitView();
+		loadValues();
 	}
 
 	/**
@@ -139,6 +209,7 @@ public class InventoryController extends Controller implements IInventoryControl
 	 * 
 	 * @pre if(getView().getSelectedProductContainer() != null)
 	 *      getView().getSelectedProductContainer().getTag() != null
+	 * @pre if(getView().getSelectedProductContainer() != null) getSelectedProductTag() != null
 	 * @post true
 	 * 
 	 */
@@ -166,6 +237,7 @@ public class InventoryController extends Controller implements IInventoryControl
 	/**
 	 * Returns true if and only if the "Delete Product Group" menu item should be enabled.
 	 * 
+	 * @pre getView().getSelectedProductContainer() != null
 	 * @pre getView().getSelectedProductContainer().getTag() instanceof ProductGroup
 	 * @post true
 	 */
@@ -181,6 +253,7 @@ public class InventoryController extends Controller implements IInventoryControl
 	/**
 	 * Returns true if and only if the "Delete Storage Unit" menu item should be enabled.
 	 * 
+	 * @pre getView().getSelectedProductContainer() != null
 	 * @pre getView().getSelectedProductContainer().getTag() instanceof StorageUnit
 	 * @post true
 	 */
@@ -285,7 +358,11 @@ public class InventoryController extends Controller implements IInventoryControl
 	/**
 	 * This method is called when the user selects the "Delete Product" menu item.
 	 * 
+	 * @throws IllegalStateException
+	 *             if (!canDeleteProduct())
+	 * 
 	 * @pre canDeleteProduct()
+	 * @pre getSelectedProductTag() != null
 	 * @post !productManager.contains(old(getView().getSelectedProduct().getTag()))
 	 */
 	@Override
@@ -294,13 +371,17 @@ public class InventoryController extends Controller implements IInventoryControl
 			throw new IllegalStateException("Unable to delete Product");
 		}
 
-		getProductManager().unmanage(getSelectedProductTag());
+		productManager.unmanage(getSelectedProductTag());
 	}
 
 	/**
 	 * This method is called when the user selects the "Delete Product Group" menu item.
 	 * 
+	 * @throws IllegalStateException
+	 *             if (!canDeleteProductGroup())
+	 * 
 	 * @pre canDeleteProductGroup()
+	 * @pre getSelectedProductContainerTag() != null
 	 * @post !productContainerManager.contains(PREVIOUS
 	 *       getView().getSelectedProductContainer().getTag())
 	 */
@@ -310,13 +391,17 @@ public class InventoryController extends Controller implements IInventoryControl
 			throw new IllegalStateException("Unable to delete Product Group");
 		}
 
-		deleteProductContainer();
+		deleteSelectedProductContainer();
 	}
 
 	/**
 	 * This method is called when the user selects the "Delete Storage Unit" menu item.
 	 * 
+	 * @throws IllegalStateException
+	 *             if (!canDeleteStorageUnit())
+	 * 
 	 * @pre canDeleteStorageUnit()
+	 * @pre getSelectedProductContainerTag() != null
 	 * @post !productContainerManager.contains(PREVIOUS
 	 *       getView().getSelectedProductContainer().getTag())
 	 */
@@ -326,11 +411,14 @@ public class InventoryController extends Controller implements IInventoryControl
 			throw new IllegalStateException("Unable to delete Storage Unit");
 		}
 
-		deleteProductContainer();
+		deleteSelectedProductContainer();
 	}
 
 	/**
 	 * This method is called when the user selects the "Edit Item" menu item.
+	 * 
+	 * @throws IllegalStateException
+	 *             if (!canEditItem())
 	 * 
 	 * @pre canEditItem()
 	 * @post itemManager.contains(old(getView().getSelectedItem().getTag()))
@@ -346,6 +434,9 @@ public class InventoryController extends Controller implements IInventoryControl
 	/**
 	 * This method is called when the user selects the "Edit Product" menu item.
 	 * 
+	 * @throws IllegalStateException
+	 *             if (!canEditProduct())
+	 * 
 	 * @pre canEditProduct()
 	 * @post productManager.contains(old(getView().getSelectedProduct().getTag()))
 	 */
@@ -359,6 +450,9 @@ public class InventoryController extends Controller implements IInventoryControl
 
 	/**
 	 * This method is called when the user selects the "Edit Product Group" menu item.
+	 * 
+	 * @throws IllegalStateException
+	 *             if (!canEditProductGroup)
 	 * 
 	 * @pre canEditProductGroup()
 	 * @post productContainerManager.contains(PREVIOUS
@@ -374,6 +468,9 @@ public class InventoryController extends Controller implements IInventoryControl
 
 	/**
 	 * This method is called when the user selects the "Edit Storage Unit" menu item.
+	 * 
+	 * @throws IllegalStateException
+	 *             if (!canEditStorageUnit())
 	 * 
 	 * @pre canEditStorageUnit()
 	 * @post productContainerManager.contains(PREVIOUS
@@ -407,16 +504,38 @@ public class InventoryController extends Controller implements IInventoryControl
 	 *            Item dragged into the target product container
 	 * @param containerData
 	 *            Target product container
-	 * @pre getView().getSelectedProductContainer() != null
+	 * 
+	 * @throws IllegalArgumentException
+	 *             if either parameter is null
+	 * 
+	 * @throws IllegalArgumentException
+	 *             if either parameter is null
+	 * @throws IllegalStateException
+	 *             if the target product container doesn't have a tag
+	 * 
 	 * @pre itemData != null
 	 * @pre containerData != null
+	 * @pre getView().getSelectedProductContainer() != null
 	 * @pre getView().getSelectedProductContainer().getTag().contains(itemData.getTag())
 	 * @pre !containerData.getTag().contains(itemData.getTag())
 	 * @post !old(getView().getSelectedProductContainer().getTag().contains(itemData.getTag()))
 	 * @post containerData.getTag().contains(itemData.getTag())
+	 * 
 	 */
 	@Override
 	public void moveItemToContainer(ItemData itemData, ProductContainerData containerData) {
+		if (itemData == null)
+			throw new IllegalArgumentException("ItemData should not be null.");
+		if (containerData == null)
+			throw new IllegalArgumentException("ProductContainerData should not be null.");
+
+		ProductContainer targetContainer = (ProductContainer) containerData.getTag();
+		if (targetContainer == null)
+			throw new IllegalStateException("Target product container must have a tag.");
+
+		// note: the currently-selected ProductContainer is the source
+		getSelectedProductContainerTag().moveIntoContainer(getSelectedItemTag(),
+				targetContainer);
 	}
 
 	/**
@@ -487,7 +606,11 @@ public class InventoryController extends Controller implements IInventoryControl
 	/**
 	 * This method is called when the user selects the "Remove Item" menu item.
 	 * 
+	 * @throws IllegalStateException
+	 *             if !canRemoveItem()
+	 * 
 	 * @pre canRemoveItem()
+	 * @pre getSelectedItemTag() != null
 	 * @post !itemManager.contains(old(getView().getSelectedItem().getTag()))
 	 */
 	@Override
@@ -496,11 +619,14 @@ public class InventoryController extends Controller implements IInventoryControl
 			throw new IllegalStateException("Unable to remove Item");
 		}
 
-		getItemManager().unmanage(getSelectedItemTag());
+		itemManager.unmanage(getSelectedItemTag());
 	}
 
 	/**
 	 * This method is called when the user selects the "Remove Items" menu item.
+	 * 
+	 * @throws IllegalStateException
+	 *             if(!canRemoveItems())
 	 * 
 	 * @pre canRemoveItems()
 	 * @post itemManager no longer contains any of the items matching those removed by the
@@ -517,6 +643,9 @@ public class InventoryController extends Controller implements IInventoryControl
 	/**
 	 * This method is called when the user selects the "Transfer Items" menu item.
 	 * 
+	 * @throws IllegalStateException
+	 *             if(!canTransferItems())
+	 * 
 	 * @pre canTransferItems()
 	 * @post true
 	 */
@@ -528,11 +657,11 @@ public class InventoryController extends Controller implements IInventoryControl
 		getView().displayTransferItemBatchView();
 	}
 
-	private void deleteProductContainer() {
+	private void deleteSelectedProductContainer() {
 		ProductContainer selectedSU = getSelectedProductContainerTag();
 		assert (selectedSU != null);
 
-		getProductContainerManager().unmanage(selectedSU);
+		productContainerManager.unmanage(selectedSU);
 
 		loadValues();
 	}
@@ -622,7 +751,7 @@ public class InventoryController extends Controller implements IInventoryControl
 	protected void loadValues() {
 		ProductContainerData root = new ProductContainerData();
 		root.setTag(null);
-		ProductContainerManager manager = getProductContainerManager();
+		ProductContainerManager manager = getView().getProductContainerManager();
 		Iterator<StorageUnit> storageUnitIterator = manager.getStorageUnitIterator();
 		while (storageUnitIterator.hasNext()) {
 			ProductContainer pc = storageUnitIterator.next();
