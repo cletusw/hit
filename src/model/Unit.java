@@ -26,6 +26,12 @@ public enum Unit implements Serializable {
 		typeMap.put(Unit.LITERS, UnitType.VOLUME);
 	}
 
+	public static Unit convertToUnit(String s) {
+		s = s.replace(' ', '_');
+		s = s.toUpperCase();
+		return Unit.valueOf(s);
+	}
+
 	/**
 	 * Retrieves the conversion factor to convert a quantity of one type of unit to another.
 	 * 
