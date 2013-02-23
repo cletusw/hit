@@ -14,6 +14,7 @@ import java.util.List;
 import java.util.Random;
 import java.util.Set;
 
+import mcontrollers.ItemListener;
 import mcontrollers.ProductContainerListener;
 import model.Item;
 import model.ItemManager;
@@ -27,6 +28,7 @@ import model.StorageUnit;
  */
 public class InventoryController extends Controller implements IInventoryController {
 	private final ProductContainerListener productContainerListener;
+	private final ItemListener itemListener;
 	private final Random rand = new Random();
 
 	/**
@@ -42,6 +44,7 @@ public class InventoryController extends Controller implements IInventoryControl
 		super(view);
 		productContainerListener = new ProductContainerListener(getView(),
 				getProductContainerManager());
+		itemListener = new ItemListener(getView(), getItemManager());
 		construct();
 	}
 
