@@ -23,6 +23,15 @@ public class ConcreteProductContainerManager extends Observable implements Seria
 		nameToStorageUnit = new TreeMap<String, StorageUnit>();
 	}
 
+	@Override
+	public StorageUnit getRootStorageUnitByName(String productGroupName) {
+		for (StorageUnit su : rootStorageUnits) {
+			if (su.containsProductGroup(productGroupName))
+				return su;
+		}
+		return null;
+	}
+
 	/**
 	 * Gets the StorageUnit with the given name.
 	 * 
@@ -39,6 +48,15 @@ public class ConcreteProductContainerManager extends Observable implements Seria
 	@Override
 	public Iterator<StorageUnit> getStorageUnitIterator() {
 		return rootStorageUnits.iterator();
+	}
+
+	@Override
+	public boolean isValidProductGroupName(String productGroupName) {
+		for (StorageUnit su : rootStorageUnits) {
+			if (su.containsProductGroup(productGroupName))
+				return false;
+		}
+		return true;
 	}
 
 	/**
@@ -86,7 +104,7 @@ public class ConcreteProductContainerManager extends Observable implements Seria
 			nameToStorageUnit.put(storageUnit.getName(), storageUnit);
 		}
 		setChanged();
-		this.notifyObservers();
+		this.notifyObservers(pc);
 	}
 
 	/**
@@ -94,6 +112,7 @@ public class ConcreteProductContainerManager extends Observable implements Seria
 	 * @param name
 	 * @param su
 	 */
+	@Override
 	public void setStorageUnitName(String name, StorageUnit su) {
 		if (name.equals(su.getName()))
 			return;

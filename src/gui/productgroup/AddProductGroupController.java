@@ -3,12 +3,19 @@ package gui.productgroup;
 import gui.common.Controller;
 import gui.common.IView;
 import gui.inventory.ProductContainerData;
+import model.ProductContainerManager;
+import model.ProductGroup;
+import model.ProductQuantity;
+import model.StorageUnit;
+import model.Unit;
 
 /**
  * Controller class for the add product group view.
  */
 public class AddProductGroupController extends Controller implements
 		IAddProductGroupController {
+
+	ProductContainerData parentContainer;
 
 	/**
 	 * Constructor.
@@ -20,7 +27,7 @@ public class AddProductGroupController extends Controller implements
 	 */
 	public AddProductGroupController(IView view, ProductContainerData container) {
 		super(view);
-
+		parentContainer = container;
 		construct();
 	}
 
@@ -37,6 +44,15 @@ public class AddProductGroupController extends Controller implements
 	 */
 	@Override
 	public void addProductGroup() {
+		String pgName = getView().getProductGroupName();
+		int tmsQuantity = Integer.parseInt(getView().getSupplyValue());
+		Unit tmsUnit = Unit.convertToUnit(getView().getSupplyUnit().toString());
+		ProductQuantity threeMonthSupply = new ProductQuantity(tmsQuantity, tmsUnit);
+		ProductContainerManager manager = getView().getProductContainerManager();
+		StorageUnit parentSu = manager.getStorageUnitByName(parentContainer.getName());
+
+		ProductGroup productGroup = new ProductGroup(pgName, threeMonthSupply, tmsUnit,
+				parentSu, manager);
 	}
 
 	/**
@@ -45,6 +61,7 @@ public class AddProductGroupController extends Controller implements
 	 */
 	@Override
 	public void valuesChanged() {
+		enableComponents();
 	}
 
 	/**
@@ -58,6 +75,28 @@ public class AddProductGroupController extends Controller implements
 	 */
 	@Override
 	protected void enableComponents() {
+		getView().enableProductGroupName(true);
+		getView().enableSupplyUnit(true);
+		getView().enableSupplyValue(true);
+		ProductContainerManager manager = getView().getProductContainerManager();
+		boolean enableOk = false;
+		int supplyValue = 0;
+		try {
+			Integer.parseInt(getView().getSupplyValue());
+		} catch (NumberFormatException e) {
+		}
+
+		if (!ProductQuantity.isValidProductQuantity(supplyValue,
+				Unit.convertToUnit(getView().getSupplyUnit().toString()))) {
+			enableOk = false;
+		}
+
+		if (!manager.isValidProductGroupName(getView().getProductGroupName())) {
+			enableOk = false;
+		}
+
+		getView().enableOK(enableOk);
+
 	}
 
 	//
@@ -85,6 +124,6 @@ public class AddProductGroupController extends Controller implements
 	 */
 	@Override
 	protected void loadValues() {
+		getView().setProductGroupName("");
 	}
-
 }

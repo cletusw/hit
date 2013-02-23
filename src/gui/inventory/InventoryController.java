@@ -13,6 +13,7 @@ import java.util.List;
 import java.util.Random;
 import java.util.Set;
 
+import mcontrollers.ProductContainerListener;
 import model.Item;
 import model.ItemManager;
 import model.Product;
@@ -24,6 +25,7 @@ import model.StorageUnit;
  * Controller class for inventory view.
  */
 public class InventoryController extends Controller implements IInventoryController {
+	private final ProductContainerListener productContainerListener;
 	private final Random rand = new Random();
 
 	/**
@@ -37,7 +39,8 @@ public class InventoryController extends Controller implements IInventoryControl
 	 */
 	public InventoryController(IInventoryView view) {
 		super(view);
-
+		productContainerListener = new ProductContainerListener(getView(),
+				getProductContainerManager());
 		construct();
 	}
 
@@ -106,21 +109,18 @@ public class InventoryController extends Controller implements IInventoryControl
 		if (container == null)
 			throw new IllegalStateException("ProductContainer must have a tag.");
 
-		ProductContainer oldContainer = (ProductContainer) getView()
-				.getSelectedProductContainer().getTag();
+		ProductContainer oldContainer = getSelectedProductContainerTag();
 		if (productToAdd.hasContainer(container))
 			return;
 		productToAdd.addContainer(container);
 		container.add(productToAdd);
 		productToAdd.removeContainer(oldContainer);
-		ItemManager itemManager = getView().getItemManager();
+		ItemManager itemManager = getItemManager();
 		Set<Item> itemsToMove = itemManager.getItemsByProduct(productToAdd);
 		for (Item item : itemsToMove) {
 			if (item.getContainer().equals(oldContainer))
 				oldContainer.moveIntoContainer(item, container);
 		}
-		// Need to update the view to match the model
-		loadValues();
 	}
 
 	/**
@@ -454,7 +454,6 @@ public class InventoryController extends Controller implements IInventoryControl
 			throw new IllegalStateException("Unable to edit Storage Unit");
 		}
 		getView().displayEditStorageUnitView();
-		loadValues();
 	}
 
 	/**
@@ -634,8 +633,6 @@ public class InventoryController extends Controller implements IInventoryControl
 		assert (selectedSU != null);
 
 		getProductContainerManager().unmanage(selectedSU);
-
-		loadValues();
 	}
 
 	private String getRandomBarcode() {
