@@ -44,7 +44,7 @@ public final class GUI extends JFrame implements IMainView {
 		});
 	}
 
-	private IMainController _controller;
+	private final IMainController _controller;
 	private JMenuBar _menuBar;
 	private SessionMenu _sessionMenu;
 	private ReportsMenu _reportsMenu;
@@ -54,7 +54,7 @@ public final class GUI extends JFrame implements IMainView {
 	private ProductManager _productManager;
 	private ProductContainerManager _productContainerManager;
 
-	private GUI(String[] args) {
+	public GUI(String[] args) {
 		super("Home Inventory Tracker");
 
 		setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
@@ -126,14 +126,17 @@ public final class GUI extends JFrame implements IMainView {
 		return _controller;
 	}
 
+	@Override
 	public ItemManager getItemManager() {
 		return _itemManager;
 	}
 
+	@Override
 	public ProductContainerManager getProductContainerManager() {
 		return _productContainerManager;
 	}
 
+	@Override
 	public ProductManager getProductManager() {
 		return _productManager;
 	}

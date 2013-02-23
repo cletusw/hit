@@ -4,11 +4,13 @@ import static org.easymock.EasyMock.createMock;
 import static org.junit.Assert.assertTrue;
 import gui.inventory.IInventoryView;
 import gui.inventory.InventoryController;
+import gui.inventory.InventoryView;
+import gui.main.GUI;
+import model.ConcreteProductContainerManager;
 import model.ItemManager;
 import model.ProductContainerManager;
 import model.ProductManager;
 
-import org.easymock.EasyMock;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -18,11 +20,14 @@ public class InventoryControllerTest {
 
 	@Before
 	public void setUp() throws Exception {
-		IInventoryView view = createMock(IInventoryView.class);
 		ItemManager itemManager = createMock(ItemManager.class);
 		ProductManager productManager = createMock(ProductManager.class);
-		ProductContainerManager productContainerManager = EasyMock
-				.createMock(ProductContainerManager.class);
+		// ProductContainerManager productContainerManager = EasyMock
+		// .createMock(ProductContainerManager.class);
+		ProductContainerManager productContainerManager = new ConcreteProductContainerManager();
+		String[] args = { "", "" };
+		IInventoryView view = new InventoryView(new GUI(args), itemManager, productManager,
+				productContainerManager); // createMock(IInventoryView.class);
 		inventoryController = new InventoryController(view, itemManager, productManager,
 				productContainerManager);
 	}

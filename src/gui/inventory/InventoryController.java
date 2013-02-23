@@ -626,7 +626,6 @@ public class InventoryController extends Controller implements IInventoryControl
 	 */
 	@Override
 	protected void loadValues() {
-		// TODO: Load real data
 		ProductContainerData root = new ProductContainerData();
 		root.setTag(null);
 		ProductContainerManager manager = getView().getProductContainerManager();
