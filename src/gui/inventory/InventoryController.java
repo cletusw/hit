@@ -15,6 +15,7 @@ import java.util.Random;
 import model.ConcreteItemManager;
 import model.ConcreteProductContainerManager;
 import model.ConcreteProductManager;
+import model.Item;
 import model.ItemManager;
 import model.Product;
 import model.ProductContainer;
@@ -537,6 +538,8 @@ public class InventoryController extends Controller implements IInventoryControl
 		if (!canRemoveItem()) {
 			throw new IllegalStateException("Unable to remove Item");
 		}
+
+		itemManager.unmanage(getSelectedItemTag());
 	}
 
 	/**
@@ -584,6 +587,16 @@ public class InventoryController extends Controller implements IInventoryControl
 			barcode.append(((Integer) rand.nextInt(10)).toString());
 		}
 		return barcode.toString();
+	}
+
+	private Item getSelectedItemTag() {
+		ItemData selectedItem = getView().getSelectedItem();
+		assert (selectedItem != null);
+
+		Item selectedTag = (Item) selectedItem.getTag();
+		assert (selectedTag != null);
+
+		return selectedTag;
 	}
 
 	private ProductContainer getSelectedProductContainerTag() {
