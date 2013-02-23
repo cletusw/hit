@@ -1,5 +1,7 @@
 package gui.product;
 
+import model.Product;
+import model.ProductManager;
 import gui.common.Controller;
 import gui.common.IView;
 
@@ -31,6 +33,35 @@ public class AddProductController extends Controller implements IAddProductContr
 	 */
 	@Override
 	public void addProduct() {
+		ProductManager productManager = getView().getProductManager();
+		String barcode = getView().getBarcode();
+		String description = getView().getDescription();
+		int shelfLife = 0;
+		try { 
+			shelfLife = Integer.parseInt(getView().getShelfLife());
+		}
+		catch(NumberFormatException e) {
+		}
+		int threeMonthSupply = 0;
+		try { 
+			threeMonthSupply = Integer.parseInt(getView().getSupply());
+		}
+		catch(NumberFormatException e) {
+		}
+		float quantity = 1;
+		try {
+			quantity = (float)Double.parseDouble(getView().getSizeValue());
+		}
+		catch (NumberFormatException e) {
+		}
+		Unit unit = new Unit(getView().getSizeUnit());
+		
+		ProductQuantity pq = new ProductQuantity();
+		Product product = new Product(barcode, description, 
+				shelfLife, threeMonthSupply, new ProductQuantity()
+				shelfLife, int tms,
+				ProductQuantity pq, ProductManager manager)
+		productManager.manage(product);
 	}
 
 	/**

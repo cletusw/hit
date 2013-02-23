@@ -67,10 +67,6 @@ import javax.swing.tree.DefaultTreeModel;
 import javax.swing.tree.TreePath;
 import javax.swing.tree.TreeSelectionModel;
 
-import model.ItemManager;
-import model.ProductContainerManager;
-import model.ProductManager;
-
 import common.util.DateUtils;
 
 @SuppressWarnings("serial")
@@ -403,16 +399,6 @@ public class InventoryView extends View implements IInventoryView {
 		construct();
 
 		_controller = new InventoryController(this);
-	}
-
-	public InventoryView(GUI parent, ItemManager itemManager, ProductManager productManager,
-			ProductContainerManager productContainerManager) {
-		super(parent);
-
-		construct();
-
-		_controller = new InventoryController(this, itemManager, productManager,
-				productContainerManager);
 	}
 
 	@Override

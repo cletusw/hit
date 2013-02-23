@@ -1,5 +1,9 @@
 package gui.common;
 
+import model.ItemManager;
+import model.ProductContainerManager;
+import model.ProductManager;
+
 /**
  * Controller is a base class that provides common functionality required by all controllers in
  * the program (i.e., all controller classes extend Controller).
@@ -68,6 +72,18 @@ public abstract class Controller implements IController {
 		return;
 	}
 
+	protected ItemManager getItemManager() {
+		return _view.getItemManager();
+	}
+
+	protected ProductContainerManager getProductContainerManager() {
+		return _view.getProductContainerManager();
+	}
+
+	protected ProductManager getProductManager() {
+		return _view.getProductManager();
+	}
+
 	/**
 	 * Returns a reference to the view for this controller.
 	 * 
@@ -89,5 +105,4 @@ public abstract class Controller implements IController {
 	protected void loadValues() {
 		return;
 	}
-
 }

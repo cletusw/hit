@@ -60,9 +60,6 @@ public class AddItemBatchController extends Controller implements IAddItemBatchC
 		else {
 			getView().displayAddProductView();
 		}
-		// Product product = new Product(getView().getBarcode(), String description, int
-		// shelfLife, int tms,
-		// ProductQuantity pq, ProductManager manager)
 
 		Item item = new Item(product, container, getView().getItemManager());
 		// TODO: Needs to go through the manager in order to allow notifications!

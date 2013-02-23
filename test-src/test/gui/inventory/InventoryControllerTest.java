@@ -1,15 +1,27 @@
 package test.gui.inventory;
 
-import static org.easymock.EasyMock.createMock;
+import static org.easymock.EasyMock.createNiceMock;
+import static org.easymock.EasyMock.expect;
+import static org.easymock.EasyMock.replay;
+import static org.easymock.EasyMock.reset;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 import gui.inventory.IInventoryView;
 import gui.inventory.InventoryController;
-import gui.inventory.InventoryView;
-import gui.main.GUI;
-import model.ConcreteProductContainerManager;
+import gui.inventory.ProductContainerData;
+
+import java.util.ArrayList;
+import java.util.Iterator;
+
+import model.Item;
 import model.ItemManager;
+import model.Product;
 import model.ProductContainerManager;
+import model.ProductGroup;
 import model.ProductManager;
+import model.ProductQuantity;
+import model.StorageUnit;
+import model.Unit;
 
 import org.junit.After;
 import org.junit.Before;
@@ -17,19 +29,41 @@ import org.junit.Test;
 
 public class InventoryControllerTest {
 	private InventoryController inventoryController;
+	private IInventoryView mockView;
+
+	private StorageUnit storageUnit;
+	private ProductGroup productGroup;
+	private Product product;
+	private Item item;
 
 	@Before
 	public void setUp() throws Exception {
-		ItemManager itemManager = createMock(ItemManager.class);
-		ProductManager productManager = createMock(ProductManager.class);
-		// ProductContainerManager productContainerManager = EasyMock
-		// .createMock(ProductContainerManager.class);
-		ProductContainerManager productContainerManager = new ConcreteProductContainerManager();
-		String[] args = { "", "" };
-		IInventoryView view = new InventoryView(new GUI(args), itemManager, productManager,
-				productContainerManager); // createMock(IInventoryView.class);
-		inventoryController = new InventoryController(view, itemManager, productManager,
-				productContainerManager);
+		ProductManager productManager = createNiceMock(ProductManager.class);
+		ItemManager itemManager = createNiceMock(ItemManager.class);
+		ProductContainerManager mockProductContainerManager = createNiceMock(ProductContainerManager.class);
+
+		// Fixtures
+		storageUnit = new StorageUnit("Test Storage Unit", mockProductContainerManager);
+		productGroup = new ProductGroup("Test Product Group", new ProductQuantity(1,
+				Unit.COUNT), Unit.COUNT, storageUnit, mockProductContainerManager);
+		product = new Product("Test Barcode", "Test Description", 1, 1, new ProductQuantity(1,
+				Unit.COUNT), productManager);
+		item = new Item(product, storageUnit, itemManager);
+
+		reset(mockProductContainerManager);
+		mockView = createNiceMock(IInventoryView.class);
+		expect(mockView.getProductContainerManager()).andStubReturn(
+				mockProductContainerManager);
+		Iterator<StorageUnit> storageUnitIterator = (new ArrayList<StorageUnit>()).iterator();
+		expect(mockProductContainerManager.getStorageUnitIterator()).andStubReturn(
+				storageUnitIterator);
+		replay(mockView);
+		replay(mockProductContainerManager);
+
+		inventoryController = new InventoryController(mockView);
+
+		reset(mockProductContainerManager);
+		reset(mockView);
 	}
 
 	@After
@@ -83,7 +117,15 @@ public class InventoryControllerTest {
 
 	@Test
 	public void testCanDeleteStorageUnit() {
-		// TODO
+		ProductContainerData storageUnitData = new ProductContainerData();
+		storageUnitData.setTag(storageUnit);
+
+		expect(mockView.getSelectedProductContainer()).andStubReturn(storageUnitData);
+		replay(mockView);
+
+		assertTrue(inventoryController.canDeleteStorageUnit());
+		storageUnit.add(item);
+		assertFalse(inventoryController.canDeleteStorageUnit());
 	}
 
 	@Test
