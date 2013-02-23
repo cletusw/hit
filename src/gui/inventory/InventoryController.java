@@ -17,7 +17,6 @@ import model.Item;
 import model.ItemManager;
 import model.Product;
 import model.ProductContainer;
-import model.ProductContainerManager;
 import model.ProductGroup;
 import model.StorageUnit;
 
@@ -338,7 +337,7 @@ public class InventoryController extends Controller implements IInventoryControl
 	 * 
 	 * @pre canDeleteProduct()
 	 * @pre getSelectedProductTag() != null
-	 * @post !productManager.contains(old(getView().getSelectedProduct().getTag()))
+	 * @post !getProductManager().contains(old(getView().getSelectedProduct().getTag()))
 	 */
 	@Override
 	public void deleteProduct() {
@@ -357,7 +356,7 @@ public class InventoryController extends Controller implements IInventoryControl
 	 * 
 	 * @pre canDeleteProductGroup()
 	 * @pre getSelectedProductContainerTag() != null
-	 * @post !productContainerManager.contains(PREVIOUS
+	 * @post !getProductContainerManager().contains(PREVIOUS
 	 *       getView().getSelectedProductContainer().getTag())
 	 */
 	@Override
@@ -377,7 +376,7 @@ public class InventoryController extends Controller implements IInventoryControl
 	 * 
 	 * @pre canDeleteStorageUnit()
 	 * @pre getSelectedProductContainerTag() != null
-	 * @post !productContainerManager.contains(PREVIOUS
+	 * @post !getProductContainerManager().contains(PREVIOUS
 	 *       getView().getSelectedProductContainer().getTag())
 	 */
 	@Override
@@ -396,7 +395,7 @@ public class InventoryController extends Controller implements IInventoryControl
 	 *             if (!canEditItem())
 	 * 
 	 * @pre canEditItem()
-	 * @post itemManager.contains(old(getView().getSelectedItem().getTag()))
+	 * @post getItemManager().contains(old(getView().getSelectedItem().getTag()))
 	 */
 	@Override
 	public void editItem() {
@@ -413,7 +412,7 @@ public class InventoryController extends Controller implements IInventoryControl
 	 *             if (!canEditProduct())
 	 * 
 	 * @pre canEditProduct()
-	 * @post productManager.contains(old(getView().getSelectedProduct().getTag()))
+	 * @post getProductManager().contains(old(getView().getSelectedProduct().getTag()))
 	 */
 	@Override
 	public void editProduct() {
@@ -430,7 +429,7 @@ public class InventoryController extends Controller implements IInventoryControl
 	 *             if (!canEditProductGroup)
 	 * 
 	 * @pre canEditProductGroup()
-	 * @post productContainerManager.contains(PREVIOUS
+	 * @post getProductContainerManager().contains(PREVIOUS
 	 *       getView().getSelectedProductContainer().getTag())
 	 */
 	@Override
@@ -448,7 +447,7 @@ public class InventoryController extends Controller implements IInventoryControl
 	 *             if (!canEditStorageUnit())
 	 * 
 	 * @pre canEditStorageUnit()
-	 * @post productContainerManager.contains(PREVIOUS
+	 * @post getProductContainerManager().contains(PREVIOUS
 	 *       getView().getSelectedProductContainer().getTag())
 	 */
 	@Override
@@ -586,7 +585,7 @@ public class InventoryController extends Controller implements IInventoryControl
 	 * 
 	 * @pre canRemoveItem()
 	 * @pre getSelectedItemTag() != null
-	 * @post !itemManager.contains(old(getView().getSelectedItem().getTag()))
+	 * @post !getItemManager().contains(old(getView().getSelectedItem().getTag()))
 	 */
 	@Override
 	public void removeItem() {
@@ -604,8 +603,8 @@ public class InventoryController extends Controller implements IInventoryControl
 	 *             if(!canRemoveItems())
 	 * 
 	 * @pre canRemoveItems()
-	 * @post itemManager no longer contains any of the items matching those removed by the
-	 *       user.
+	 * @post itemManager (from getItemManager() ) no longer contains any of the items matching
+	 *       those removed by the user.
 	 */
 	@Override
 	public void removeItems() {
@@ -726,8 +725,8 @@ public class InventoryController extends Controller implements IInventoryControl
 	protected void loadValues() {
 		ProductContainerData root = new ProductContainerData();
 		root.setTag(null);
-		ProductContainerManager manager = getView().getProductContainerManager();
-		Iterator<StorageUnit> storageUnitIterator = manager.getStorageUnitIterator();
+		Iterator<StorageUnit> storageUnitIterator = getProductContainerManager()
+				.getStorageUnitIterator();
 		while (storageUnitIterator.hasNext()) {
 			ProductContainer pc = storageUnitIterator.next();
 			root = loadProductContainerData(root, pc);
