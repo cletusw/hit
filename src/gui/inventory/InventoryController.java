@@ -56,7 +56,6 @@ public class InventoryController extends Controller implements IInventoryControl
 			throw new IllegalStateException("Unable to add Items");
 		}
 		getView().displayAddItemBatchView();
-		loadValues();
 	}
 
 	/**
@@ -74,7 +73,6 @@ public class InventoryController extends Controller implements IInventoryControl
 			throw new IllegalStateException("Unable to add Product Groups");
 		}
 		getView().displayAddProductGroupView();
-		loadValues();
 	}
 
 	/**
@@ -121,8 +119,6 @@ public class InventoryController extends Controller implements IInventoryControl
 			if (item.getContainer().equals(oldContainer))
 				oldContainer.moveIntoContainer(item, container);
 		}
-		// Need to update the view to match the model
-		loadValues();
 	}
 
 	/**
@@ -456,7 +452,6 @@ public class InventoryController extends Controller implements IInventoryControl
 			throw new IllegalStateException("Unable to edit Storage Unit");
 		}
 		getView().displayEditStorageUnitView();
-		loadValues();
 	}
 
 	/**
@@ -636,8 +631,6 @@ public class InventoryController extends Controller implements IInventoryControl
 		assert (selectedSU != null);
 
 		getProductContainerManager().unmanage(selectedSU);
-
-		loadValues();
 	}
 
 	private String getRandomBarcode() {
