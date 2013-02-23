@@ -56,7 +56,6 @@ public class InventoryController extends Controller implements IInventoryControl
 			throw new IllegalStateException("Unable to add Items");
 		}
 		getView().displayAddItemBatchView();
-		loadValues();
 	}
 
 	/**
@@ -74,7 +73,6 @@ public class InventoryController extends Controller implements IInventoryControl
 			throw new IllegalStateException("Unable to add Product Groups");
 		}
 		getView().displayAddProductGroupView();
-		loadValues();
 	}
 
 	/**
