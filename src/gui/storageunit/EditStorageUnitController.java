@@ -3,12 +3,17 @@ package gui.storageunit;
 import gui.common.Controller;
 import gui.common.IView;
 import gui.inventory.ProductContainerData;
+import model.ProductContainer;
+import model.ProductContainerManager;
+import model.StorageUnit;
 
 /**
  * Controller class for the edit storage unit view.
  */
 public class EditStorageUnitController extends Controller implements
 		IEditStorageUnitController {
+	protected String originalStorageUnitName;
+	protected ProductContainer container;
 
 	/**
 	 * Constructor.
@@ -20,7 +25,7 @@ public class EditStorageUnitController extends Controller implements
 	 */
 	public EditStorageUnitController(IView view, ProductContainerData target) {
 		super(view);
-
+		container = (ProductContainer) target.getTag();
 		construct();
 	}
 
@@ -34,6 +39,9 @@ public class EditStorageUnitController extends Controller implements
 	 */
 	@Override
 	public void editStorageUnit() {
+		ProductContainerManager manager = getView().getProductContainerManager();
+		ProductContainer su = manager.getStorageUnitByName(container.getName());
+		manager.setStorageUnitName(getView().getStorageUnitName(), (StorageUnit) su);
 	}
 
 	/**
@@ -42,6 +50,7 @@ public class EditStorageUnitController extends Controller implements
 	 */
 	@Override
 	public void valuesChanged() {
+		enableComponents();
 	}
 
 	/**
@@ -55,6 +64,11 @@ public class EditStorageUnitController extends Controller implements
 	 */
 	@Override
 	protected void enableComponents() {
+		getView().enableStorageUnitName(true);
+		ProductContainerManager manager = getView().getProductContainerManager();
+		getView().enableOK(
+				getView().getStorageUnitName().equals(container.getName())
+						|| manager.isValidStorageUnitName(getView().getStorageUnitName()));
 	}
 
 	//
@@ -82,6 +96,7 @@ public class EditStorageUnitController extends Controller implements
 	 */
 	@Override
 	protected void loadValues() {
+		getView().setStorageUnitName(container.getName());
 	}
 
 }

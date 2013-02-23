@@ -426,6 +426,7 @@ public class InventoryController extends Controller implements IInventoryControl
 			throw new IllegalStateException("Unable to edit Storage Unit");
 		}
 		getView().displayEditStorageUnitView();
+		loadValues();
 	}
 
 	/**

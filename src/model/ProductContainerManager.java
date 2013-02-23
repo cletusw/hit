@@ -11,5 +11,7 @@ public interface ProductContainerManager {
 
 	public void manage(ProductContainer pc);
 
+	public void setStorageUnitName(String name, StorageUnit su);
+
 	public void unmanage(ProductContainer pc);
 }

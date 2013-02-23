@@ -90,6 +90,21 @@ public class ConcreteProductContainerManager extends Observable implements Seria
 	}
 
 	/**
+	 * 
+	 * @param name
+	 * @param su
+	 */
+	public void setStorageUnitName(String name, StorageUnit su) {
+		if (name.equals(su.getName()))
+			return;
+		if (!isValidStorageUnitName(name))
+			throw new IllegalArgumentException("Illegal storage unit name");
+		unmanage(su);
+		su.setName(name);
+		manage(su);
+	}
+
+	/**
 	 * Remove pc from set of managed objects and notify observers of a change.
 	 * 
 	 * @param pc
