@@ -14,6 +14,7 @@ import java.util.Random;
 import java.util.Set;
 
 import model.Item;
+import model.ItemManager;
 import model.Product;
 import model.ProductContainer;
 import model.ProductContainerManager;
