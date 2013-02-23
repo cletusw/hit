@@ -65,8 +65,6 @@ public class AddProductController extends Controller implements IAddProductContr
 
 		Product product = new Product(barcode, description, shelfLife, threeMonthSupply, pq,
 				productManager);
-		productManager.manage(product);
-
 	}
 
 	/**

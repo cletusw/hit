@@ -7,6 +7,8 @@ import java.util.Set;
 import java.util.TreeMap;
 import java.util.TreeSet;
 
+import model.Action.ActionType;
+
 /**
  * @author Clayton Watts
  * 
@@ -92,6 +94,9 @@ public class ConcreteProductManager extends Observable implements ProductManager
 
 		products.add(product);
 		barcodesToProducts.put(product.getBarcode(), product);
+		setChanged();
+		Action a = new Action(product, ActionType.CREATE);
+		notifyObservers(a);
 	}
 
 	/**

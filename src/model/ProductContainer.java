@@ -535,6 +535,16 @@ public abstract class ProductContainer implements Comparable<ProductContainer>, 
 	public int getProductsSize() {
 		return products.size();
 	}
+	
+	/**
+	 * Gets the set of items in the container of Product p
+	 * @param p Product used to find items
+	 * @return Set<Item> containing Items where item.getProduct().equals(p)
+	 */
+	public Set<Item> getItemsForProduct(Product p){
+		return this.productsToItems.get(p);
+	}
+	
 
 	/**
 	 * Removes the specified item from this ProductContainer. Use this only
