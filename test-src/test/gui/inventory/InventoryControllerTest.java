@@ -1,5 +1,6 @@
 package test.gui.inventory;
 
+import static org.easymock.EasyMock.capture;
 import static org.easymock.EasyMock.createNiceMock;
 import static org.easymock.EasyMock.expect;
 import static org.easymock.EasyMock.replay;
@@ -9,9 +10,12 @@ import static org.junit.Assert.assertTrue;
 import gui.inventory.IInventoryView;
 import gui.inventory.InventoryController;
 import gui.inventory.ProductContainerData;
+import gui.product.ProductData;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Iterator;
+import java.util.List;
 
 import model.Item;
 import model.ItemManager;
@@ -23,6 +27,7 @@ import model.ProductQuantity;
 import model.StorageUnit;
 import model.Unit;
 
+import org.easymock.Capture;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -201,7 +206,26 @@ public class InventoryControllerTest {
 
 	@Test
 	public void testProductContainerSelectionChanged() {
-		// TODO
+		Capture<ProductData[]> productListCapture = new Capture<ProductData[]>();
+
+		expect(mockView.getSelectedProductContainer()).andStubReturn(productGroupData);
+		mockView.setProducts(capture(productListCapture));
+		replay(mockView);
+
+		inventoryController.productContainerSelectionChanged();
+
+		List<ProductData> productList = Arrays.asList(productListCapture.getValue());
+		assertTrue(productList.size() == 0);
+
+		reset(mockView);
+		expect(mockView.getSelectedProductContainer()).andStubReturn(storageUnitData);
+		mockView.setProducts(capture(productListCapture));
+		replay(mockView);
+
+		inventoryController.productContainerSelectionChanged();
+
+		productList = Arrays.asList(productListCapture.getValue());
+		assertTrue(productList.size() == 1);
 	}
 
 	@Test
