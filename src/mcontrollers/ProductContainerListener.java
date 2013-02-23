@@ -24,7 +24,7 @@ import model.StorageUnit;
  */
 public class ProductContainerListener implements Observer {
 
-	private IInventoryView view;
+	private final IInventoryView view;
 
 	public ProductContainerListener(IInventoryView view, ProductContainerManager manager) {
 		manager.addObserver(this);
@@ -76,7 +76,8 @@ public class ProductContainerListener implements Observer {
 				ProductContainerData parent = view.getSelectedProductContainer();
 
 				// Insert
-				view.insertProductContainer(parent, newData, parent.getChildCount());
+				view.insertProductContainer(parent, newData,
+						parent.getSortedIndex(newData.getName()));
 				view.selectProductContainer(newData);
 			}
 		} else if (type.equals(ActionType.EDIT)) {
