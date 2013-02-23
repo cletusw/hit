@@ -1,5 +1,7 @@
 package model;
 
+import java.util.Observer;
+
 /**
  * @author Clayton Watts
  * 
@@ -12,6 +14,8 @@ public interface ProductManager {
 
 	public Product getByBarcode(String barcodeScanned);
 
+	void addObserver(Observer o);
+	
 	public void manage(Product product);
 
 	public void unmanage(Product product);
