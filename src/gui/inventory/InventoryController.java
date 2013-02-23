@@ -340,6 +340,16 @@ public class InventoryController extends Controller implements IInventoryControl
 		if (!canDeleteProduct()) {
 			throw new IllegalStateException("Unable to delete Product");
 		}
+
+		ProductData selected = getView().getSelectedProduct();
+		if (selected == null)
+			throw new IllegalStateException("Product selection is null");
+
+		Product selectedProduct = (Product) selected.getTag();
+		if (selectedProduct == null)
+			throw new IllegalStateException("Product tag is null");
+
+		productManager.unmanage(selectedProduct);
 	}
 
 	/**
