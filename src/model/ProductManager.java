@@ -16,6 +16,8 @@ public interface ProductManager {
 
 	void addObserver(Observer o);
 	
+	public void editProduct(Product oldProduct, Product newProduct);
+	
 	public void manage(Product product);
 
 	public void unmanage(Product product);
