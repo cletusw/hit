@@ -84,5 +84,19 @@ public class BarcodePrinterTest {
 
 		printer.printBatch();
 	}
+	
+	
+	/**
+	 * Test method for {@link model.BarcodePrinter#printBatch()}.
+	 */
+	@Test
+	public void testPrintSmallBatch() {
+		BarcodePrinter printer = BarcodePrinter.getInstance();
+		for (int i = 0; i < 3; i++) {
+			printer.addItemToBatch(items[i]);
+		}
+
+		printer.printBatch();
+	}
 
 }
