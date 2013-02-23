@@ -69,6 +69,9 @@ public final class GUI extends JFrame implements IMainView {
 		createInventoryView();
 
 		_controller = new MainController(this);
+		_itemManager = new ConcreteItemManager();
+		_productManager = new ConcreteProductManager();
+		_productContainerManager = new ConcreteProductContainerManager();
 
 		_sessionMenu.setController(_controller);
 		_reportsMenu.setController(_controller);
@@ -142,11 +145,7 @@ public final class GUI extends JFrame implements IMainView {
 	}
 
 	private void createInventoryView() {
-		_itemManager = new ConcreteItemManager();
-		_productManager = new ConcreteProductManager();
-		_productContainerManager = new ConcreteProductContainerManager();
-		_inventoryView = new InventoryView(this, _itemManager, _productManager,
-				_productContainerManager);
+		_inventoryView = new InventoryView(this);
 		setContentPane(_inventoryView);
 	}
 

@@ -12,29 +12,17 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Random;
 
-import model.ConcreteItemManager;
-import model.ConcreteProductContainerManager;
-import model.ConcreteProductManager;
 import model.Item;
-import model.ItemManager;
 import model.Product;
 import model.ProductContainer;
 import model.ProductContainerManager;
 import model.ProductGroup;
-import model.ProductManager;
 import model.StorageUnit;
 
 /**
  * Controller class for inventory view.
- * 
- * @invariant itemManager != null
- * @invariant productManager != null
- * @invariant productContainerManager != null
  */
 public class InventoryController extends Controller implements IInventoryController {
-	private final ItemManager itemManager;
-	private final ProductManager productManager;
-	private final ProductContainerManager productContainerManager;
 	private final Random rand = new Random();
 
 	/**
@@ -47,34 +35,8 @@ public class InventoryController extends Controller implements IInventoryControl
 	 * @post true
 	 */
 	public InventoryController(IInventoryView view) {
-		this(view, new ConcreteItemManager(), new ConcreteProductManager(),
-				new ConcreteProductContainerManager());
-	}
-
-	/**
-	 * Constructor.
-	 * 
-	 * @param view
-	 *            Reference to the inventory view
-	 * @param itemManager
-	 *            Reference to the item manager
-	 * @param productManager
-	 *            Reference to the product manager
-	 * @param productContainerManager
-	 *            Reference to the product container manager
-	 * 
-	 * @pre view != null
-	 * @pre itemManager != null
-	 * @pre productManager != null
-	 * @pre productContainerManager != null
-	 * @post true
-	 */
-	public InventoryController(IInventoryView view, ItemManager itemManager,
-			ProductManager productManager, ProductContainerManager productContainerManager) {
 		super(view);
-		this.itemManager = itemManager;
-		this.productManager = productManager;
-		this.productContainerManager = productContainerManager;
+
 		construct();
 	}
 
@@ -106,10 +68,6 @@ public class InventoryController extends Controller implements IInventoryControl
 		getView().displayAddProductGroupView();
 	}
 
-	//
-	// IInventoryController overrides
-	//
-
 	/**
 	 * This method is called when the user drags a product into a product container.
 	 * 
@@ -138,7 +96,6 @@ public class InventoryController extends Controller implements IInventoryControl
 			throw new IllegalStateException("Unable to add Storage Units");
 		}
 		getView().displayAddStorageUnitView();
-		loadValues();
 	}
 
 	/**
@@ -337,7 +294,7 @@ public class InventoryController extends Controller implements IInventoryControl
 			throw new IllegalStateException("Unable to delete Product");
 		}
 
-		productManager.unmanage(getSelectedProductTag());
+		getProductManager().unmanage(getSelectedProductTag());
 	}
 
 	/**
@@ -539,7 +496,7 @@ public class InventoryController extends Controller implements IInventoryControl
 			throw new IllegalStateException("Unable to remove Item");
 		}
 
-		itemManager.unmanage(getSelectedItemTag());
+		getItemManager().unmanage(getSelectedItemTag());
 	}
 
 	/**
@@ -575,7 +532,7 @@ public class InventoryController extends Controller implements IInventoryControl
 		ProductContainer selectedSU = getSelectedProductContainerTag();
 		assert (selectedSU != null);
 
-		productContainerManager.unmanage(selectedSU);
+		getProductContainerManager().unmanage(selectedSU);
 
 		loadValues();
 	}
@@ -665,7 +622,7 @@ public class InventoryController extends Controller implements IInventoryControl
 	protected void loadValues() {
 		ProductContainerData root = new ProductContainerData();
 		root.setTag(null);
-		ProductContainerManager manager = getView().getProductContainerManager();
+		ProductContainerManager manager = getProductContainerManager();
 		Iterator<StorageUnit> storageUnitIterator = manager.getStorageUnitIterator();
 		while (storageUnitIterator.hasNext()) {
 			ProductContainer pc = storageUnitIterator.next();
