@@ -47,7 +47,7 @@ public class BarcodePrinter {
 		return _instance;
 	}
 
-	private final String saveFolder = "../labels";
+	private final String saveFolder = "labels";
 
 	private List<Item> itemsToPrint;
 
@@ -97,19 +97,19 @@ public class BarcodePrinter {
 		}
 
 		itemsToPrint.clear();
-		return new NonEmptyString(filename);
+		return new NonEmptyString(saveFolder + "/" +filename);
 	}
 
 	private void createDocument(String filename) throws FileNotFoundException,
 			DocumentException {
 
-		// verify that the folder ../labels/ exists
+		// verify that the folder ./labels/ exists
 		File file = new File(saveFolder);
 		if (!file.exists()) {
 			boolean success = file.mkdirs();
 			if (!success)
 				throw new FileNotFoundException(
-						"Unable to find or create '../labels' directory");
+						"Unable to find or create " + saveFolder + " directory");
 		}
 
 		filename = saveFolder + "/" + filename;
@@ -133,6 +133,21 @@ public class BarcodePrinter {
 		for (Item i : itemsToPrint) {
 			table.addCell(drawBarcode(i, cb, cellWidth));
 		}
+		
+		if(itemsToPrint.size() < table.getNumberOfColumns()){
+			int emptyColumns = table.getNumberOfColumns() - itemsToPrint.size();
+			for(int i = 0; i < emptyColumns; i++){
+				PdfPCell emptyCell = new PdfPCell();
+				emptyCell.setHorizontalAlignment(Element.ALIGN_CENTER);
+				emptyCell.setBorder(Rectangle.NO_BORDER);
+				emptyCell.setPaddingTop(15);
+				emptyCell.setPaddingBottom(15);
+				emptyCell.setPaddingLeft(10);
+				emptyCell.setPaddingRight(10);
+				table.addCell(emptyCell);
+			}
+		}
+		
 		document.add(table);
 		document.close();
 	}

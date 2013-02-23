@@ -7,9 +7,13 @@ import gui.inventory.ProductContainerData;
 import gui.item.ItemData;
 import gui.product.ProductData;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 
+import model.BarcodePrinter;
 import model.Item;
+import model.NonEmptyString;
 import model.Product;
 import model.ProductContainer;
 import model.ProductManager;
@@ -87,6 +91,7 @@ public class AddItemBatchController extends Controller implements IAddItemBatchC
 			Item item = new Item(product, container, getItemManager());
 			// TODO: Needs to go through the manager in order to allow notify!
 			container.add(item);
+			BarcodePrinter.getInstance().addItemToBatch(item);
 
 			ItemData id = new ItemData();
 			id.setTag(item);
@@ -133,6 +138,15 @@ public class AddItemBatchController extends Controller implements IAddItemBatchC
 	@Override
 	public void done() {
 		getView().close();
+		NonEmptyString filename = BarcodePrinter.getInstance().printBatch();
+		File file = new File(filename.toString());
+		try {
+			java.awt.Desktop.getDesktop().open(file);
+		} catch (IOException e) {
+			getView().displayErrorMessage(e.getMessage());
+		} catch(IllegalArgumentException e){
+			getView().displayErrorMessage(e.getMessage());
+		}
 	}
 
 	/**
