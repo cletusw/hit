@@ -1,5 +1,6 @@
 package test.model;
 
+import static org.easymock.EasyMock.createMock;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
@@ -14,7 +15,6 @@ import model.ProductQuantity;
 import model.StorageUnit;
 import model.Unit;
 
-import static org.easymock.EasyMock.createMock;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -154,7 +154,6 @@ public class ProductContainerTest {
 		storageUnit1.add(item1);
 		storageUnit1.add(new Item(new Barcode("400000001920"), product1, storageUnit1,
 				itemManager));
-		System.out.println("Supply: " + storageUnit1.getCurrentSupply(item1.getProduct()));
 		assertTrue(storageUnit1.getCurrentSupply(item1.getProduct()).equals(
 				new ProductQuantity(2, Unit.COUNT)));
 		assertTrue(productGroup1.getCurrentSupply(item1.getProduct()).equals(
@@ -259,19 +258,15 @@ public class ProductContainerTest {
 
 	@Test
 	public void testProductGroupItems() {
-		System.out.print("Testing ProductGroup Item logic...");
 		ProductGroup productGroup1 = new ProductGroup("Cookies", new ProductQuantity(1,
 				Unit.COUNT), Unit.KILOGRAMS, storageUnit1, pcManager);
 		productGroup1.add(item1.getProduct());
 		assertEquals(0, productGroup1.getItemsSize());
 		assertFalse(productGroup1.contains(item1));
-
-		System.out.println("done.");
 	}
 
 	@Test
 	public void testProductGroupProductGroups() {
-		System.out.print("Testing ProductGroup ProductGroup logic...");
 		ProductGroup productGroup1 = new ProductGroup("Cookies", new ProductQuantity(1,
 				Unit.COUNT), Unit.KILOGRAMS, storageUnit1, pcManager);
 		assertEquals(0, productGroup1.getProductGroupsSize());
@@ -296,12 +291,10 @@ public class ProductContainerTest {
 		assertTrue(productGroup1.getProductGroup(productGroup2.getName())
 				.equals(productGroup2));
 		assertTrue(productGroup1.getProductGroup(productGroup1.getName()) == null);
-		System.out.println("done.");
 	}
 
 	@Test
 	public void testProductGroupProducts() {
-		System.out.print("Testing ProductGroup Product logic...");
 		ProductGroup productGroup1 = new ProductGroup("Cookies", new ProductQuantity(1,
 				Unit.COUNT), Unit.KILOGRAMS, storageUnit1, pcManager);
 		assertEquals(0, productGroup1.getProductsSize());
@@ -320,8 +313,6 @@ public class ProductContainerTest {
 
 		assertTrue(productGroup1.getProduct(product2.getBarcode()).equals(product2));
 		assertTrue(productGroup1.getProduct(product1.getBarcode()) == null);
-
-		System.out.println("done.");
 	}
 
 	@Test
