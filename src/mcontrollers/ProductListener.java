@@ -17,7 +17,7 @@ public class ProductListener implements Observer {
 	 * Method intended to notify the view when ProductManager sends a "change" notice.
 	 * 
 	 * @param o
-	 *            The
+	 *            The object being observed (which has access to the model)
 	 * @param arg
 	 *            Object passed to the view so the view can determine which changes to make
 	 * 

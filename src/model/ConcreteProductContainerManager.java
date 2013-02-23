@@ -26,7 +26,8 @@ public class ConcreteProductContainerManager extends Observable implements Seria
 	@Override
 	public StorageUnit getRootStorageUnitByName(String productGroupName) {
 		for (StorageUnit su : rootStorageUnits) {
-			if (su.containsProductGroup(productGroupName))
+			if (su.getName().equals(productGroupName)
+					|| su.containsProductGroup(productGroupName))
 				return su;
 		}
 		return null;
@@ -52,6 +53,10 @@ public class ConcreteProductContainerManager extends Observable implements Seria
 
 	@Override
 	public boolean isValidProductGroupName(String productGroupName) {
+		if (productGroupName == null || productGroupName.length() == 0) {
+			return false;
+		}
+
 		for (StorageUnit su : rootStorageUnits) {
 			if (su.containsProductGroup(productGroupName))
 				return false;
