@@ -3,7 +3,15 @@ package gui.batches;
 import gui.common.Controller;
 import gui.common.IView;
 import gui.inventory.ProductContainerData;
+import gui.item.ItemData;
+import gui.product.ProductData;
+
+import java.util.ArrayList;
+
+import model.Item;
 import model.Product;
+import model.ProductContainer;
+import model.ProductManager;
 import model.ProductQuantity;
 import model.Unit;
 
@@ -11,6 +19,9 @@ import model.Unit;
  * Controller class for the add item batch view.
  */
 public class AddItemBatchController extends Controller implements IAddItemBatchController {
+	ArrayList<ItemData> items;
+	ArrayList<ProductData> products;
+	ProductContainer container;
 
 	/**
 	 * Constructor.
@@ -25,6 +36,10 @@ public class AddItemBatchController extends Controller implements IAddItemBatchC
 		// Phase 2: not using the scanner
 		getView().setUseScanner(false);
 		getView().setCount("1");
+		items = new ArrayList<ItemData>();
+		products = new ArrayList<ProductData>();
+		container = (ProductContainer) target.getTag();
+		getView().giveBarcodeFocus();
 		construct();
 	}
 
@@ -37,12 +52,30 @@ public class AddItemBatchController extends Controller implements IAddItemBatchC
 	 */
 	@Override
 	public void addItem() {
-		// Item item = new Item();
+		String productBarcode = getView().getBarcode();
+		ProductManager productManager = getView().getProductManager();
+		Product product = null;
+		if (productManager.containsProduct(productBarcode))
+			product = productManager.getByBarcode(productBarcode);
+		else {
+			getView().displayAddProductView();
+		}
+		// Product product = new Product(getView().getBarcode(), String description, int
+		// shelfLife, int tms,
+		// ProductQuantity pq, ProductManager manager)
 
-		// if view.getController().
-		getView().displayAddProductView();
+		Item item = new Item(product, container, getView().getItemManager());
+		// TODO: Needs to go through the manager in order to allow notifications!
+		container.add(item);
 
-		// target.addItem(item);
+		ItemData id = new ItemData();
+		id.setTag(item);
+		id.setBarcode(item.getBarcode());
+		id.setEntryDate(item.getEntryDate());
+		id.setExpirationDate(item.getExpirationDate());
+		id.setStorageUnit(container.getName());
+		id.setProductGroup(item.getContainer().getName());
+		items.add(id);
 
 		// Clear the view for the next item!
 		getView().setBarcode("");
@@ -159,6 +192,10 @@ public class AddItemBatchController extends Controller implements IAddItemBatchC
 	 */
 	@Override
 	protected void loadValues() {
+		ProductData[] pd = new ProductData[0];
+		ItemData[] id = new ItemData[0];
+		getView().setProducts(products.toArray(pd));
+		getView().setItems(items.toArray(id));
 	}
 
 }

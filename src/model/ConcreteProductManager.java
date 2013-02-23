@@ -13,8 +13,8 @@ import java.util.TreeSet;
  */
 @SuppressWarnings("serial")
 public class ConcreteProductManager extends Observable implements ProductManager, Serializable {
-	private Set<Product> products;
-	private Map<String, Product> barcodesToProducts;
+	private final Set<Product> products;
+	private final Map<String, Product> barcodesToProducts;
 
 	/**
 	 * Creates an empty ConcreteProductManager
@@ -40,6 +40,20 @@ public class ConcreteProductManager extends Observable implements ProductManager
 		}
 
 		return products.contains(product);
+	}
+
+	/**
+	 * Checks if the identified Product exists in the home inventory system.
+	 * 
+	 * @param productName
+	 *            The barcode of the Product to check
+	 * @return true if the product exists in the home inventory system, false otherwise.
+	 * 
+	 * @pre product != null
+	 */
+	@Override
+	public boolean containsProduct(String productName) {
+		return barcodesToProducts.containsKey(productName);
 	}
 
 	/**
