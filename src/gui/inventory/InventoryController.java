@@ -239,7 +239,8 @@ public class InventoryController extends Controller implements IInventoryControl
 		// Enabled only if getView().getSelectedProductContainer() does not contain any
 		// items (including it's Product Groups)
 		// See Functional Spec p15
-
+		if (getView().getSelectedProductContainer() == null)
+			return false;
 		return getSelectedProductContainerTag().canRemove();
 	}
 
@@ -368,6 +369,12 @@ public class InventoryController extends Controller implements IInventoryControl
 		if (!canDeleteStorageUnit()) {
 			throw new IllegalStateException("Unable to delete Storage Unit");
 		}
+		ProductContainerManager manager = getView().getProductContainerManager();
+		ProductContainerData pcData = getView().getSelectedProductContainer();
+		assert (pcData != null);
+		ProductContainer selectedSU = (ProductContainer) pcData.getTag();
+		manager.unmanage(selectedSU);
+		loadValues();
 	}
 
 	/**
