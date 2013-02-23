@@ -2,13 +2,20 @@ package gui.productgroup;
 
 import gui.common.Controller;
 import gui.common.IView;
+import gui.common.SizeUnits;
 import gui.inventory.ProductContainerData;
+import model.ProductContainerManager;
+import model.ProductGroup;
+import model.ProductQuantity;
+import model.StorageUnit;
+import model.Unit;
 
 /**
  * Controller class for the edit product group view.
  */
 public class EditProductGroupController extends Controller implements
 		IEditProductGroupController {
+	protected ProductContainerData originalData;
 
 	/**
 	 * Constructor.
@@ -20,6 +27,7 @@ public class EditProductGroupController extends Controller implements
 	 */
 	public EditProductGroupController(IView view, ProductContainerData target) {
 		super(view);
+		originalData = target;
 
 		construct();
 	}
@@ -34,6 +42,18 @@ public class EditProductGroupController extends Controller implements
 	 */
 	@Override
 	public void editProductGroup() {
+		ProductGroup pg = (ProductGroup) originalData.getTag();
+		StorageUnit root;
+		while (pg.getContainer() instanceof ProductGroup) {
+			pg = (ProductGroup) pg.getContainer();
+		}
+		root = (StorageUnit) pg.getContainer();
+		String newName = getView().getProductGroupName();
+		float tmsQuantity = Float.parseFloat(getView().getSupplyValue());
+		Unit tmsUnit = Unit.convertToUnit(getView().getSupplyUnit().toString());
+		ProductQuantity newTMS = new ProductQuantity(tmsQuantity, tmsUnit);
+		ProductContainerManager manager = getView().getProductContainerManager();
+		manager.editProductGroup(root, originalData.getName(), newName, newTMS);
 	}
 
 	/**
@@ -42,6 +62,7 @@ public class EditProductGroupController extends Controller implements
 	 */
 	@Override
 	public void valuesChanged() {
+		enableComponents();
 	}
 
 	/**
@@ -55,6 +76,28 @@ public class EditProductGroupController extends Controller implements
 	 */
 	@Override
 	protected void enableComponents() {
+		getView().enableProductGroupName(true);
+		getView().enableSupplyUnit(true);
+		getView().enableSupplyValue(true);
+		ProductContainerManager manager = getView().getProductContainerManager();
+		boolean enableOk = true;
+		float supplyValue = 0;
+		try {
+			supplyValue = Float.parseFloat(getView().getSupplyValue());
+			if (!ProductQuantity.isValidProductQuantity(supplyValue,
+					Unit.convertToUnit(getView().getSupplyUnit().toString()))) {
+				enableOk = false;
+			}
+		} catch (NumberFormatException e) {
+			enableOk = false;
+		}
+
+		if (!manager.isValidProductGroupName(getView().getProductGroupName())
+				&& !originalData.getName().equals(getView().getProductGroupName())) {
+			enableOk = false;
+		}
+
+		getView().enableOK(enableOk);
 	}
 
 	//
@@ -82,6 +125,16 @@ public class EditProductGroupController extends Controller implements
 	 */
 	@Override
 	protected void loadValues() {
-	}
+		ProductGroup original = (ProductGroup) originalData.getTag();
+		getView().setSupplyValue(
+				String.valueOf((original.getThreeMonthSupply().getQuantity())));
 
+		String unitString = original.getThreeMonthSupply().getUnits().toString();
+		if (unitString.contains(" "))
+			unitString = unitString.replace(" ", "");
+
+		getView().setSupplyUnit(SizeUnits.valueOf(unitString));
+
+		getView().setProductGroupName(originalData.getName());
+	}
 }
