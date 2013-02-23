@@ -177,5 +177,6 @@ public class ProductGroup extends ProductContainer {
 			throw new IllegalStateException("Invalid Product Quantity for Product Group");
 		}
 		this.threeMonthSupply = threeMonthSupply;
+		groupUnit = threeMonthSupply.getUnits();
 	}
 }
