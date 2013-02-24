@@ -54,10 +54,13 @@ public class ProductListener implements Observer {
 		ProductContainerData productContainerData = view.getSelectedProductContainer();
 		ProductContainer container = (ProductContainer) productContainerData.getTag();
 		
+		// fall-through cases on purpose
 		switch(action.getAction()){
 		case CREATE:
 			container.add(product);
 		case EDIT:
+			
+		case DELETE:
 			Iterator<Product> iter = container.getProductsIterator();
 			ProductData[] products = new ProductData[container.getProductsSize()];
 			
@@ -80,9 +83,6 @@ public class ProductListener implements Observer {
 			}
 			
 			view.setProducts(products);
-			break;
-		case DELETE:
-			
 			break;
 		}
 	}
