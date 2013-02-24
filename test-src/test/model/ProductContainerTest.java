@@ -1,10 +1,15 @@
 package test.model;
 
+import static org.easymock.EasyMock.createNiceMock;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 import model.Item;
+import model.ItemManager;
 import model.Product;
+import model.ProductGroup;
+import model.ProductQuantity;
 import model.StorageUnit;
+import model.Unit;
 
 import org.junit.After;
 import org.junit.Before;
@@ -12,16 +17,21 @@ import org.junit.Test;
 
 import fixture.model.ItemFixture;
 import fixture.model.ProductFixture;
+import fixture.model.ProductGroupFixture;
 import fixture.model.StorageUnitFixture;
 
 public class ProductContainerTest {
 	private StorageUnit storageUnit;
+	ProductGroup productGroup1;
+	ProductGroup productGroup2;
 	private Item item;
 
 	@Before
 	public void setUp() throws Exception {
 		storageUnit = new StorageUnitFixture();
-		item = new ItemFixture(storageUnit);
+		productGroup1 = new ProductGroupFixture(storageUnit);
+		productGroup2 = new ProductGroupFixture(productGroup1);
+		item = new ItemFixture();
 	}
 
 	@After
@@ -47,97 +57,73 @@ public class ProductContainerTest {
 		storageUnit.add(product);
 	}
 
-	// @Test
-	// public void testAddItem() {
-	// ProductGroup productGroup1 = new ProductGroupFixture(storageUnit);
-	// ProductGroup productGroup2 = new ProductGroupFixture(productGroup1);
-	// Item item1 = new ItemFixture();
-	// productGroup2.add(item1.getProduct());
-	// assertTrue(storageUnit.add(item1));
-	// assertTrue(productGroup2.contains(item1));
-	// }
+	@Test
+	public void testAddItem() {
+		productGroup2.add(item.getProduct());
+		assertTrue(storageUnit.add(item));
+		assertTrue(productGroup2.contains(item));
+	}
 
-	// @Test
-	// public void testAddItem2() {
-	// ProductGroup productGroup1 = new ProductGroup("Cookies", new ProductQuantity(1,
-	// Unit.COUNT), Unit.KILOGRAMS, storageUnit, pcManager);
-	// ProductGroup productGroup2 = new ProductGroup("Chocolate Chip Cookies",
-	// new ProductQuantity(1, Unit.COUNT), Unit.KILOGRAMS, productGroup1, pcManager);
-	// assertTrue(storageUnit.add(item));
-	// assertFalse(productGroup2.contains(item));
-	// assertFalse(productGroup1.contains(item));
-	// assertTrue(storageUnit.contains(item));
-	// }
-	//
-	// @Test
-	// public void testCanRemove() {
-	// assertTrue(storageUnit.canRemove());
-	// ProductGroup productGroup1 = new ProductGroup("Cookies", new ProductQuantity(1,
-	// Unit.COUNT), Unit.KILOGRAMS, storageUnit, pcManager);
-	// assertTrue(productGroup1.canRemove());
-	// ProductGroup productGroup2 = new ProductGroup("Chocolate Chip Cookies",
-	// new ProductQuantity(1, Unit.COUNT), Unit.KILOGRAMS, productGroup1, pcManager);
-	// productGroup2.add(product1);
-	// storageUnit.add(item);
-	// assertFalse(productGroup1.canRemove());
-	// assertFalse(storageUnit.canRemove());
-	// productGroup2.remove(item, itemManager);
-	// assertTrue(productGroup1.canRemove());
-	// assertTrue(storageUnit.canRemove());
-	// }
-	//
-	// @Test
-	// public void testCanRemoveProduct() {
-	// ProductGroup productGroup1 = new ProductGroup("Cookies", new ProductQuantity(1,
-	// Unit.COUNT), Unit.KILOGRAMS, storageUnit, pcManager);
-	// productGroup1.add(product1);
-	// assertTrue(productGroup1.canRemove(product1));
-	// storageUnit.add(item);
-	// assertFalse(productGroup1.canRemove(product1));
-	// productGroup1.remove(item, itemManager);
-	// assertTrue(productGroup1.canRemove(product1));
-	// }
-	//
-	// @Test(expected = IllegalStateException.class)
-	// public void testCanRemoveProductGroup() {
-	// ProductGroup productGroup1 = new ProductGroup("Cookies", new ProductQuantity(1,
-	// Unit.COUNT), Unit.KILOGRAMS, storageUnit, pcManager);
-	// ProductGroup productGroup2 = new ProductGroup("Chocolate Chip Cookies",
-	// new ProductQuantity(1, Unit.COUNT), Unit.KILOGRAMS, productGroup1, pcManager);
-	// productGroup2.add(product1);
-	// storageUnit.add(item);
-	// assertFalse(productGroup1.canRemove());
-	// assertFalse(productGroup2.canRemove());
-	// productGroup1.remove(productGroup2);
-	// }
-	//
-	// @Test
-	// public void testGetCurrentSupply() {
-	// ProductGroup productGroup1 = new ProductGroup("Cookies", new ProductQuantity(1,
-	// Unit.COUNT), Unit.KILOGRAMS, storageUnit, pcManager);
-	// ProductGroup productGroup2 = new ProductGroup("Chocolate Chip Cookies",
-	// new ProductQuantity(1, Unit.COUNT), Unit.KILOGRAMS, productGroup1, pcManager);
-	// productGroup2.add(product1);
-	// storageUnit.add(item);
-	// storageUnit.add(new Item(new Barcode("400000001920"), product1, storageUnit,
-	// new Date(), itemManager));
-	// assertTrue(storageUnit.getCurrentSupply(item.getProduct()).equals(
-	// new ProductQuantity(2, Unit.COUNT)));
-	// assertTrue(productGroup1.getCurrentSupply(item.getProduct()).equals(
-	// new ProductQuantity(2, Unit.COUNT)));
-	// Item item2 = new Item(new Barcode("400000001999"), product2, storageUnit, new Date(),
-	// itemManager);
-	// assertTrue(storageUnit.getCurrentSupply(item2.getProduct()).equals(
-	// new ProductQuantity(0, Unit.OUNCES)));
-	// }
-	//
-	// @Test
-	// public void testGetName() {
-	// ProductGroup productGroup1 = new ProductGroup("Cookies", new ProductQuantity(1,
-	// Unit.COUNT), Unit.KILOGRAMS, storageUnit, pcManager);
-	// assertTrue(productGroup1.getName().equals("Cookies"));
-	// assertTrue(storageUnit.getName().equals("Cookie Jar"));
-	// }
+	@Test
+	public void testAddItem2() {
+		assertTrue(storageUnit.add(item));
+		assertFalse(productGroup2.contains(item));
+		assertFalse(productGroup1.contains(item));
+		assertTrue(storageUnit.contains(item));
+	}
+
+	@Test
+	public void testCanRemove() {
+		assertTrue(productGroup1.canRemove());
+		assertTrue(storageUnit.canRemove());
+
+		productGroup2.add(item.getProduct());
+		storageUnit.add(item);
+
+		assertFalse(productGroup1.canRemove());
+		assertFalse(storageUnit.canRemove());
+
+		productGroup2.remove(item, createNiceMock(ItemManager.class));
+
+		assertTrue(productGroup1.canRemove());
+		assertTrue(storageUnit.canRemove());
+	}
+
+	@Test
+	public void testCanRemoveProduct() {
+		productGroup1.add(item.getProduct());
+
+		assertTrue(productGroup1.canRemove(item.getProduct()));
+
+		storageUnit.add(item);
+
+		assertFalse(productGroup1.canRemove(item.getProduct()));
+
+		productGroup1.remove(item, createNiceMock(ItemManager.class));
+
+		assertTrue(productGroup1.canRemove(item.getProduct()));
+	}
+
+	@Test(expected = IllegalStateException.class)
+	public void testCanRemoveProductGroup() {
+		productGroup2.add(item.getProduct());
+		storageUnit.add(item);
+		assertFalse(productGroup1.canRemove());
+		assertFalse(productGroup2.canRemove());
+		productGroup1.remove(productGroup2);
+	}
+
+	@Test
+	public void testGetCurrentSupply() {
+		productGroup2.add(item.getProduct());
+		storageUnit.add(item);
+		new ItemFixture(item.getProduct(), storageUnit);
+
+		assertTrue(storageUnit.getCurrentSupply(item.getProduct()).equals(
+				new ProductQuantity(2, Unit.COUNT)));
+		assertTrue(productGroup1.getCurrentSupply(item.getProduct()).equals(
+				new ProductQuantity(2, Unit.COUNT)));
+	}
 	//
 	// @Test(expected = IllegalStateException.class)
 	// public void testIllegalProductAdd() {
