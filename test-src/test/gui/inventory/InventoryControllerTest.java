@@ -7,9 +7,10 @@ import static org.easymock.EasyMock.replay;
 import static org.easymock.EasyMock.reset;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
+import gui.common.DataWrapper;
 import gui.inventory.IInventoryView;
 import gui.inventory.InventoryController;
-import gui.inventory.ProductContainerData;
+import gui.item.ItemData;
 import gui.product.ProductData;
 
 import java.util.ArrayList;
@@ -35,13 +36,9 @@ import org.junit.Test;
 public class InventoryControllerTest {
 	private InventoryController inventoryController;
 	private IInventoryView mockView;
-
 	private ItemManager itemManager;
-
 	private StorageUnit storageUnit;
-	private ProductContainerData storageUnitData;
 	private ProductGroup productGroup;
-	private ProductContainerData productGroupData;
 	private Product product;
 	private Item item;
 
@@ -50,18 +47,25 @@ public class InventoryControllerTest {
 		setUpModelFixtures();
 
 		ProductContainerManager mockProductContainerManager = createNiceMock(ProductContainerManager.class);
+		ItemManager mockItemManager = createNiceMock(ItemManager.class);
+		ProductManager mockProductManager = createNiceMock(ProductManager.class);
 		mockView = createNiceMock(IInventoryView.class);
 		expect(mockView.getProductContainerManager()).andStubReturn(
 				mockProductContainerManager);
+		expect(mockView.getItemManager()).andStubReturn(mockItemManager);
+		expect(mockView.getProductManager()).andStubReturn(mockProductManager);
+
 		Iterator<StorageUnit> storageUnitIterator = (new ArrayList<StorageUnit>()).iterator();
 		expect(mockProductContainerManager.getStorageUnitIterator()).andStubReturn(
 				storageUnitIterator);
-		replay(mockView);
+
 		replay(mockProductContainerManager);
+		replay(mockItemManager);
+		replay(mockProductManager);
+		replay(mockView);
 
 		inventoryController = new InventoryController(mockView);
 
-		reset(mockProductContainerManager);
 		reset(mockView);
 	}
 
@@ -116,7 +120,8 @@ public class InventoryControllerTest {
 
 	@Test
 	public void testCanDeleteStorageUnit() {
-		expect(mockView.getSelectedProductContainer()).andStubReturn(storageUnitData);
+		expect(mockView.getSelectedProductContainer()).andStubReturn(
+				DataWrapper.wrap(storageUnit));
 		replay(mockView);
 
 		assertFalse(inventoryController.canDeleteStorageUnit());
@@ -125,8 +130,16 @@ public class InventoryControllerTest {
 	}
 
 	@Test
-	public void testCanEditItem() {
+	public void testCanEditItemWithItemSelected() {
+		ItemData itemData = DataWrapper.wrap(item);
+		expect(mockView.getSelectedItem()).andStubReturn(itemData);
+		replay(mockView);
 		assertTrue(inventoryController.canEditItem());
+	}
+
+	@Test
+	public void testCanEditItemWithNothingSelected() {
+		assertFalse(inventoryController.canEditItem());
 	}
 
 	@Test
@@ -146,6 +159,9 @@ public class InventoryControllerTest {
 
 	@Test
 	public void testCanRemoveItem() {
+		ItemData itemData = DataWrapper.wrap(item);
+		expect(mockView.getSelectedItem()).andStubReturn(itemData);
+		replay(mockView);
 		assertTrue(inventoryController.canRemoveItem());
 	}
 
@@ -208,7 +224,8 @@ public class InventoryControllerTest {
 	public void testProductContainerSelectionChanged() {
 		Capture<ProductData[]> productListCapture = new Capture<ProductData[]>();
 
-		expect(mockView.getSelectedProductContainer()).andStubReturn(productGroupData);
+		expect(mockView.getSelectedProductContainer()).andStubReturn(
+				DataWrapper.wrap(productGroup));
 		mockView.setProducts(capture(productListCapture));
 		replay(mockView);
 
@@ -218,7 +235,8 @@ public class InventoryControllerTest {
 		assertTrue(productList.size() == 0);
 
 		reset(mockView);
-		expect(mockView.getSelectedProductContainer()).andStubReturn(storageUnitData);
+		expect(mockView.getSelectedProductContainer()).andStubReturn(
+				DataWrapper.wrap(storageUnit));
 		mockView.setProducts(capture(productListCapture));
 		replay(mockView);
 
@@ -254,16 +272,15 @@ public class InventoryControllerTest {
 		ProductContainerManager mockProductContainerManager = createNiceMock(ProductContainerManager.class);
 
 		storageUnit = new StorageUnit("Test Storage Unit", mockProductContainerManager);
-		storageUnitData = new ProductContainerData();
-		storageUnitData.setTag(storageUnit);
 
 		productGroup = new ProductGroup("Test Product Group", new ProductQuantity(1,
 				Unit.COUNT), Unit.COUNT, storageUnit, mockProductContainerManager);
-		productGroupData = new ProductContainerData();
-		productGroupData.setTag(productGroup);
+
 		product = new Product("Test Barcode", "Test Description", 1, 1, new ProductQuantity(1,
 				Unit.COUNT), productManager);
+
 		item = new Item(product, storageUnit, itemManager);
+
 		storageUnit.add(item);
 	}
 
