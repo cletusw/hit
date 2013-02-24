@@ -25,6 +25,12 @@ public class AddProductController extends Controller implements IAddProductContr
 	public AddProductController(IView view, String barcode) {
 		super(view);
 		this.barcode = barcode;
+		getView().setBarcode(barcode);
+		getView().setSizeUnit(SizeUnits.Count);
+		getView().setSizeValue("1");
+		getView().setSupply("0");
+		getView().setShelfLife("0");
+		construct();
 
 	}
 
@@ -151,11 +157,5 @@ public class AddProductController extends Controller implements IAddProductContr
 	 */
 	@Override
 	protected void loadValues() {
-		getView().setBarcode(barcode);
-		getView().setSizeUnit(SizeUnits.Count);
-		getView().setSizeValue("1");
-		getView().setSupply("0");
-		getView().setShelfLife("0");
-		construct();
 	}
 }
