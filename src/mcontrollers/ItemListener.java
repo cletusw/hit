@@ -64,15 +64,17 @@ public class ItemListener implements Observer {
 			ProductContainer pc = (ProductContainer) parent.getTag();
 			ArrayList<ItemData> itemsToDisplay = new ArrayList<ItemData>();
 			ItemData[] itemArray = new ItemData[0];
-			Iterator<Item> itemIterator = pc.getItemsIterator();
-			while (itemIterator.hasNext()) {
-				ItemData id = DataWrapper.wrap(itemIterator.next());
-				itemsToDisplay.add(id);
+			ProductData pd = view.getSelectedProduct();
+			if (pd != null && pd.getTag() != null) {
+				Iterator<Item> itemIterator = pc.getItemsIteratorForProduct((Product) pd
+						.getTag());
+				while (itemIterator.hasNext()) {
+					ItemData id = DataWrapper.wrap(itemIterator.next());
+					itemsToDisplay.add(id);
+				}
 			}
 			view.setItems(itemsToDisplay.toArray(itemArray));
-			// view.selectItem(DataWrapper.wrap(item));
 
-			// TODO: update the count of the selectedProduct
 			updateProductView(pc, action);
 			break;
 		}
