@@ -345,6 +345,8 @@ public class InventoryController extends Controller implements IInventoryControl
 		if (!canDeleteProduct()) {
 			throw new IllegalStateException("Unable to delete Product");
 		}
+		ProductContainer parent = (ProductContainer)getView().getSelectedProductContainer().getTag();
+		parent.remove(getSelectedProductTag());
 
 		getProductManager().unmanage(getSelectedProductTag());
 	}

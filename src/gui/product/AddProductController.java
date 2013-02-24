@@ -13,6 +13,7 @@ import model.Unit;
  */
 public class AddProductController extends Controller implements IAddProductController {
 
+	private String barcode;
 	/**
 	 * Constructor.
 	 * 
@@ -23,13 +24,14 @@ public class AddProductController extends Controller implements IAddProductContr
 	 */
 	public AddProductController(IView view, String barcode) {
 		super(view);
-
+		this.barcode = barcode;
 		getView().setBarcode(barcode);
 		getView().setSizeUnit(SizeUnits.Count);
 		getView().setSizeValue("1");
 		getView().setSupply("0");
 		getView().setShelfLife("0");
 		construct();
+
 	}
 
 	//

@@ -447,6 +447,7 @@ public class Product implements Comparable<Object>, Serializable {
 		}
 		productQuantity = pq;
 	}
+	
 
 	private void setBarcode(String barcode) {
 		this.barcode = new NonEmptyString(barcode);
@@ -461,14 +462,14 @@ public class Product implements Comparable<Object>, Serializable {
 		}
 	}
 
-	private void setShelfLife(int shelfLife) {
+	public void setShelfLife(int shelfLife) {
 		if (shelfLife < 0)
 			throw new IllegalArgumentException("ShelfLife must be non-negative");
 
 		this.shelfLife = shelfLife;
 	}
 
-	private void setThreeMonthSupply(int threeMonthSupply) {
+	public void setThreeMonthSupply(int threeMonthSupply) {
 		if (threeMonthSupply < 0)
 			throw new IllegalArgumentException("Three Month Supply must be non-negative");
 

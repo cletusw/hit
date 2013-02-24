@@ -1,5 +1,7 @@
 package gui.item;
 
+import model.Item;
+import model.Product;
 import gui.common.Controller;
 import gui.common.IView;
 
@@ -8,6 +10,7 @@ import gui.common.IView;
  */
 public class EditItemController extends Controller implements IEditItemController {
 
+	private ItemData target;
 	/**
 	 * Constructor.
 	 * 
@@ -18,7 +21,7 @@ public class EditItemController extends Controller implements IEditItemControlle
 	 */
 	public EditItemController(IView view, ItemData target) {
 		super(view);
-
+		this.target = target;
 		construct();
 	}
 
@@ -31,6 +34,12 @@ public class EditItemController extends Controller implements IEditItemControlle
 	 */
 	@Override
 	public void editItem() {
+		if(target.getEntryDate().equals(getView().getEntryDate())){
+			// these are not the droids you're looking for...
+			return;
+		}
+		
+		getView().getItemManager().editItem((Item) target.getTag(), getView().getEntryDate());
 	}
 
 	/**
@@ -52,6 +61,10 @@ public class EditItemController extends Controller implements IEditItemControlle
 	 */
 	@Override
 	protected void enableComponents() {
+		getView().enableBarcode(false);
+		getView().enableDescription(false);
+		getView().enableEntryDate(true);
+		getView().enableOK(true);
 	}
 
 	//
@@ -79,6 +92,10 @@ public class EditItemController extends Controller implements IEditItemControlle
 	 */
 	@Override
 	protected void loadValues() {
+		getView().setBarcode(target.getBarcode());
+		Product product = ((Item)target.getTag()).getProduct();
+		getView().setDescription(product.getDescription());
+		getView().setEntryDate(target.getEntryDate());
 	}
 
 }

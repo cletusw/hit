@@ -51,11 +51,16 @@ public class ProductListener implements Observer {
 		Action action = (Action)arg;
 		Product product = (Product)action.getObject();
 		
-		if(action.getAction().equals(ActionType.CREATE)){
-			ProductContainerData productContainerData = view.getSelectedProductContainer();
-			ProductContainer container = (ProductContainer) productContainerData.getTag();
-			// add the new container to the ones to be displayed
+		ProductContainerData productContainerData = view.getSelectedProductContainer();
+		ProductContainer container = (ProductContainer) productContainerData.getTag();
+		
+		// fall-through cases on purpose
+		switch(action.getAction()){
+		case CREATE:
 			container.add(product);
+		case EDIT:
+			
+		case DELETE:
 			Iterator<Product> iter = container.getProductsIterator();
 			ProductData[] products = new ProductData[container.getProductsSize()];
 			
@@ -70,13 +75,15 @@ public class ProductListener implements Observer {
 				productData.setSupply(String.valueOf(prod.getThreeMonthSupply()));
 				productData.setTag(prod);
 				products[i++] = productData;
-				if(product.equals(prod))
+				if(action.getAction().equals(ActionType.CREATE) && product.equals(prod))
+					// this is a newly created product, itemcount is zero but will be 1 when item is finished creating
 					productData.setCount("1");
 				else
 					productData.setCount(String.valueOf(container.getItemsForProduct(prod).size()));
 			}
 			
 			view.setProducts(products);
+			break;
 		}
 	}
 }

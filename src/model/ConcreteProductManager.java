@@ -117,6 +117,29 @@ public class ConcreteProductManager extends Observable implements ProductManager
 
 		products.remove(product);
 		barcodesToProducts.remove(product.getBarcode());
+		Action action = new Action(product, ActionType.DELETE);
+		setChanged();
+		notifyObservers(action);
 	}
 
+	
+	/**
+	 * Modifies the given product with the given data and notifies observers when
+	 * change is made
+	 * 
+	 */
+	@Override
+	public void editProduct(Product product, String newDescription, ProductQuantity newQuantity, int newShelfLife, int newTms) {
+		this.products.remove(product);
+		this.barcodesToProducts.remove(product.getBarcode());
+		product.setDescription(newDescription);
+		product.setProductQuantity(newQuantity);
+		product.setShelfLife(newShelfLife);
+		product.setThreeMonthSupply(newTms);
+		this.products.add(product);
+		this.barcodesToProducts.put(product.getBarcode(), product);
+		setChanged();
+		Action action = new Action(product, ActionType.EDIT);
+		notifyObservers(action);
+	}
 }

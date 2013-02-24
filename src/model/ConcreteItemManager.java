@@ -1,6 +1,7 @@
 package model;
 
 import java.io.Serializable;
+import java.util.Date;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Observable;
@@ -145,4 +146,17 @@ public class ConcreteItemManager extends Observable implements ItemManager, Seri
 		this.notifyObservers(action);
 	}
 
+	@Override
+	public void editItem(Item item, Date newEntryDate) {
+		this.items.remove(item);
+		Set<Item> localItems = this.productsToItems.remove(item.getProduct());
+		localItems.remove(item);
+		item.setEntryDate(newEntryDate);
+		localItems.add(item);
+		this.productsToItems.put(item.getProduct(), localItems);
+		this.items.add(item);
+		Action action = new Action(item, ActionType.EDIT);
+		setChanged();
+		notifyObservers(action);
+	}
 }
