@@ -398,18 +398,14 @@ public abstract class ProductContainer implements Comparable<ProductContainer>, 
 	}
 
 	/**
-	 * Returns an iterator of items belonging to a certain product.
+	 * Gets the set of items in the container of Product p
 	 * 
-	 * @param product
-	 *            the Product to retrieve items for
-	 * @return an Iterator of the Product's items
-	 * @pre true
-	 * @post true
+	 * @param p
+	 *            Product used to find items
+	 * @return Set<Item> containing Items where item.getProduct().equals(p)
 	 */
-	public Iterator<Item> getItemsIteratorForProduct(Product product) {
-		if (product == null)
-			throw new IllegalArgumentException("Product cannot be null!");
-		return productsToItems.get(product).iterator();
+	public Set<Item> getItemsForProduct(Product p) {
+		return productsToItems.get(p);
 	}
 
 	/**
@@ -423,6 +419,21 @@ public abstract class ProductContainer implements Comparable<ProductContainer>, 
 	 */
 	public Iterator<Item> getItemsIterator() {
 		return items.values().iterator();
+	}
+
+	/**
+	 * Returns an iterator of items belonging to a certain product.
+	 * 
+	 * @param product
+	 *            the Product to retrieve items for
+	 * @return an Iterator of the Product's items
+	 * @pre true
+	 * @post true
+	 */
+	public Iterator<Item> getItemsIteratorForProduct(Product product) {
+		if (product == null)
+			throw new IllegalArgumentException("Product cannot be null!");
+		return productsToItems.get(product).iterator();
 	}
 
 	/**
@@ -535,16 +546,6 @@ public abstract class ProductContainer implements Comparable<ProductContainer>, 
 	public int getProductsSize() {
 		return products.size();
 	}
-	
-	/**
-	 * Gets the set of items in the container of Product p
-	 * @param p Product used to find items
-	 * @return Set<Item> containing Items where item.getProduct().equals(p)
-	 */
-	public Set<Item> getItemsForProduct(Product p){
-		return this.productsToItems.get(p);
-	}
-	
 
 	/**
 	 * Removes the specified item from this ProductContainer. Use this only
@@ -608,12 +609,13 @@ public abstract class ProductContainer implements Comparable<ProductContainer>, 
 			throw new IllegalStateException("ProductContainer does not contain Item item");
 		}
 
-		manager.unmanage(item);
 		item.setContainer(null);
 		Set<Item> newItemsForProduct = productsToItems.get(item.getProduct());
 		newItemsForProduct.remove(item);
 		productsToItems.put(item.getProduct(), newItemsForProduct);
-		return items.remove(item.getBarcode());
+		Item removed = items.remove(item.getBarcode());
+		manager.unmanage(item);
+		return removed;
 	}
 
 	/**
