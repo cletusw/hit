@@ -1,7 +1,18 @@
 package gui.batches;
 
 import gui.common.Controller;
+import gui.common.DataWrapper;
 import gui.common.IView;
+import gui.item.ItemData;
+import gui.product.ProductData;
+
+import java.util.Iterator;
+import java.util.Set;
+
+import model.Item;
+import model.ItemManager;
+import model.Product;
+import model.ProductContainer;
 
 /**
  * Controller class for the remove item batch view.
@@ -27,6 +38,7 @@ public class RemoveItemBatchController extends Controller implements
 	 */
 	@Override
 	public void barcodeChanged() {
+		enableComponents();
 	}
 
 	/**
@@ -52,6 +64,30 @@ public class RemoveItemBatchController extends Controller implements
 	 */
 	@Override
 	public void removeItem() {
+		RemoveItemBatchView view = (RemoveItemBatchView) getView();
+		ItemManager manager = getItemManager();
+
+		Item retrievedItem = manager.getItemByItemBarcode(view.getBarcode());
+
+		// show dialog box if item doesn't exist
+		if (retrievedItem == null) {
+			view.displayErrorMessage("This item doesn't exist.");
+			return;
+		}
+
+		ProductContainer parent = retrievedItem.getContainer();
+		parent.remove(retrievedItem, manager);
+		// retrievedItem.remove();
+
+		// update product view
+		ProductData[] products = new ProductData[1];
+		products[0] = DataWrapper.wrap(retrievedItem.getProduct(), 0);
+		view.setProducts(products);
+
+		// update item view
+		ItemData[] deleted = new ItemData[1];
+		deleted[0] = DataWrapper.wrap(retrievedItem);
+		getView().setItems(deleted);
 	}
 
 	/**
@@ -59,6 +95,22 @@ public class RemoveItemBatchController extends Controller implements
 	 */
 	@Override
 	public void selectedProductChanged() {
+		RemoveItemBatchView view = (RemoveItemBatchView) getView();
+		ItemManager manager = getItemManager();
+
+		ProductData selected = view.getSelectedProduct();
+		if (selected == null)
+			return;
+
+		// refresh item view
+		Set<Item> items = manager.getItemsByProduct((Product) selected.getTag());
+		ItemData[] dataItems = new ItemData[items.size()];
+		Iterator<Item> it = items.iterator();
+		int counter = 0;
+		while (it.hasNext())
+			dataItems[counter++] = DataWrapper.wrap(it.next());
+
+		view.setItems(dataItems);
 	}
 
 	/**
@@ -88,6 +140,7 @@ public class RemoveItemBatchController extends Controller implements
 	 */
 	@Override
 	protected void enableComponents() {
+		getView().enableItemAction(!getView().getBarcode().equals(""));
 	}
 
 	/**
@@ -107,6 +160,7 @@ public class RemoveItemBatchController extends Controller implements
 	 */
 	@Override
 	protected void loadValues() {
+		// no code needed - no pre-loaded state for this batch
 	}
 
 }
