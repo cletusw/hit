@@ -117,6 +117,9 @@ public class ConcreteProductManager extends Observable implements ProductManager
 
 		products.remove(product);
 		barcodesToProducts.remove(product.getBarcode());
+		Action action = new Action(product, ActionType.DELETE);
+		setChanged();
+		notifyObservers(action);
 	}
 
 	
