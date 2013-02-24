@@ -39,30 +39,15 @@ public class EditProductController extends Controller implements IEditProductCon
 	 */
 	@Override
 	public void editProduct() {
-		ProductManager productManager = getProductManager();
-		String barcode = getView().getBarcode();
-		String description = getView().getDescription();
-		int shelfLife = 0;
-		try {
-			shelfLife = Integer.parseInt(getView().getShelfLife());
-		} catch (NumberFormatException e) {
-		}
-		int threeMonthSupply = 0;
-		try {
-			threeMonthSupply = Integer.parseInt(getView().getSupply());
-		} catch (NumberFormatException e) {
-		}
-		float quantity = 1;
-		try {
-			quantity = (float) Double.parseDouble(getView().getSizeValue());
-		} catch (NumberFormatException e) {
-		}
-
-		Unit unit = Unit.convertFromSizeUnits(getView().getSizeUnit());
-		ProductQuantity pq = new ProductQuantity(quantity, unit);
-
-		Product product = new Product(barcode, description, shelfLife, threeMonthSupply, pq,
-				productManager);
+		Product oldProduct = (Product) target.getTag();
+		String newDescription = getView().getDescription();
+		Unit newUnit = Unit.convertToUnit(getView().getSizeUnit().toString());
+		float quantity = Float.parseFloat(getView().getSizeValue());
+		ProductQuantity newQuantity = new ProductQuantity(quantity, newUnit);
+		int newShelfLife = Integer.parseInt(getView().getShelfLife());
+		int newTms = Integer.parseInt(getView().getSupply());
+		getView().getProductManager().editProduct(oldProduct, 
+				newDescription, newQuantity, newShelfLife, newTms);
 	}
 
 	/**
@@ -129,7 +114,7 @@ public class EditProductController extends Controller implements IEditProductCon
 			unitString = unitString.replace(" ", "");
 
 		getView().setSizeUnit(SizeUnits.valueOf(unitString));
-		getView().setSizeValue(target.getCount());
+		getView().setSizeValue(target.getSize());
 		getView().setSupply(target.getSupply());
 	}
 	
