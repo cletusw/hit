@@ -4,6 +4,7 @@ import gui.common.DataWrapper;
 import gui.inventory.IInventoryView;
 import gui.inventory.ProductContainerData;
 import gui.item.ItemData;
+import gui.product.ProductData;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -14,6 +15,7 @@ import model.Action;
 import model.Action.ActionType;
 import model.Item;
 import model.ItemManager;
+import model.Product;
 import model.ProductContainer;
 import model.ProductContainerManager;
 
@@ -69,6 +71,30 @@ public class ItemListener implements Observer {
 			}
 			view.setItems(itemsToDisplay.toArray(itemArray));
 			// view.selectItem(DataWrapper.wrap(item));
+			
+			// TODO: update the count of the selectedProduct
+			updateProductView(pc);
 		}
+	}
+	
+	private void updateProductView(ProductContainer container){
+		Iterator<Product> iter = container.getProductsIterator();
+		ProductData[] products = new ProductData[container.getProductsSize()];
+		
+		int i = 0;
+		while(iter.hasNext()){
+			Product prod = iter.next();
+			ProductData productData = new ProductData();
+			productData.setBarcode(prod.getBarcode());
+			productData.setDescription(prod.getDescription());
+			productData.setShelfLife(String.valueOf(prod.getShelfLife()));
+			productData.setSize(String.valueOf(prod.getSize().getQuantity()));
+			productData.setSupply(String.valueOf(prod.getThreeMonthSupply()));
+			productData.setTag(prod);
+			products[i++] = productData;
+			productData.setCount(String.valueOf(container.getItemsForProduct(prod).size()));
+		}
+		
+		view.setProducts(products);
 	}
 }
