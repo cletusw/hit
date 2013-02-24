@@ -50,8 +50,12 @@ public abstract class InventoryListener {
 		view.setItems(itemsToDisplay.toArray(new ItemData[itemsToDisplay.size()]));
 	}
 
+	/**
+	 * Updates all of the ProductContainers in the view to match the model.
+	 */
 	public void updateProductContainers() {
-
+		// TODO: Do we really need this? This one is less commonly used because only its child
+		// class ProductContainerListener should need to update this...
 	}
 
 	/**

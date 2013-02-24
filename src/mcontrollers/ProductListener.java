@@ -2,14 +2,11 @@ package mcontrollers;
 
 import gui.inventory.IInventoryView;
 import gui.inventory.ProductContainerData;
-import gui.product.ProductData;
 
-import java.util.Iterator;
 import java.util.Observable;
 import java.util.Observer;
 
 import model.Action;
-import model.Action.ActionType;
 import model.Product;
 import model.ProductContainer;
 import model.ProductManager;
@@ -54,35 +51,14 @@ public class ProductListener extends InventoryListener implements Observer {
 		// fall-through cases on purpose
 		switch (action.getAction()) {
 		case CREATE:
+			// This should have already been done by the controller
 			container.add(product);
 		case EDIT:
 
 		case DELETE:
-			Iterator<Product> iter = container.getProductsIterator();
-			ProductData[] products = new ProductData[container.getProductsSize()];
-
-			int i = 0;
-			while (iter.hasNext()) {
-				Product prod = iter.next();
-				ProductData productData = new ProductData();
-				productData.setBarcode(prod.getBarcode());
-				productData.setDescription(prod.getDescription());
-				productData.setShelfLife(String.valueOf(prod.getShelfLife()));
-				productData.setSize(String.valueOf(prod.getSize().getQuantity()));
-				productData.setSupply(String.valueOf(prod.getThreeMonthSupply()));
-				productData.setTag(prod);
-				if (action.getAction().equals(ActionType.CREATE) && product.equals(prod))
-					// this is a newly created product, itemcount is zero but will be 1 when
-					// item is finished creating
-					productData.setCount("1");
-				else
-					productData.setCount(String.valueOf(container.getItemsForProduct(prod)
-							.size()));
-				products[i++] = productData;
-			}
-
-			view.setProducts(products);
+			updateProducts();
 			break;
 		}
+		updateItems();
 	}
 }

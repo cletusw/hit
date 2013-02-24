@@ -13,7 +13,8 @@ import model.Unit;
  */
 public class AddProductController extends Controller implements IAddProductController {
 
-	private String barcode;
+	private final String barcode;
+
 	/**
 	 * Constructor.
 	 * 
