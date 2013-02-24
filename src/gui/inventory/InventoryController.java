@@ -403,10 +403,12 @@ public class InventoryController extends Controller implements IInventoryControl
 	 */
 	@Override
 	public void editItem() {
+		ItemData selectedItem = getView().getSelectedItem();
 		if (!canEditItem()) {
 			throw new IllegalStateException("Unable to edit Item");
 		}
 		getView().displayEditItemView();
+		getView().selectItem(selectedItem);
 	}
 
 	/**

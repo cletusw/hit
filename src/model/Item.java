@@ -237,6 +237,7 @@ public class Item implements Comparable<Object>, Serializable {
 			throw new IllegalArgumentException("Date must not be in future");
 		}
 		entryDate = date;
+		setExpirationDate();
 	}
 
 	@SuppressWarnings("deprecation")

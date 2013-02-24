@@ -54,6 +54,9 @@ public class ItemListener implements Observer {
 		ActionType type = action.getAction();
 		Item item = (Item) action.getObject();
 
+		ProductData selectedProduct = view.getSelectedProduct();
+		ItemData selectedItem = view.getSelectedItem();
+
 		switch (action.getAction()) {
 		case CREATE:
 
@@ -76,6 +79,9 @@ public class ItemListener implements Observer {
 			view.setItems(itemsToDisplay.toArray(itemArray));
 
 			updateProductView(pc, action);
+			view.selectProduct(selectedProduct);
+			if (action.getAction() != ActionType.DELETE)
+				view.selectItem(selectedItem);
 			break;
 		}
 	}

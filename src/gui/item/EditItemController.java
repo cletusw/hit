@@ -1,16 +1,17 @@
 package gui.item;
 
-import model.Item;
-import model.Product;
 import gui.common.Controller;
 import gui.common.IView;
+import model.Item;
+import model.Product;
 
 /**
  * Controller class for the edit item view.
  */
 public class EditItemController extends Controller implements IEditItemController {
 
-	private ItemData target;
+	private final ItemData target;
+
 	/**
 	 * Constructor.
 	 * 
@@ -34,12 +35,11 @@ public class EditItemController extends Controller implements IEditItemControlle
 	 */
 	@Override
 	public void editItem() {
-		if(target.getEntryDate().equals(getView().getEntryDate())){
+		if (target.getEntryDate().equals(getView().getEntryDate())) {
 			// these are not the droids you're looking for...
 			return;
 		}
-		
-		getView().getItemManager().editItem((Item) target.getTag(), getView().getEntryDate());
+		getItemManager().editItem((Item) target.getTag(), getView().getEntryDate());
 	}
 
 	/**
@@ -93,7 +93,7 @@ public class EditItemController extends Controller implements IEditItemControlle
 	@Override
 	protected void loadValues() {
 		getView().setBarcode(target.getBarcode());
-		Product product = ((Item)target.getTag()).getProduct();
+		Product product = ((Item) target.getTag()).getProduct();
 		getView().setDescription(product.getDescription());
 		getView().setEntryDate(target.getEntryDate());
 	}
