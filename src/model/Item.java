@@ -267,7 +267,7 @@ public class Item implements Comparable<Object>, Serializable {
 
 	// private setters
 	@SuppressWarnings("deprecation")
-	private void setEntryDate(Date date) {
+	public void setEntryDate(Date date) {
 		// From the Data Dictionary:
 		// Must be non-empty. Cannot be in the
 		// future or prior to 1/1/2000.
