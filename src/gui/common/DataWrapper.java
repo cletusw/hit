@@ -3,6 +3,11 @@ package gui.common;
 import gui.inventory.ProductContainerData;
 import gui.item.ItemData;
 import gui.product.ProductData;
+
+import java.util.ArrayList;
+import java.util.Map;
+import java.util.Set;
+
 import model.Item;
 import model.Product;
 import model.ProductContainer;
@@ -32,6 +37,23 @@ public class DataWrapper {
 		itemData.setTag(item);
 
 		return itemData;
+	}
+
+	/**
+	 * Wraps a Collection of Products from our model in the intermediary ProductData class
+	 * 
+	 * @param products
+	 *            Products to wrap
+	 * @return ProductData[] version of Products
+	 */
+	public static ProductData[] wrap(Map<Product, Set<Item>> products) {
+		ArrayList<ProductData> wrappedProducts = new ArrayList<ProductData>();
+
+		for (Product product : products.keySet()) {
+			wrappedProducts.add(wrap(product, products.get(product).size()));
+		}
+
+		return wrappedProducts.toArray(new ProductData[0]);
 	}
 
 	/**

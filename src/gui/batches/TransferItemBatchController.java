@@ -1,14 +1,27 @@
 package gui.batches;
 
 import gui.common.Controller;
+import gui.common.DataWrapper;
 import gui.common.IView;
 import gui.inventory.ProductContainerData;
+import gui.product.ProductData;
+
+import java.util.Map;
+import java.util.Set;
+import java.util.TreeMap;
+import java.util.TreeSet;
+
+import model.Item;
+import model.Product;
+import model.ProductContainer;
 
 /**
  * Controller class for the transfer item batch view.
  */
 public class TransferItemBatchController extends Controller implements
 		ITransferItemBatchController {
+	private ProductContainer target;
+	private Map<Product, Set<Item>> transferredProductToItems;
 
 	/**
 	 * Constructor.
@@ -20,6 +33,9 @@ public class TransferItemBatchController extends Controller implements
 	 */
 	public TransferItemBatchController(IView view, ProductContainerData target) {
 		super(view);
+
+		this.target = (ProductContainer) target.getTag();
+		transferredProductToItems = new TreeMap<Product, Set<Item>>();
 
 		construct();
 	}
@@ -62,6 +78,18 @@ public class TransferItemBatchController extends Controller implements
 	 */
 	@Override
 	public void transferItem() {
+		String itemBarcode = getView().getBarcode();
+		Item item = getItemManager().getItemByItemBarcode(itemBarcode);
+		ProductContainer source = item.getContainer();
+		source.moveIntoContainer(item, target);
+
+		if (!transferredProductToItems.containsKey(item.getProduct())) {
+			transferredProductToItems.put(item.getProduct(), new TreeSet<Item>());
+			refreshProducts();
+		}
+
+		transferredProductToItems.get(item.getProduct()).add(item);
+		refreshItems();
 	}
 
 	/**
@@ -78,6 +106,16 @@ public class TransferItemBatchController extends Controller implements
 	 */
 	@Override
 	public void useScannerChanged() {
+	}
+
+	private void refreshItems() {
+		// ItemData[] items = DataWrapper.wrap();
+		// getView().setItems(items);
+	}
+
+	private void refreshProducts() {
+		ProductData[] products = DataWrapper.wrap(transferredProductToItems);
+		getView().setProducts(products);
 	}
 
 	/**
