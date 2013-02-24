@@ -10,15 +10,17 @@ import java.util.Set;
  * 
  */
 public interface ItemManager {
+	public void editItem(Item item, Date newEntryDate);
+
+	public Item getItemByItemBarcode(String barcode);
+
 	public Set<Item> getItemsByProduct(Product product);
 
 	public void manage(Item item);
 
 	public Iterator<Item> removedItemsIterator();
-	
-	public void editItem(Item item, Date newEntryDate);
-	
-	void addObserver(Observer o);
 
 	public void unmanage(Item item);
+
+	void addObserver(Observer o);
 }

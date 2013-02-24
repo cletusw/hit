@@ -41,6 +41,48 @@ public class ConcreteItemManager extends Observable implements ItemManager, Seri
 		productsToItems = new TreeMap<Product, Set<Item>>();
 	}
 
+	@Override
+	public void editItem(Item item, Date newEntryDate) {
+		items.remove(item);
+		Set<Item> localItems = productsToItems.remove(item.getProduct());
+		localItems.remove(item);
+		item.setEntryDate(newEntryDate);
+		localItems.add(item);
+		productsToItems.put(item.getProduct(), localItems);
+		items.add(item);
+		Action action = new Action(item, ActionType.EDIT);
+		setChanged();
+		notifyObservers(action);
+	}
+
+	@Override
+	/**
+	 * Method that retrieves all items in the system by the item's barcode
+	 * 
+	 * @param barcode the barcode to match item barcodes with
+	 * @throws IllegalArgumentException if the barcode parameter is null
+	 * 
+	 * @pre for(Item item : items) item.getBarcode() != null
+	 * @post true
+	 */
+	public Item getItemByItemBarcode(String barcode) {
+		if (barcode == null)
+			throw new IllegalArgumentException("Comparator barcode should not be null");
+
+		Iterator<Item> it = items.iterator();
+		while (it.hasNext()) {
+			Item current = it.next();
+			String currentBarcode = current.getBarcode();
+			if (currentBarcode == null)
+				throw new NullPointerException("Item should never have a null barcode");
+
+			if (currentBarcode.equals(barcode))
+				return current;
+		}
+
+		return null;
+	}
+
 	/**
 	 * Gets all the items of a given Product from the system
 	 * 
@@ -144,19 +186,5 @@ public class ConcreteItemManager extends Observable implements ItemManager, Seri
 		setChanged();
 		Action action = new Action(item, ActionType.DELETE);
 		this.notifyObservers(action);
-	}
-
-	@Override
-	public void editItem(Item item, Date newEntryDate) {
-		this.items.remove(item);
-		Set<Item> localItems = this.productsToItems.remove(item.getProduct());
-		localItems.remove(item);
-		item.setEntryDate(newEntryDate);
-		localItems.add(item);
-		this.productsToItems.put(item.getProduct(), localItems);
-		this.items.add(item);
-		Action action = new Action(item, ActionType.EDIT);
-		setChanged();
-		notifyObservers(action);
 	}
 }
