@@ -1,5 +1,6 @@
 package gui.common;
 
+import gui.inventory.ProductContainerData;
 import gui.item.ItemData;
 import gui.product.ProductData;
 import model.Item;
@@ -54,5 +55,21 @@ public class DataWrapper {
 		productData.setTag(product);
 
 		return productData;
+	}
+
+	/**
+	 * Wraps a ProductContainer from our model in the intermediary ProductContainerData class
+	 * 
+	 * @param productContainer
+	 *            ProductContainer to wrap
+	 * @return ProductContainerData version of productContainer
+	 */
+	public static ProductContainerData wrap(ProductContainer productContainer) {
+		ProductContainerData productContainerData = new ProductContainerData(
+				productContainer.getName());
+
+		productContainerData.setTag(productContainer);
+
+		return productContainerData;
 	}
 }
