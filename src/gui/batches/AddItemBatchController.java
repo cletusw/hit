@@ -92,7 +92,7 @@ public class AddItemBatchController extends Controller implements IAddItemBatchC
 
 		for (int i = 0; i < itemCount; i++) {
 			Item item = new Item(product, container, entryDate, getItemManager());
-			container.add(item);
+
 			BarcodePrinter.getInstance().addItemToBatch(item);
 
 			ItemData id = DataWrapper.wrap(item);

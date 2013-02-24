@@ -5,6 +5,8 @@ import static org.easymock.EasyMock.expect;
 import static org.easymock.EasyMock.replay;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
+import fixture.model.ItemFixture;
+import fixture.model.StorageUnitFixture;
 import gui.common.DataWrapper;
 import gui.inventory.IInventoryView;
 import gui.inventory.InventoryController;
@@ -13,19 +15,15 @@ import gui.product.ProductData;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 
 import model.Item;
 import model.ItemManager;
-import model.Product;
+import model.ProductContainer;
 import model.ProductContainerManager;
-import model.ProductGroup;
 import model.ProductManager;
-import model.ProductQuantity;
 import model.StorageUnit;
-import model.Unit;
 
 import org.easymock.Capture;
 import org.easymock.EasyMockSupport;
@@ -36,15 +34,11 @@ import org.junit.Test;
 public class InventoryControllerTest extends EasyMockSupport {
 	private InventoryController inventoryController;
 	private IInventoryView mockView;
-	private ItemManager itemManager;
-	private StorageUnit storageUnit;
-	private ProductGroup productGroup;
-	private Product product;
 	private Item item;
 
 	@Before
 	public void setUp() throws Exception {
-		setUpModelFixtures();
+		item = new ItemFixture();
 
 		ProductContainerManager mockProductContainerManager = createNiceMock(ProductContainerManager.class);
 		ItemManager mockItemManager = createNiceMock(ItemManager.class);
@@ -117,12 +111,13 @@ public class InventoryControllerTest extends EasyMockSupport {
 
 	@Test
 	public void testCanDeleteStorageUnit() {
+		ProductContainer container = item.getContainer();
 		expect(mockView.getSelectedProductContainer()).andStubReturn(
-				DataWrapper.wrap(storageUnit));
+				DataWrapper.wrap(container));
 		replayAll();
 
 		assertFalse(inventoryController.canDeleteStorageUnit());
-		storageUnit.remove(item, itemManager);
+		container.remove(item, createNiceMock(ItemManager.class));
 		assertTrue(inventoryController.canDeleteStorageUnit());
 	}
 
@@ -224,7 +219,7 @@ public class InventoryControllerTest extends EasyMockSupport {
 		Capture<ProductData[]> productListCapture = new Capture<ProductData[]>();
 
 		expect(mockView.getSelectedProductContainer()).andStubReturn(
-				DataWrapper.wrap(productGroup));
+				DataWrapper.wrap(new StorageUnitFixture()));
 		mockView.setProducts(capture(productListCapture));
 		replay(mockView);
 
@@ -239,7 +234,7 @@ public class InventoryControllerTest extends EasyMockSupport {
 		Capture<ProductData[]> productListCapture = new Capture<ProductData[]>();
 
 		expect(mockView.getSelectedProductContainer()).andStubReturn(
-				DataWrapper.wrap(storageUnit));
+				DataWrapper.wrap(item.getContainer()));
 		mockView.setProducts(capture(productListCapture));
 		replay(mockView);
 
@@ -268,23 +263,4 @@ public class InventoryControllerTest extends EasyMockSupport {
 	public void testTransferItems() {
 		// TODO
 	}
-
-	private void setUpModelFixtures() {
-		ProductManager productManager = createNiceMock(ProductManager.class);
-		itemManager = createNiceMock(ItemManager.class);
-		ProductContainerManager mockProductContainerManager = createNiceMock(ProductContainerManager.class);
-
-		storageUnit = new StorageUnit("Test Storage Unit", mockProductContainerManager);
-
-		productGroup = new ProductGroup("Test Product Group", new ProductQuantity(1,
-				Unit.COUNT), Unit.COUNT, storageUnit, mockProductContainerManager);
-
-		product = new Product("Test Barcode", "Test Description", 1, 1, new ProductQuantity(1,
-				Unit.COUNT), productManager);
-
-		item = new Item(product, storageUnit, new Date(), itemManager);
-
-		storageUnit.add(item);
-	}
-
 }
