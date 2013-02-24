@@ -132,14 +132,16 @@ public class AddItemBatchController extends Controller implements IAddItemBatchC
 	@Override
 	public void done() {
 		getView().close();
-		NonEmptyString filename = BarcodePrinter.getInstance().printBatch();
-		File file = new File(filename.toString());
-		try {
-			java.awt.Desktop.getDesktop().open(file);
-		} catch (IOException e) {
-			getView().displayErrorMessage(e.getMessage());
-		} catch (IllegalArgumentException e) {
-			getView().displayErrorMessage(e.getMessage());
+		if(BarcodePrinter.getInstance().hasItemsToPrint()){
+			NonEmptyString filename = BarcodePrinter.getInstance().printBatch();
+			File file = new File(filename.toString());
+			try {
+				java.awt.Desktop.getDesktop().open(file);
+			} catch (IOException e) {
+				getView().displayErrorMessage(e.getMessage());
+			} catch (IllegalArgumentException e) {
+				getView().displayErrorMessage(e.getMessage());
+			}
 		}
 	}
 
