@@ -23,9 +23,9 @@ import model.Action.ActionType;
  */
 @SuppressWarnings("serial")
 public class ConcreteItemManager extends Observable implements ItemManager, Serializable {
-	private Set<Item> items;
-	private Set<Item> removedItems;
-	private Map<Product, Set<Item>> productsToItems;
+	private final Set<Item> items;
+	private final Set<Item> removedItems;
+	private final Map<Product, Set<Item>> productsToItems;
 
 	/**
 	 * Constructor
@@ -74,6 +74,9 @@ public class ConcreteItemManager extends Observable implements ItemManager, Seri
 			throw new IllegalArgumentException("Null Item item");
 		}
 
+		// System.out.println("Managing item " + item.getBarcode() + " "
+		// + item.getProduct().getDescription());
+
 		Set<Item> found = productsToItems.get(item.getProduct());
 		if (found != null)
 			found.add(item);
@@ -84,7 +87,7 @@ public class ConcreteItemManager extends Observable implements ItemManager, Seri
 		}
 
 		items.add(item);
-		
+
 		setChanged();
 		Action action = new Action(item, ActionType.CREATE);
 		this.notifyObservers(action);
@@ -122,6 +125,8 @@ public class ConcreteItemManager extends Observable implements ItemManager, Seri
 	public void unmanage(Item item) {
 		if (item == null)
 			throw new IllegalArgumentException("Item to unmanage can't be null.");
+		// System.out.println("Unmanaging item " + item.getBarcode() + " "
+		// + item.getProduct().getDescription());
 		if (!items.contains(item) || !productsToItems.get(item.getProduct()).contains(item)) {
 			throw new IllegalStateException("unmanage() being called before manage()");
 		}

@@ -467,6 +467,7 @@ public class InventoryController extends Controller implements IInventoryControl
 	 */
 	@Override
 	public void itemSelectionChanged() {
+		// The only possible change is in the context menus available
 		enableComponents();
 	}
 
@@ -581,8 +582,12 @@ public class InventoryController extends Controller implements IInventoryControl
 		if (!canRemoveItem()) {
 			throw new IllegalStateException("Unable to remove Item");
 		}
-
-		getItemManager().unmanage(getSelectedItemTag());
+		ItemData itemData = getView().getSelectedItem();
+		assert (itemData != null);
+		Item item = (Item) itemData.getTag();
+		assert (item != null);
+		ItemManager itemManager = getItemManager();
+		itemManager.unmanage(item);
 	}
 
 	/**

@@ -15,7 +15,6 @@ import model.Action.ActionType;
 import model.Item;
 import model.ItemManager;
 import model.ProductContainer;
-import model.ProductContainerManager;
 
 /**
  * Controller object that acts as a liaison between the model's ItemManager and the GUI view.
@@ -54,21 +53,23 @@ public class ItemListener implements Observer {
 		Item item = (Item) action.getObject();
 
 		if (type.equals(ActionType.CREATE)) {
-			// ItemData id = DataWrapper.wrap(item);
+			refreshItems();
 
-			// Get data for parent (main root)
-			ProductContainerData parent = view.getSelectedProductContainer();
-			ProductContainer pc = (ProductContainer) parent.getTag();
-			ArrayList<ItemData> itemsToDisplay = new ArrayList<ItemData>();
-			ItemData[] itemArray = new ItemData[0];
-			ProductContainerManager pcManager = view.getProductContainerManager();
-			Iterator<Item> itemIterator = pc.getItemsIterator();
-			while (itemIterator.hasNext()) {
-				ItemData id = DataWrapper.wrap(itemIterator.next());
-				itemsToDisplay.add(id);
-			}
-			view.setItems(itemsToDisplay.toArray(itemArray));
-			// view.selectItem(DataWrapper.wrap(item));
+		} else if (type.equals(ActionType.DELETE)) {
+			refreshItems();
 		}
+	}
+
+	private void refreshItems() {
+		ProductContainerData parent = view.getSelectedProductContainer();
+		ProductContainer pc = (ProductContainer) parent.getTag();
+		ArrayList<ItemData> itemsToDisplay = new ArrayList<ItemData>();
+		ItemData[] itemArray = new ItemData[0];
+		Iterator<Item> itemIterator = pc.getItemsIterator();
+		while (itemIterator.hasNext()) {
+			ItemData id = DataWrapper.wrap(itemIterator.next());
+			itemsToDisplay.add(id);
+		}
+		view.setItems(itemsToDisplay.toArray(itemArray));
 	}
 }

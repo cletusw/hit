@@ -52,38 +52,34 @@ public class ProductContainerListener implements Observer {
 
 		if (action.getAction().equals(ActionType.CREATE)) {
 			Object pc = action.getObject();
+			ProductContainerData newData = new ProductContainerData();
 			if (pc instanceof ProductGroup) {
 				// Get data for inserted PC
 				ProductGroup newGroup = (ProductGroup) pc;
-				ProductContainerData newData = new ProductContainerData();
 				newData.setName(newGroup.getName());
 				newData.setTag(newGroup);
-
-				// Get data for parent PC
-				ProductContainerData parentData = view.getSelectedProductContainer();
-
-				// Insert
-				view.insertProductContainer(parentData, newData, parentData.getChildCount());
-				view.selectProductContainer(newData);
 			} else {
 				// Get data for new SU
 				StorageUnit newStorageUnit = (StorageUnit) pc;
-				ProductContainerData newData = new ProductContainerData();
 				newData.setName(newStorageUnit.getName());
 				newData.setTag(newStorageUnit);
-
-				// Get data for parent (main root)
-				ProductContainerData parent = view.getSelectedProductContainer();
-
-				// Insert
-				view.insertProductContainer(parent, newData,
-						parent.getSortedIndex(newData.getName()));
-				view.selectProductContainer(newData);
 			}
+
+			// Get data for parent (main root)
+			ProductContainerData parent = view.getSelectedProductContainer();
+
+			// Insert
+			view.insertProductContainer(parent, newData,
+					parent.getSortedIndex(newData.getName()));
+			view.selectProductContainer(newData);
+
 		} else if (type.equals(ActionType.EDIT)) {
 			ProductContainerData data = view.getSelectedProductContainer();
+			// ProductContainerData parent = data.getParet
 			ProductContainer container = (ProductContainer) action.getObject();
 			view.renameProductContainer(data, container.getName(), 0);
+			// TODO: We need a way to find the ProductContainerData's parent...
+			// data.getSortedIndex(container.getName()));
 			view.selectProductContainer(data);
 		} else if (type.equals(ActionType.DELETE)) {
 			ProductContainerData data = view.getSelectedProductContainer();
