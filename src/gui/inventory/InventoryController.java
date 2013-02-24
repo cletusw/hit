@@ -315,7 +315,7 @@ public class InventoryController extends Controller implements IInventoryControl
 	@Override
 	public boolean canRemoveItems() {
 		ProductContainerData pcData = getView().getSelectedProductContainer();
-		return (pcData.getName().equals("Storage Units"));
+		return pcData.getTag() == null;
 	}
 
 	/**
