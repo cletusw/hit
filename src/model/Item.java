@@ -50,10 +50,11 @@ public class Item implements Comparable<Object>, Serializable {
 		}
 
 		this.product = product;
-		setContainer(container);
 		this.barcode = barcode;
 		setEntryDate(entryDate);
 		setExpirationDate();
+		setContainer(container);
+		container.add(this);
 		manager.manage(this);
 	}
 
