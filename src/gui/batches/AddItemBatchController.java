@@ -93,13 +93,7 @@ public class AddItemBatchController extends Controller implements IAddItemBatchC
 			container.add(item);
 			BarcodePrinter.getInstance().addItemToBatch(item);
 
-			ItemData id = new ItemData();
-			id.setTag(item);
-			id.setBarcode(item.getBarcode());
-			id.setEntryDate(item.getEntryDate());
-			id.setExpirationDate(item.getExpirationDate());
-			id.setStorageUnit(container.getName());
-			id.setProductGroup(item.getContainer().getName());
+			ItemData id = DataWrapper.wrap(item);
 			items.get(products.indexOf(productData)).add(id);
 		}
 		// Clear the view for the next item!
@@ -144,7 +138,7 @@ public class AddItemBatchController extends Controller implements IAddItemBatchC
 			java.awt.Desktop.getDesktop().open(file);
 		} catch (IOException e) {
 			getView().displayErrorMessage(e.getMessage());
-		} catch(IllegalArgumentException e){
+		} catch (IllegalArgumentException e) {
 			getView().displayErrorMessage(e.getMessage());
 		}
 	}
