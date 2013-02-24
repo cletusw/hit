@@ -531,8 +531,9 @@ public class InventoryController extends Controller implements IInventoryControl
 			if (selected != null) {
 				Iterator<Product> it = selected.getProductsIterator();
 				while (it.hasNext()) {
-					int count = 1;
-					productDataList.add(DataWrapper.wrap(it.next(), count));
+					Product p = it.next();
+					int count = selected.getItemsForProduct(p).size();
+					productDataList.add(DataWrapper.wrap(p, count));
 				}
 			}
 		}
