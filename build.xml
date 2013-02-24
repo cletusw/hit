@@ -35,6 +35,7 @@
 	<property name="coverage-data-file" location="${coverage-reports}/cobertura.ser"/>
 	
 	<property name="junit-home" location="${lib}/junit-4.8.2" />
+	<property name="easymock-home" location="${lib}/easymock-3.1" />
 	
 	<property name="sqlite-home" location="${lib}/sqlitejdbc-v056" />
 	
@@ -68,6 +69,12 @@
 	<path id="junit-classpath">
 		<fileset dir="${junit-home}">
 			<include name="junit-4.8.2.jar" />
+		</fileset>
+	</path>
+	
+	<path id="easymock-classpath">
+		<fileset dir="${easymock-home}">
+			<include name="easymock-3.1.jar" />
 		</fileset>
 	</path>
 	
@@ -253,6 +260,7 @@
 				<pathelement location="${build}"/>
 			</classpath>
 			<classpath refid="junit-classpath" />
+			<classpath refid="easymock-classpath" />
 			<classpath refid="cobertura-classpath" />
 		</javac>
 	</target>
@@ -268,6 +276,7 @@
 			</classpath>
 			<classpath refid="cobertura-classpath" />
 			<classpath refid="junit-classpath" />
+			<classpath refid="easymock-classpath" />
 			<classpath refid="itext-classpath" />
 			<classpath refid="sqlite-classpath" />
 
