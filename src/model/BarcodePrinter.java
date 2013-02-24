@@ -205,4 +205,9 @@ public class BarcodePrinter {
 		cell.setPaddingRight(10);
 		return cell;
 	}
+	
+	public boolean hasItemsToPrint(){
+		return this.itemsToPrint.size() > 0;
+	}
+
 }
