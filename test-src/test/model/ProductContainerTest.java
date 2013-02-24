@@ -4,6 +4,9 @@ import static org.easymock.EasyMock.createMock;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
+
+import java.util.Date;
+
 import model.Barcode;
 import model.Item;
 import model.ItemManager;
@@ -41,8 +44,10 @@ public class ProductContainerTest {
 				Unit.COUNT), productManager);
 		product2 = new Product("PROD2BARCODE00", "Green Jell-O", 365, 12, new ProductQuantity(
 				3.5f, Unit.OUNCES), productManager);
-		item1 = new Item(new Barcode("400000001968"), product1, storageUnit1, itemManager);
-		item1Copy = new Item(new Barcode("400000001968"), product1, storageUnit1, itemManager);
+		item1 = new Item(new Barcode("400000001968"), product1, storageUnit1, new Date(),
+				itemManager);
+		item1Copy = new Item(new Barcode("400000001968"), product1, storageUnit1, new Date(),
+				itemManager);
 	}
 
 	@After
@@ -153,12 +158,13 @@ public class ProductContainerTest {
 		productGroup2.add(product1);
 		storageUnit1.add(item1);
 		storageUnit1.add(new Item(new Barcode("400000001920"), product1, storageUnit1,
-				itemManager));
+				new Date(), itemManager));
 		assertTrue(storageUnit1.getCurrentSupply(item1.getProduct()).equals(
 				new ProductQuantity(2, Unit.COUNT)));
 		assertTrue(productGroup1.getCurrentSupply(item1.getProduct()).equals(
 				new ProductQuantity(2, Unit.COUNT)));
-		Item item2 = new Item(new Barcode("400000001999"), product2, storageUnit1, itemManager);
+		Item item2 = new Item(new Barcode("400000001999"), product2, storageUnit1, new Date(),
+				itemManager);
 		assertTrue(storageUnit1.getCurrentSupply(item2.getProduct()).equals(
 				new ProductQuantity(0, Unit.OUNCES)));
 	}

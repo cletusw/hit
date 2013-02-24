@@ -13,6 +13,7 @@ import gui.product.ProductData;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 
@@ -281,7 +282,7 @@ public class InventoryControllerTest extends EasyMockSupport {
 		product = new Product("Test Barcode", "Test Description", 1, 1, new ProductQuantity(1,
 				Unit.COUNT), productManager);
 
-		item = new Item(product, storageUnit, itemManager);
+		item = new Item(product, storageUnit, new Date(), itemManager);
 
 		storageUnit.add(item);
 	}

@@ -55,7 +55,7 @@ public class HomeInventoryTracker implements Serializable {
 		assert (entryDate != null);
 		assert (storageUnit != null);
 
-		Item newItem = new Item(product, entryDate, storageUnit, itemManager);
+		Item newItem = new Item(product, storageUnit, entryDate, itemManager);
 		storageUnit.add(newItem);
 
 		return newItem;

@@ -10,6 +10,7 @@ import gui.product.ProductData;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Date;
 
 import model.BarcodePrinter;
 import model.Item;
@@ -82,13 +83,15 @@ public class AddItemBatchController extends Controller implements IAddItemBatchC
 				return;
 			productData = addProduct(product);
 		}
+
+		Date entryDate = getView().getEntryDate();
 		int count = Integer.parseInt(productData.getCount());
 		int itemCount = Integer.parseInt(getView().getCount());
 		count += itemCount;
 		productData.setCount("" + count);
 
 		for (int i = 0; i < itemCount; i++) {
-			Item item = new Item(product, container, getItemManager());
+			Item item = new Item(product, container, entryDate, getItemManager());
 			container.add(item);
 			BarcodePrinter.getInstance().addItemToBatch(item);
 
@@ -131,7 +134,7 @@ public class AddItemBatchController extends Controller implements IAddItemBatchC
 	@Override
 	public void done() {
 		getView().close();
-		if(BarcodePrinter.getInstance().hasItemsToPrint()){
+		if (BarcodePrinter.getInstance().hasItemsToPrint()) {
 			NonEmptyString filename = BarcodePrinter.getInstance().printBatch();
 			File file = new File(filename.toString());
 			try {

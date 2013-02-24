@@ -42,7 +42,7 @@ public class BarcodePrinterTest {
 		Product prod = new Product("RANDOMBARCODE", "Interesting description of a product",
 				new Date(), 3, 3, new ProductQuantity(3, Unit.FLUID_OUNCES), manager);
 		for (int i = 0; i < items.length; i++) {
-			items[i] = new Item(prod, su, iMan);
+			items[i] = new Item(prod, su, new Date(), iMan);
 		}
 	}
 
@@ -84,8 +84,7 @@ public class BarcodePrinterTest {
 
 		printer.printBatch();
 	}
-	
-	
+
 	/**
 	 * Test method for {@link model.BarcodePrinter#printBatch()}.
 	 */

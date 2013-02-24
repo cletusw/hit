@@ -64,9 +64,10 @@ public class ItemTest {
 
 	@Test
 	public void testCompareTo() {
-		Item sameItem = new Item(validUPCABarcode, product, productGroup, itemManager);
+		Item sameItem = new Item(validUPCABarcode, product, productGroup, new Date(),
+				itemManager);
 		Item newItem = new Item(new Barcode("412345688919"), new Product("abc", "abcd", 3, 3,
-				pq, productManager), productGroup, itemManager);
+				pq, productManager), productGroup, new Date(), itemManager);
 		assertTrue(item.compareTo(sameItem) == 0);
 		assertTrue(item.compareTo(newItem) != 0);
 	}
@@ -104,7 +105,7 @@ public class ItemTest {
 
 	@Test
 	public void testItemNoDateNoBarcode() {
-		item = new Item(product, productGroup, itemManager);
+		item = new Item(product, productGroup, new Date(), itemManager);
 		assertTrue(!item.getBarcode().equals(validUPCABarcode));
 		assertTrue(item.getProduct().compareTo(product) == 0);
 		assertTrue(item.getContainer().equals(productGroup));

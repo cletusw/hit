@@ -32,6 +32,8 @@ public class Item implements Comparable<Object>, Serializable {
 	 * 
 	 * @pre barcode != null
 	 * @pre product != null
+	 * @pre container != null
+	 * @pre entryDate != null
 	 * @pre manager != null
 	 */
 	public Item(Barcode barcode, Product product, ProductContainer container, Date entryDate,
@@ -56,73 +58,27 @@ public class Item implements Comparable<Object>, Serializable {
 	}
 
 	/**
-	 * Constructs a new Item with the specified barcode, product, and container. Sets entryDate
-	 * to now.
-	 * 
-	 * @param barcode
-	 *            the Item's barcode
-	 * @param product
-	 *            this Item's corresponding Product
-	 * @param container
-	 *            the ProductContainer this Item is to be stored in
-	 * 
-	 * @pre barcode != null
-	 * @pre product != null
-	 * @pre container != null
-	 * @pre manager != null
-	 * 
-	 * @post this.container != null
-	 * 
-	 */
-	public Item(Barcode barcode, Product product, ProductContainer container,
-			ItemManager manager) {
-		this(barcode, product, container, new Date(), manager);
-	}
-
-	/**
 	 * Constructs a new Item with the specified data.
 	 * 
 	 * @param product
 	 *            This Item's Product
+	 * @param container
+	 *            The ProductContainer this Item is to be stored in
 	 * @param entryDate
 	 *            The date this Item was entered into the system
-	 * @param container
-	 *            The ProductContainer this Item is to be stored in
 	 * @param manager
 	 *            The ItemManager to optimize accesses to this item
-	 * 
 	 * @pre product != null
-	 * @pre entryDate != null
 	 * @pre container != null
+	 * @pre entryDate != null
 	 * @pre manager != null
 	 * 
 	 * @post this.container != null
 	 * 
 	 */
-	public Item(Product product, Date entryDate, ProductContainer container,
+	public Item(Product product, ProductContainer container, Date entryDate,
 			ItemManager manager) {
 		this(new Barcode(), product, container, entryDate, manager);
-	}
-
-	/**
-	 * Constructs a new Item with the specified data.
-	 * 
-	 * @param product
-	 *            This Item's Product
-	 * @param container
-	 *            The ProductContainer this Item is to be stored in
-	 * @param manager
-	 *            The ItemManager to optimize accesses to this item
-	 * 
-	 * @pre product != null
-	 * @pre container != null
-	 * @pre manager != null
-	 * 
-	 * @post this.container != null
-	 * 
-	 */
-	public Item(Product product, ProductContainer container, ItemManager manager) {
-		this(new Barcode(), product, container, new Date(), manager);
 	}
 
 	/**
