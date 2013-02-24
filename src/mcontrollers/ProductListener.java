@@ -10,7 +10,6 @@ import java.util.Observer;
 
 import model.Action;
 import model.Action.ActionType;
-import model.ItemManager;
 import model.Product;
 import model.ProductContainer;
 import model.ProductManager;
@@ -26,7 +25,7 @@ import model.ProductManager;
 public class ProductListener implements Observer {
 
 	IInventoryView view;
-	
+
 	public ProductListener(IInventoryView view, ProductManager productManager) {
 		this.view = view;
 		productManager.addObserver(this);
@@ -48,24 +47,24 @@ public class ProductListener implements Observer {
 	 */
 	@Override
 	public void update(Observable o, Object arg) {
-		Action action = (Action)arg;
-		Product product = (Product)action.getObject();
-		
+		Action action = (Action) arg;
+		Product product = (Product) action.getObject();
+
 		ProductContainerData productContainerData = view.getSelectedProductContainer();
 		ProductContainer container = (ProductContainer) productContainerData.getTag();
-		
+
 		// fall-through cases on purpose
-		switch(action.getAction()){
+		switch (action.getAction()) {
 		case CREATE:
 			container.add(product);
 		case EDIT:
-			
+
 		case DELETE:
 			Iterator<Product> iter = container.getProductsIterator();
 			ProductData[] products = new ProductData[container.getProductsSize()];
-			
+
 			int i = 0;
-			while(iter.hasNext()){
+			while (iter.hasNext()) {
 				Product prod = iter.next();
 				ProductData productData = new ProductData();
 				productData.setBarcode(prod.getBarcode());
@@ -74,14 +73,16 @@ public class ProductListener implements Observer {
 				productData.setSize(String.valueOf(prod.getSize().getQuantity()));
 				productData.setSupply(String.valueOf(prod.getThreeMonthSupply()));
 				productData.setTag(prod);
-				products[i++] = productData;
-				if(action.getAction().equals(ActionType.CREATE) && product.equals(prod))
-					// this is a newly created product, itemcount is zero but will be 1 when item is finished creating
+				if (action.getAction().equals(ActionType.CREATE) && product.equals(prod))
+					// this is a newly created product, itemcount is zero but will be 1 when
+					// item is finished creating
 					productData.setCount("1");
 				else
-					productData.setCount(String.valueOf(container.getItemsForProduct(prod).size()));
+					productData.setCount(String.valueOf(container.getItemsForProduct(prod)
+							.size()));
+				products[i++] = productData;
 			}
-			
+
 			view.setProducts(products);
 			break;
 		}

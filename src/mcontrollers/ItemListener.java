@@ -73,12 +73,12 @@ public class ItemListener implements Observer {
 			// view.selectItem(DataWrapper.wrap(item));
 
 			// TODO: update the count of the selectedProduct
-			updateProductView(pc);
+			updateProductView(pc, action);
 			break;
 		}
 	}
 
-	private void updateProductView(ProductContainer container) {
+	private void updateProductView(ProductContainer container, Action action) {
 		Iterator<Product> iter = container.getProductsIterator();
 		ProductData[] products = new ProductData[container.getProductsSize()];
 
@@ -92,8 +92,13 @@ public class ItemListener implements Observer {
 			productData.setSize(String.valueOf(prod.getSize().getQuantity()));
 			productData.setSupply(String.valueOf(prod.getThreeMonthSupply()));
 			productData.setTag(prod);
+			if (action.getAction().equals(ActionType.CREATE)
+					&& prod.equals(((Item) action.getObject()).getProduct()))
+				productData.setCount("1");
+			else
+				productData
+						.setCount(String.valueOf(container.getItemsForProduct(prod).size()));
 			products[i++] = productData;
-			productData.setCount(String.valueOf(container.getItemsForProduct(prod).size()));
 		}
 
 		view.setProducts(products);
