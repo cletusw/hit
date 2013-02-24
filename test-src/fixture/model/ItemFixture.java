@@ -6,11 +6,16 @@ import java.util.Date;
 
 import model.Item;
 import model.ItemManager;
+import model.ProductContainer;
 
 @SuppressWarnings("serial")
 public class ItemFixture extends Item {
 	public ItemFixture() {
-		super(new ProductFixture(), new StorageUnitFixture(), new Date(),
+		this(new StorageUnitFixture());
+	}
+
+	public ItemFixture(ProductContainer productContainer) {
+		super(new ProductFixture(), productContainer, new Date(),
 				createNiceMock(ItemManager.class));
 	}
 }
