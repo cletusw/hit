@@ -22,13 +22,11 @@ import model.StorageUnit;
  * @version 1.0 CS 340 Group 4 Phase 2
  * 
  */
-public class ProductContainerListener implements Observer {
-
-	private final IInventoryView view;
+public class ProductContainerListener extends InventoryListener implements Observer {
 
 	public ProductContainerListener(IInventoryView view, ProductContainerManager manager) {
+		super(view);
 		manager.addObserver(this);
-		this.view = view;
 	}
 
 	/**

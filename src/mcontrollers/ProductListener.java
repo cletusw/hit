@@ -22,12 +22,10 @@ import model.ProductManager;
  * @version 1.0 CS 340 Group 4 Phase 2
  * 
  */
-public class ProductListener implements Observer {
-
-	IInventoryView view;
+public class ProductListener extends InventoryListener implements Observer {
 
 	public ProductListener(IInventoryView view, ProductManager productManager) {
-		this.view = view;
+		super(view);
 		productManager.addObserver(this);
 	}
 
