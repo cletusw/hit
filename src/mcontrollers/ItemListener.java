@@ -55,10 +55,12 @@ public class ItemListener implements Observer {
 		ActionType type = action.getAction();
 		Item item = (Item) action.getObject();
 
-		if (type.equals(ActionType.CREATE)) {
-			// ItemData id = DataWrapper.wrap(item);
-
-			// Get data for parent (main root)
+		switch(action.getAction()){
+		case CREATE:
+			
+		case EDIT:
+			
+		case DELETE:
 			ProductContainerData parent = view.getSelectedProductContainer();
 			ProductContainer pc = (ProductContainer) parent.getTag();
 			ArrayList<ItemData> itemsToDisplay = new ArrayList<ItemData>();
@@ -74,6 +76,7 @@ public class ItemListener implements Observer {
 			
 			// TODO: update the count of the selectedProduct
 			updateProductView(pc);
+			break;
 		}
 	}
 	
