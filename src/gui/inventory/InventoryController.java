@@ -594,7 +594,7 @@ public class InventoryController extends Controller implements IInventoryControl
 		} else if (currentContainer instanceof ProductGroup) {
 			ProductGroup group = (ProductGroup) currentContainer;
 			StorageUnit root = getView().getProductContainerManager()
-					.getRootStorageUnitByName(group.getName());
+					.getRootStorageUnitForChild(group);
 			getView().setContextGroup(group.getName());
 			getView().setContextSupply(group.getThreeMonthSupply().toString());
 			getView().setContextUnit(root.getName());

@@ -44,6 +44,15 @@ public class ConcreteProductContainerManager extends Observable implements Seria
 		return null;
 	}
 
+	@Override
+	public StorageUnit getRootStorageUnitForChild(ProductContainer child) {
+		for (StorageUnit su : rootStorageUnits) {
+			if (su.equals(child) || su.hasDescendantProductContainer(child))
+				return su;
+		}
+		return null;
+	}
+
 	/**
 	 * Gets the StorageUnit with the given name.
 	 * 

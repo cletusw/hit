@@ -44,8 +44,8 @@ public abstract class InventoryListener {
 			view.setContextUnit(currentContainer.getName());
 		} else if (currentContainer instanceof ProductGroup) {
 			ProductGroup group = (ProductGroup) currentContainer;
-			StorageUnit root = view.getProductContainerManager().getRootStorageUnitByName(
-					group.getName());
+			StorageUnit root = view.getProductContainerManager().getRootStorageUnitForChild(
+					group);
 			view.setContextGroup(group.getName());
 			view.setContextSupply(group.getThreeMonthSupply().toString());
 			view.setContextUnit(root.getName());

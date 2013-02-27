@@ -9,6 +9,8 @@ public interface ProductContainerManager {
 
 	public StorageUnit getRootStorageUnitByName(String productContainerName);
 
+	public StorageUnit getRootStorageUnitForChild(ProductContainer child);
+
 	public StorageUnit getStorageUnitByName(String name);
 
 	public Iterator<StorageUnit> getStorageUnitIterator();
