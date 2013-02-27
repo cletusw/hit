@@ -92,7 +92,8 @@ public class EditProductGroupController extends Controller implements
 			enableOk = false;
 		}
 
-		if (!manager.isValidProductGroupName(getView().getProductGroupName())
+		ProductGroup target = (ProductGroup) originalData.getTag();
+		if (!target.getContainer().canAddProductGroup(getView().getProductGroupName())
 				&& !originalData.getName().equals(getView().getProductGroupName())) {
 			enableOk = false;
 		}

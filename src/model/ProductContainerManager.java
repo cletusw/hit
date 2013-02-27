@@ -22,6 +22,4 @@ public interface ProductContainerManager {
 	public void unmanage(ProductContainer pc);
 
 	void addObserver(Observer o);
-
-	boolean isValidProductGroupName(String productGroupName);
 }
