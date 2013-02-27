@@ -13,6 +13,17 @@ import java.util.Date;
  */
 @SuppressWarnings("serial")
 public class Item implements Comparable<Object>, Serializable {
+	/**
+	 * Method that tests if a Date object is a valid entry date.
+	 * 
+	 * @param date
+	 *            the date to test
+	 * @return true if the date is valid
+	 * 
+	 * @pre true
+	 * @post true
+	 * 
+	 */
 	public static boolean isValidEntryDate(Date date) {
 		if (date == null)
 			return true;
