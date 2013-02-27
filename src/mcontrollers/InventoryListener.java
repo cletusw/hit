@@ -12,12 +12,44 @@ import java.util.Iterator;
 import model.Item;
 import model.Product;
 import model.ProductContainer;
+import model.ProductGroup;
+import model.StorageUnit;
 
 public abstract class InventoryListener {
 	protected IInventoryView view;
 
 	public InventoryListener(IInventoryView view) {
 		this.view = view;
+	}
+
+	// TODO: This code is duplicated from
+	// InventoryController.productContainerSelectionChanged(). It should not be!!!
+	// Proposed solution is to add a call to
+	// getController().productContainerSelectionChanged()
+	// in InvetoryView.selectProductContainer() -- essentially when the views selection changes
+	// programatically
+	// it will notify the controller. This will eliminate the need for this method, but may
+	// have adverse side
+	// effects.
+	/**
+	 * Sets the context view information when a ProductContainer is created or edited.
+	 * 
+	 * @param currentContainer
+	 *            - selected container used to get information for the view
+	 */
+	public void showContext(ProductContainer currentContainer) {
+		if (currentContainer instanceof StorageUnit) {
+			view.setContextGroup("");
+			view.setContextSupply("");
+			view.setContextUnit(currentContainer.getName());
+		} else if (currentContainer instanceof ProductGroup) {
+			ProductGroup group = (ProductGroup) currentContainer;
+			StorageUnit root = view.getProductContainerManager().getRootStorageUnitByName(
+					group.getName());
+			view.setContextGroup(group.getName());
+			view.setContextSupply(group.getThreeMonthSupply().toString());
+			view.setContextUnit(root.getName());
+		}
 	}
 
 	/**
