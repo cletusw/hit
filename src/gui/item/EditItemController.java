@@ -48,6 +48,7 @@ public class EditItemController extends Controller implements IEditItemControlle
 	 */
 	@Override
 	public void valuesChanged() {
+		enableComponents();
 	}
 
 	/**
@@ -64,7 +65,11 @@ public class EditItemController extends Controller implements IEditItemControlle
 		getView().enableBarcode(false);
 		getView().enableDescription(false);
 		getView().enableEntryDate(true);
-		getView().enableOK(true);
+
+		boolean enableOK = false;
+		if (Item.isValidEntryDate(getView().getEntryDate()))
+			enableOK = true;
+		getView().enableOK(enableOK);
 	}
 
 	//

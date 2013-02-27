@@ -26,7 +26,7 @@ public class Item implements Comparable<Object>, Serializable {
 	 */
 	public static boolean isValidEntryDate(Date date) {
 		if (date == null)
-			return true;
+			return false;
 
 		return !(date.after(new Date()) || date.before(new Date(100, 0, 0, 0, 0, 0)));
 	}
@@ -248,15 +248,13 @@ public class Item implements Comparable<Object>, Serializable {
 		// Must be non-empty. Cannot be in the
 		// future or prior to 1/1/2000.
 
-		// note: isValidEntryDate(null) returns true, where null represents
-		// the current time.
-		if (!isValidEntryDate(date))
-			throw new IllegalArgumentException("Date is not valid");
-
 		if (date == null) {
 			entryDate = new Date();
 			return;
 		}
+
+		if (!isValidEntryDate(date))
+			throw new IllegalArgumentException("Date is not valid");
 
 		entryDate = date;
 		setExpirationDate();
