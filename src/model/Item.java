@@ -237,6 +237,8 @@ public class Item implements Comparable<Object>, Serializable {
 		// Must be non-empty. Cannot be in the
 		// future or prior to 1/1/2000.
 
+		// note: isValidEntryDate(null) returns true, where null represents
+		// the current time.
 		if (!isValidEntryDate(date))
 			throw new IllegalArgumentException("Date is not valid");
 
