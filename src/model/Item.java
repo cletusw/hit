@@ -13,11 +13,19 @@ import java.util.Date;
  */
 @SuppressWarnings("serial")
 public class Item implements Comparable<Object>, Serializable {
+	public static boolean isValidEntryDate(Date date) {
+		if (date == null)
+			return true;
+
+		return !(date.after(new Date()) || date.before(new Date(100, 0, 0, 0, 0, 0)));
+	}
+
 	private final Product product;
 	private final Barcode barcode;
 	private Date entryDate;
 	private Date expirationDate;
 	private Date exitTime;
+
 	private ProductContainer container;
 
 	/**
@@ -228,14 +236,15 @@ public class Item implements Comparable<Object>, Serializable {
 		// From the Data Dictionary:
 		// Must be non-empty. Cannot be in the
 		// future or prior to 1/1/2000.
+
+		if (!isValidEntryDate(date))
+			throw new IllegalArgumentException("Date is not valid");
+
 		if (date == null) {
 			entryDate = new Date();
 			return;
 		}
 
-		if (date.after(new Date()) || date.before(new Date(100, 0, 0, 0, 0, 0))) {
-			throw new IllegalArgumentException("Date must not be in future");
-		}
 		entryDate = date;
 		setExpirationDate();
 	}
