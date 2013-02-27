@@ -56,15 +56,12 @@ public class EditProductController extends Controller implements IEditProductCon
 	 */
 	@Override
 	public void valuesChanged() {
-		SizeUnits viewUnit = getView().getSizeUnit();
-		if ((currentUnit == Unit.COUNT) && (viewUnit == SizeUnits.Count)) {
-			return;
-		} else if ((currentUnit == Unit.COUNT) && (viewUnit != SizeUnits.Count)) {
+		if ((currentUnit == Unit.COUNT) && (getView().getSizeUnit() != SizeUnits.Count)) {
 			getView().setSizeValue("0");
-			setCurrentUnit(Unit.convertFromSizeUnits(viewUnit));
-		} else if ((currentUnit != Unit.COUNT) && (viewUnit == SizeUnits.Count)) {
+			setCurrentUnit(Unit.convertFromSizeUnits(getView().getSizeUnit()));
+		} else if ((currentUnit != Unit.COUNT) && (getView().getSizeUnit() == SizeUnits.Count)) {
 			getView().setSizeValue("1");
-			setCurrentUnit(Unit.convertFromSizeUnits(viewUnit));
+			setCurrentUnit(Unit.convertFromSizeUnits(getView().getSizeUnit()));
 		}
 
 		enableComponents();
