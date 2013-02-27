@@ -544,6 +544,21 @@ public class InventoryController extends Controller implements IInventoryControl
 		// Clear ItemTable
 		List<ItemData> itemDataList = new ArrayList<ItemData>();
 		getView().setItems(itemDataList.toArray(new ItemData[0]));
+
+		// Update contextView
+		ProductContainer currentContainer = (ProductContainer) selectedContainer.getTag();
+		if (currentContainer instanceof StorageUnit) {
+			getView().setContextGroup("");
+			getView().setContextSupply("");
+			getView().setContextUnit(selectedContainer.getName());
+		} else if (currentContainer instanceof ProductGroup) {
+			ProductGroup group = (ProductGroup) currentContainer;
+			StorageUnit root = getView().getProductContainerManager()
+					.getRootStorageUnitByName(group.getName());
+			getView().setContextGroup(group.getName());
+			getView().setContextSupply(group.getThreeMonthSupply().toString());
+			getView().setContextUnit(root.getName());
+		}
 	}
 
 	/**
