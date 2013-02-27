@@ -72,6 +72,7 @@ public class RemoveItemBatchController extends Controller implements
 		// show dialog box if item doesn't exist
 		if (retrievedItem == null) {
 			view.displayErrorMessage("This item doesn't exist.");
+			view.setBarcode("");
 			return;
 		}
 
