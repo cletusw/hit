@@ -130,9 +130,5 @@ public class ItemTest {
 		item.remove();
 		assertTrue(item.getContainer() == null);
 		assertTrue(item.getExitTime().equals(exitTime));
-
-		item.remove();
-		assertTrue(item.getContainer() == null);
-		assertTrue(item.getExitTime().equals(exitTime));
 	}
 }
