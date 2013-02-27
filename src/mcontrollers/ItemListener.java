@@ -1,8 +1,6 @@
 package mcontrollers;
 
 import gui.inventory.IInventoryView;
-import gui.item.ItemData;
-import gui.product.ProductData;
 
 import java.util.Observable;
 import java.util.Observer;
@@ -46,22 +44,19 @@ public class ItemListener extends InventoryListener implements Observer {
 		ActionType type = action.getAction();
 		Item item = (Item) action.getObject();
 
-		ProductData selectedProduct = view.getSelectedProduct();
-		ItemData selectedItem = view.getSelectedItem();
-
+		boolean restoreSelected = true;
 		switch (action.getAction()) {
+		case DELETE:
+			restoreSelected = false;
+
 		case CREATE:
 
 		case EDIT:
 
-		case DELETE:
-			updateItems();
+			updateProducts(true);
 
-			updateProducts();
+			updateItems(restoreSelected);
 
-			view.selectProduct(selectedProduct);
-			if (action.getAction() != ActionType.DELETE)
-				view.selectItem(selectedItem);
 			break;
 		}
 	}

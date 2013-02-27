@@ -47,18 +47,20 @@ public class ProductListener extends InventoryListener implements Observer {
 
 		ProductContainerData productContainerData = view.getSelectedProductContainer();
 		ProductContainer container = (ProductContainer) productContainerData.getTag();
+		boolean restoreSelected = true;
 
 		// fall-through cases on purpose
 		switch (action.getAction()) {
+		case DELETE:
+			restoreSelected = false;
 		case CREATE:
 			// This should have already been done by the controller
 			container.add(product);
 		case EDIT:
 
-		case DELETE:
-			updateProducts();
+			updateProducts(restoreSelected);
 			break;
 		}
-		updateItems();
+		updateItems(true);
 	}
 }

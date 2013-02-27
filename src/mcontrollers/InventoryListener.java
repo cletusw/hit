@@ -25,14 +25,15 @@ public abstract class InventoryListener {
 	 */
 	public void updateAll() {
 		updateProductContainers();
-		updateProducts();
-		updateItems();
+		updateProducts(true);
+		updateItems(true);
 	}
 
 	/**
 	 * Updates all of the items in the view to match the model.
 	 */
-	public void updateItems() {
+	public void updateItems(boolean restoreSelected) {
+		ItemData selectedItem = view.getSelectedItem();
 		ArrayList<ItemData> itemsToDisplay = new ArrayList<ItemData>();
 		ProductContainerData parent = view.getSelectedProductContainer();
 		if (parent != null && parent.getTag() != null) {
@@ -48,6 +49,8 @@ public abstract class InventoryListener {
 			}
 		}
 		view.setItems(itemsToDisplay.toArray(new ItemData[itemsToDisplay.size()]));
+		if (restoreSelected && selectedItem != null)
+			view.selectItem(selectedItem);
 	}
 
 	/**
@@ -61,7 +64,8 @@ public abstract class InventoryListener {
 	/**
 	 * Updates all of the products in the view to match the model.
 	 */
-	public void updateProducts() {
+	public void updateProducts(boolean restoreSelected) {
+		ProductData selectedProduct = view.getSelectedProduct();
 		ArrayList<ProductData> products = new ArrayList<ProductData>();
 
 		ProductContainerData selectedContainer = view.getSelectedProductContainer();
@@ -78,5 +82,7 @@ public abstract class InventoryListener {
 		}
 
 		view.setProducts(products.toArray(new ProductData[products.size()]));
+		if (restoreSelected && selectedProduct != null)
+			view.selectProduct(selectedProduct);
 	}
 }

@@ -83,8 +83,8 @@ public class ProductContainerListener extends InventoryListener implements Obser
 			ProductContainerData data = view.getSelectedProductContainer();
 			view.deleteProductContainer(data);
 		}
-		updateProducts();
-		updateItems();
+		updateProducts(true);
+		updateItems(true);
 	}
 
 	private ProductContainerData loadProductContainerData(ProductContainerData parentData,
