@@ -241,8 +241,17 @@ public class Item implements Comparable<Object>, Serializable {
 		container = productContainer;
 	}
 
-	// private setters
 	@SuppressWarnings("deprecation")
+	/**
+	 * Sets this item's entry date
+	 * 
+	 * @param date the entry date to set to.
+	 * @throws IllegalArgumentException if the date is not valid
+	 * 
+	 * @pre if(date != null) isValidEntryDate(date)
+	 * @post entryDate = new Date() || entryDate = date
+	 * 
+	 */
 	public void setEntryDate(Date date) {
 		// From the Data Dictionary:
 		// Must be non-empty. Cannot be in the
@@ -260,6 +269,7 @@ public class Item implements Comparable<Object>, Serializable {
 		setExpirationDate();
 	}
 
+	// private setters
 	@SuppressWarnings("deprecation")
 	private void setExpirationDate() {
 		Date d = entryDate;
