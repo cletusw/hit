@@ -409,34 +409,6 @@ public abstract class ProductContainer implements Comparable<ProductContainer>, 
 	}
 
 	/**
-	 * Gets an iterator over this Container's Items
-	 * 
-	 * @return Iterator<Item> this Container's Item iterator
-	 * 
-	 * @pre true
-	 * @post true
-	 * 
-	 */
-	public Iterator<Item> getItemsIterator() {
-		return items.values().iterator();
-	}
-
-	/**
-	 * Returns an iterator of items belonging to a certain product.
-	 * 
-	 * @param product
-	 *            the Product to retrieve items for
-	 * @return an Iterator of the Product's items
-	 * @pre true
-	 * @post true
-	 */
-	public Iterator<Item> getItemsIteratorForProduct(Product product) {
-		if (product == null)
-			throw new IllegalArgumentException("Product cannot be null!");
-		return productsToItems.get(product).iterator();
-	}
-
-	/**
 	 * Gets the size of the items collection.
 	 * 
 	 * @return int - the number of elements in the items collection.

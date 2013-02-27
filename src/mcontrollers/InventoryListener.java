@@ -72,8 +72,8 @@ public abstract class InventoryListener {
 			ProductContainer pc = (ProductContainer) parent.getTag();
 			ProductData pd = view.getSelectedProduct();
 			if (pd != null && pd.getTag() != null) {
-				Iterator<Item> itemIterator = pc.getItemsIteratorForProduct((Product) pd
-						.getTag());
+				Product product = (Product) pd.getTag();
+				Iterator<Item> itemIterator = pc.getItemsForProduct(product).iterator();
 				while (itemIterator.hasNext()) {
 					ItemData id = DataWrapper.wrap(itemIterator.next());
 					itemsToDisplay.add(id);

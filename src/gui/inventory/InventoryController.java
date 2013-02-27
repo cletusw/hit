@@ -621,7 +621,7 @@ public class InventoryController extends Controller implements IInventoryControl
 			if (container == null)
 				throw new NullPointerException("Product container tag should not be null");
 
-			Iterator<Item> itemIterator = container.getItemsIteratorForProduct(product);
+			Iterator<Item> itemIterator = container.getItemsForProduct(product).iterator();
 			while (itemIterator.hasNext()) {
 				ItemData id = DataWrapper.wrap(itemIterator.next());
 				itemsToDisplay.add(id);
