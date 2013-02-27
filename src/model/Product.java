@@ -447,20 +447,6 @@ public class Product implements Comparable<Object>, Serializable {
 		}
 		productQuantity = pq;
 	}
-	
-
-	private void setBarcode(String barcode) {
-		this.barcode = new NonEmptyString(barcode);
-	}
-
-	private void setCreationDate(Date date) {
-		Date now = new Date();
-		if (!date.after(now)) {
-			creationDate = date;
-		} else {
-			throw new IllegalArgumentException("CreationDate cannot be in the future");
-		}
-	}
 
 	public void setShelfLife(int shelfLife) {
 		if (shelfLife < 0)
@@ -474,5 +460,18 @@ public class Product implements Comparable<Object>, Serializable {
 			throw new IllegalArgumentException("Three Month Supply must be non-negative");
 
 		this.threeMonthSupply = threeMonthSupply;
+	}
+
+	private void setBarcode(String barcode) {
+		this.barcode = new NonEmptyString(barcode);
+	}
+
+	private void setCreationDate(Date date) {
+		Date now = new Date();
+		if (!date.after(now)) {
+			creationDate = date;
+		} else {
+			throw new IllegalArgumentException("CreationDate cannot be in the future");
+		}
 	}
 }

@@ -547,6 +547,21 @@ public abstract class ProductContainer implements Comparable<ProductContainer>, 
 		return products.size();
 	}
 
+	public boolean hasDescendantProductContainer(ProductContainer other) {
+		if (other instanceof StorageUnit)
+			return false;
+
+		ProductGroup group = (ProductGroup) other;
+		if (this.contains(group)) {
+			return true;
+		}
+		for (ProductGroup productGroup : productGroups.values()) {
+			if (productGroup.hasDescendantProductContainer(other))
+				return true;
+		}
+		return false;
+	}
+
 	/**
 	 * Removes the specified item from this ProductContainer. Use this only
 	 * 
