@@ -615,9 +615,11 @@ public class InventoryController extends Controller implements IInventoryControl
 		if (selectedProduct != null) {
 			Product product = (Product) selectedProduct.getTag();
 			ProductContainerData pcData = getView().getSelectedProductContainer();
-			assert (pcData != null);
+			if (pcData == null)
+				throw new NullPointerException("Selected product container should not be null");
 			ProductContainer container = (ProductContainer) pcData.getTag();
-			assert (container != null);
+			if (container == null)
+				throw new NullPointerException("Product container tag should not be null");
 
 			Iterator<Item> itemIterator = container.getItemsIteratorForProduct(product);
 			while (itemIterator.hasNext()) {
@@ -643,13 +645,28 @@ public class InventoryController extends Controller implements IInventoryControl
 		if (!canRemoveItem()) {
 			throw new IllegalStateException("Unable to remove Item");
 		}
+
 		ItemData itemData = getView().getSelectedItem();
-		assert (itemData != null);
+		if (itemData == null)
+			throw new NullPointerException("ItemData object should not be null");
 		Item item = (Item) itemData.getTag();
-		assert (item != null);
+		if (item == null)
+			throw new NullPointerException("Item object should not be null");
+		Product itemsProduct = item.getProduct();
+		if (itemsProduct == null)
+			throw new NullPointerException("Item should always have a product");
 		ItemManager itemManager = getItemManager();
 		ProductContainer container = item.getContainer();
 		container.remove(item, itemManager);
+
+		// update view
+		Set<Item> pcItems = container.getItemsForProduct(itemsProduct);
+		ItemData[] viewItems = new ItemData[pcItems.size()];
+		Iterator<Item> it = pcItems.iterator();
+		int counter = 0;
+		while (it.hasNext())
+			viewItems[counter++] = DataWrapper.wrap(it.next());
+		getView().setItems(viewItems);
 	}
 
 	/**
