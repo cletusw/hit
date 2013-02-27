@@ -13,11 +13,30 @@ import java.util.Date;
  */
 @SuppressWarnings("serial")
 public class Item implements Comparable<Object>, Serializable {
+	/**
+	 * Method that tests if a Date object is a valid entry date.
+	 * 
+	 * @param date
+	 *            the date to test
+	 * @return true if the date is valid
+	 * 
+	 * @pre true
+	 * @post true
+	 * 
+	 */
+	public static boolean isValidEntryDate(Date date) {
+		if (date == null)
+			return false;
+
+		return !(date.after(new Date()) || date.before(new Date(100, 0, 0, 0, 0, 0)));
+	}
+
 	private final Product product;
 	private final Barcode barcode;
 	private Date entryDate;
 	private Date expirationDate;
 	private Date exitTime;
+
 	private ProductContainer container;
 
 	/**
@@ -222,24 +241,35 @@ public class Item implements Comparable<Object>, Serializable {
 		container = productContainer;
 	}
 
-	// private setters
 	@SuppressWarnings("deprecation")
+	/**
+	 * Sets this item's entry date
+	 * 
+	 * @param date the entry date to set to.
+	 * @throws IllegalArgumentException if the date is not valid
+	 * 
+	 * @pre if(date != null) isValidEntryDate(date)
+	 * @post entryDate = new Date() || entryDate = date
+	 * 
+	 */
 	public void setEntryDate(Date date) {
 		// From the Data Dictionary:
 		// Must be non-empty. Cannot be in the
 		// future or prior to 1/1/2000.
+
 		if (date == null) {
 			entryDate = new Date();
 			return;
 		}
 
-		if (date.after(new Date()) || date.before(new Date(100, 0, 0, 0, 0, 0))) {
-			throw new IllegalArgumentException("Date must not be in future");
-		}
+		if (!isValidEntryDate(date))
+			throw new IllegalArgumentException("Date is not valid");
+
 		entryDate = date;
 		setExpirationDate();
 	}
 
+	// private setters
 	@SuppressWarnings("deprecation")
 	private void setExpirationDate() {
 		Date d = entryDate;

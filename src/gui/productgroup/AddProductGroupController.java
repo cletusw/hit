@@ -81,10 +81,11 @@ public class AddProductGroupController extends Controller implements
 			enableOk = false;
 		}
 
-		if (!manager.isValidProductGroupName(getView().getProductGroupName(),
-				(ProductContainer) parentContainerData.getTag())) {
+		ProductContainer parent = (ProductContainer) parentContainerData.getTag();
+		if (!parent.canAddProductGroup(getView().getProductGroupName())) {
 			enableOk = false;
 		}
+
 		return enableOk;
 	}
 

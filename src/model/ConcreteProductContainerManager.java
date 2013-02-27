@@ -62,19 +62,6 @@ public class ConcreteProductContainerManager extends Observable implements Seria
 		return rootStorageUnits.iterator();
 	}
 
-	@Override
-	public boolean isValidProductGroupName(String productGroupName, ProductContainer parent) {
-		if (productGroupName == null || productGroupName.length() == 0) {
-			return false;
-		}
-		if (parent == null)
-			return false;
-
-		if (parent.containsProductGroup(productGroupName))
-			return false;
-		return true;
-	}
-
 	/**
 	 * Determines whether the specified Storage Unit name is valid for adding a new Storage
 	 * Unit.

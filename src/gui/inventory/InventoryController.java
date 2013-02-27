@@ -8,7 +8,6 @@ import gui.product.ProductData;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Random;
 import java.util.Set;
 
 import mcontrollers.ItemListener;
@@ -25,11 +24,6 @@ import model.StorageUnit;
  * Controller class for inventory view.
  */
 public class InventoryController extends Controller implements IInventoryController {
-	private final ProductContainerListener productContainerListener;
-	private final ItemListener itemListener;
-	private final ProductListener productListener;
-	private final Random rand = new Random();
-
 	/**
 	 * Constructor.
 	 * 
@@ -41,10 +35,9 @@ public class InventoryController extends Controller implements IInventoryControl
 	 */
 	public InventoryController(IInventoryView view) {
 		super(view);
-		productContainerListener = new ProductContainerListener(getView(),
-				getProductContainerManager());
-		itemListener = new ItemListener(getView(), getItemManager());
-		productListener = new ProductListener(getView(), getProductManager());
+		new ProductContainerListener(getView(), getProductContainerManager());
+		new ItemListener(getView(), getItemManager());
+		new ProductListener(getView(), getProductManager());
 		construct();
 	}
 
@@ -544,6 +537,21 @@ public class InventoryController extends Controller implements IInventoryControl
 		// Clear ItemTable
 		List<ItemData> itemDataList = new ArrayList<ItemData>();
 		getView().setItems(itemDataList.toArray(new ItemData[0]));
+
+		// Update contextView
+		ProductContainer currentContainer = (ProductContainer) selectedContainer.getTag();
+		if (currentContainer instanceof StorageUnit) {
+			getView().setContextGroup("");
+			getView().setContextSupply("");
+			getView().setContextUnit(selectedContainer.getName());
+		} else if (currentContainer instanceof ProductGroup) {
+			ProductGroup group = (ProductGroup) currentContainer;
+			StorageUnit root = getView().getProductContainerManager()
+					.getRootStorageUnitByName(group.getName());
+			getView().setContextGroup(group.getName());
+			getView().setContextSupply(group.getThreeMonthSupply().toString());
+			getView().setContextUnit(root.getName());
+		}
 	}
 
 	/**
@@ -637,15 +645,6 @@ public class InventoryController extends Controller implements IInventoryControl
 		assert (selectedSU != null);
 
 		getProductContainerManager().unmanage(selectedSU);
-	}
-
-	private String getRandomBarcode() {
-		Random rand = new Random();
-		StringBuilder barcode = new StringBuilder();
-		for (int i = 0; i < 12; ++i) {
-			barcode.append(((Integer) rand.nextInt(10)).toString());
-		}
-		return barcode.toString();
 	}
 
 	private Item getSelectedItemTag() {

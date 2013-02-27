@@ -100,6 +100,7 @@ public class AddItemBatchController extends Controller implements IAddItemBatchC
 		}
 		// Clear the view for the next item!
 		getView().setBarcode("");
+		getView().setCount("1");
 		refreshItems();
 		refreshProducts();
 		enableComponents();

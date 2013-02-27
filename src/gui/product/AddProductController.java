@@ -78,6 +78,9 @@ public class AddProductController extends Controller implements IAddProductContr
 	public void valuesChanged() {
 		if (getView().getSizeUnit().equals(SizeUnits.Count))
 			getView().setSizeValue("1");
+		else
+			getView().setSizeValue("0");
+
 		enableComponents();
 	}
 
