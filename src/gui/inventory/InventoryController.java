@@ -6,6 +6,7 @@ import gui.item.ItemData;
 import gui.product.ProductData;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
@@ -94,6 +95,18 @@ public class InventoryController extends Controller implements IInventoryControl
 	@Override
 	public void addProductToContainer(ProductData productData,
 			ProductContainerData containerData) {
+
+		/*
+		 * Desired Behavior
+		 * 
+		 * Target Product Container = the Product Container the user dropped the Product on
+		 * 
+		 * Target StorageUnit = the StorageUnit containing the Target Product Container
+		 * 
+		 * If the Product is already contained in a Product Container in the Target StorageUnit
+		 * Else Add the Product to the Target Product Container
+		 */
+
 		if (productData == null)
 			throw new IllegalArgumentException("ProductData should not be null");
 		if (containerData == null)
@@ -102,22 +115,56 @@ public class InventoryController extends Controller implements IInventoryControl
 		Product productToAdd = (Product) productData.getTag();
 		if (productToAdd == null)
 			throw new IllegalStateException("Product must have a tag.");
-		ProductContainer container = (ProductContainer) containerData.getTag();
-		if (container == null)
+		ProductContainer targetContainer = (ProductContainer) containerData.getTag();
+		if (targetContainer == null)
 			throw new IllegalStateException("ProductContainer must have a tag.");
 
 		ProductContainer oldContainer = getSelectedProductContainerTag();
-		if (productToAdd.hasContainer(container))
-			return;
-		productToAdd.addContainer(container);
-		container.add(productToAdd);
-		productToAdd.removeContainer(oldContainer);
-		ItemManager itemManager = getItemManager();
-		Set<Item> itemsToMove = itemManager.getItemsByProduct(productToAdd);
-		for (Item item : itemsToMove) {
-			if (item.getContainer().equals(oldContainer))
-				oldContainer.moveIntoContainer(item, container);
+		StorageUnit targetSU = getProductContainerManager().getRootStorageUnitByName(
+				targetContainer.getName());
+
+		// add product to container
+
+		if (targetSU.hasDescendantProductContainer(oldContainer)
+				|| targetSU.equals(oldContainer)) {
+			// Staying in the same tree, move items
+
+			// Get all the items
+			ItemManager itemManager = getItemManager();
+			Set<Item> itemsToMove = itemManager.getItemsByProduct(productToAdd);
+
+			// copy the items so we can loop over them to remove and add
+			Set<Item> itemsToRemove = new HashSet<Item>();
+			Set<Item> itemsToAdd = new HashSet<Item>();
+
+			for (Item item : itemsToMove) {
+				itemsToAdd.add(item);
+				itemsToRemove.add(item);
+			}
+
+			// remove the items so we can remove the product
+			for (Item item : itemsToRemove) {
+				oldContainer.remove(item, itemManager);
+			}
+
+			// remove the product
+			oldContainer.remove(productToAdd);
+			productToAdd.removeContainer(oldContainer);
+
+			// add the product to the target
+			productToAdd.addContainer(targetContainer);
+			targetContainer.add(productToAdd);
+
+			// add the items
+			for (Item item : itemsToAdd) {
+				targetContainer.add(item);
+				itemManager.manage(item);
+			}
+		} else {
+			productToAdd.addContainer(targetContainer);
+			targetContainer.add(productToAdd);
 		}
+
 	}
 
 	/**
