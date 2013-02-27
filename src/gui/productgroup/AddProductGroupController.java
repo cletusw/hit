@@ -78,7 +78,6 @@ public class AddProductGroupController extends Controller implements
 		getView().enableProductGroupName(true);
 		getView().enableSupplyUnit(true);
 		getView().enableSupplyValue(true);
-		ProductContainerManager manager = getProductContainerManager();
 		boolean enableOk = true;
 		float supplyValue = 0;
 		try {
