@@ -47,9 +47,9 @@ public class ProductContainerListener extends InventoryListener implements Obser
 	public void update(Observable o, Object arg) {
 		Action action = (Action) arg;
 		ActionType type = action.getAction();
+		Object pc = action.getObject();
 
 		if (action.getAction().equals(ActionType.CREATE)) {
-			Object pc = action.getObject();
 			ProductContainerData newData = new ProductContainerData();
 			if (pc instanceof ProductGroup) {
 				// Get data for inserted PC
@@ -70,14 +70,10 @@ public class ProductContainerListener extends InventoryListener implements Obser
 			view.insertProductContainer(parent, newData,
 					parent.getSortedIndex(newData.getName()));
 			view.selectProductContainer(newData);
-
 		} else if (type.equals(ActionType.EDIT)) {
 			ProductContainerData data = view.getSelectedProductContainer();
-			// ProductContainerData parent = data.getParet
 			ProductContainer container = (ProductContainer) action.getObject();
 			view.renameProductContainer(data, container.getName(), 0);
-			// TODO: We need a way to find the ProductContainerData's parent...
-			// data.getSortedIndex(container.getName()));
 			view.selectProductContainer(data);
 		} else if (type.equals(ActionType.DELETE)) {
 			ProductContainerData data = view.getSelectedProductContainer();
@@ -85,6 +81,7 @@ public class ProductContainerListener extends InventoryListener implements Obser
 		}
 		updateProducts();
 		updateItems();
+		showContext((ProductContainer) pc);
 	}
 
 	private ProductContainerData loadProductContainerData(ProductContainerData parentData,
