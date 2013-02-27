@@ -14,6 +14,7 @@ import model.Unit;
 public class AddProductController extends Controller implements IAddProductController {
 
 	private final String barcode;
+	private Unit currentUnit;
 
 	/**
 	 * Constructor.
@@ -26,6 +27,7 @@ public class AddProductController extends Controller implements IAddProductContr
 	public AddProductController(IView view, String barcode) {
 		super(view);
 		this.barcode = barcode;
+		currentUnit = Unit.COUNT;
 		getView().setBarcode(barcode);
 		getView().setSizeUnit(SizeUnits.Count);
 		getView().setSizeValue("1");
@@ -64,10 +66,10 @@ public class AddProductController extends Controller implements IAddProductContr
 		}
 
 		Unit unit = Unit.convertFromSizeUnits(getView().getSizeUnit());
+		currentUnit = unit;
 		ProductQuantity pq = new ProductQuantity(quantity, unit);
 
-		Product product = new Product(barcode, description, shelfLife, threeMonthSupply, pq,
-				productManager);
+		new Product(barcode, description, shelfLife, threeMonthSupply, pq, productManager);
 	}
 
 	/**
@@ -76,10 +78,16 @@ public class AddProductController extends Controller implements IAddProductContr
 	 */
 	@Override
 	public void valuesChanged() {
-		if (getView().getSizeUnit().equals(SizeUnits.Count))
-			getView().setSizeValue("1");
-		else
+		SizeUnits viewUnit = getView().getSizeUnit();
+		if ((currentUnit == Unit.COUNT) && (viewUnit == SizeUnits.Count)) {
+			return;
+		} else if ((currentUnit == Unit.COUNT) && (viewUnit != SizeUnits.Count)) {
 			getView().setSizeValue("0");
+			setCurrentUnit(Unit.convertFromSizeUnits(viewUnit));
+		} else if ((currentUnit != Unit.COUNT) && (viewUnit == SizeUnits.Count)) {
+			getView().setSizeValue("1");
+			setCurrentUnit(Unit.convertFromSizeUnits(viewUnit));
+		}
 
 		enableComponents();
 	}
@@ -114,6 +122,12 @@ public class AddProductController extends Controller implements IAddProductContr
 			return false;
 		}
 		return (!getView().getBarcode().equals("") && !getView().getDescription().equals(""));
+	}
+
+	private void setCurrentUnit(Unit unit) {
+		assert (unit != null);
+
+		currentUnit = unit;
 	}
 
 	/**

@@ -13,6 +13,7 @@ import model.Unit;
 public class EditProductController extends Controller implements IEditProductController {
 
 	private ProductData target;
+	private Unit currentUnit;
 
 	/**
 	 * Constructor.
@@ -25,6 +26,7 @@ public class EditProductController extends Controller implements IEditProductCon
 	public EditProductController(IView view, ProductData target) {
 		super(view);
 		this.target = target;
+		currentUnit = null;
 		construct();
 	}
 
@@ -54,8 +56,17 @@ public class EditProductController extends Controller implements IEditProductCon
 	 */
 	@Override
 	public void valuesChanged() {
-		if (getView().getSizeUnit().equals(SizeUnits.Count))
+		SizeUnits viewUnit = getView().getSizeUnit();
+		if ((currentUnit == Unit.COUNT) && (viewUnit == SizeUnits.Count)) {
+			return;
+		} else if ((currentUnit == Unit.COUNT) && (viewUnit != SizeUnits.Count)) {
+			getView().setSizeValue("0");
+			setCurrentUnit(Unit.convertFromSizeUnits(viewUnit));
+		} else if ((currentUnit != Unit.COUNT) && (viewUnit == SizeUnits.Count)) {
 			getView().setSizeValue("1");
+			setCurrentUnit(Unit.convertFromSizeUnits(viewUnit));
+		}
+
 		enableComponents();
 	}
 
@@ -89,6 +100,12 @@ public class EditProductController extends Controller implements IEditProductCon
 			return false;
 		}
 		return (!getView().getBarcode().equals("") && !getView().getDescription().equals(""));
+	}
+
+	private void setCurrentUnit(Unit unit) {
+		assert (unit != null);
+
+		currentUnit = unit;
 	}
 
 	//
@@ -142,6 +159,7 @@ public class EditProductController extends Controller implements IEditProductCon
 
 		Product productTag = (Product) target.getTag();
 		ProductQuantity productQuantity = productTag.getProductQuantity();
+		currentUnit = productQuantity.getUnits();
 		String unitString = productQuantity.getUnits().toString();
 		if (unitString.contains(" "))
 			unitString = unitString.replace(" ", "");
