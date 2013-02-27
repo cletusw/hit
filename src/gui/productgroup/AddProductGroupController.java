@@ -44,6 +44,10 @@ public class AddProductGroupController extends Controller implements
 	 */
 	@Override
 	public void addProductGroup() {
+		if (!enableOK()) {
+			getView().displayErrorMessage("User input is invalid");
+			return;
+		}
 		String pgName = getView().getProductGroupName();
 		float tmsQuantity = Float.parseFloat(getView().getSupplyValue());
 		Unit tmsUnit = Unit.convertToUnit(getView().getSupplyUnit().toString());
@@ -51,8 +55,7 @@ public class AddProductGroupController extends Controller implements
 		ProductContainerManager manager = getProductContainerManager();
 		ProductContainer parent = (ProductContainer) parentContainerData.getTag();
 
-		ProductGroup productGroup = new ProductGroup(pgName, threeMonthSupply, tmsUnit,
-				parent, manager);
+		new ProductGroup(pgName, threeMonthSupply, tmsUnit, parent, manager);
 	}
 
 	/**
@@ -62,6 +65,27 @@ public class AddProductGroupController extends Controller implements
 	@Override
 	public void valuesChanged() {
 		enableComponents();
+	}
+
+	private boolean enableOK() {
+		ProductContainerManager manager = getProductContainerManager();
+		boolean enableOk = true;
+		float supplyValue = 0;
+		try {
+			supplyValue = Float.parseFloat(getView().getSupplyValue());
+			if (!ProductQuantity.isValidProductQuantity(supplyValue,
+					Unit.convertToUnit(getView().getSupplyUnit().toString()))) {
+				enableOk = false;
+			}
+		} catch (NumberFormatException e) {
+			enableOk = false;
+		}
+
+		if (!manager.isValidProductGroupName(getView().getProductGroupName(),
+				(ProductContainer) parentContainerData.getTag())) {
+			enableOk = false;
+		}
+		return enableOk;
 	}
 
 	/**
@@ -78,24 +102,7 @@ public class AddProductGroupController extends Controller implements
 		getView().enableProductGroupName(true);
 		getView().enableSupplyUnit(true);
 		getView().enableSupplyValue(true);
-		ProductContainerManager manager = getProductContainerManager();
-		boolean enableOk = true;
-		float supplyValue = 0;
-		try {
-			supplyValue = Float.parseFloat(getView().getSupplyValue());
-			if (!ProductQuantity.isValidProductQuantity(supplyValue,
-					Unit.convertToUnit(getView().getSupplyUnit().toString()))) {
-				enableOk = false;
-			}
-		} catch (NumberFormatException e) {
-			enableOk = false;
-		}
-
-		if (!manager.isValidProductGroupName(getView().getProductGroupName())) {
-			enableOk = false;
-		}
-
-		getView().enableOK(enableOk);
+		getView().enableOK(enableOK());
 	}
 
 	//

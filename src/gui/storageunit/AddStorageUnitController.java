@@ -34,6 +34,10 @@ public class AddStorageUnitController extends Controller implements IAddStorageU
 	 */
 	@Override
 	public void addStorageUnit() {
+		if (!enableOK()) {
+			getView().displayErrorMessage("Invalid user input");
+			return;
+		}
 		ProductContainerManager manager = getProductContainerManager();
 		new StorageUnit(getView().getStorageUnitName(), manager);
 	}
@@ -45,6 +49,11 @@ public class AddStorageUnitController extends Controller implements IAddStorageU
 	@Override
 	public void valuesChanged() {
 		enableComponents();
+	}
+
+	private boolean enableOK() {
+		ProductContainerManager manager = getProductContainerManager();
+		return manager.isValidStorageUnitName(getView().getStorageUnitName());
 	}
 
 	/**
@@ -59,8 +68,7 @@ public class AddStorageUnitController extends Controller implements IAddStorageU
 	@Override
 	protected void enableComponents() {
 		getView().enableStorageUnitName(true);
-		ProductContainerManager manager = getProductContainerManager();
-		getView().enableOK(manager.isValidStorageUnitName(getView().getStorageUnitName()));
+		getView().enableOK(enableOK());
 	}
 
 	//

@@ -39,6 +39,10 @@ public class EditStorageUnitController extends Controller implements
 	 */
 	@Override
 	public void editStorageUnit() {
+		if (!enableOK()) {
+			getView().displayErrorMessage("Invalid user input");
+			return;
+		}
 		ProductContainerManager manager = getProductContainerManager();
 		ProductContainer su = manager.getStorageUnitByName(container.getName());
 		manager.setStorageUnitName(getView().getStorageUnitName(), (StorageUnit) su);
@@ -53,6 +57,12 @@ public class EditStorageUnitController extends Controller implements
 		enableComponents();
 	}
 
+	private boolean enableOK() {
+		ProductContainerManager manager = getProductContainerManager();
+		return getView().getStorageUnitName().equals(container.getName())
+				|| manager.isValidStorageUnitName(getView().getStorageUnitName());
+	}
+
 	/**
 	 * Sets the enable/disable state of all components in the controller's view. A component
 	 * should be enabled only if the user is currently allowed to interact with that component.
@@ -65,10 +75,7 @@ public class EditStorageUnitController extends Controller implements
 	@Override
 	protected void enableComponents() {
 		getView().enableStorageUnitName(true);
-		ProductContainerManager manager = getProductContainerManager();
-		getView().enableOK(
-				getView().getStorageUnitName().equals(container.getName())
-						|| manager.isValidStorageUnitName(getView().getStorageUnitName()));
+		getView().enableOK(enableOK());
 	}
 
 	//

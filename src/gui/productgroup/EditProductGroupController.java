@@ -42,6 +42,10 @@ public class EditProductGroupController extends Controller implements
 	 */
 	@Override
 	public void editProductGroup() {
+		if (!enableOK()) {
+			getView().displayErrorMessage("User input is invalid");
+			return;
+		}
 		ProductGroup pg = (ProductGroup) originalData.getTag();
 		StorageUnit root;
 		while (pg.getContainer() instanceof ProductGroup) {
@@ -65,6 +69,28 @@ public class EditProductGroupController extends Controller implements
 		enableComponents();
 	}
 
+	private boolean enableOK() {
+		ProductContainerManager manager = getView().getProductContainerManager();
+		boolean enableOk = true;
+		float supplyValue = 0;
+		try {
+			supplyValue = Float.parseFloat(getView().getSupplyValue());
+			if (!ProductQuantity.isValidProductQuantity(supplyValue,
+					Unit.convertToUnit(getView().getSupplyUnit().toString()))) {
+				enableOk = false;
+			}
+		} catch (NumberFormatException e) {
+			enableOk = false;
+		}
+
+		if (!manager.isValidProductGroupName(getView().getProductGroupName(),
+				((ProductGroup) originalData.getTag()).getContainer())
+				&& !originalData.getName().equals(getView().getProductGroupName())) {
+			enableOk = false;
+		}
+		return enableOk;
+	}
+
 	/**
 	 * Sets the enable/disable state of all components in the controller's view. A component
 	 * should be enabled only if the user is currently allowed to interact with that component.
@@ -79,25 +105,7 @@ public class EditProductGroupController extends Controller implements
 		getView().enableProductGroupName(true);
 		getView().enableSupplyUnit(true);
 		getView().enableSupplyValue(true);
-		ProductContainerManager manager = getView().getProductContainerManager();
-		boolean enableOk = true;
-		float supplyValue = 0;
-		try {
-			supplyValue = Float.parseFloat(getView().getSupplyValue());
-			if (!ProductQuantity.isValidProductQuantity(supplyValue,
-					Unit.convertToUnit(getView().getSupplyUnit().toString()))) {
-				enableOk = false;
-			}
-		} catch (NumberFormatException e) {
-			enableOk = false;
-		}
-
-		if (!manager.isValidProductGroupName(getView().getProductGroupName())
-				&& !originalData.getName().equals(getView().getProductGroupName())) {
-			enableOk = false;
-		}
-
-		getView().enableOK(enableOk);
+		getView().enableOK(enableOK());
 	}
 
 	//

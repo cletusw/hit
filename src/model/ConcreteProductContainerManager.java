@@ -63,15 +63,15 @@ public class ConcreteProductContainerManager extends Observable implements Seria
 	}
 
 	@Override
-	public boolean isValidProductGroupName(String productGroupName) {
+	public boolean isValidProductGroupName(String productGroupName, ProductContainer parent) {
 		if (productGroupName == null || productGroupName.length() == 0) {
 			return false;
 		}
+		if (parent == null)
+			return false;
 
-		for (StorageUnit su : rootStorageUnits) {
-			if (su.containsProductGroup(productGroupName))
-				return false;
-		}
+		if (parent.containsProductGroup(productGroupName))
+			return false;
 		return true;
 	}
 
