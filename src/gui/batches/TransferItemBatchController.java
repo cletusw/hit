@@ -78,8 +78,13 @@ public class TransferItemBatchController extends Controller implements
 	 */
 	@Override
 	public void transferItem() {
-		String itemBarcode = getView().getBarcode();
-		Item item = getItemManager().getItemByItemBarcode(itemBarcode);
+		Item item = getItemManager().getItemByItemBarcode(getView().getBarcode());
+		if (item == null) {
+			getView().displayErrorMessage("There is no item with this barcode.");
+			getView().setBarcode("");
+			return;
+		}
+
 		ProductContainer source = item.getContainer();
 		source.moveIntoContainer(item, target);
 
