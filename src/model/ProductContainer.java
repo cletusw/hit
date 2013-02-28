@@ -409,34 +409,6 @@ public abstract class ProductContainer implements Comparable<ProductContainer>, 
 	}
 
 	/**
-	 * Gets an iterator over this Container's Items
-	 * 
-	 * @return Iterator<Item> this Container's Item iterator
-	 * 
-	 * @pre true
-	 * @post true
-	 * 
-	 */
-	public Iterator<Item> getItemsIterator() {
-		return items.values().iterator();
-	}
-
-	/**
-	 * Returns an iterator of items belonging to a certain product.
-	 * 
-	 * @param product
-	 *            the Product to retrieve items for
-	 * @return an Iterator of the Product's items
-	 * @pre true
-	 * @post true
-	 */
-	public Iterator<Item> getItemsIteratorForProduct(Product product) {
-		if (product == null)
-			throw new IllegalArgumentException("Product cannot be null!");
-		return productsToItems.get(product).iterator();
-	}
-
-	/**
 	 * Gets the size of the items collection.
 	 * 
 	 * @return int - the number of elements in the items collection.
@@ -547,6 +519,21 @@ public abstract class ProductContainer implements Comparable<ProductContainer>, 
 		return products.size();
 	}
 
+	public boolean hasDescendantProductContainer(ProductContainer other) {
+		if (other instanceof StorageUnit)
+			return false;
+
+		ProductGroup group = (ProductGroup) other;
+		if (this.contains(group)) {
+			return true;
+		}
+		for (ProductGroup productGroup : productGroups.values()) {
+			if (productGroup.hasDescendantProductContainer(other))
+				return true;
+		}
+		return false;
+	}
+
 	/**
 	 * Removes the specified item from this ProductContainer. Use this only
 	 * 
@@ -577,6 +564,10 @@ public abstract class ProductContainer implements Comparable<ProductContainer>, 
 		if (destination.contains(item)) {
 			throw new IllegalStateException(
 					"Destination container already contains the item to be moved");
+		}
+
+		if (!destination.contains(item.getProduct())) {
+			destination.add(item.getProduct());
 		}
 
 		unregisterItem(item);

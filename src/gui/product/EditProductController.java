@@ -1,13 +1,11 @@
 package gui.product;
 
-import model.Product;
-import model.ProductManager;
-import model.ProductQuantity;
-import model.Unit;
 import gui.common.Controller;
 import gui.common.IView;
 import gui.common.SizeUnits;
-import gui.common.View;
+import model.Product;
+import model.ProductQuantity;
+import model.Unit;
 
 /**
  * Controller class for the edit product view.
@@ -15,7 +13,8 @@ import gui.common.View;
 public class EditProductController extends Controller implements IEditProductController {
 
 	private ProductData target;
-	
+	private Unit currentUnit;
+
 	/**
 	 * Constructor.
 	 * 
@@ -27,6 +26,7 @@ public class EditProductController extends Controller implements IEditProductCon
 	public EditProductController(IView view, ProductData target) {
 		super(view);
 		this.target = target;
+		currentUnit = null;
 		construct();
 	}
 
@@ -46,8 +46,8 @@ public class EditProductController extends Controller implements IEditProductCon
 		ProductQuantity newQuantity = new ProductQuantity(quantity, newUnit);
 		int newShelfLife = Integer.parseInt(getView().getShelfLife());
 		int newTms = Integer.parseInt(getView().getSupply());
-		getView().getProductManager().editProduct(oldProduct, 
-				newDescription, newQuantity, newShelfLife, newTms);
+		getView().getProductManager().editProduct(oldProduct, newDescription, newQuantity,
+				newShelfLife, newTms);
 	}
 
 	/**
@@ -56,69 +56,17 @@ public class EditProductController extends Controller implements IEditProductCon
 	 */
 	@Override
 	public void valuesChanged() {
-		if (getView().getSizeUnit().equals(SizeUnits.Count))
+		if ((currentUnit == Unit.COUNT) && (getView().getSizeUnit() != SizeUnits.Count)) {
+			getView().setSizeValue("0");
+			setCurrentUnit(Unit.convertFromSizeUnits(getView().getSizeUnit()));
+		} else if ((currentUnit != Unit.COUNT) && (getView().getSizeUnit() == SizeUnits.Count)) {
 			getView().setSizeValue("1");
+			setCurrentUnit(Unit.convertFromSizeUnits(getView().getSizeUnit()));
+		}
+
 		enableComponents();
 	}
 
-	/**
-	 * Sets the enable/disable state of all components in the controller's view. A component
-	 * should be enabled only if the user is currently allowed to interact with that component.
-	 * 
-	 * {@pre None}
-	 * 
-	 * {@post The enable/disable state of all components in the controller's view have been set
-	 * appropriately.}
-	 */
-	@Override
-	protected void enableComponents() {
-		getView().enableBarcode(false);
-		getView().enableDescription(true);
-		getView().enableOK(isAllDataValid());
-		getView().enableShelfLife(true);
-		getView().enableSizeUnit(true);
-		getView().enableSizeValue(!getView().getSizeUnit().equals(SizeUnits.Count));
-		getView().enableSupply(true);
-	}
-
-	//
-	// IEditProductController overrides
-	//
-
-	/**
-	 * Returns a reference to the view for this controller.
-	 * 
-	 * {@pre None}
-	 * 
-	 * {@post Returns a reference to the view for this controller.}
-	 */
-	@Override
-	protected IEditProductView getView() {
-		return (IEditProductView) super.getView();
-	}
-
-	/**
-	 * Loads data into the controller's view.
-	 * 
-	 * {@pre None}
-	 * 
-	 * {@post The controller has loaded data into its view}
-	 */
-	@Override
-	protected void loadValues() {
-		getView().setBarcode(target.getBarcode());
-		getView().setDescription(target.getDescription());
-		getView().setShelfLife(target.getShelfLife());
-		String unitString = ((Product)target.getTag()).getProductQuantity().getUnits().toString();
-		if (unitString.contains(" "))
-			unitString = unitString.replace(" ", "");
-
-		getView().setSizeUnit(SizeUnits.valueOf(unitString));
-		getView().setSizeValue(target.getSize());
-		getView().setSupply(target.getSupply());
-	}
-	
-	
 	private boolean isAllDataValid() {
 		int shelfLife = 0;
 		try {
@@ -149,6 +97,80 @@ public class EditProductController extends Controller implements IEditProductCon
 			return false;
 		}
 		return (!getView().getBarcode().equals("") && !getView().getDescription().equals(""));
+	}
+
+	private void setCurrentUnit(Unit unit) {
+		assert (unit != null);
+
+		currentUnit = unit;
+	}
+
+	//
+	// IEditProductController overrides
+	//
+
+	/**
+	 * Sets the enable/disable state of all components in the controller's view. A component
+	 * should be enabled only if the user is currently allowed to interact with that component.
+	 * 
+	 * {@pre None}
+	 * 
+	 * {@post The enable/disable state of all components in the controller's view have been set
+	 * appropriately.}
+	 */
+	@Override
+	protected void enableComponents() {
+		getView().enableBarcode(false);
+		getView().enableDescription(true);
+		getView().enableOK(isAllDataValid());
+		getView().enableShelfLife(true);
+		getView().enableSizeUnit(true);
+		getView().enableSizeValue(!getView().getSizeUnit().equals(SizeUnits.Count));
+		getView().enableSupply(true);
+	}
+
+	/**
+	 * Returns a reference to the view for this controller.
+	 * 
+	 * {@pre None}
+	 * 
+	 * {@post Returns a reference to the view for this controller.}
+	 */
+	@Override
+	protected IEditProductView getView() {
+		return (IEditProductView) super.getView();
+	}
+
+	/**
+	 * Loads data into the controller's view.
+	 * 
+	 * {@pre None}
+	 * 
+	 * {@post The controller has loaded data into its view}
+	 */
+	@Override
+	protected void loadValues() {
+		getView().setBarcode(target.getBarcode());
+		getView().setDescription(target.getDescription());
+		getView().setShelfLife(target.getShelfLife());
+
+		Product productTag = (Product) target.getTag();
+		ProductQuantity productQuantity = productTag.getProductQuantity();
+		currentUnit = productQuantity.getUnits();
+		String unitString = productQuantity.getUnits().toString();
+		if (unitString.contains(" "))
+			unitString = unitString.replace(" ", "");
+		getView().setSizeUnit(SizeUnits.valueOf(unitString));
+
+		String sizeString = "";
+		float quantity = productQuantity.getQuantity();
+		if (productQuantity.getUnits() == Unit.COUNT)
+			sizeString += ((int) quantity);
+		else
+			sizeString += quantity;
+		getView().setSizeValue(sizeString);
+
+		getView().setSupply(target.getSupply());
 	}
 
 }

@@ -68,6 +68,10 @@ public class BarcodePrinter {
 		itemsToPrint.add(i);
 	}
 
+	public boolean hasItemsToPrint() {
+		return itemsToPrint.size() > 0;
+	}
+
 	/**
 	 * Prints a pdf of Items in this batch (added by addItemToBatch()). Creates a unique
 	 * filename to save this batch of barcodes to. Filename is of the format labels-(Date).pdf
@@ -97,7 +101,7 @@ public class BarcodePrinter {
 		}
 
 		itemsToPrint.clear();
-		return new NonEmptyString(saveFolder + "/" +filename);
+		return new NonEmptyString(saveFolder + "/" + filename);
 	}
 
 	private void createDocument(String filename) throws FileNotFoundException,
@@ -108,8 +112,8 @@ public class BarcodePrinter {
 		if (!file.exists()) {
 			boolean success = file.mkdirs();
 			if (!success)
-				throw new FileNotFoundException(
-						"Unable to find or create " + saveFolder + " directory");
+				throw new FileNotFoundException("Unable to find or create " + saveFolder
+						+ " directory");
 		}
 
 		filename = saveFolder + "/" + filename;
@@ -133,10 +137,10 @@ public class BarcodePrinter {
 		for (Item i : itemsToPrint) {
 			table.addCell(drawBarcode(i, cb, cellWidth));
 		}
-		
-		if(itemsToPrint.size() < table.getNumberOfColumns()){
-			int emptyColumns = table.getNumberOfColumns() - itemsToPrint.size();
-			for(int i = 0; i < emptyColumns; i++){
+
+		if ((itemsToPrint.size() % 5) < table.getNumberOfColumns()) {
+			int emptyColumns = table.getNumberOfColumns() - (itemsToPrint.size() % 5);
+			for (int i = 0; i < emptyColumns; i++) {
 				PdfPCell emptyCell = new PdfPCell();
 				emptyCell.setHorizontalAlignment(Element.ALIGN_CENTER);
 				emptyCell.setBorder(Rectangle.NO_BORDER);
@@ -147,7 +151,7 @@ public class BarcodePrinter {
 				table.addCell(emptyCell);
 			}
 		}
-		
+
 		document.add(table);
 		document.close();
 	}
@@ -204,10 +208,6 @@ public class BarcodePrinter {
 		cell.setPaddingLeft(10);
 		cell.setPaddingRight(10);
 		return cell;
-	}
-	
-	public boolean hasItemsToPrint(){
-		return this.itemsToPrint.size() > 0;
 	}
 
 }

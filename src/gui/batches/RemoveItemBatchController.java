@@ -78,7 +78,6 @@ public class RemoveItemBatchController extends Controller implements
 
 		ProductContainer parent = retrievedItem.getContainer();
 		parent.remove(retrievedItem, manager);
-		// retrievedItem.remove();
 
 		// update product view
 		ProductData[] products = new ProductData[1];

@@ -44,11 +44,17 @@ public abstract class InventoryListener {
 			view.setContextUnit(currentContainer.getName());
 		} else if (currentContainer instanceof ProductGroup) {
 			ProductGroup group = (ProductGroup) currentContainer;
-			StorageUnit root = view.getProductContainerManager().getRootStorageUnitByName(
-					group.getName());
+			StorageUnit root = view.getProductContainerManager().getRootStorageUnitForChild(
+					group);
+			if (root == null)
+				return;
 			view.setContextGroup(group.getName());
 			view.setContextSupply(group.getThreeMonthSupply().toString());
 			view.setContextUnit(root.getName());
+		} else {
+			view.setContextGroup("");
+			view.setContextSupply("");
+			view.setContextUnit("");
 		}
 	}
 
@@ -72,8 +78,8 @@ public abstract class InventoryListener {
 			ProductContainer pc = (ProductContainer) parent.getTag();
 			ProductData pd = view.getSelectedProduct();
 			if (pd != null && pd.getTag() != null) {
-				Iterator<Item> itemIterator = pc.getItemsIteratorForProduct((Product) pd
-						.getTag());
+				Product product = (Product) pd.getTag();
+				Iterator<Item> itemIterator = pc.getItemsForProduct(product).iterator();
 				while (itemIterator.hasNext()) {
 					ItemData id = DataWrapper.wrap(itemIterator.next());
 					itemsToDisplay.add(id);
