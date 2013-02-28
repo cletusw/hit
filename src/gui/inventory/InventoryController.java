@@ -121,8 +121,8 @@ public class InventoryController extends Controller implements IInventoryControl
 			throw new IllegalStateException("ProductContainer must have a tag.");
 
 		ProductContainer oldContainer = getSelectedProductContainerTag();
-		StorageUnit targetSU = getProductContainerManager().getRootStorageUnitByName(
-				targetContainer.getName());
+		StorageUnit targetSU = getProductContainerManager().getRootStorageUnitForChild(
+				targetContainer);
 
 		// add product to container
 
@@ -162,8 +162,12 @@ public class InventoryController extends Controller implements IInventoryControl
 				itemManager.manage(item);
 			}
 		} else {
-			productToAdd.addContainer(targetContainer);
-			targetContainer.add(productToAdd);
+			if (targetContainer.canAddProduct(productToAdd.getBarcode())) {
+				productToAdd.addContainer(targetContainer);
+				targetContainer.add(productToAdd);
+			} else {
+				getView().displayErrorMessage("Cannot move Product to that Container");
+			}
 		}
 
 	}
