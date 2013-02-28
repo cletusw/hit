@@ -613,9 +613,9 @@ public abstract class ProductContainer implements Comparable<ProductContainer>, 
 					"Destination container already contains the item to be moved");
 		}
 
-		if (!destination.contains(item.getProduct())) {
-			destination.add(item.getProduct());
-		}
+		// if (!destination.contains(item.getProduct())) {
+		// destination.add(item.getProduct());
+		// }
 
 		unregisterItem(item);
 		destination.registerItem(item);
