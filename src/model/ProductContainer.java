@@ -749,6 +749,7 @@ public abstract class ProductContainer implements Comparable<ProductContainer>, 
 	protected void registerItem(Item i) {
 		items.put(i.getBarcode(), i);
 		i.setContainer(this);
+		i.getProduct().addItem(i);
 		Set<Item> newItemsForProduct;
 		if (productsToItems.containsKey(i.getProduct())) {
 			newItemsForProduct = productsToItems.get(i.getProduct());
@@ -767,7 +768,7 @@ public abstract class ProductContainer implements Comparable<ProductContainer>, 
 	 */
 	protected void unregisterItem(Item i) {
 		items.remove(i.getBarcode());
-
+		i.getProduct().removeItem(i);
 		Set<Item> newItemsForProduct;
 		if (productsToItems.containsKey(i.getProduct())) {
 			newItemsForProduct = productsToItems.get(i.getProduct());

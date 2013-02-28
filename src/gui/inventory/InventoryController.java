@@ -19,6 +19,7 @@ import model.ItemManager;
 import model.Product;
 import model.ProductContainer;
 import model.ProductGroup;
+import model.ProductManager;
 import model.StorageUnit;
 
 /**
@@ -577,6 +578,29 @@ public class InventoryController extends Controller implements IInventoryControl
 					int count = selected.getItemsForProduct(p).size();
 					productDataList.add(DataWrapper.wrap(p, count));
 				}
+				// Update contextView
+				ProductContainer currentContainer = (ProductContainer) selectedContainer
+						.getTag();
+				if (currentContainer instanceof StorageUnit) {
+					getView().setContextGroup("");
+					getView().setContextSupply("");
+					getView().setContextUnit(selectedContainer.getName());
+				} else if (currentContainer instanceof ProductGroup) {
+					ProductGroup group = (ProductGroup) currentContainer;
+					StorageUnit root = getView().getProductContainerManager()
+							.getRootStorageUnitForChild(group);
+					getView().setContextGroup(group.getName());
+					getView().setContextSupply(group.getThreeMonthSupply().toString());
+					getView().setContextUnit(root.getName());
+				}
+			} else {
+				// Root "Storage units" node is selected; display all Products in system
+				ProductManager manager = getProductManager();
+				Set<Product> products = manager.getProducts();
+				for (Product product : products) {
+					productDataList.add(DataWrapper.wrap(product, product.getItemCount()));
+				}
+				getView().setContextUnit("All");
 			}
 		}
 		getView().setProducts(productDataList.toArray(new ProductData[0]));
@@ -585,20 +609,6 @@ public class InventoryController extends Controller implements IInventoryControl
 		List<ItemData> itemDataList = new ArrayList<ItemData>();
 		getView().setItems(itemDataList.toArray(new ItemData[0]));
 
-		// Update contextView
-		ProductContainer currentContainer = (ProductContainer) selectedContainer.getTag();
-		if (currentContainer instanceof StorageUnit) {
-			getView().setContextGroup("");
-			getView().setContextSupply("");
-			getView().setContextUnit(selectedContainer.getName());
-		} else if (currentContainer instanceof ProductGroup) {
-			ProductGroup group = (ProductGroup) currentContainer;
-			StorageUnit root = getView().getProductContainerManager()
-					.getRootStorageUnitForChild(group);
-			getView().setContextGroup(group.getName());
-			getView().setContextSupply(group.getThreeMonthSupply().toString());
-			getView().setContextUnit(root.getName());
-		}
 	}
 
 	/**
@@ -618,10 +628,15 @@ public class InventoryController extends Controller implements IInventoryControl
 			if (pcData == null)
 				throw new NullPointerException("Selected product container should not be null");
 			ProductContainer container = (ProductContainer) pcData.getTag();
-			if (container == null)
-				throw new NullPointerException("Product container tag should not be null");
 
-			Iterator<Item> itemIterator = container.getItemsForProduct(product).iterator();
+			Iterator<Item> itemIterator;
+
+			// Root container is selected
+			if (container == null) {
+				itemIterator = product.getItemsIterator();
+			} else {
+				itemIterator = container.getItemsForProduct(product).iterator();
+			}
 			while (itemIterator.hasNext()) {
 				ItemData id = DataWrapper.wrap(itemIterator.next());
 				itemsToDisplay.add(id);
@@ -702,6 +717,14 @@ public class InventoryController extends Controller implements IInventoryControl
 			throw new IllegalStateException("Unable to edit Storage Unit");
 		}
 		getView().displayTransferItemBatchView();
+	}
+
+	/** 
+	 * 
+	 */
+	public void updateView() {
+		// TODO: Implement me all in one place from InventoryListener so we can reduce code
+		// duplication!
 	}
 
 	private void deleteSelectedProductContainer() {

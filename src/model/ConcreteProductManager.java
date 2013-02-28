@@ -15,6 +15,20 @@ import model.Action.ActionType;
  */
 @SuppressWarnings("serial")
 public class ConcreteProductManager extends Observable implements ProductManager, Serializable {
+	/*
+	 * private class ProductNode implements Comparable<ProductNode> { Product product;
+	 * 
+	 * public ProductNode(Product product) { super(); this.product = product; }
+	 * 
+	 * @Override public int compareTo(ProductNode other) { int compare =
+	 * product.getDescription().compareTo(other.product.getDescription()); if (compare == 0)
+	 * compare = product.compareTo(other.product); return compare; }
+	 * 
+	 * public Product getProduct() { return product; }
+	 * 
+	 * public void setProduct(Product product) { this.product = product; } }
+	 */
+
 	private final Set<Product> products;
 	private final Map<String, Product> barcodesToProducts;
 
@@ -72,7 +86,6 @@ public class ConcreteProductManager extends Observable implements ProductManager
 		product.setProductQuantity(newQuantity);
 		product.setShelfLife(newShelfLife);
 		product.setThreeMonthSupply(newTms);
-		products.add(product);
 		barcodesToProducts.put(product.getBarcode(), product);
 		setChanged();
 		Action action = new Action(product, ActionType.EDIT);
@@ -98,6 +111,24 @@ public class ConcreteProductManager extends Observable implements ProductManager
 	}
 
 	/**
+	 * Gets the Count of items in the system for the specified Product
+	 */
+	/*
+	 * @Override public int getCountForProduct(Product product) { return products.get(product);
+	 * }
+	 */
+
+	/**
+	 * Gets all Products in the System.
+	 * 
+	 * @return a set of products
+	 */
+	@Override
+	public Set<Product> getProducts() {
+		return products;
+	}
+
+	/**
 	 * Adds the given product to this Manager's indices
 	 * 
 	 * @param product
@@ -120,6 +151,14 @@ public class ConcreteProductManager extends Observable implements ProductManager
 		notifyObservers(a);
 	}
 
+	/**
+	 * Sets the new count for the specified Product
+	 */
+	/*
+	 * @Override public void setCountForProduct(Product product, int newCount) { if
+	 * (!products.containsKey(product)) throw new
+	 * IllegalArgumentException("Product not found"); products.put(product, newCount); }
+	 */
 	/**
 	 * Removes the given product from this Manager's indices
 	 * 

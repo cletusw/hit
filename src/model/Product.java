@@ -2,6 +2,7 @@ package model;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.Iterator;
 import java.util.Set;
 import java.util.TreeSet;
 
@@ -272,7 +273,11 @@ public class Product implements Comparable<Object>, Serializable {
 		NonEmptyString otherBarcode;
 
 		if (o instanceof Product) {
+			Product p = (Product) o;
 			otherBarcode = ((Product) o).barcode;
+			int compare = description.compareTo(p.description);
+			if (compare != 0)
+				return compare;
 		} else {
 			otherBarcode = (NonEmptyString) o;
 		}
@@ -338,6 +343,25 @@ public class Product implements Comparable<Object>, Serializable {
 	 */
 	public String getDescription() {
 		return description.toString();
+	}
+
+	/**
+	 * Returns the number of items associated with this Product.
+	 * 
+	 * @pre true
+	 * @post true
+	 */
+	public int getItemCount() {
+		return items.size();
+	}
+
+	/**
+	 * Returns an iterator over items that refer to this Product
+	 * 
+	 * @return
+	 */
+	public Iterator<Item> getItemsIterator() {
+		return items.iterator();
 	}
 
 	/**
@@ -416,6 +440,27 @@ public class Product implements Comparable<Object>, Serializable {
 		}
 
 		productContainers.remove(pc);
+	}
+
+	/**
+	 * Removes an Item from this Product's set of items.
+	 * 
+	 * @param item
+	 *            Item to remove.
+	 * 
+	 * @pre item != null
+	 * @post !items.contains(item)
+	 * 
+	 */
+	public void removeItem(Item item) {
+		if (item == null) {
+			throw new NullPointerException("Null Item item");
+		}
+		if (!items.contains(item)) {
+			throw new IllegalArgumentException("Product does not contain item");
+		}
+
+		items.remove(item);
 	}
 
 	/**
