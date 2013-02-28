@@ -559,7 +559,7 @@ public abstract class ProductContainer implements Comparable<ProductContainer>, 
 			return false;
 
 		ProductGroup group = (ProductGroup) other;
-		if (this.contains(group)) {
+		if (containsExactProductGroup(group)) {
 			return true;
 		}
 		for (ProductGroup productGroup : productGroups.values()) {
