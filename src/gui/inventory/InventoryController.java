@@ -615,51 +615,53 @@ public class InventoryController extends Controller implements IInventoryControl
 
 		StorageUnit su = getProductContainerManager().getRootStorageUnitForChild(
 				targetContainer);
-		if (su.equals(getProductContainerManager().getRootStorageUnitForChild(
-				getSelectedProductContainerTag()))) {
-			ProductContainer containerInTree = su.getContainerForProduct(productToAdd);
-			if (containerInTree == null) {
-				targetContainer.add(productToAdd);
-				su.add(firstItem);
-			} else {
-				ItemManager itemManager = getItemManager();
-				Set<Item> itemsToMove = itemManager.getItemsByProduct(productToAdd);
-				boolean moveItems = itemsToMove != null;
+		ProductContainer containerInTree = su.getContainerForProduct(productToAdd);
+		if (containerInTree == null) {
+			targetContainer.add(productToAdd);
+			su.add(firstItem);
+		} else {
+			ItemManager itemManager = getItemManager();
+			Set<Item> itemsToMove = itemManager.getItemsByProduct(productToAdd);
+			boolean moveItems = itemsToMove != null;
 
-				// copy the items so we can loop over them to remove and add
-				Set<Item> itemsToRemove = new HashSet<Item>();
-				Set<Item> itemsToAdd = new HashSet<Item>();
+			// copy the items so we can loop over them to remove and add
+			Set<Item> itemsToRemove = new HashSet<Item>();
+			Set<Item> itemsToAdd = new HashSet<Item>();
 
-				if (moveItems) {
-					for (Item item : itemsToMove) {
-						if (containerInTree.contains(item)) {
-							itemsToAdd.add(item);
-							itemsToRemove.add(item);
-						}
-					}
-
-					// remove the items so we can remove the product
-					for (Item item : itemsToRemove) {
-						containerInTree.remove(item, itemManager);
+			if (moveItems) {
+				for (Item item : itemsToMove) {
+					if (containerInTree.contains(item)) {
+						itemsToAdd.add(item);
+						itemsToRemove.add(item);
 					}
 				}
 
-				// remove the product
-				containerInTree.remove(productToAdd);
-				productToAdd.removeContainer(containerInTree);
-
-				// add the product to the target
-				productToAdd.addContainer(targetContainer);
-				targetContainer.add(productToAdd);
-
-				if (moveItems) {
-					// add the items
-					for (Item item : itemsToAdd) {
-						targetContainer.add(item);
-						itemManager.manage(item);
-					}
+				// remove the items so we can remove the product
+				for (Item item : itemsToRemove) {
+					containerInTree.remove(item, itemManager);
 				}
 			}
+
+			// remove the product
+			containerInTree.remove(productToAdd);
+			productToAdd.removeContainer(containerInTree);
+
+			// add the product to the target
+			productToAdd.addContainer(targetContainer);
+			targetContainer.add(productToAdd);
+
+			if (moveItems) {
+				// add the items
+				for (Item item : itemsToAdd) {
+					targetContainer.add(item);
+					itemManager.manage(item);
+				}
+			}
+		}
+		StorageUnit thisSu = getProductContainerManager().getRootStorageUnitForChild(
+				getSelectedProductContainerTag());
+		if (!su.equals(thisSu)) {
+			thisSu.moveIntoContainer(firstItem, su);
 		}
 	}
 
