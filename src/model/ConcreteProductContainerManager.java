@@ -159,7 +159,7 @@ public class ConcreteProductContainerManager extends Observable implements Seria
 		} else {
 			ProductGroup pg = (ProductGroup) pc;
 			for (StorageUnit su : rootStorageUnits) {
-				if (su.containsProductGroup(pg.getName())) {
+				if (su.containsProductGroup(pg) || su.hasDescendantProductContainer(pg)) {
 					su.remove(pg);
 				}
 			}
