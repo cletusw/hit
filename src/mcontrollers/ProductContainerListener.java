@@ -78,6 +78,8 @@ public class ProductContainerListener extends InventoryListener implements Obser
 		} else if (type.equals(ActionType.DELETE)) {
 			ProductContainerData data = view.getSelectedProductContainer();
 			view.deleteProductContainer(data);
+			showContext(null);
+			return; // nothing should be selected
 		}
 		updateProducts(true);
 		updateItems(true);
