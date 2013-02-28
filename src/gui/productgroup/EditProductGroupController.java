@@ -4,10 +4,10 @@ import gui.common.Controller;
 import gui.common.IView;
 import gui.common.SizeUnits;
 import gui.inventory.ProductContainerData;
+import model.ProductContainer;
 import model.ProductContainerManager;
 import model.ProductGroup;
 import model.ProductQuantity;
-import model.StorageUnit;
 import model.Unit;
 
 /**
@@ -47,17 +47,14 @@ public class EditProductGroupController extends Controller implements
 			return;
 		}
 		ProductGroup pg = (ProductGroup) originalData.getTag();
-		StorageUnit root;
-		while (pg.getContainer() instanceof ProductGroup) {
-			pg = (ProductGroup) pg.getContainer();
-		}
-		root = (StorageUnit) pg.getContainer();
+		ProductContainer parent = pg.getContainer();
 		String newName = getView().getProductGroupName();
 		float tmsQuantity = Float.parseFloat(getView().getSupplyValue());
 		Unit tmsUnit = Unit.convertToUnit(getView().getSupplyUnit().toString());
 		ProductQuantity newTMS = new ProductQuantity(tmsQuantity, tmsUnit);
 		ProductContainerManager manager = getView().getProductContainerManager();
-		manager.editProductGroup(root, originalData.getName(), newName, newTMS);
+
+		manager.editProductGroup(parent, originalData.getName(), newName, newTMS);
 	}
 
 	/**
