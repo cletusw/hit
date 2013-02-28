@@ -4,7 +4,7 @@ import java.util.Iterator;
 import java.util.Observer;
 
 public interface ProductContainerManager {
-	public void editProductGroup(StorageUnit root, String oldName, String newName,
+	public void editProductGroup(ProductContainer parent, String oldName, String newName,
 			ProductQuantity newTMS);
 
 	public StorageUnit getRootStorageUnitByName(String productContainerName);
