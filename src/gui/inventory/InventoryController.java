@@ -544,13 +544,13 @@ public class InventoryController extends Controller implements IInventoryControl
 	@Override
 	public void moveItemToContainer(ItemData itemData, ProductContainerData containerData) {
 		if (itemData == null)
-			throw new IllegalArgumentException("ItemData should not be null.");
+			throw new NullPointerException("ItemData should not be null.");
 		if (containerData == null)
-			throw new IllegalArgumentException("ProductContainerData should not be null.");
+			throw new NullPointerException("ProductContainerData should not be null.");
 
 		ProductContainer targetContainer = (ProductContainer) containerData.getTag();
 		if (targetContainer == null)
-			throw new IllegalStateException("Target product container must have a tag.");
+			throw new NullPointerException("Target product container must have a tag.");
 
 		// note: the currently-selected ProductContainer is the source
 		getSelectedProductContainerTag().moveIntoContainer(getSelectedItemTag(),
