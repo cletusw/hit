@@ -133,19 +133,22 @@ public class InventoryController extends Controller implements IInventoryControl
 			// Get all the items
 			ItemManager itemManager = getItemManager();
 			Set<Item> itemsToMove = itemManager.getItemsByProduct(productToAdd);
+			boolean moveItems = itemsToMove != null;
 
 			// copy the items so we can loop over them to remove and add
 			Set<Item> itemsToRemove = new HashSet<Item>();
 			Set<Item> itemsToAdd = new HashSet<Item>();
 
-			for (Item item : itemsToMove) {
-				itemsToAdd.add(item);
-				itemsToRemove.add(item);
-			}
+			if (moveItems) {
+				for (Item item : itemsToMove) {
+					itemsToAdd.add(item);
+					itemsToRemove.add(item);
+				}
 
-			// remove the items so we can remove the product
-			for (Item item : itemsToRemove) {
-				oldContainer.remove(item, itemManager);
+				// remove the items so we can remove the product
+				for (Item item : itemsToRemove) {
+					oldContainer.remove(item, itemManager);
+				}
 			}
 
 			// remove the product
@@ -156,20 +159,31 @@ public class InventoryController extends Controller implements IInventoryControl
 			productToAdd.addContainer(targetContainer);
 			targetContainer.add(productToAdd);
 
-			// add the items
-			for (Item item : itemsToAdd) {
-				targetContainer.add(item);
-				itemManager.manage(item);
+			if (moveItems) {
+				// add the items
+				for (Item item : itemsToAdd) {
+					targetContainer.add(item);
+					itemManager.manage(item);
+				}
 			}
 		} else {
 			if (targetContainer.canAddProduct(productToAdd.getBarcode())) {
 				productToAdd.addContainer(targetContainer);
 				targetContainer.add(productToAdd);
 			} else {
-				getView().displayErrorMessage("Cannot move Product to that Container");
+
+				StorageUnit su = getView().getProductContainerManager()
+						.getRootStorageUnitForChild(targetContainer);
+				ProductContainer containerInTree = su.getContainerForProduct(productToAdd);
+				// remove the product
+				containerInTree.remove(productToAdd);
+				productToAdd.removeContainer(containerInTree);
+
+				// add the product to the target
+				productToAdd.addContainer(targetContainer);
+				targetContainer.add(productToAdd);
 			}
 		}
-
 	}
 
 	/**

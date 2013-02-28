@@ -380,6 +380,18 @@ public abstract class ProductContainer implements Comparable<ProductContainer>, 
 		return pg;
 	}
 
+	public ProductContainer getContainerForProduct(Product p) {
+		if (this.contains(p))
+			return this;
+
+		for (ProductGroup group : productGroups.values()) {
+			if (group.getContainerForProduct(p) != null)
+				return group;
+		}
+
+		return null;
+	}
+
 	/**
 	 * Defines equality with another ProductContainer descendant.
 	 * 

@@ -51,5 +51,4 @@ public class StorageUnit extends ProductContainer {
 			return super.equals(o);
 		}
 	}
-
 }
