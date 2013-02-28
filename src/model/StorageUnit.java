@@ -28,4 +28,28 @@ public class StorageUnit extends ProductContainer {
 		this.manager.manage(this);
 	}
 
+	/**
+	 * Defines equality with another ProductContainer descendant.
+	 * 
+	 * @param o
+	 *            - the object to be compared to.
+	 * @returns True if the objects are equal, false otherwise.
+	 * 
+	 * @pre true
+	 * @post true
+	 */
+	@Override
+	public boolean equals(Object o) {
+		if (o == null) {
+			return false;
+		}
+
+		if (o instanceof ProductContainer) {
+			ProductContainer other = (ProductContainer) o;
+			return getName().equals(other.getName());
+		} else {
+			return super.equals(o);
+		}
+	}
+
 }
