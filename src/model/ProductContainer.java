@@ -1,6 +1,7 @@
 package model;
 
 import java.io.Serializable;
+import java.util.Collection;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
@@ -274,6 +275,27 @@ public abstract class ProductContainer implements Comparable<ProductContainer>, 
 	}
 
 	/**
+	 * Determines whether the specified ProductGroup is contained in this ProductContainer.
+	 * 
+	 * @param productGroupName
+	 *            - the ProductGroup to test
+	 * @return true if the ProductGroup exists in this ProductContainer, false otherwise.
+	 * 
+	 * @pre productGroup != null
+	 * @post true
+	 */
+	public boolean containsExactProductGroup(ProductGroup productGroup) {
+		if (productGroup == null) {
+			throw new NullPointerException("Null ProductGroup productGroup");
+		}
+		for (ProductGroup group : productGroups.values()) {
+			if (group.equals(productGroup))
+				return true;
+		}
+		return false;
+	}
+
+	/**
 	 * Determines whether this Product Container contains a specific Item
 	 * 
 	 * @param barcode
@@ -319,6 +341,28 @@ public abstract class ProductContainer implements Comparable<ProductContainer>, 
 	 * @pre productGroupName != null
 	 * @post true
 	 */
+	public boolean containsProductGroup(ProductGroup pg) {
+		if (pg == null) {
+			throw new NullPointerException("Null productGroup");
+		}
+		Collection<ProductGroup> groups = productGroups.values();
+		for (ProductGroup group : groups) {
+			if (group.equals(pg))
+				return true;
+		}
+		return false;
+	}
+
+	/**
+	 * Determines whether the specified ProductGroup is contained in this ProductContainer.
+	 * 
+	 * @param productGroup
+	 *            - the ProductGroup to test
+	 * @return true if the ProductGroup exists in this ProductContainer, false otherwise.
+	 * 
+	 * @pre productGroup != null
+	 * @post true
+	 */
 	public boolean containsProductGroup(String productGroupName) {
 		if (productGroupName == null) {
 			throw new NullPointerException("Null String productGroupName");
@@ -345,21 +389,12 @@ public abstract class ProductContainer implements Comparable<ProductContainer>, 
 	 * 
 	 * @pre true
 	 * @post true
+	 * @Override public boolean equals(Object o) { if (o == null) { return false; }
+	 * 
+	 *           if (o instanceof ProductContainer) { ProductContainer other =
+	 *           (ProductContainer) o; return getName().equals(other.getName()); } else {
+	 *           return super.equals(o); } }
 	 */
-	@Override
-	public boolean equals(Object o) {
-		if (o == null) {
-			return false;
-		}
-
-		if (o instanceof ProductContainer) {
-			ProductContainer other = (ProductContainer) o;
-			return getName().equals(other.getName());
-		} else {
-			return super.equals(o);
-		}
-	}
-
 	/**
 	 * Method that calculates and returns the amount of a product in this container.
 	 * 
@@ -649,7 +684,23 @@ public abstract class ProductContainer implements Comparable<ProductContainer>, 
 			throw new IllegalStateException("Cannot remove child product group");
 		}
 
-		productGroups.remove(productGroup.getName());
+		if (containsExactProductGroup(productGroup)) {
+			productGroups.remove(productGroup.getName());
+		} else if (hasDescendantProductContainer(productGroup)) {
+			// remove nested product group
+			for (ProductGroup group : productGroups.values()) {
+				if (group.containsExactProductGroup(productGroup)
+						|| group.hasDescendantProductContainer(productGroup)) {
+					group.remove(productGroup);
+					return;
+				}
+			}
+
+		} else {
+			throw new RuntimeException(
+					"This Container doesn't have the given ProductContainer to remove");
+		}
+
 	}
 
 	/**
