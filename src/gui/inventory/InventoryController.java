@@ -108,6 +108,8 @@ public class InventoryController extends Controller implements IInventoryControl
 		 * Else Add the Product to the Target Product Container
 		 */
 
+		// TODO: Heavy refactoring: assigned to matt matheson
+
 		if (productData == null)
 			throw new IllegalArgumentException("ProductData should not be null");
 		if (containerData == null)
@@ -141,8 +143,10 @@ public class InventoryController extends Controller implements IInventoryControl
 
 			if (moveItems) {
 				for (Item item : itemsToMove) {
-					itemsToAdd.add(item);
-					itemsToRemove.add(item);
+					if (oldContainer.contains(item)) {
+						itemsToAdd.add(item);
+						itemsToRemove.add(item);
+					}
 				}
 
 				// remove the items so we can remove the product
@@ -175,6 +179,29 @@ public class InventoryController extends Controller implements IInventoryControl
 				StorageUnit su = getView().getProductContainerManager()
 						.getRootStorageUnitForChild(targetContainer);
 				ProductContainer containerInTree = su.getContainerForProduct(productToAdd);
+
+				ItemManager itemManager = getItemManager();
+				Set<Item> itemsToMove = itemManager.getItemsByProduct(productToAdd);
+				boolean moveItems = itemsToMove != null;
+
+				// copy the items so we can loop over them to remove and add
+				Set<Item> itemsToRemove = new HashSet<Item>();
+				Set<Item> itemsToAdd = new HashSet<Item>();
+
+				if (moveItems) {
+					for (Item item : itemsToMove) {
+						if (containerInTree.contains(item)) {
+							itemsToAdd.add(item);
+							itemsToRemove.add(item);
+						}
+					}
+
+					// remove the items so we can remove the product
+					for (Item item : itemsToRemove) {
+						containerInTree.remove(item, itemManager);
+					}
+				}
+
 				// remove the product
 				containerInTree.remove(productToAdd);
 				productToAdd.removeContainer(containerInTree);
@@ -182,6 +209,14 @@ public class InventoryController extends Controller implements IInventoryControl
 				// add the product to the target
 				productToAdd.addContainer(targetContainer);
 				targetContainer.add(productToAdd);
+
+				if (moveItems) {
+					// add the items
+					for (Item item : itemsToAdd) {
+						targetContainer.add(item);
+						itemManager.manage(item);
+					}
+				}
 			}
 		}
 	}
