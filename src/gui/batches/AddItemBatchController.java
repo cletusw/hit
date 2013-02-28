@@ -28,6 +28,7 @@ public class AddItemBatchController extends Controller implements IAddItemBatchC
 	ArrayList<ArrayList<ItemData>> items;
 	ArrayList<ProductData> products;
 	ProductContainer container;
+	private final int maxAddableItems = 1000000;
 
 	/**
 	 * Constructor.
@@ -225,7 +226,10 @@ public class AddItemBatchController extends Controller implements IAddItemBatchC
 		boolean isValidCount = true;
 		try {
 			int count = Integer.parseInt(getView().getCount());
-			isValidCount = ProductQuantity.isValidProductQuantity(count, Unit.COUNT);
+			if (count > maxAddableItems)
+				isValidCount = false;
+			else
+				isValidCount = ProductQuantity.isValidProductQuantity(count, Unit.COUNT);
 		} catch (NumberFormatException e) {
 			isValidCount = false;
 		}
