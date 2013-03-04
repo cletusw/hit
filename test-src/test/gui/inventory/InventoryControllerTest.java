@@ -6,6 +6,7 @@ import static org.easymock.EasyMock.replay;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 import fixture.model.ItemFixture;
+import fixture.model.ProductGroupFixture;
 import fixture.model.StorageUnitFixture;
 import gui.common.DataWrapper;
 import gui.inventory.IInventoryView;
@@ -23,6 +24,7 @@ import model.ItemManager;
 import model.Product;
 import model.ProductContainer;
 import model.ProductContainerManager;
+import model.ProductGroup;
 import model.ProductManager;
 import model.StorageUnit;
 
@@ -166,7 +168,13 @@ public class InventoryControllerTest extends EasyMockSupport {
 
 	@Test
 	public void testCanEditProductGroup() {
-		// assertTrue(inventoryController.canEditProductGroup());
+		ProductContainer container = item.getContainer();
+		ProductGroup selected = new ProductGroupFixture(container);
+		expect(mockView.getSelectedProductContainer()).andStubReturn(
+				DataWrapper.wrap(selected));
+		replayAll();
+
+		assertTrue(inventoryController.canEditProductGroup());
 	}
 
 	@Test
