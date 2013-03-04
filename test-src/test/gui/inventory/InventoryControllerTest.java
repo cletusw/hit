@@ -20,6 +20,7 @@ import java.util.List;
 
 import model.Item;
 import model.ItemManager;
+import model.Product;
 import model.ProductContainer;
 import model.ProductContainerManager;
 import model.ProductManager;
@@ -101,7 +102,16 @@ public class InventoryControllerTest extends EasyMockSupport {
 
 	@Test
 	public void testCanDeleteProduct() {
-		// TODO
+		ProductContainer container = item.getContainer();
+		expect(mockView.getSelectedProductContainer()).andStubReturn(
+				DataWrapper.wrap(container));
+		Product selected = item.getProduct();
+		expect(mockView.getSelectedProduct()).andStubReturn(DataWrapper.wrap(selected, 1));
+
+		replayAll();
+		assertFalse(inventoryController.canDeleteProduct());
+		container.remove(item, createNiceMock(ItemManager.class));
+		assertTrue(inventoryController.canDeleteProduct());
 	}
 
 	@Test
