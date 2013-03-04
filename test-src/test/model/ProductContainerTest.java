@@ -4,6 +4,7 @@ import static org.easymock.EasyMock.createNiceMock;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
+import model.ConcreteProductContainerManager;
 import model.Item;
 import model.ItemManager;
 import model.Product;
@@ -144,6 +145,48 @@ public class ProductContainerTest {
 		assertFalse(productGroup.canRemove());
 		assertFalse(nestedProductGroup.canRemove());
 		productGroup.remove(nestedProductGroup);
+	}
+
+	@Test
+	public void testEditProductGroup() {
+		ProductContainerManager man = new ConcreteProductContainerManager();
+		StorageUnit root = new StorageUnit("SU1", man);
+		ProductQuantity quantity = new ProductQuantity(1.1f, Unit.FLUID_OUNCES);
+		ProductGroup group = new ProductGroup("PG", quantity, Unit.FLUID_OUNCES, root, man);
+		root.editProductGroup("PG", "newPG", new ProductQuantity(1.0f, Unit.COUNT));
+		assertTrue(root.getProductGroup("newPG") != null);
+		assertTrue(root.getProductGroup("newPG").getThreeMonthSupply().getUnits()
+				.equals(Unit.COUNT));
+		assertTrue(root.getProductGroup("newPG").getThreeMonthSupply().getQuantity() == 1.0f);
+
+		root.editProductGroup("newPG", null, new ProductQuantity(2.2f, Unit.GALLONS));
+		assertTrue(root.getProductGroup("newPG") != null);
+		assertTrue(root.getProductGroup("newPG").getThreeMonthSupply().getUnits()
+				.equals(Unit.GALLONS));
+		assertTrue(root.getProductGroup("newPG").getThreeMonthSupply().getQuantity() == 2.2f);
+
+		root.editProductGroup("newPG", "PG", null);
+		assertTrue(root.getProductGroup("PG") != null);
+		assertTrue(root.getProductGroup("PG").getThreeMonthSupply().getUnits()
+				.equals(Unit.GALLONS));
+		assertTrue(root.getProductGroup("PG").getThreeMonthSupply().getQuantity() == 2.2f);
+
+		root.editProductGroup(null, "garbage", new ProductQuantity(3.0f, Unit.GRAMS));
+		assertTrue(root.getProductGroup("garbage") == null);
+		assertTrue(root.getProductGroup("PG").getThreeMonthSupply().getUnits()
+				.equals(Unit.GALLONS));
+		assertTrue(root.getProductGroup("PG").getThreeMonthSupply().getQuantity() == 2.2f);
+
+	}
+
+	@Test
+	public void testGetContainerForProduct() {
+		ProductGroup correct = new ProductGroup("group",
+				new ProductQuantity(1.0f, Unit.COUNT), Unit.COUNT, nestedProductGroup,
+				new ConcreteProductContainerManager());
+		correct.add(item.getProduct());
+		ProductContainer c = storageUnit.getContainerForProduct(item.getProduct());
+		assertTrue(c.equals(correct));
 	}
 
 	@Test
