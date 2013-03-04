@@ -11,6 +11,7 @@ import fixture.model.StorageUnitFixture;
 import gui.common.DataWrapper;
 import gui.inventory.IInventoryView;
 import gui.inventory.InventoryController;
+import gui.inventory.ProductContainerData;
 import gui.item.ItemData;
 import gui.product.ProductData;
 
@@ -198,7 +199,22 @@ public class InventoryControllerTest extends EasyMockSupport {
 
 	@Test
 	public void testCanRemoveItems() {
-		// assertTrue(inventoryController.canRemoveItems());
+		expect(mockView.getSelectedProductContainer()).andStubReturn(
+				DataWrapper.wrap(item.getContainer()));
+		replayAll();
+
+		assertFalse(inventoryController.canRemoveItems());
+
+		resetAll();
+
+		ProductContainerData rootData = new ProductContainerData();
+		rootData.setName("root");
+		rootData.setTag(null);
+
+		expect(mockView.getSelectedProductContainer()).andStubReturn(rootData);
+		replayAll();
+
+		assertTrue(inventoryController.canRemoveItems());
 	}
 
 	@Test
