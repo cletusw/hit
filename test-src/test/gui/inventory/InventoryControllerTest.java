@@ -158,7 +158,10 @@ public class InventoryControllerTest extends EasyMockSupport {
 
 	@Test
 	public void testCanEditProduct() {
-		// assertTrue(inventoryController.canEditProduct());
+		Product selected = item.getProduct();
+		expect(mockView.getSelectedProduct()).andStubReturn(DataWrapper.wrap(selected, 1));
+		replayAll();
+		assertTrue(inventoryController.canEditProduct());
 	}
 
 	@Test
