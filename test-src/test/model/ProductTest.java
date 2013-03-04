@@ -97,8 +97,8 @@ public class ProductTest {
 
 	@Test
 	public void testIsValidProductQuantity() {
-		assertTrue(product.isValidProductQuantity(new ProductQuantity(1, Unit.COUNT)));
-		assertFalse(product.isValidProductQuantity(new ProductQuantity(3, Unit.COUNT)));
+		assertTrue(Product.isValidProductQuantity(new ProductQuantity(1, Unit.COUNT)));
+		assertFalse(Product.isValidProductQuantity(new ProductQuantity(3, Unit.COUNT)));
 		ProductQuantity pq = new ProductQuantity(15, Unit.LITERS);
 		product.setProductQuantity(pq);
 		assertTrue(product.getProductQuantity().equals(pq));
@@ -157,5 +157,33 @@ public class ProductTest {
 	@Test(expected = IllegalArgumentException.class)
 	public void testProductNullDescription() {
 		new Product(validBarcode, null, 3, 3, size, productManager);
+	}
+
+	@Test(expected = IllegalArgumentException.class)
+	public void testSetIllegalShelfLife() {
+		product.setShelfLife(-1);
+	}
+
+	@Test(expected = IllegalArgumentException.class)
+	public void testSetIllegalThreeMonthSupply() {
+		product.setThreeMonthSupply(-1);
+	}
+
+	@Test
+	public void testSetShelfLife() {
+		assertTrue(product.getShelfLife() == shelfLife);
+		product.setShelfLife(0);
+		assertTrue(product.getShelfLife() == 0);
+		product.setShelfLife(100);
+		assertTrue(product.getShelfLife() == 100);
+	}
+
+	@Test
+	public void testSetThreeMonthSupply() {
+		assertTrue(product.getThreeMonthSupply() == threeMonthSupply);
+		product.setThreeMonthSupply(0);
+		assertTrue(product.getThreeMonthSupply() == 0);
+		product.setThreeMonthSupply(5);
+		assertTrue(product.getThreeMonthSupply() == 5);
 	}
 }
