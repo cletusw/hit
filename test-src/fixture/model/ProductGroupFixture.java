@@ -17,4 +17,9 @@ public class ProductGroupFixture extends ProductGroup {
 		super("ProductGroup " + Long.toString(System.nanoTime()), new ProductQuantity(1,
 				Unit.COUNT), Unit.COUNT, parent, createNiceMock(ProductContainerManager.class));
 	}
+
+	public ProductGroupFixture(ProductContainer parent, String name) {
+		super(name, new ProductQuantity(1, Unit.COUNT), Unit.COUNT, parent,
+				createNiceMock(ProductContainerManager.class));
+	}
 }
