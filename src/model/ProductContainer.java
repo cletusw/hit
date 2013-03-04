@@ -258,7 +258,8 @@ public abstract class ProductContainer implements Comparable<ProductContainer>, 
 	}
 
 	/**
-	 * Determines whether the specified ProductGroup is contained in this ProductContainer.
+	 * Determines whether a ProductGroup with the same name as the given ProductGroup is a
+	 * child of this ProductContainer
 	 * 
 	 * @param productGroupName
 	 *            - the ProductGroup to test
@@ -605,6 +606,17 @@ public abstract class ProductContainer implements Comparable<ProductContainer>, 
 		return products.size();
 	}
 
+	/**
+	 * Determines if the given ProductContainer is a descendant of this ProductContainer.
+	 * 
+	 * @param other
+	 *            ProductContainer to find in this tree
+	 * @return true if ProductContainer other is found as a descendant of this
+	 * 
+	 * @pre other != null
+	 * @post true
+	 * 
+	 */
 	public boolean hasDescendantProductContainer(ProductContainer other) {
 		if (other instanceof StorageUnit)
 			return false;
