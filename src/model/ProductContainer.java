@@ -370,16 +370,50 @@ public abstract class ProductContainer implements Comparable<ProductContainer>, 
 		return productGroups.containsKey(productGroupName);
 	}
 
+	/**
+	 * Functionality for editing a product group. The given productGroup is removed, modified,
+	 * and added to the set of ProductGroups in this container. This method only modifies
+	 * ProductGroups that are children of this ProductContainer. If the ProductGroup is not
+	 * found, null will be returned.
+	 * 
+	 * @param oldName
+	 *            The original name of the ProductGroup to be modified
+	 * @param newName
+	 *            The new name of the ProductGroup. If null, no change to the name will take
+	 *            place
+	 * @param newThreeMonthSupply
+	 *            The new value for ProductQuantity. If null, no change to the threeMonthSupply
+	 *            will take place.
+	 * 
+	 * @return the modified ProductGroup, or null if no ProductGroup matching name oldName is
+	 *         found
+	 * @pre oldName != null
+	 * @pre this.productGroups.contains(oldName)
+	 * @post this.productGroups contains the modified ProductGroup
+	 */
 	public ProductGroup editProductGroup(String oldName, String newName,
 			ProductQuantity newThreeMonthSupply) {
 		ProductGroup pg = productGroups.get(oldName);
+		if (pg == null)
+			return null;
+
 		productGroups.remove(oldName);
-		pg.setName(newName);
-		pg.setThreeMonthSupply(newThreeMonthSupply);
+		if (newName != null)
+			pg.setName(newName);
+		if (newThreeMonthSupply != null)
+			pg.setThreeMonthSupply(newThreeMonthSupply);
+
 		productGroups.put(newName, pg);
 		return pg;
 	}
 
+	/**
+	 * Finds the child ProductContainer that contains the given Product
+	 * 
+	 * @param p
+	 *            Product for which to find the ProductContainer
+	 * @return found ProductContainer, or null if the Product is not found in this tree
+	 */
 	public ProductContainer getContainerForProduct(Product p) {
 		if (this.contains(p))
 			return this;
