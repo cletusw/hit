@@ -179,7 +179,12 @@ public class InventoryControllerTest extends EasyMockSupport {
 
 	@Test
 	public void testCanEditStorageUnit() {
-		// assertTrue(inventoryController.canEditStorageUnit());
+		ProductContainer container = item.getContainer();
+		expect(mockView.getSelectedProductContainer()).andStubReturn(
+				DataWrapper.wrap(container));
+		replayAll();
+
+		assertTrue(inventoryController.canEditStorageUnit());
 	}
 
 	@Test
