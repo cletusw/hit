@@ -20,6 +20,7 @@ import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
 
+import model.ConcreteProductContainerManager;
 import model.Item;
 import model.ItemManager;
 import model.Product;
@@ -245,7 +246,25 @@ public class InventoryControllerTest extends EasyMockSupport {
 
 	@Test
 	public void testDeleteProductGroup() {
-		// TODO
+		ProductContainer container = item.getContainer();
+		Product selected = item.getProduct();
+		ProductGroup child = new ProductGroupFixture(container);
+		expect(mockView.getProductContainerManager()).andStubReturn(
+				new ConcreteProductContainerManager());
+		expect(mockView.getSelectedProductContainer()).andStubReturn(DataWrapper.wrap(child));
+
+		replayAll();
+
+		/*
+		 * assertFalse(inventoryController.canDeleteProductGroup()); container.remove(item,
+		 * createNiceMock(ItemManager.class)); container.remove(item.getProduct());
+		 * assertTrue(inventoryController.canDeleteProductGroup());
+		 */
+
+		inventoryController.deleteProductGroup();
+		// Doesn't work because of ProductContainerManager
+		// assertFalse(container.containsExactProductGroup(child));
+
 	}
 
 	@Test
