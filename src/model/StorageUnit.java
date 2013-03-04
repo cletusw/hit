@@ -25,6 +25,5 @@ public class StorageUnit extends ProductContainer {
 	 */
 	public StorageUnit(String pcName, ProductContainerManager manager) {
 		super(pcName, manager);
-		this.manager.manage(this);
 	}
 }
