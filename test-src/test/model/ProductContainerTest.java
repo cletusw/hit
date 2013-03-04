@@ -148,10 +148,41 @@ public class ProductContainerTest {
 	}
 
 	@Test
+	public void testContainsExactProductGroup() {
+		ProductGroup level1 = new ProductGroupFixture(storageUnit, "p");
+		ProductGroup level2 = new ProductGroupFixture(level1, "p");
+		ProductGroup level3 = new ProductGroupFixture(level2, "p");
+
+		// test contains(ProductGroup) to show problems with it
+		// doesn't actually contain level3, but the names are the same
+		assertTrue(storageUnit.contains(level3));
+		assertFalse(storageUnit.containsExactProductGroup(level3));
+
+		assertTrue(storageUnit.contains(level2));
+		assertFalse(storageUnit.containsExactProductGroup(level2));
+
+		assertTrue(storageUnit.contains(level1));
+		assertTrue(storageUnit.containsExactProductGroup(level1));
+
+		assertTrue(level1.contains(level2));
+		assertTrue(level1.containsExactProductGroup(level2));
+
+		assertTrue(level1.contains(level3));
+		assertFalse(level1.containsExactProductGroup(level3));
+
+		assertTrue(level2.contains(level3));
+		assertTrue(level2.containsExactProductGroup(level3));
+
+		assertTrue(level2.contains(level1));
+		assertFalse(level2.containsExactProductGroup(level1));
+	}
+
+	@Test
 	public void testEditProductGroup() {
 		ProductContainerManager man = new ConcreteProductContainerManager();
 		StorageUnit root = new StorageUnit("SU1", man);
 		ProductQuantity quantity = new ProductQuantity(1.1f, Unit.FLUID_OUNCES);
+		@SuppressWarnings("unused")
 		ProductGroup group = new ProductGroup("PG", quantity, Unit.FLUID_OUNCES, root, man);
 		root.editProductGroup("PG", "newPG", new ProductQuantity(1.0f, Unit.COUNT));
 		assertTrue(root.getProductGroup("newPG") != null);
@@ -199,6 +230,17 @@ public class ProductContainerTest {
 				new ProductQuantity(2, Unit.COUNT)));
 		assertTrue(productGroup.getCurrentSupply(item.getProduct()).equals(
 				new ProductQuantity(2, Unit.COUNT)));
+	}
+
+	@Test
+	public void testHasDescendantProductContainer() {
+		assertTrue(storageUnit.hasDescendantProductContainer(productGroup));
+		assertTrue(storageUnit.hasDescendantProductContainer(nestedProductGroup));
+		assertTrue(productGroup.hasDescendantProductContainer(nestedProductGroup));
+		assertFalse(productGroup.hasDescendantProductContainer(productGroup));
+		assertFalse(productGroup.hasDescendantProductContainer(storageUnit));
+		assertFalse(nestedProductGroup.hasDescendantProductContainer(productGroup));
+		assertFalse(nestedProductGroup.hasDescendantProductContainer(storageUnit));
 	}
 
 	@Test
