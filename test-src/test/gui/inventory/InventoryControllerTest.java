@@ -116,7 +116,17 @@ public class InventoryControllerTest extends EasyMockSupport {
 
 	@Test
 	public void testCanDeleteProductGroup() {
-		// TODO
+		ProductContainer container = item.getContainer();
+		expect(mockView.getSelectedProductContainer()).andStubReturn(
+				DataWrapper.wrap(container));
+		Product selected = item.getProduct();
+		expect(mockView.getSelectedProduct()).andStubReturn(DataWrapper.wrap(selected, 1));
+
+		replayAll();
+		assertFalse(inventoryController.canDeleteProductGroup());
+		container.remove(item, createNiceMock(ItemManager.class));
+		container.remove(item.getProduct());
+		assertTrue(inventoryController.canDeleteProductGroup());
 	}
 
 	@Test
@@ -128,6 +138,7 @@ public class InventoryControllerTest extends EasyMockSupport {
 
 		assertFalse(inventoryController.canDeleteStorageUnit());
 		container.remove(item, createNiceMock(ItemManager.class));
+
 		// the mock ItemManager is causing this to fail
 		// assertTrue(inventoryController.canDeleteStorageUnit());
 	}
