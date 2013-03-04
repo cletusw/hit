@@ -241,12 +241,13 @@ public class Item implements Comparable<Object>, Serializable {
 		container = productContainer;
 	}
 
-	@SuppressWarnings("deprecation")
 	/**
 	 * Sets this item's entry date
 	 * 
-	 * @param date the entry date to set to.
-	 * @throws IllegalArgumentException if the date is not valid
+	 * @param date
+	 *            the entry date to set to.
+	 * @throws IllegalArgumentException
+	 *             if the date is not valid
 	 * 
 	 * @pre if(date != null) isValidEntryDate(date)
 	 * @post entryDate = new Date() || entryDate = date
