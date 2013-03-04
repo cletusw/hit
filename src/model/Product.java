@@ -493,6 +493,14 @@ public class Product implements Comparable<Object>, Serializable {
 		productQuantity = pq;
 	}
 
+	/**
+	 * Sets this products shelf life
+	 * 
+	 * @param shelfLife
+	 *            to set
+	 * @pre shelfLife >= 0
+	 * @post this.shelfLife = shelfLife
+	 */
 	public void setShelfLife(int shelfLife) {
 		if (shelfLife < 0)
 			throw new IllegalArgumentException("ShelfLife must be non-negative");
@@ -500,6 +508,14 @@ public class Product implements Comparable<Object>, Serializable {
 		this.shelfLife = shelfLife;
 	}
 
+	/**
+	 * Sets this products three month supply
+	 * 
+	 * @param threeMonthSupply
+	 *            to set
+	 * @pre threeMonthSupply >= 0
+	 * @post this.threeMonthSupply = threeMonthSupply
+	 */
 	public void setThreeMonthSupply(int threeMonthSupply) {
 		if (threeMonthSupply < 0)
 			throw new IllegalArgumentException("Three Month Supply must be non-negative");
