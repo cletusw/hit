@@ -393,6 +393,8 @@ public abstract class ProductContainer implements Comparable<ProductContainer>, 
 	 */
 	public ProductGroup editProductGroup(String oldName, String newName,
 			ProductQuantity newThreeMonthSupply) {
+		if (oldName == null)
+			return null;
 		ProductGroup pg = productGroups.get(oldName);
 		if (pg == null)
 			return null;
@@ -400,6 +402,9 @@ public abstract class ProductContainer implements Comparable<ProductContainer>, 
 		productGroups.remove(oldName);
 		if (newName != null)
 			pg.setName(newName);
+		else
+			newName = oldName;
+
 		if (newThreeMonthSupply != null)
 			pg.setThreeMonthSupply(newThreeMonthSupply);
 
@@ -420,7 +425,7 @@ public abstract class ProductContainer implements Comparable<ProductContainer>, 
 
 		for (ProductGroup group : productGroups.values()) {
 			if (group.getContainerForProduct(p) != null)
-				return group;
+				return group.getContainerForProduct(p);
 		}
 
 		return null;
