@@ -6,8 +6,6 @@ import java.io.Serializable;
 import java.util.Map;
 import java.util.TreeMap;
 
-import sun.reflect.generics.reflectiveObjects.NotImplementedException;
-
 /**
  * Definition of acceptable units.
  */
@@ -77,7 +75,7 @@ public enum Unit implements Serializable {
 			case WEIGHT:
 				return getWeightConversionFactor(convertFrom, convertTo);
 			default:
-				throw new NotImplementedException();
+				throw new UnsupportedOperationException();
 			}
 		} else {
 			throw new IllegalArgumentException("Units must match UnitType to convert");
@@ -113,7 +111,7 @@ public enum Unit implements Serializable {
 			return 0.0295735f;
 
 		default:
-			throw new NotImplementedException();
+			throw new UnsupportedOperationException();
 		}
 	}
 
@@ -132,7 +130,7 @@ public enum Unit implements Serializable {
 			return 3.78541f;
 
 		default:
-			throw new NotImplementedException();
+			throw new UnsupportedOperationException();
 		}
 	}
 
@@ -148,7 +146,7 @@ public enum Unit implements Serializable {
 			return 0.001f;
 
 		default:
-			throw new NotImplementedException();
+			throw new UnsupportedOperationException();
 		}
 	}
 
@@ -164,7 +162,7 @@ public enum Unit implements Serializable {
 			return 1000f;
 
 		default:
-			throw new NotImplementedException();
+			throw new UnsupportedOperationException();
 		}
 	}
 
@@ -183,7 +181,7 @@ public enum Unit implements Serializable {
 			return 33.814f;
 
 		default:
-			throw new NotImplementedException();
+			throw new UnsupportedOperationException();
 		}
 	}
 
@@ -199,7 +197,7 @@ public enum Unit implements Serializable {
 			return 0.0283495f;
 
 		default:
-			throw new NotImplementedException();
+			throw new UnsupportedOperationException();
 		}
 	}
 
@@ -218,7 +216,7 @@ public enum Unit implements Serializable {
 			return 0.473176f;
 
 		default:
-			throw new NotImplementedException();
+			throw new UnsupportedOperationException();
 		}
 	}
 
@@ -234,7 +232,7 @@ public enum Unit implements Serializable {
 			return 0.453592f;
 
 		default:
-			throw new NotImplementedException();
+			throw new UnsupportedOperationException();
 		}
 	}
 
@@ -253,7 +251,7 @@ public enum Unit implements Serializable {
 			return 0.946353f; // QUARTS -> LITERS
 
 		default:
-			throw new NotImplementedException();
+			throw new UnsupportedOperationException();
 		}
 	}
 
@@ -275,7 +273,7 @@ public enum Unit implements Serializable {
 			return convertFromLiters(convertTo);
 
 		default:
-			throw new NotImplementedException();
+			throw new UnsupportedOperationException();
 		}
 	}
 
@@ -294,7 +292,7 @@ public enum Unit implements Serializable {
 			return convertFromKilograms(convertTo);
 
 		default:
-			throw new NotImplementedException();
+			throw new UnsupportedOperationException();
 		}
 	}
 
