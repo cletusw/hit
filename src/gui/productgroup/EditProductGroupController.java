@@ -52,7 +52,7 @@ public class EditProductGroupController extends Controller implements
 		float tmsQuantity = Float.parseFloat(getView().getSupplyValue());
 		Unit tmsUnit = Unit.convertToUnit(getView().getSupplyUnit().toString());
 		ProductQuantity newTMS = new ProductQuantity(tmsQuantity, tmsUnit);
-		ProductContainerManager manager = getView().getProductContainerManager();
+		ProductContainerManager manager = getProductContainerManager();
 
 		manager.editProductGroup(parent, originalData.getName(), newName, newTMS);
 	}
@@ -67,7 +67,6 @@ public class EditProductGroupController extends Controller implements
 	}
 
 	private boolean enableOK() {
-		ProductContainerManager manager = getView().getProductContainerManager();
 		boolean enableOk = true;
 		float supplyValue = 0;
 		try {

@@ -46,7 +46,7 @@ public class EditProductController extends Controller implements IEditProductCon
 		ProductQuantity newQuantity = new ProductQuantity(quantity, newUnit);
 		int newShelfLife = Integer.parseInt(getView().getShelfLife());
 		int newTms = Integer.parseInt(getView().getSupply());
-		getView().getProductManager().editProduct(oldProduct, newDescription, newQuantity,
+		getProductManager().editProduct(oldProduct, newDescription, newQuantity,
 				newShelfLife, newTms);
 	}
 
