@@ -841,16 +841,6 @@ public class InventoryController extends Controller implements IInventoryControl
 		getProductContainerManager().unmanage(selectedSU);
 	}
 
-	private Item getSelectedItemTag() {
-		ItemData selectedItem = getView().getSelectedItem();
-		assert (selectedItem != null);
-
-		Item selectedTag = (Item) selectedItem.getTag();
-		assert (selectedTag != null);
-
-		return selectedTag;
-	}
-
 	private ProductContainer getSelectedProductContainerTag() {
 		ProductContainerData selectedPC = getView().getSelectedProductContainer();
 		assert (selectedPC != null);
