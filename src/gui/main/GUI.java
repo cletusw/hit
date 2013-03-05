@@ -49,17 +49,11 @@ public final class GUI extends JFrame implements IMainView {
 	private ReportsMenu _reportsMenu;
 
 	private InventoryView _inventoryView;
-	private final ItemManager _itemManager;
-	private final ProductManager _productManager;
-	private final ProductContainerManager _productContainerManager;
 	private final HomeInventoryTracker _tracker;
 
 	public GUI(String[] args) {
 		super("Home Inventory Tracker");
 		_tracker = SerializationManager.create(null);
-		_itemManager = _tracker.getItemManager();
-		_productManager = _tracker.getProductManager();
-		_productContainerManager = _tracker.getProductContainerManager();
 
 		setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
 		addWindowListener(new WindowAdapter() {
@@ -133,17 +127,17 @@ public final class GUI extends JFrame implements IMainView {
 
 	@Override
 	public ItemManager getItemManager() {
-		return _itemManager;
+		return _tracker.getItemManager();
 	}
 
 	@Override
 	public ProductContainerManager getProductContainerManager() {
-		return _productContainerManager;
+		return _tracker.getProductContainerManager();
 	}
 
 	@Override
 	public ProductManager getProductManager() {
-		return _productManager;
+		return _tracker.getProductManager();
 	}
 
 	private void createInventoryView() {
