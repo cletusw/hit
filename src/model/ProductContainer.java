@@ -56,6 +56,7 @@ public abstract class ProductContainer implements Comparable<ProductContainer>, 
 		products = new TreeMap<String, Product>();
 		productsToItems = new TreeMap<Product, Set<Item>>();
 		this.manager = manager;
+		manager.manage(this);
 	}
 
 	/**
