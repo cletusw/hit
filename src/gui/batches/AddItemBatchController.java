@@ -84,6 +84,8 @@ public class AddItemBatchController extends Controller implements IAddItemBatchC
 				return;
 			productData = addProduct(product);
 		}
+		if (!container.contains(product))
+			container.add(product);
 
 		Date entryDate = getView().getEntryDate();
 		int count = Integer.parseInt(productData.getCount());

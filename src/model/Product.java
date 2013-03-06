@@ -213,9 +213,9 @@ public class Product implements Comparable<Object>, Serializable {
 		if (pc == null) {
 			throw new NullPointerException("Null ProductContainer pc");
 		}
-		if (!pc.canAddProduct(getBarcode()))
+		if (productContainers.contains(pc))
 			throw new IllegalArgumentException(
-					"Specified product container cannot contain this product");
+					"Duplicate Product Container in Product's parents");
 		productContainers.add(pc);
 	}
 

@@ -120,6 +120,8 @@ public abstract class ProductContainer implements Comparable<ProductContainer>, 
 					"Cannot add two products of the same name into a single parent container");
 		products.put(p.getBarcode(), p);
 		productsToItems.put(p, new TreeSet<Item>());
+		if (!p.hasContainer(this))
+			p.addContainer(this);
 	}
 
 	/**
@@ -726,6 +728,7 @@ public abstract class ProductContainer implements Comparable<ProductContainer>, 
 			throw new IllegalStateException(
 					"Cannot remove product; product container still has items that refer to it");
 		productsToItems.remove(product);
+		product.removeContainer(this);
 		return products.remove(product.getBarcode());
 	}
 
