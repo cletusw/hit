@@ -278,33 +278,6 @@ public abstract class ProductContainer implements Comparable<ProductContainer>, 
 	}
 
 	/**
-	 * Determines whether this Product Container or its children contains a specific Product
-	 * 
-	 * @param product
-	 *            the Product to check
-	 * @return true if this Product Container or its children contains the Product, false
-	 *         otherwise
-	 * 
-	 * @pre product != null
-	 * @post true
-	 * 
-	 */
-	public boolean containsDescendant(Product product) {
-		if (product == null) {
-			throw new NullPointerException("Null Product product");
-		}
-		if (contains(product))
-			return true;
-		for (ProductGroup pg : productGroups.values()) {
-			if (pg.containsDescendant(product)) {
-				return true;
-			}
-		}
-
-		return false;
-	}
-
-	/**
 	 * Determines whether the specified ProductGroup is contained in this ProductContainer.
 	 * 
 	 * @param productGroupName

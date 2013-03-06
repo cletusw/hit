@@ -84,7 +84,7 @@ public class AddItemBatchController extends Controller implements IAddItemBatchC
 				return;
 			productData = addProduct(product);
 		}
-		if (!container.containsDescendant(product))
+		if (container.canAddProduct(product.getBarcode()))
 			container.add(product);
 
 		Date entryDate = getView().getEntryDate();
