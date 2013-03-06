@@ -26,13 +26,10 @@ public abstract class InventoryListener {
 
 	// TODO: This code is duplicated from
 	// InventoryController.productContainerSelectionChanged(). It should not be!!!
-	// Proposed solution is to add a call to
-	// getController().productContainerSelectionChanged()
+	// Proposed solution is to add a call to getController().productContainerSelectionChanged()
 	// in InvetoryView.selectProductContainer() -- essentially when the views selection changes
-	// programatically
-	// it will notify the controller. This will eliminate the need for this method, but may
-	// have adverse side
-	// effects.
+	// programatically it will notify the controller. This will eliminate the need for this
+	// method, but may have adverse side effects.
 	/**
 	 * Sets the context view information when a ProductContainer is created or edited.
 	 * 
@@ -65,13 +62,11 @@ public abstract class InventoryListener {
 	 */
 	public void updateItems(boolean restoreSelected) {
 		/*
-		 * Item Table  The table is sorted by Entry Date (ascending). 
-		 * The Expiration Date column
-		 *  contains the Item’s expiration date, or empty if this is unspecified.  The Storage 
-		 * Unit column contains the name of the 
-		 * Storage Unit that contains the Item.  The Product
-		 *  Group column contains the name of the Product 
-		 * Group that contains the Item, or empty if the Item is not in a Product Group. 
+		 * Item Table The table is sorted by Entry Date (ascending). The Expiration Date column
+		 * contains the Item s expiration date, or empty if this is unspecified. The Storage
+		 * Unit column contains the name of the Storage Unit that contains the Item. The
+		 * Product Group column contains the name of the Product Group that contains the Item,
+		 * or empty if the Item is not in a Product Group.
 		 */
 
 		ProductData selectedProduct = view.getSelectedProduct();
@@ -116,15 +111,12 @@ public abstract class InventoryListener {
 	 */
 	public void updateProducts(boolean restoreSelected) {
 		/*
-		 * Product Table    The table is sorted by Description
-		 *  (ascending).  The Count column displays the 
-		 * number of Items of that Product contained
-		 *  in the selected node.  Specifically, if the root “Storage Units” 
-		 * node is selected, 
-		 * Count is the total number of Items of that Product in the entire system
-		 * .  If a Product 
-		 * Container (Storage Unit or Product Group) node is selected, Count is
-		 *  the number of Items of that  Product contained in the selected Product Container. 
+		 * Product Table The table is sorted by Description (ascending). The Count column
+		 * displays the number of Items of that Product contained in the selected node.
+		 * Specifically, if the root Storage Units node is selected, Count is the total number
+		 * of Items of that Product in the entire system . If a Product Container (Storage Unit
+		 * or Product Group) node is selected, Count is the number of Items of that Product
+		 * contained in the selected Product Container.
 		 */
 
 		// MERGED from InventoryController
