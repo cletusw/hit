@@ -1,6 +1,7 @@
 package model;
 
 import java.io.Serializable;
+import java.util.Iterator;
 import java.util.Map;
 import java.util.Observable;
 import java.util.Set;
@@ -124,8 +125,8 @@ public class ConcreteProductManager extends Observable implements ProductManager
 	 * @return a set of products
 	 */
 	@Override
-	public Set<Product> getProducts() {
-		return products;
+	public Iterator<Product> getProductsIterator() {
+		return products.iterator();
 	}
 
 	/**

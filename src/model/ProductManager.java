@@ -1,7 +1,7 @@
 package model;
 
+import java.util.Iterator;
 import java.util.Observer;
-import java.util.Set;
 
 /**
  * @author Clayton Watts
@@ -20,7 +20,7 @@ public interface ProductManager {
 
 	// public int getCountForProduct(Product product);
 
-	public Set<Product> getProducts();
+	public Iterator<Product> getProductsIterator();
 
 	public void manage(Product product);
 

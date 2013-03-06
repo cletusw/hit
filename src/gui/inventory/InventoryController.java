@@ -5,10 +5,8 @@ import gui.common.DataWrapper;
 import gui.item.ItemData;
 import gui.product.ProductData;
 
-import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Iterator;
-import java.util.List;
 import java.util.Set;
 
 import mcontrollers.ItemListener;
@@ -19,13 +17,18 @@ import model.ItemManager;
 import model.Product;
 import model.ProductContainer;
 import model.ProductGroup;
-import model.ProductManager;
 import model.StorageUnit;
 
 /**
  * Controller class for inventory view.
  */
 public class InventoryController extends Controller implements IInventoryController {
+	private final ProductContainerListener productContainerListener;
+	private final ProductListener productListener;
+	private final ItemListener itemListener;
+
+	// private final InventoryListener inventoryListener;
+
 	/**
 	 * Constructor.
 	 * 
@@ -37,9 +40,12 @@ public class InventoryController extends Controller implements IInventoryControl
 	 */
 	public InventoryController(IInventoryView view) {
 		super(view);
-		new ProductContainerListener(getView(), getProductContainerManager());
-		new ItemListener(getView(), getItemManager());
-		new ProductListener(getView(), getProductManager());
+		// Attach InventoryListener here too
+		productContainerListener = new ProductContainerListener(getView(),
+				getProductContainerManager());
+		itemListener = new ItemListener(getView(), getItemManager());
+		productListener = new ProductListener(getView(), getProductManager());
+		// inventoryListener = new InventoryListener(getView());
 		construct();
 	}
 
@@ -673,49 +679,7 @@ public class InventoryController extends Controller implements IInventoryControl
 	 */
 	@Override
 	public void productContainerSelectionChanged() {
-		// Load Products in selected ProductContainer
-		List<ProductData> productDataList = new ArrayList<ProductData>();
-		ProductContainerData selectedContainer = getView().getSelectedProductContainer();
-		if (selectedContainer != null) {
-			ProductContainer selected = (ProductContainer) selectedContainer.getTag();
-			if (selected != null) {
-				Iterator<Product> it = selected.getProductsIterator();
-				while (it.hasNext()) {
-					Product p = it.next();
-					int count = selected.getItemsForProduct(p).size();
-					productDataList.add(DataWrapper.wrap(p, count));
-				}
-				// Update contextView
-				ProductContainer currentContainer = (ProductContainer) selectedContainer
-						.getTag();
-				if (currentContainer instanceof StorageUnit) {
-					getView().setContextGroup("");
-					getView().setContextSupply("");
-					getView().setContextUnit(selectedContainer.getName());
-				} else if (currentContainer instanceof ProductGroup) {
-					ProductGroup group = (ProductGroup) currentContainer;
-					StorageUnit root = getProductContainerManager()
-							.getRootStorageUnitForChild(group);
-					getView().setContextGroup(group.getName());
-					getView().setContextSupply(group.getThreeMonthSupply().toString());
-					getView().setContextUnit(root.getName());
-				}
-			} else {
-				// Root "Storage units" node is selected; display all Products in system
-				ProductManager manager = getProductManager();
-				Set<Product> products = manager.getProducts();
-				for (Product product : products) {
-					productDataList.add(DataWrapper.wrap(product, product.getItemCount()));
-				}
-				getView().setContextUnit("All");
-			}
-		}
-		getView().setProducts(productDataList.toArray(new ProductData[0]));
-
-		// Clear ItemTable
-		List<ItemData> itemDataList = new ArrayList<ItemData>();
-		getView().setItems(itemDataList.toArray(new ItemData[0]));
-
+		productListener.updateProducts(true);
 	}
 
 	/**
@@ -726,30 +690,7 @@ public class InventoryController extends Controller implements IInventoryControl
 	 */
 	@Override
 	public void productSelectionChanged() {
-		ArrayList<ItemData> itemsToDisplay = new ArrayList<ItemData>();
-		ProductData selectedProduct = getView().getSelectedProduct();
-
-		if (selectedProduct != null) {
-			Product product = (Product) selectedProduct.getTag();
-			ProductContainerData pcData = getView().getSelectedProductContainer();
-			if (pcData == null)
-				throw new NullPointerException("Selected product container should not be null");
-			ProductContainer container = (ProductContainer) pcData.getTag();
-
-			Iterator<Item> itemIterator;
-
-			// Root container is selected
-			if (container == null) {
-				itemIterator = product.getItemsIterator();
-			} else {
-				itemIterator = container.getItemsForProduct(product).iterator();
-			}
-			while (itemIterator.hasNext()) {
-				ItemData id = DataWrapper.wrap(itemIterator.next());
-				itemsToDisplay.add(id);
-			}
-		}
-		getView().setItems(itemsToDisplay.toArray(new ItemData[0]));
+		itemListener.updateItems(true);
 	}
 
 	/**
