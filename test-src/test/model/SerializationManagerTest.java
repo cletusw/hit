@@ -1,12 +1,12 @@
 package test.model;
 
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.fail;
+import static org.junit.Assert.assertTrue;
 
 import java.io.File;
 import java.io.IOException;
 
 import model.HomeInventoryTracker;
+import model.PersistentStorageManager;
 import model.ProductContainerManager;
 import model.SerializationManager;
 import model.StorageUnit;
@@ -16,14 +16,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 public class SerializationManagerTest {
-	private String testTarget = "TestHITTracker.ser";
-
-	private void deleteDefaultFile() {
-		File f = new File(testTarget);
-		if (f.exists()) {
-			f.delete();
-		}
-	}
+	private static final String testTarget = "TestHITTracker.ser";
 
 	@Before
 	public void setUp() throws Exception {
@@ -36,26 +29,36 @@ public class SerializationManagerTest {
 	}
 
 	@Test
-	public void test() {
+	public void test() throws IOException {
 		// Create instance of HIT
-		HomeInventoryTracker hit = SerializationManager.create("");
+		HomeInventoryTracker hit = new HomeInventoryTracker();
 		ProductContainerManager pcManager = hit.getProductContainerManager();
 
 		String name1 = "StorageUnit1";
 		String name2 = "StorageUnit2";
 		new StorageUnit(name1, pcManager);
 		new StorageUnit(name2, pcManager);
+		assertTrue(pcManager.getStorageUnitByName(name1) != null);
+		assertTrue(pcManager.getStorageUnitByName(name2) != null);
 
-		try {
-			hit.write(testTarget);
-		} catch (IOException e) {
-			fail("IOException when attempting to serialize HomeInventoryTracker: "
-					+ e.getMessage());
+		PersistentStorageManager persistentStorageManager = new SerializationManager(
+				testTarget);
+		persistentStorageManager.save(hit);
+
+		hit = null;
+		pcManager = null;
+
+		hit = persistentStorageManager.load();
+		pcManager = hit.getProductContainerManager();
+		assertTrue(pcManager.getStorageUnitByName(name1) != null);
+		assertTrue(pcManager.getStorageUnitByName(name2) != null);
+	}
+
+	private void deleteDefaultFile() {
+		File f = new File(testTarget);
+		if (f.exists()) {
+			f.delete();
 		}
-
-		hit = SerializationManager.create(testTarget);
-		assertFalse(hit.canAddStorageUnit(name1));
-		assertFalse(hit.canAddStorageUnit(name2));
 	}
 
 }

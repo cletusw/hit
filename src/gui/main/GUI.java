@@ -11,6 +11,7 @@ import gui.reports.supply.SupplyReportView;
 
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.io.IOException;
 
 import javax.swing.JFrame;
 import javax.swing.JMenuBar;
@@ -21,6 +22,7 @@ import javax.swing.WindowConstants;
 
 import model.HomeInventoryTracker;
 import model.ItemManager;
+import model.PersistentStorageManager;
 import model.ProductContainerManager;
 import model.ProductManager;
 import model.SerializationManager;
@@ -50,16 +52,23 @@ public final class GUI extends JFrame implements IMainView {
 
 	private InventoryView _inventoryView;
 	private final HomeInventoryTracker _tracker;
+	private PersistentStorageManager _persistentStorageManager;
 
 	public GUI(String[] args) {
 		super("Home Inventory Tracker");
-		_tracker = SerializationManager.create(null);
+
+		_persistentStorageManager = new SerializationManager();
+		_tracker = _persistentStorageManager.load();
 
 		setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
 		addWindowListener(new WindowAdapter() {
 			@Override
 			public void windowClosing(WindowEvent evt) {
-				SerializationManager.write(_tracker, null);
+				try {
+					_persistentStorageManager.save(_tracker);
+				} catch (IOException e) {
+					displayErrorMessage("Unable to save to persistent storage");
+				}
 				_sessionMenu.exit();
 			}
 		});

@@ -8,105 +8,43 @@ import java.io.ObjectOutputStream;
 
 /**
  * Implements persistent storage using Java object serialization.
- * 
- * @author Seth Stewart
- * @version 1.0 - Snell 340 Group 4 Phase 1
- * @invariant true
  */
 public class SerializationManager implements PersistentStorageManager {
-	public static final String defaultSerializedFileName = "HomeInventoryTracker.ser";
+	private static final String defaultSerializedFilename = "HomeInventoryTracker.ser";
 
-	/**
-	 * Creates a new HomeInventoryTracker, reading it from persistent storage if available.
-	 * Otherwise, it creates a new empty instance of the class.
-	 * 
-	 * @return a new instance of HomeInventoryTracker
-	 * @pre true
-	 * @post true
-	 */
-	public static HomeInventoryTracker create(String filename) {
-		String target = assignTargetFilename(filename);
+	private String serializedFilename;
 
-		HomeInventoryTracker tracker;
-		PersistentStorageManager persistentStorageManager = new SerializationManager();
-		try {
-			tracker = persistentStorageManager.readObject(target);
-		} catch (IOException e) {
-			tracker = new HomeInventoryTracker();
-		}
-		return tracker;
+	public SerializationManager() {
+		serializedFilename = defaultSerializedFilename;
 	}
 
-	/**
-	 * Writes a HomeInventoryTracker to disk
-	 * 
-	 * @param filename
-	 *            the filename to write to
-	 * @pre true
-	 * @post true
-	 */
-	public static void write(HomeInventoryTracker hit, String filename) {
-		String target = assignTargetFilename(filename);
-
-		PersistentStorageManager persistentStorageManager = new SerializationManager();
-		try {
-			persistentStorageManager.writeObject(hit, target);
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
+	public SerializationManager(String serializedFilename) {
+		this.serializedFilename = serializedFilename;
 	}
 
-	private static String assignTargetFilename(String filename) {
-		String target = null;
-		if (filename == null || filename.equals(""))
-			target = defaultSerializedFileName;
-		else
-			target = filename;
-
-		return target;
-	}
-
-	/**
-	 * Deserializes the Home Inventory Tracker from a file.
-	 * 
-	 * @throws IOException
-	 *             if an error occurred reading from the serialized file.
-	 * @pre true
-	 * @post true
-	 */
 	@Override
-	public HomeInventoryTracker readObject(String filename) throws IOException {
-		String target = assignTargetFilename(filename);
-
+	public HomeInventoryTracker load() {
 		HomeInventoryTracker hit;
+
 		try {
-			FileInputStream fileInputStream = new FileInputStream(target);
+			FileInputStream fileInputStream = new FileInputStream(serializedFilename);
 			ObjectInputStream objectReader = new ObjectInputStream(fileInputStream);
 			hit = (HomeInventoryTracker) objectReader.readObject();
 			objectReader.close();
-		} catch (ClassNotFoundException e) {
-			System.err.println("Could not locate class for deserialization");
-			e.printStackTrace();
-			return null;
+		} catch (Exception e) {
+			hit = new HomeInventoryTracker();
 		}
+
 		return hit;
 	}
 
-	/**
-	 * Serializes the Home Inventory Tracker to a file.
-	 * 
-	 * @throws IOException
-	 *             if an error occurred writing to the serialized file.
-	 * @pre hit != null
-	 * @post true
-	 */
 	@Override
-	public void writeObject(HomeInventoryTracker hit, String filename) throws IOException {
-		assert (hit != null);
+	public void save(HomeInventoryTracker hit) throws IOException {
+		if (hit == null) {
+			throw new NullPointerException("Null HomeInventoryTracker hit");
+		}
 
-		String target = assignTargetFilename(filename);
-
-		FileOutputStream fileOutputStream = new FileOutputStream(target);
+		FileOutputStream fileOutputStream = new FileOutputStream(serializedFilename);
 		ObjectOutputStream objectWriter = new ObjectOutputStream(fileOutputStream);
 
 		objectWriter.writeObject(hit);

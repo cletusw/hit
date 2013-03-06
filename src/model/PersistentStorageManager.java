@@ -10,26 +10,26 @@ import java.io.IOException;
  * @version 1.0 - Snell 340 Group 4 Phase 1
  */
 public interface PersistentStorageManager {
-
 	/**
-	 * Reads a HomeInventoryTracker from persistent storage.
+	 * Creates a new HomeInventoryTracker, reading it from persistent storage if available.
+	 * Otherwise, it creates a new empty instance of the class.
 	 * 
-	 * @param filename
-	 *            The filename of the file to read.
-	 * @return an instance of the HomeInventoryTracker class
-	 * @throws IOException
-	 *             if the read failed.
+	 * @return a new instance of HomeInventoryTracker
+	 * @pre true
+	 * @post true
 	 */
-	public HomeInventoryTracker readObject(String filename) throws IOException;
+	public HomeInventoryTracker load();
 
 	/**
-	 * Writes the specified HomeInventoryTracker to persistent storage.
+	 * Persists the given Home Inventory Tracker to storage.
 	 * 
 	 * @param hit
 	 *            the instance of HomeInventoryTracker to store
-	 * @param filename
-	 *            the String filename to write to
-	 * @throw IOException if the write failed.
+	 * @throws IOException
+	 *             if an error occurred writing to the serialized file.
+	 * 
+	 * @pre hit != null
+	 * @post true
 	 */
-	public void writeObject(HomeInventoryTracker hit, String filename) throws IOException;
+	public void save(HomeInventoryTracker hit) throws IOException;
 }

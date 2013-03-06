@@ -1,6 +1,5 @@
 package model;
 
-import java.io.IOException;
 import java.io.Serializable;
 import java.util.Date;
 
@@ -304,25 +303,4 @@ public class HomeInventoryTracker implements Serializable {
 	public void setProductManager(ProductManager productManager) {
 		this.productManager = productManager;
 	}
-
-	/**
-	 * Writes this instance of HomeInventoryTracker to persistent storage.
-	 * 
-	 * @param filename
-	 *            The filename to write to.
-	 * @throws IOException
-	 *             if the write failed.
-	 * 
-	 * @pre filename != null
-	 * @pre !filename.equals("")
-	 * @post File f(filename).exists()
-	 */
-	public void write(String filename) throws IOException {
-		assert (filename != null);
-		assert (!filename.equals(""));
-
-		PersistentStorageManager persistentStorageManager = new SerializationManager();
-		persistentStorageManager.writeObject(this, filename);
-	}
-
 }
