@@ -27,14 +27,6 @@ public class ConcreteProductContainerManager extends ObservableWithPublicNotify 
 	}
 
 	@Override
-	public void editProductGroup(ProductContainer parent, String oldName, String newName,
-			ProductQuantity newTMS) {
-		ProductGroup pg = parent.editProductGroup(oldName, newName, newTMS);
-
-		notifyObservers(new Action(pg, ActionType.EDIT));
-	}
-
-	@Override
 	public StorageUnit getRootStorageUnitByName(String productGroupName) {
 		for (StorageUnit su : rootStorageUnits) {
 			if (su.getName().equals(productGroupName)
