@@ -3,7 +3,6 @@ package test.model;
 import static org.junit.Assert.assertTrue;
 
 import model.ConcreteProductContainerManager;
-import model.StorageUnit;
 
 import org.junit.After;
 import org.junit.Before;
@@ -24,7 +23,6 @@ public class ConcreteProductContainerManagerTest {
 		ConcreteProductContainerManager manager = new ConcreteProductContainerManager();
 		String storageUnitName = "Pantry";
 		assertTrue(manager.isValidStorageUnitName(storageUnitName));
-		StorageUnit storageUnit = new StorageUnit(storageUnitName, manager);
 		String newStorageUnitName = "Downstairs Pantry";
 		assertTrue(manager.isValidStorageUnitName(newStorageUnitName));
 	}
