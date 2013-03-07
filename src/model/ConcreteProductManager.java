@@ -62,25 +62,6 @@ public class ConcreteProductManager extends ObservableWithPublicNotify implement
 	}
 
 	/**
-	 * Modifies the given product with the given data and notifies observers when change is
-	 * made
-	 * 
-	 */
-	@Override
-	public void editProduct(Product product, String newDescription,
-			ProductQuantity newQuantity, int newShelfLife, int newTms) {
-		products.remove(product);
-		barcodesToProducts.remove(product.getBarcode());
-		product.setDescription(newDescription);
-		product.setProductQuantity(newQuantity);
-		product.setShelfLife(newShelfLife);
-		product.setThreeMonthSupply(newTms);
-		barcodesToProducts.put(product.getBarcode(), product);
-
-		notifyObservers(new Action(product, ActionType.EDIT));
-	}
-
-	/**
 	 * Looks up a product by the given barcode
 	 * 
 	 * @param barcode
