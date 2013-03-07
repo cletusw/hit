@@ -8,6 +8,8 @@ import java.util.Set;
 import java.util.TreeMap;
 import java.util.TreeSet;
 
+import model.Action.ActionType;
+
 /**
  * Product Container class: Represents an object that can hold various types of items,
  * products, and product groups.
@@ -374,45 +376,19 @@ public abstract class ProductContainer implements Comparable<ProductContainer>, 
 	}
 
 	/**
-	 * Functionality for editing a product group. The given productGroup is removed, modified,
-	 * and added to the set of ProductGroups in this container. This method only modifies
-	 * ProductGroups that are children of this ProductContainer. If the ProductGroup is not
-	 * found, null will be returned.
+	 * Allows the name of a productContainer to be modified. Notifies manager a change took
+	 * place.
 	 * 
-	 * @param oldName
-	 *            The original name of the ProductGroup to be modified
 	 * @param newName
 	 *            The new name of the ProductGroup. If null, no change to the name will take
 	 *            place
-	 * @param newThreeMonthSupply
-	 *            The new value for ProductQuantity. If null, no change to the threeMonthSupply
-	 *            will take place.
 	 * 
-	 * @return the modified ProductGroup, or null if no ProductGroup matching name oldName is
-	 *         found
-	 * @pre oldName != null
-	 * @pre this.productGroups.contains(oldName)
-	 * @post this.productGroups contains the modified ProductGroup
+	 * @post value of this.name equals newName
 	 */
-	public ProductGroup editProductGroup(String oldName, String newName,
-			ProductQuantity newThreeMonthSupply) {
-		if (oldName == null)
-			return null;
-		ProductGroup pg = productGroups.get(oldName);
-		if (pg == null)
-			return null;
-
-		productGroups.remove(oldName);
-		if (newName != null)
-			pg.setName(newName);
-		else
-			newName = oldName;
-
-		if (newThreeMonthSupply != null)
-			pg.setThreeMonthSupply(newThreeMonthSupply);
-
-		productGroups.put(newName, pg);
-		return pg;
+	public void edit(String newName) {
+		if(newName != null && newName.length() > 0)
+			this.setName(newName);
+		this.manager.notifyObservers(new Action(this, ActionType.EDIT));
 	}
 
 	/**
@@ -894,5 +870,11 @@ public abstract class ProductContainer implements Comparable<ProductContainer>, 
 		}
 		newItemsForProduct.remove(i);
 		productsToItems.put(i.getProduct(), newItemsForProduct);
+	}
+	
+	
+	public void updateChildProductGroup(String oldName, ProductGroup p){
+		this.productGroups.remove(oldName);
+		this.productGroups.put(p.getName(), p);
 	}
 }
