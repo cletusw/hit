@@ -152,10 +152,8 @@ public abstract class InventoryListener {
 			} else {
 				// Root "Storage units" node is selected; display all Products in system
 				ProductManager manager = view.getProductManager();
-				Iterator<Product> productIterator = manager.getProductsIterator();
-				while (productIterator.hasNext()) {
-					Product product = productIterator.next();
-					productDataList.add(DataWrapper.wrap(product, product.getItemCount()));
+				for (Product p : manager.getProducts()) {
+					productDataList.add(DataWrapper.wrap(p, p.getItemCount()));
 				}
 				view.setContextUnit("All");
 			}
