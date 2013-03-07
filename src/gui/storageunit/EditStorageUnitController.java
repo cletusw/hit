@@ -5,7 +5,6 @@ import gui.common.IView;
 import gui.inventory.ProductContainerData;
 import model.ProductContainer;
 import model.ProductContainerManager;
-import model.StorageUnit;
 
 /**
  * Controller class for the edit storage unit view.
@@ -43,9 +42,8 @@ public class EditStorageUnitController extends Controller implements
 			getView().displayErrorMessage("Invalid user input");
 			return;
 		}
-		ProductContainerManager manager = getProductContainerManager();
-		ProductContainer su = manager.getStorageUnitByName(container.getName());
-		manager.setStorageUnitName(getView().getStorageUnitName(), (StorageUnit) su);
+		
+		container.edit(getView().getStorageUnitName());
 	}
 
 	/**
