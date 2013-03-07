@@ -12,9 +12,6 @@ public interface ProductManager {
 
 	public boolean containsProduct(String productName);
 
-	public void editProduct(Product product, String newDescription,
-			ProductQuantity newQuantity, int newShelfLife, int newTms);
-
 	public Product getByBarcode(String barcodeScanned);
 
 	public Set<Product> getProducts();
@@ -24,4 +21,6 @@ public interface ProductManager {
 	public void unmanage(Product product);
 
 	void addObserver(Observer o);
+	
+	public void notifyObservers(Action action);
 }
