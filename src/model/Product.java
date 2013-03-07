@@ -2,6 +2,7 @@ package model;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
 import java.util.TreeSet;
@@ -542,6 +543,55 @@ public class Product implements Comparable<Object>, Serializable {
 			this.setThreeMonthSupply(newTms);
 		
 		this.manager.notifyObservers(new Action(this, ActionType.EDIT));
+	}
+	
+	public void moveToContainer(ProductContainer newContainer, ItemManager itemManager){
+		if (!newContainer.canAddProduct(getBarcode())) {
+			// this case handles where the product we are adding already exists somewhere in this subtree
+			ProductContainer oldContainer = null;
+			if(newContainer instanceof StorageUnit)
+				oldContainer = ((StorageUnit)newContainer).getContainerForProduct(this);
+			else
+				oldContainer = ((ProductGroup)newContainer).getRoot().getContainerForProduct(this);
+
+			// Get all the items
+			boolean moveItems = items != null;
+
+			// copy the items so we can loop over them to remove and add
+			Set<Item> itemsToRemove = new HashSet<Item>();
+			Set<Item> itemsToAdd = new HashSet<Item>();
+
+			if (moveItems) {
+				for (Item item : items) {
+					if (oldContainer.contains(item)) {
+						itemsToAdd.add(item);
+						itemsToRemove.add(item);
+					}
+				}
+
+				// remove the items so we can remove the product
+				for (Item item : itemsToRemove) {
+					oldContainer.remove(item, itemManager);
+				}
+			}
+
+			// remove the product
+			oldContainer.remove(this);
+
+			// add the product to the target
+			newContainer.add(this);
+
+			if (moveItems) {
+				// add the items
+				for (Item item : itemsToAdd) {
+					newContainer.add(item);
+					itemManager.manage(item);
+				}
+			}
+		} else {
+			// the Product doesn't already exist in the subtree, so we'll just add it here
+			newContainer.add(this);
+		}
 	}
 
 	/**
