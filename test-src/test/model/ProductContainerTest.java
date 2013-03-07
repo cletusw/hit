@@ -182,32 +182,27 @@ public class ProductContainerTest {
 		ProductContainerManager man = new ConcreteProductContainerManager();
 		StorageUnit root = new StorageUnit("SU1", man);
 		ProductQuantity quantity = new ProductQuantity(1.1f, Unit.FLUID_OUNCES);
-		@SuppressWarnings("unused")
 		ProductGroup group = new ProductGroup("PG", quantity, Unit.FLUID_OUNCES, root, man);
-		root.editProductGroup("PG", "newPG", new ProductQuantity(1.0f, Unit.COUNT));
+		group.edit("newPG", new ProductQuantity(1.0f, Unit.COUNT));
+		//root.editProductGroup("PG", "newPG", );
 		assertTrue(root.getProductGroup("newPG") != null);
 		assertTrue(root.getProductGroup("newPG").getThreeMonthSupply().getUnits()
 				.equals(Unit.COUNT));
 		assertTrue(root.getProductGroup("newPG").getThreeMonthSupply().getQuantity() == 1.0f);
 
-		root.editProductGroup("newPG", null, new ProductQuantity(2.2f, Unit.GALLONS));
+		group.edit(null, new ProductQuantity(2.2f, Unit.GALLONS));
+		//root.editProductGroup("newPG", null, );
 		assertTrue(root.getProductGroup("newPG") != null);
 		assertTrue(root.getProductGroup("newPG").getThreeMonthSupply().getUnits()
 				.equals(Unit.GALLONS));
 		assertTrue(root.getProductGroup("newPG").getThreeMonthSupply().getQuantity() == 2.2f);
 
-		root.editProductGroup("newPG", "PG", null);
+		group.edit("PG", null);
+		//root.editProductGroup("newPG", "PG", null);
 		assertTrue(root.getProductGroup("PG") != null);
 		assertTrue(root.getProductGroup("PG").getThreeMonthSupply().getUnits()
 				.equals(Unit.GALLONS));
 		assertTrue(root.getProductGroup("PG").getThreeMonthSupply().getQuantity() == 2.2f);
-
-		root.editProductGroup(null, "garbage", new ProductQuantity(3.0f, Unit.GRAMS));
-		assertTrue(root.getProductGroup("garbage") == null);
-		assertTrue(root.getProductGroup("PG").getThreeMonthSupply().getUnits()
-				.equals(Unit.GALLONS));
-		assertTrue(root.getProductGroup("PG").getThreeMonthSupply().getQuantity() == 2.2f);
-
 	}
 
 	@Test
