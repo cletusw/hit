@@ -203,4 +203,12 @@ public class ProductGroup extends ProductContainer {
 		super.edit(newName);
 		this.container.updateChildProductGroup(oldName, this);
 	}
+	
+	public StorageUnit getRoot() {
+		ProductContainer parent = container;
+		while(parent instanceof ProductGroup){
+			parent = ((ProductGroup)parent).container;
+		}
+		return (StorageUnit)parent;
+	}
 }
