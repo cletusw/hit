@@ -228,14 +228,14 @@ public class ProductContainerTest {
 	}
 
 	@Test
-	public void testHasDescendantProductContainer() {
-		assertTrue(storageUnit.hasDescendantProductContainer(productGroup));
-		assertTrue(storageUnit.hasDescendantProductContainer(nestedProductGroup));
-		assertTrue(productGroup.hasDescendantProductContainer(nestedProductGroup));
-		assertFalse(productGroup.hasDescendantProductContainer(productGroup));
-		assertFalse(productGroup.hasDescendantProductContainer(storageUnit));
-		assertFalse(nestedProductGroup.hasDescendantProductContainer(productGroup));
-		assertFalse(nestedProductGroup.hasDescendantProductContainer(storageUnit));
+	public void testHasChild() {
+		assertTrue(storageUnit.hasChild(productGroup));
+		assertTrue(storageUnit.hasChild(nestedProductGroup));
+		assertTrue(productGroup.hasChild(nestedProductGroup));
+		assertTrue(productGroup.hasChild(productGroup));
+		assertFalse(productGroup.hasChild(storageUnit));
+		assertFalse(nestedProductGroup.hasChild(productGroup));
+		assertFalse(nestedProductGroup.hasChild(storageUnit));
 	}
 
 	@Test

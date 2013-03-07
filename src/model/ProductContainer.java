@@ -585,7 +585,9 @@ public abstract class ProductContainer implements Comparable<ProductContainer>, 
 	}
 
 	/**
-	 * Determines if the given ProductContainer is a descendant of this ProductContainer.
+	 * Determines if the given ProductContainer is a descendant of this ProductContainer or
+	 * returns true if this.equals(other), indicating that ProductContainer other is in 
+	 * this ProductContainers same tree.
 	 * 
 	 * @param other
 	 *            ProductContainer to find in this tree
@@ -595,16 +597,19 @@ public abstract class ProductContainer implements Comparable<ProductContainer>, 
 	 * @post true
 	 * 
 	 */
-	public boolean hasDescendantProductContainer(ProductContainer other) {
+	public boolean hasChild(ProductContainer other) {
 		if (other instanceof StorageUnit)
 			return false;
+		
+		if(this.equals(other))
+			return true;
 
 		ProductGroup group = (ProductGroup) other;
 		if (containsExactProductGroup(group)) {
 			return true;
 		}
 		for (ProductGroup productGroup : productGroups.values()) {
-			if (productGroup.hasDescendantProductContainer(other))
+			if (productGroup.hasChild(other))
 				return true;
 		}
 		return false;
@@ -728,11 +733,11 @@ public abstract class ProductContainer implements Comparable<ProductContainer>, 
 
 		if (containsExactProductGroup(productGroup)) {
 			productGroups.remove(productGroup.getName());
-		} else if (hasDescendantProductContainer(productGroup)) {
+		} else if (hasChild(productGroup)) {
 			// remove nested product group
 			for (ProductGroup group : productGroups.values()) {
 				if (group.containsExactProductGroup(productGroup)
-						|| group.hasDescendantProductContainer(productGroup)) {
+						|| group.hasChild(productGroup)) {
 					group.remove(productGroup);
 					return;
 				}

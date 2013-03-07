@@ -39,7 +39,7 @@ public class ConcreteProductContainerManager extends ObservableWithPublicNotify 
 	@Override
 	public StorageUnit getRootStorageUnitForChild(ProductContainer child) {
 		for (StorageUnit su : rootStorageUnits) {
-			if (su.equals(child) || su.hasDescendantProductContainer(child))
+			if (su.equals(child) || su.hasChild(child))
 				return su;
 		}
 		return null;
@@ -134,7 +134,7 @@ public class ConcreteProductContainerManager extends ObservableWithPublicNotify 
 		} else {
 			ProductGroup pg = (ProductGroup) pc;
 			for (StorageUnit su : rootStorageUnits) {
-				if (su.containsProductGroup(pg) || su.hasDescendantProductContainer(pg)) {
+				if (su.containsProductGroup(pg) || su.hasChild(pg)) {
 					su.remove(pg);
 				}
 			}
