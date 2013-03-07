@@ -4,9 +4,6 @@ import java.util.Observer;
 import java.util.Set;
 
 public interface ProductContainerManager {
-	public void editProductGroup(ProductContainer parent, String oldName, String newName,
-			ProductQuantity newTMS);
-
 	public StorageUnit getRootStorageUnitByName(String productContainerName);
 
 	public StorageUnit getRootStorageUnitForChild(ProductContainer child);
@@ -24,4 +21,6 @@ public interface ProductContainerManager {
 	public void unmanage(ProductContainer pc);
 
 	void addObserver(Observer o);
+
+	public void notifyObservers(Action action);
 }
