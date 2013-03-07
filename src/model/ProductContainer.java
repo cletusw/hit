@@ -386,7 +386,7 @@ public abstract class ProductContainer implements Comparable<ProductContainer>, 
 	 * @post value of this.name equals newName
 	 */
 	public void edit(String newName) {
-		if(newName != null && newName.length() > 0)
+		if(newName != null && newName.length() > 0 && !this.getName().equals(newName))
 			this.setName(newName);
 		this.manager.notifyObservers(new Action(this, ActionType.EDIT));
 	}
