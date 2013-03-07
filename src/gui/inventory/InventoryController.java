@@ -133,11 +133,12 @@ public class InventoryController extends Controller implements IInventoryControl
 				targetContainer);
 
 		// add product to container
-
-		if (targetSU.hasDescendantProductContainer(oldContainer)
-				|| targetSU.equals(oldContainer)) {
-			// Staying in the same tree, move items
-
+		if (!targetContainer.canAddProduct(productToAdd.getBarcode())) {
+			// this case handles where the product we are adding already exists somewhere in this subtree
+			StorageUnit su = getView().getProductContainerManager()
+					.getRootStorageUnitForChild(targetContainer);
+			oldContainer = su.getContainerForProduct(productToAdd);
+			
 			// Get all the items
 			ItemManager itemManager = getItemManager();
 			Set<Item> itemsToMove = itemManager.getItemsByProduct(productToAdd);
@@ -177,53 +178,9 @@ public class InventoryController extends Controller implements IInventoryControl
 				}
 			}
 		} else {
-			if (targetContainer.canAddProduct(productToAdd.getBarcode())) {
-				productToAdd.addContainer(targetContainer);
-				targetContainer.add(productToAdd);
-			} else {
-
-				StorageUnit su = getView().getProductContainerManager()
-						.getRootStorageUnitForChild(targetContainer);
-				ProductContainer containerInTree = su.getContainerForProduct(productToAdd);
-
-				ItemManager itemManager = getItemManager();
-				Set<Item> itemsToMove = itemManager.getItemsByProduct(productToAdd);
-				boolean moveItems = itemsToMove != null;
-
-				// copy the items so we can loop over them to remove and add
-				Set<Item> itemsToRemove = new HashSet<Item>();
-				Set<Item> itemsToAdd = new HashSet<Item>();
-
-				if (moveItems) {
-					for (Item item : itemsToMove) {
-						if (containerInTree.contains(item)) {
-							itemsToAdd.add(item);
-							itemsToRemove.add(item);
-						}
-					}
-
-					// remove the items so we can remove the product
-					for (Item item : itemsToRemove) {
-						containerInTree.remove(item, itemManager);
-					}
-				}
-
-				// remove the product
-				containerInTree.remove(productToAdd);
-				productToAdd.removeContainer(containerInTree);
-
-				// add the product to the target
-				productToAdd.addContainer(targetContainer);
-				targetContainer.add(productToAdd);
-
-				if (moveItems) {
-					// add the items
-					for (Item item : itemsToAdd) {
-						targetContainer.add(item);
-						itemManager.manage(item);
-					}
-				}
-			}
+			// the Product doesn't already exist in the subtree, so we'll just add it here
+			productToAdd.addContainer(targetContainer);
+			targetContainer.add(productToAdd);
 		}
 	}
 
