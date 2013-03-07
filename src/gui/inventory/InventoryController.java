@@ -102,20 +102,6 @@ public class InventoryController extends Controller implements IInventoryControl
 	@Override
 	public void addProductToContainer(ProductData productData,
 			ProductContainerData containerData) {
-
-		/*
-		 * Desired Behavior
-		 * 
-		 * Target Product Container = the Product Container the user dropped the Product on
-		 * 
-		 * Target StorageUnit = the StorageUnit containing the Target Product Container
-		 * 
-		 * If the Product is already contained in a Product Container in the Target StorageUnit
-		 * Else Add the Product to the Target Product Container
-		 */
-
-		// TODO: Heavy refactoring: assigned to matt matheson
-
 		if (productData == null)
 			throw new IllegalArgumentException("ProductData should not be null");
 		if (containerData == null)
@@ -128,60 +114,7 @@ public class InventoryController extends Controller implements IInventoryControl
 		if (targetContainer == null)
 			throw new IllegalStateException("ProductContainer must have a tag.");
 
-		ProductContainer oldContainer = getSelectedProductContainerTag();
-		StorageUnit targetSU = getProductContainerManager().getRootStorageUnitForChild(
-				targetContainer);
-
-		// add product to container
-		if (!targetContainer.canAddProduct(productToAdd.getBarcode())) {
-			// this case handles where the product we are adding already exists somewhere in this subtree
-			StorageUnit su = getView().getProductContainerManager()
-					.getRootStorageUnitForChild(targetContainer);
-			oldContainer = su.getContainerForProduct(productToAdd);
-			
-			// Get all the items
-			ItemManager itemManager = getItemManager();
-			Set<Item> itemsToMove = itemManager.getItemsByProduct(productToAdd);
-			boolean moveItems = itemsToMove != null;
-
-			// copy the items so we can loop over them to remove and add
-			Set<Item> itemsToRemove = new HashSet<Item>();
-			Set<Item> itemsToAdd = new HashSet<Item>();
-
-			if (moveItems) {
-				for (Item item : itemsToMove) {
-					if (oldContainer.contains(item)) {
-						itemsToAdd.add(item);
-						itemsToRemove.add(item);
-					}
-				}
-
-				// remove the items so we can remove the product
-				for (Item item : itemsToRemove) {
-					oldContainer.remove(item, itemManager);
-				}
-			}
-
-			// remove the product
-			oldContainer.remove(productToAdd);
-			productToAdd.removeContainer(oldContainer);
-
-			// add the product to the target
-			productToAdd.addContainer(targetContainer);
-			targetContainer.add(productToAdd);
-
-			if (moveItems) {
-				// add the items
-				for (Item item : itemsToAdd) {
-					targetContainer.add(item);
-					itemManager.manage(item);
-				}
-			}
-		} else {
-			// the Product doesn't already exist in the subtree, so we'll just add it here
-			productToAdd.addContainer(targetContainer);
-			targetContainer.add(productToAdd);
-		}
+		productToAdd.moveToContainer(targetContainer, getItemManager());
 	}
 
 	/**
