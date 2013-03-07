@@ -35,6 +35,7 @@ public class ProductGroup extends ProductContainer {
 		container.add(this);
 		setThreeMonthSupply(tmSupply);
 		this.groupUnit = groupUnit;
+		manager.manage(this);
 	}
 
 	/**
