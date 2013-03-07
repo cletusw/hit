@@ -4,8 +4,6 @@ import gui.common.Controller;
 import gui.common.IView;
 import gui.common.SizeUnits;
 import gui.inventory.ProductContainerData;
-import model.ProductContainer;
-import model.ProductContainerManager;
 import model.ProductGroup;
 import model.ProductQuantity;
 import model.Unit;
@@ -46,15 +44,19 @@ public class EditProductGroupController extends Controller implements
 			getView().displayErrorMessage("User input is invalid");
 			return;
 		}
+		// get ProductGroup to edit
 		ProductGroup pg = (ProductGroup) originalData.getTag();
-		ProductContainer parent = pg.getContainer();
+		
+		// get new name
 		String newName = getView().getProductGroupName();
+		
+		// get new three month supply
 		float tmsQuantity = Float.parseFloat(getView().getSupplyValue());
 		Unit tmsUnit = Unit.convertToUnit(getView().getSupplyUnit().toString());
 		ProductQuantity newTMS = new ProductQuantity(tmsQuantity, tmsUnit);
-		ProductContainerManager manager = getProductContainerManager();
-
-		manager.editProductGroup(parent, originalData.getName(), newName, newTMS);
+		
+		// edit ProductGroup
+		pg.edit(newName, newTMS);
 	}
 
 	/**
