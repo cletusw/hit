@@ -68,7 +68,6 @@ public class AddProductGroupController extends Controller implements
 	}
 
 	private boolean enableOK() {
-		ProductContainerManager manager = getProductContainerManager();
 		boolean enableOk = true;
 		float supplyValue = 0;
 		try {
