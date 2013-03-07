@@ -1,7 +1,6 @@
 package model;
 
 import java.util.Date;
-import java.util.Iterator;
 import java.util.Observer;
 import java.util.Set;
 
@@ -16,9 +15,9 @@ public interface ItemManager {
 
 	public Set<Item> getItemsByProduct(Product product);
 
-	public void manage(Item item);
+	public Set<Item> getRemovedItems();
 
-	public Iterator<Item> removedItemsIterator();
+	public void manage(Item item);
 
 	public void unmanage(Item item);
 

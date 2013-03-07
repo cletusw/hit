@@ -1,6 +1,7 @@
 package model;
 
 import java.io.Serializable;
+import java.util.Collections;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.Map;
@@ -108,6 +109,19 @@ public class ConcreteItemManager extends ObservableWithPublicNotify implements I
 	}
 
 	/**
+	 * Gets all of the removed items in the system.
+	 * 
+	 * @return an *unmodifiable* Set of all of the removed Items
+	 * 
+	 * @pre true
+	 * @post true
+	 */
+	@Override
+	public Set<Item> getRemovedItems() {
+		return Collections.unmodifiableSet(removedItems);
+	}
+
+	/**
 	 * Adds the given item to this Manager's indexes
 	 * 
 	 * @param item
@@ -138,19 +152,6 @@ public class ConcreteItemManager extends ObservableWithPublicNotify implements I
 		items.add(item);
 
 		notifyObservers(new Action(item, ActionType.CREATE));
-	}
-
-	/**
-	 * Returns an Iterator to access all of the removed items.
-	 * 
-	 * @return an Iterator allowing access to all of the removed Items
-	 * 
-	 * @pre true
-	 * @post true
-	 */
-	@Override
-	public Iterator<Item> removedItemsIterator() {
-		return removedItems.iterator();
 	}
 
 	/**
