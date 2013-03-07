@@ -6,6 +6,8 @@ import java.util.Iterator;
 import java.util.Set;
 import java.util.TreeSet;
 
+import model.Action.ActionType;
+
 /**
  * A representation of a product within the Home Inventory System
  * 
@@ -115,6 +117,7 @@ public class Product implements Comparable<Object>, Serializable {
 	private int threeMonthSupply;
 	private final Set<ProductContainer> productContainers;
 	private final Set<Item> items;
+	private ProductManager manager;
 
 	private ProductQuantity productQuantity;
 
@@ -161,7 +164,8 @@ public class Product implements Comparable<Object>, Serializable {
 		productContainers = new TreeSet<ProductContainer>();
 		items = new TreeSet<Item>();
 		setProductQuantity(pq);
-		manager.manage(this);
+		this.manager = manager;
+		this.manager.manage(this);
 	}
 
 	/**
@@ -506,6 +510,38 @@ public class Product implements Comparable<Object>, Serializable {
 			throw new IllegalArgumentException("ShelfLife must be non-negative");
 
 		this.shelfLife = shelfLife;
+	}
+	
+	/**
+	 * Edit the Product. Any parameter that is invalid or null will not be set,
+	 * but the rest will.
+	 * 
+	 * @param newDescription description to set
+	 * @param newQuantity quantity to set
+	 * @param newShelfLife shelf life to set
+	 * @param newTms new three month supply to set
+	 * 
+	 * @pre newDescription != null
+	 * @pre newDescription.length() > 0
+	 * @pre newShelfLife >= 0
+	 * @pre newTms >= 0
+	 */
+	public void edit(String newDescription, ProductQuantity newQuantity,
+			int newShelfLife, int newTms){
+		
+		if(NonEmptyString.isValid(newDescription))
+			this.setDescription(newDescription);
+		
+		if(newQuantity != null)
+			this.setProductQuantity(newQuantity);
+		
+		if(newShelfLife >= 0)
+			this.setShelfLife(newShelfLife);
+		
+		if(newTms >= 0)
+			this.setThreeMonthSupply(newTms);
+		
+		this.manager.notifyObservers(new Action(this, ActionType.EDIT));
 	}
 
 	/**
