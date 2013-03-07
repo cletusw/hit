@@ -117,26 +117,6 @@ public class ConcreteProductContainerManager extends ObservableWithPublicNotify 
 	}
 
 	/**
-	 * 
-	 * @param name
-	 * @param su
-	 */
-	@Override
-	public void setStorageUnitName(String name, StorageUnit su) {
-		if (name.equals(su.getName()))
-			return;
-		if (!isValidStorageUnitName(name))
-			throw new IllegalArgumentException("Illegal storage unit name");
-		rootStorageUnits.remove(su);
-		nameToStorageUnit.remove(su.getName());
-		su.setName(name);
-		rootStorageUnits.add(su);
-		nameToStorageUnit.put(name, su);
-
-		notifyObservers(new Action(su, ActionType.EDIT));
-	}
-
-	/**
 	 * Remove pc from set of managed objects and notify observers of a change.
 	 * 
 	 * @param pc
