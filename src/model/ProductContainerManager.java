@@ -1,7 +1,7 @@
 package model;
 
-import java.util.Iterator;
 import java.util.Observer;
+import java.util.Set;
 
 public interface ProductContainerManager {
 	public void editProductGroup(ProductContainer parent, String oldName, String newName,
@@ -13,7 +13,7 @@ public interface ProductContainerManager {
 
 	public StorageUnit getStorageUnitByName(String name);
 
-	public Iterator<StorageUnit> getStorageUnitIterator();
+	public Set<StorageUnit> getStorageUnits();
 
 	public boolean isValidStorageUnitName(String storageUnitName);
 

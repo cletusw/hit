@@ -848,11 +848,9 @@ public class InventoryController extends Controller implements IInventoryControl
 	protected void loadValues() {
 		ProductContainerData root = new ProductContainerData();
 		root.setTag(null);
-		Iterator<StorageUnit> storageUnitIterator = getProductContainerManager()
-				.getStorageUnitIterator();
-		while (storageUnitIterator.hasNext()) {
-			ProductContainer pc = storageUnitIterator.next();
-			root = loadProductContainerData(root, pc);
+		Set<StorageUnit> storageUnits = getProductContainerManager().getStorageUnits();
+		for (StorageUnit su : storageUnits) {
+			root = loadProductContainerData(root, su);
 		}
 		getView().setProductContainers(root);
 	}

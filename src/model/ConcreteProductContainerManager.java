@@ -1,7 +1,7 @@
 package model;
 
 import java.io.Serializable;
-import java.util.Iterator;
+import java.util.Collections;
 import java.util.Map;
 import java.util.Set;
 import java.util.TreeMap;
@@ -66,9 +66,14 @@ public class ConcreteProductContainerManager extends ObservableWithPublicNotify 
 		return nameToStorageUnit.get(name);
 	}
 
+	/**
+	 * Gets all Storage Units in the System.
+	 * 
+	 * @return an *unmodifiable* set of Storage Units
+	 */
 	@Override
-	public Iterator<StorageUnit> getStorageUnitIterator() {
-		return rootStorageUnits.iterator();
+	public Set<StorageUnit> getStorageUnits() {
+		return Collections.unmodifiableSet(rootStorageUnits);
 	}
 
 	/**

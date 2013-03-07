@@ -15,10 +15,9 @@ import gui.inventory.ProductContainerData;
 import gui.item.ItemData;
 import gui.product.ProductData;
 
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Iterator;
 import java.util.List;
+import java.util.TreeSet;
 
 import model.ConcreteProductContainerManager;
 import model.Item;
@@ -54,9 +53,8 @@ public class InventoryControllerTest extends EasyMockSupport {
 		expect(mockView.getItemManager()).andStubReturn(mockItemManager);
 		expect(mockView.getProductManager()).andStubReturn(mockProductManager);
 
-		Iterator<StorageUnit> storageUnitIterator = (new ArrayList<StorageUnit>()).iterator();
-		expect(mockProductContainerManager.getStorageUnitIterator()).andStubReturn(
-				storageUnitIterator);
+		expect(mockProductContainerManager.getStorageUnits()).andStubReturn(
+				new TreeSet<StorageUnit>());
 
 		replayAll();
 
