@@ -3,19 +3,21 @@ package model;
 import java.io.Serializable;
 import java.util.Iterator;
 import java.util.Map;
-import java.util.Observable;
 import java.util.Set;
 import java.util.TreeMap;
 import java.util.TreeSet;
 
 import model.Action.ActionType;
 
+import common.ObservableWithPublicNotify;
+
 /**
  * @author Clayton Watts
  * 
  */
 @SuppressWarnings("serial")
-public class ConcreteProductManager extends Observable implements ProductManager, Serializable {
+public class ConcreteProductManager extends ObservableWithPublicNotify implements
+		ProductManager, Serializable {
 	/*
 	 * private class ProductNode implements Comparable<ProductNode> { Product product;
 	 * 
@@ -88,9 +90,8 @@ public class ConcreteProductManager extends Observable implements ProductManager
 		product.setShelfLife(newShelfLife);
 		product.setThreeMonthSupply(newTms);
 		barcodesToProducts.put(product.getBarcode(), product);
-		setChanged();
-		Action action = new Action(product, ActionType.EDIT);
-		notifyObservers(action);
+
+		notifyObservers(new Action(product, ActionType.EDIT));
 	}
 
 	/**
@@ -147,9 +148,8 @@ public class ConcreteProductManager extends Observable implements ProductManager
 
 		products.add(product);
 		barcodesToProducts.put(product.getBarcode(), product);
-		setChanged();
-		Action a = new Action(product, ActionType.CREATE);
-		notifyObservers(a);
+
+		notifyObservers(new Action(product, ActionType.CREATE));
 	}
 
 	/**
@@ -178,8 +178,7 @@ public class ConcreteProductManager extends Observable implements ProductManager
 
 		products.remove(product);
 		barcodesToProducts.remove(product.getBarcode());
-		Action action = new Action(product, ActionType.DELETE);
-		setChanged();
-		notifyObservers(action);
+
+		notifyObservers(new Action(product, ActionType.DELETE));
 	}
 }

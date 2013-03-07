@@ -3,16 +3,17 @@ package model;
 import java.io.Serializable;
 import java.util.Iterator;
 import java.util.Map;
-import java.util.Observable;
 import java.util.Set;
 import java.util.TreeMap;
 import java.util.TreeSet;
 
 import model.Action.ActionType;
 
+import common.ObservableWithPublicNotify;
+
 @SuppressWarnings("serial")
-public class ConcreteProductContainerManager extends Observable implements Serializable,
-		ProductContainerManager {
+public class ConcreteProductContainerManager extends ObservableWithPublicNotify implements
+		Serializable, ProductContainerManager {
 	private final Set<StorageUnit> rootStorageUnits;
 	private final Map<String, StorageUnit> nameToStorageUnit;
 
@@ -29,9 +30,8 @@ public class ConcreteProductContainerManager extends Observable implements Seria
 	public void editProductGroup(ProductContainer parent, String oldName, String newName,
 			ProductQuantity newTMS) {
 		ProductGroup pg = parent.editProductGroup(oldName, newName, newTMS);
-		setChanged();
-		Action a = new Action(pg, ActionType.EDIT);
-		this.notifyObservers(a);
+
+		notifyObservers(new Action(pg, ActionType.EDIT));
 	}
 
 	@Override
@@ -115,9 +115,8 @@ public class ConcreteProductContainerManager extends Observable implements Seria
 			rootStorageUnits.add(storageUnit);
 			nameToStorageUnit.put(storageUnit.getName(), storageUnit);
 		}
-		setChanged();
-		Action a = new Action(pc, ActionType.CREATE);
-		this.notifyObservers(a);
+
+		notifyObservers(new Action(pc, ActionType.CREATE));
 	}
 
 	/**
@@ -136,9 +135,8 @@ public class ConcreteProductContainerManager extends Observable implements Seria
 		su.setName(name);
 		rootStorageUnits.add(su);
 		nameToStorageUnit.put(name, su);
-		setChanged();
-		Action a = new Action(su, ActionType.EDIT);
-		this.notifyObservers(a);
+
+		notifyObservers(new Action(su, ActionType.EDIT));
 	}
 
 	/**
@@ -164,8 +162,7 @@ public class ConcreteProductContainerManager extends Observable implements Seria
 				}
 			}
 		}
-		setChanged();
-		Action a = new Action(pc, ActionType.DELETE);
-		this.notifyObservers(a);
+
+		notifyObservers(new Action(pc, ActionType.DELETE));
 	}
 }

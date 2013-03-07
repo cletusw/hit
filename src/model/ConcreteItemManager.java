@@ -4,12 +4,13 @@ import java.io.Serializable;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.Map;
-import java.util.Observable;
 import java.util.Set;
 import java.util.TreeMap;
 import java.util.TreeSet;
 
 import model.Action.ActionType;
+
+import common.ObservableWithPublicNotify;
 
 /**
  * Class that manages Items
@@ -23,7 +24,8 @@ import model.Action.ActionType;
  * 
  */
 @SuppressWarnings("serial")
-public class ConcreteItemManager extends Observable implements ItemManager, Serializable {
+public class ConcreteItemManager extends ObservableWithPublicNotify implements ItemManager,
+		Serializable {
 	private final Set<Item> items;
 	private final Set<Item> removedItems;
 	private final Map<Product, Set<Item>> productsToItems;
@@ -50,9 +52,8 @@ public class ConcreteItemManager extends Observable implements ItemManager, Seri
 		localItems.add(item);
 		productsToItems.put(item.getProduct(), localItems);
 		items.add(item);
-		Action action = new Action(item, ActionType.EDIT);
-		setChanged();
-		notifyObservers(action);
+
+		notifyObservers(new Action(item, ActionType.EDIT));
 	}
 
 	@Override
@@ -98,7 +99,12 @@ public class ConcreteItemManager extends Observable implements ItemManager, Seri
 			throw new IllegalArgumentException("Null Product product");
 		}
 
-		return productsToItems.get(product);
+		Set<Item> items = productsToItems.get(product);
+		if (items == null) {
+			items = new TreeSet<Item>();
+		}
+
+		return items;
 	}
 
 	/**
@@ -131,9 +137,7 @@ public class ConcreteItemManager extends Observable implements ItemManager, Seri
 
 		items.add(item);
 
-		setChanged();
-		Action action = new Action(item, ActionType.CREATE);
-		this.notifyObservers(action);
+		notifyObservers(new Action(item, ActionType.CREATE));
 	}
 
 	/**
@@ -183,8 +187,7 @@ public class ConcreteItemManager extends Observable implements ItemManager, Seri
 
 		item.remove();
 		removedItems.add(item);
-		setChanged();
-		Action action = new Action(item, ActionType.DELETE);
-		this.notifyObservers(action);
+
+		notifyObservers(new Action(item, ActionType.DELETE));
 	}
 }
