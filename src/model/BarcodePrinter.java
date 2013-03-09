@@ -20,6 +20,7 @@ import com.itextpdf.text.pdf.PdfContentByte;
 import com.itextpdf.text.pdf.PdfPCell;
 import com.itextpdf.text.pdf.PdfPTable;
 import com.itextpdf.text.pdf.PdfWriter;
+import common.NonEmptyString;
 
 /**
  * Contains logic to generate a pdf of barcodes for a list of items

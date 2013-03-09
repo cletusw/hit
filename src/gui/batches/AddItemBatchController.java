@@ -12,9 +12,10 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Date;
 
+import common.NonEmptyString;
+
 import model.BarcodePrinter;
 import model.Item;
-import model.NonEmptyString;
 import model.Product;
 import model.ProductContainer;
 import model.ProductManager;
