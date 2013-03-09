@@ -1,6 +1,10 @@
-package model;
+package undo;
 
 import java.util.Date;
+
+import model.Item;
+import model.ItemManager;
+import model.ProductManager;
 
 /**
  * Encapsulates the reversible action of adding a new Item (and perhaps a new Product) to the
