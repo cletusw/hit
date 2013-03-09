@@ -2,6 +2,8 @@ package model;
 
 import java.util.Random;
 
+import common.NonEmptyString;
+
 /**
  * Barcode class -- represents a product barcode.
  * 
