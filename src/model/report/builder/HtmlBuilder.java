@@ -1,4 +1,4 @@
-package model.report;
+package model.report.builder;
 
 public class HtmlBuilder {
 
