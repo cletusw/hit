@@ -14,5 +14,5 @@ public interface Command {
 	/**
 	 * Executes the inverse of the action that this Command represents.
 	 */
-	public void unexecute();
+	public void undo();
 }

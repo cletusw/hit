@@ -58,12 +58,12 @@ public class AddItem implements Command {
 	}
 
 	/**
-	 * Remove an Item previously removed by the execute method.
+	 * Remove an Item previously added by the execute method.
 	 * 
 	 * @pre getAddedItem() != null
 	 * @post getAddedItem() == null
 	 */
 	@Override
-	public void unexecute() {
+	public void undo() {
 	}
 }
