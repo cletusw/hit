@@ -2,35 +2,49 @@ package model.report;
 
 import java.util.Date;
 
+import model.ItemManager;
+import model.report.builder.ReportBuilder;
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 public class RemovedItemsReport extends Report {
-
 	/**
-	 * Generate a new RemovedItemsReport, starting at the last time the report was run.
+	 * Set up an empty RemovedItemsReport.
 	 * 
-	 * @param format
-	 *            ReportFormat to create.
+	 * @param itemManager
+	 *            Manager to use for gathering removed Item data
 	 * 
 	 * @pre true
 	 * @post true
 	 */
-	public void run(ReportFormat format) {
-		throw new NotImplementedException();
+	public RemovedItemsReport(ItemManager itemManager) {
 	}
 
 	/**
-	 * Generate a new RemovedItemsReport, starting from the given dateFilter
+	 * Construct a completed RemovedItemsReport, starting from the last time the report was
+	 * run.
 	 * 
-	 * @param format
-	 *            ReportFormat to create.
-	 * @param dateFilter
-	 *            threshold date for statistics
+	 * @param builder
+	 *            ReportBuilder to use
 	 * 
 	 * @pre true
-	 * @post true
+	 * @post (new Date()).getTime() - getLastRunTime().getTime() < 1000
 	 */
-	public void run(ReportFormat format, Date dateFilter) {
+	public void construct(ReportBuilder builder) {
+		construct(builder, getLastRunTime());
+	}
+
+	/**
+	 * Construct a completed RemovedItemsReport, starting from the given startDate.
+	 * 
+	 * @param builder
+	 *            ReportBuilder to use
+	 * @param startDate
+	 *            Start date for reporting period
+	 * 
+	 * @pre true
+	 * @post (new Date()).getTime() - getLastRunTime().getTime() < 1000
+	 */
+	public void construct(ReportBuilder builder, Date startDate) {
 		throw new NotImplementedException();
 	}
 }
