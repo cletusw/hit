@@ -7,9 +7,12 @@ import java.util.Iterator;
 import java.util.Set;
 import java.util.TreeSet;
 
-import common.NonEmptyString;
-
 import model.Action.ActionType;
+import model.visitor.InventoryVisitable;
+import model.visitor.InventoryVisitor;
+import sun.reflect.generics.reflectiveObjects.NotImplementedException;
+
+import common.NonEmptyString;
 
 /**
  * A representation of a product within the Home Inventory System
@@ -23,7 +26,7 @@ import model.Action.ActionType;
  * @invariant productContainer != null
  */
 @SuppressWarnings("serial")
-public class Product implements Comparable<Object>, Serializable {
+public class Product implements Comparable<Object>, Serializable, InventoryVisitable {
 	/**
 	 * Determines whether the given string is a valid barcode.
 	 * 
@@ -206,6 +209,11 @@ public class Product implements Comparable<Object>, Serializable {
 		this(barcode, description, new Date(), shelfLife, tms, pq, manager);
 	}
 
+	@Override
+	public void accept(InventoryVisitor visitor) {
+		throw new NotImplementedException();
+	}
+
 	/**
 	 * Add a ProductContainer to this Product's set of containers.
 	 * 
@@ -290,6 +298,42 @@ public class Product implements Comparable<Object>, Serializable {
 		}
 
 		return barcode.toString().compareToIgnoreCase(otherBarcode.toString());
+	}
+
+	/**
+	 * Edit the Product. Any parameter that is invalid or null will not be set, but the rest
+	 * will.
+	 * 
+	 * @param newDescription
+	 *            description to set
+	 * @param newQuantity
+	 *            quantity to set
+	 * @param newShelfLife
+	 *            shelf life to set
+	 * @param newTms
+	 *            new three month supply to set
+	 * 
+	 * @pre newDescription != null
+	 * @pre newDescription.length() > 0
+	 * @pre newShelfLife >= 0
+	 * @pre newTms >= 0
+	 */
+	public void edit(String newDescription, ProductQuantity newQuantity, int newShelfLife,
+			int newTms) {
+
+		if (NonEmptyString.isValid(newDescription))
+			setDescription(newDescription);
+
+		if (newQuantity != null)
+			setProductQuantity(newQuantity);
+
+		if (newShelfLife >= 0)
+			setShelfLife(newShelfLife);
+
+		if (newTms >= 0)
+			setThreeMonthSupply(newTms);
+
+		manager.notifyObservers(new Action(this, ActionType.EDIT));
 	}
 
 	/**
@@ -431,6 +475,57 @@ public class Product implements Comparable<Object>, Serializable {
 		return productContainers.contains(container);
 	}
 
+	public void moveToContainer(ProductContainer newContainer, ItemManager itemManager) {
+		if (!newContainer.canAddProduct(getBarcode())) {
+			// this case handles where the product we are adding already exists somewhere in
+			// this subtree
+			ProductContainer oldContainer = null;
+			if (newContainer instanceof StorageUnit)
+				oldContainer = ((StorageUnit) newContainer).getContainerForProduct(this);
+			else
+				oldContainer = ((ProductGroup) newContainer).getRoot().getContainerForProduct(
+						this);
+
+			// Get all the items
+			boolean moveItems = items != null;
+
+			// copy the items so we can loop over them to remove and add
+			Set<Item> itemsToRemove = new HashSet<Item>();
+			Set<Item> itemsToAdd = new HashSet<Item>();
+
+			if (moveItems) {
+				for (Item item : items) {
+					if (oldContainer.contains(item)) {
+						itemsToAdd.add(item);
+						itemsToRemove.add(item);
+					}
+				}
+
+				// remove the items so we can remove the product
+				for (Item item : itemsToRemove) {
+					oldContainer.remove(item, itemManager);
+				}
+			}
+
+			// remove the product
+			oldContainer.remove(this);
+
+			// add the product to the target
+			newContainer.add(this);
+
+			if (moveItems) {
+				// add the items
+				for (Item item : itemsToAdd) {
+					newContainer.add(item);
+					itemManager.manage(item);
+				}
+			}
+		} else {
+			// the Product doesn't already exist in the subtree, so we'll just add it here
+			newContainer.add(this);
+		}
+	}
+
 	/**
 	 * Add a ProductContainer to this Product's set of containers.
 	 * 
@@ -468,6 +563,19 @@ public class Product implements Comparable<Object>, Serializable {
 		}
 
 		items.remove(item);
+	}
+
+	private void setBarcode(String barcode) {
+		this.barcode = new NonEmptyString(barcode);
+	}
+
+	private void setCreationDate(Date date) {
+		Date now = new Date();
+		if (!date.after(now)) {
+			creationDate = date;
+		} else {
+			throw new IllegalArgumentException("CreationDate cannot be in the future");
+		}
 	}
 
 	/**
@@ -514,87 +622,6 @@ public class Product implements Comparable<Object>, Serializable {
 
 		this.shelfLife = shelfLife;
 	}
-	
-	/**
-	 * Edit the Product. Any parameter that is invalid or null will not be set,
-	 * but the rest will.
-	 * 
-	 * @param newDescription description to set
-	 * @param newQuantity quantity to set
-	 * @param newShelfLife shelf life to set
-	 * @param newTms new three month supply to set
-	 * 
-	 * @pre newDescription != null
-	 * @pre newDescription.length() > 0
-	 * @pre newShelfLife >= 0
-	 * @pre newTms >= 0
-	 */
-	public void edit(String newDescription, ProductQuantity newQuantity,
-			int newShelfLife, int newTms){
-		
-		if(NonEmptyString.isValid(newDescription))
-			this.setDescription(newDescription);
-		
-		if(newQuantity != null)
-			this.setProductQuantity(newQuantity);
-		
-		if(newShelfLife >= 0)
-			this.setShelfLife(newShelfLife);
-		
-		if(newTms >= 0)
-			this.setThreeMonthSupply(newTms);
-		
-		this.manager.notifyObservers(new Action(this, ActionType.EDIT));
-	}
-	
-	public void moveToContainer(ProductContainer newContainer, ItemManager itemManager){
-		if (!newContainer.canAddProduct(getBarcode())) {
-			// this case handles where the product we are adding already exists somewhere in this subtree
-			ProductContainer oldContainer = null;
-			if(newContainer instanceof StorageUnit)
-				oldContainer = ((StorageUnit)newContainer).getContainerForProduct(this);
-			else
-				oldContainer = ((ProductGroup)newContainer).getRoot().getContainerForProduct(this);
-
-			// Get all the items
-			boolean moveItems = items != null;
-
-			// copy the items so we can loop over them to remove and add
-			Set<Item> itemsToRemove = new HashSet<Item>();
-			Set<Item> itemsToAdd = new HashSet<Item>();
-
-			if (moveItems) {
-				for (Item item : items) {
-					if (oldContainer.contains(item)) {
-						itemsToAdd.add(item);
-						itemsToRemove.add(item);
-					}
-				}
-
-				// remove the items so we can remove the product
-				for (Item item : itemsToRemove) {
-					oldContainer.remove(item, itemManager);
-				}
-			}
-
-			// remove the product
-			oldContainer.remove(this);
-
-			// add the product to the target
-			newContainer.add(this);
-
-			if (moveItems) {
-				// add the items
-				for (Item item : itemsToAdd) {
-					newContainer.add(item);
-					itemManager.manage(item);
-				}
-			}
-		} else {
-			// the Product doesn't already exist in the subtree, so we'll just add it here
-			newContainer.add(this);
-		}
-	}
 
 	/**
 	 * Sets this products three month supply
@@ -609,18 +636,5 @@ public class Product implements Comparable<Object>, Serializable {
 			throw new IllegalArgumentException("Three Month Supply must be non-negative");
 
 		this.threeMonthSupply = threeMonthSupply;
-	}
-
-	private void setBarcode(String barcode) {
-		this.barcode = new NonEmptyString(barcode);
-	}
-
-	private void setCreationDate(Date date) {
-		Date now = new Date();
-		if (!date.after(now)) {
-			creationDate = date;
-		} else {
-			throw new IllegalArgumentException("CreationDate cannot be in the future");
-		}
 	}
 }
