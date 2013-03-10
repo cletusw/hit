@@ -3,6 +3,10 @@ package model;
 import java.io.Serializable;
 import java.util.Date;
 
+import model.visitor.InventoryVisitable;
+import model.visitor.InventoryVisitor;
+import sun.reflect.generics.reflectiveObjects.NotImplementedException;
+
 /**
  * Represents a physical item in the Home Inventory System.
  * 
@@ -12,7 +16,7 @@ import java.util.Date;
  * @invariant expirationDate != null
  */
 @SuppressWarnings("serial")
-public class Item implements Comparable<Object>, Serializable {
+public class Item implements Comparable<Object>, Serializable, InventoryVisitable {
 	/**
 	 * Method that tests if a Date object is a valid entry date.
 	 * 
@@ -99,6 +103,11 @@ public class Item implements Comparable<Object>, Serializable {
 	public Item(Product product, ProductContainer container, Date entryDate,
 			ItemManager manager) {
 		this(new Barcode(), product, container, entryDate, manager);
+	}
+
+	@Override
+	public void accept(InventoryVisitor visitor) {
+		throw new NotImplementedException();
 	}
 
 	/**
