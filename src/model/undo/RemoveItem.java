@@ -62,7 +62,7 @@ public class RemoveItem implements Command {
 	 * @pre true
 	 * @post true
 	 */
-	public Item getTransferredItem() {
+	public Item getRemovedItem() {
 		return toRemove;
 	}
 
