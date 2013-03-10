@@ -12,6 +12,8 @@ import model.ProductContainer;
  */
 public class TransferItem implements Command {
 	private Item transferredItem;
+	private ProductContainer source;
+	private ProductContainer destination;
 
 	/**
 	 * Constructs a TransferItem command with the given dependencies.
