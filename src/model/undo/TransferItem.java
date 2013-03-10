@@ -48,6 +48,9 @@ public class TransferItem implements Command {
 	 * Returns the Item transferred by the execute method of this Command.
 	 * 
 	 * @return the Item transferred by the execute method of this Command.
+	 * 
+	 * @pre true
+	 * @post true
 	 */
 	public Item getTransferredItem() {
 		return transferredItem;

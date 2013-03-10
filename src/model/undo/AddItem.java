@@ -60,6 +60,9 @@ public class AddItem implements Command {
 	 * Returns the Item added by the execute method of this Command.
 	 * 
 	 * @return the Item added by the execute method of this Command.
+	 * 
+	 * @pre true
+	 * @post true
 	 */
 	public Item getAddedItem() {
 		return addedItem;
