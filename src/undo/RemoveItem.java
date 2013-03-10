@@ -5,11 +5,13 @@ import model.ItemManager;
 import model.ProductContainer;
 
 /**
+ * Class that stores the RemoveItem state for undo/redo operations
  * 
  * @author mgh14
  *
  * @invariant manager != null
  * @invariant toRemove != null
+ * @invariant itemContainer != null
  * 
  */
 public class RemoveItem implements Command {
@@ -20,8 +22,8 @@ public class RemoveItem implements Command {
 	/**
 	 * Constructor.
 	 * 
-	 * @param itemBarcode
-	 * @param manager
+	 * @param itemBarcode the item to locate
+	 * @param manager the program ItemManager
 	 * 
 	 * @pre itemBarcode != null
 	 * @pre manager.getItemByItemBarcode(itemBarcode) != null
