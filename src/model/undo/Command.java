@@ -1,4 +1,4 @@
-package undo;
+package model.undo;
 
 /**
  * Class that encapsulates an undo-able action.

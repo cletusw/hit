@@ -1,4 +1,4 @@
-package undo;
+package model.undo;
 
 import model.Item;
 import model.ProductContainer;
