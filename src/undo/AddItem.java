@@ -23,8 +23,16 @@ public class AddItem implements Command {
 	/**
 	 * Constructs an AddItem command with the given dependencies.
 	 * 
-	 * @param itemToAdd
-	 *            ItemData object containing all the data for the to-be-created Item
+	 * @param productBarcode
+	 *            Barcode of the to-be-created Item's Product
+	 * @param entryDate
+	 *            Entry date of the to-be-created Item
+	 * @param count
+	 *            Number of Items to be created
+	 * @param productManager
+	 *            Manager to notify if a new Product is created
+	 * @param itemManager
+	 *            Manager to notify of the new Item
 	 * 
 	 * @pre productBarcode != null
 	 * @pre entryDate != null
