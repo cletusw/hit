@@ -69,7 +69,6 @@ public class RemoveItem implements Command {
 	/**
 	 * Undoes the remove item action performed previously on toRemove
 	 * 
-	 * @pre execute() has been called
 	 * @pre !itemContainer.contains(toRemove)
 	 * @post itemContainer.contains(toRemove)
 	 * @post toRemove.getContainer().equals(itemContainer)
