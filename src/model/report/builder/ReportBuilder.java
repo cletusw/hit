@@ -4,6 +4,8 @@ import java.util.List;
 
 public interface ReportBuilder {
 
+	public void addListItem(String content);
+
 	/**
 	 * Adds a new row to a table with the given values. There must be a table open in the
 	 * builder and the row must have the correct number of values.
@@ -19,19 +21,13 @@ public interface ReportBuilder {
 	 */
 	public void addRow(List<String> row);
 
-	/**
-	 * Creates a file containing the content added in the file filename. If the given filename
-	 * already exists, no report will be created.
-	 * 
-	 * @param filename
-	 *            Location to create the report
-	 * 
-	 * @pre ReportBuilder has content added
-	 * @pre filename is not already in use
-	 * 
-	 * @post A new file is created at filename
-	 */
-	public void print(String filename);
+	public void endList();
+
+	public void endTable();
+
+	public void setTitle(String title);
+
+	public void startList(String title);
 
 	/**
 	 * Starts new table with headers using the given List values as the header row for the new
