@@ -1,9 +1,9 @@
-package test.mcontrollers;
+package test.gui.modellistener;
 
 import static org.easymock.EasyMock.createNiceMock;
 import static org.junit.Assert.assertTrue;
 import gui.inventory.IInventoryView;
-import gui.modellisteners.ProductContainerListener;
+import gui.modellistener.ProductContainerListener;
 import model.ProductContainerManager;
 
 import org.junit.After;

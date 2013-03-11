@@ -1,4 +1,4 @@
-package gui.modellisteners;
+package gui.modellistener;
 
 import gui.inventory.IInventoryView;
 
