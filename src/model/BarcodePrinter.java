@@ -85,6 +85,7 @@ public class BarcodePrinter {
 	 * @post itemsToPrint.size() == 0
 	 * @post new pdf saved to Labels directory
 	 */
+	@SuppressWarnings("deprecation")
 	public NonEmptyString printBatch() {
 		Date now = new Date();
 		String monthString = Integer.toString(now.getMonth() + 1);
@@ -157,6 +158,7 @@ public class BarcodePrinter {
 		document.close();
 	}
 
+	@SuppressWarnings("deprecation")
 	private PdfPCell drawBarcode(Item i, PdfContentByte cb, float cellWidth) {
 		// Set Barcode
 		BarcodeEAN codeEAN = new BarcodeEAN();

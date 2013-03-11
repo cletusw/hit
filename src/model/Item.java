@@ -28,6 +28,7 @@ public class Item implements Comparable<Object>, Serializable, InventoryVisitabl
 	 * @post true
 	 * 
 	 */
+	@SuppressWarnings("deprecation")
 	public static boolean isValidEntryDate(Date date) {
 		if (date == null)
 			return false;
