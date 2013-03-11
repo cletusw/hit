@@ -8,8 +8,13 @@ import java.util.Stack;
  * @author clayton
  */
 public class UndoManager {
-	private Stack<Command> undoStack;
-	private Stack<Command> redoStack;
+	private final Stack<Command> undoStack;
+	private final Stack<Command> redoStack;
+
+	public UndoManager() {
+		undoStack = new Stack<Command>();
+		redoStack = new Stack<Command>();
+	}
 
 	/**
 	 * Returns true if there are commands available for redoing.
@@ -20,7 +25,7 @@ public class UndoManager {
 	 * @post true
 	 */
 	public boolean canRedo() {
-		return true;
+		return !redoStack.isEmpty();
 	}
 
 	/**
@@ -32,7 +37,7 @@ public class UndoManager {
 	 * @post true
 	 */
 	public boolean canUndo() {
-		return true;
+		return !undoStack.isEmpty();
 	}
 
 	/**
@@ -47,6 +52,11 @@ public class UndoManager {
 	 * @post !canRedo()
 	 */
 	public void execute(Command command) {
+		if (command == null)
+			throw new IllegalArgumentException("Null command");
+		command.execute();
+		undoStack.push(command);
+		redoStack.clear();
 	}
 
 	/**
@@ -56,6 +66,12 @@ public class UndoManager {
 	 * @post canUndo()
 	 */
 	public void redo() {
+		if (!canRedo()) {
+			throw new IllegalStateException("Cannot redo");
+		}
+		Command command = redoStack.pop();
+		command.execute();
+		undoStack.push(command);
 	}
 
 	/**
@@ -65,5 +81,11 @@ public class UndoManager {
 	 * @post canRedo()
 	 */
 	public void undo() {
+		if (!canUndo()) {
+			throw new IllegalStateException("Cannot undo");
+		}
+		Command command = undoStack.pop();
+		command.undo();
+		redoStack.push(command);
 	}
 }
