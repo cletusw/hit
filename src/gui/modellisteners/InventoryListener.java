@@ -1,4 +1,4 @@
-package mcontrollers;
+package gui.modellisteners;
 
 import gui.common.DataWrapper;
 import gui.inventory.IInventoryView;

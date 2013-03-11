@@ -3,7 +3,7 @@ package test.mcontrollers;
 import static org.easymock.EasyMock.createNiceMock;
 import static org.junit.Assert.assertTrue;
 import gui.inventory.IInventoryView;
-import mcontrollers.ProductContainerListener;
+import gui.modellisteners.ProductContainerListener;
 import model.ProductContainerManager;
 
 import org.junit.After;

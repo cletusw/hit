@@ -3,15 +3,15 @@ package gui.inventory;
 import gui.common.Controller;
 import gui.common.DataWrapper;
 import gui.item.ItemData;
+import gui.modellisteners.ItemListener;
+import gui.modellisteners.ProductContainerListener;
+import gui.modellisteners.ProductListener;
 import gui.product.ProductData;
 
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
 
-import mcontrollers.ItemListener;
-import mcontrollers.ProductContainerListener;
-import mcontrollers.ProductListener;
 import model.Item;
 import model.ItemManager;
 import model.Product;
