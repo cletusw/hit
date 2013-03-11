@@ -21,7 +21,7 @@ public abstract class Report {
 	 * @post lastRunTime = now
 	 */
 	protected void updateLastRunTime(){
-		throw new NotImplementedException();
+		lastRunTime = new Date();
 	}
 	
 	/**
@@ -33,6 +33,6 @@ public abstract class Report {
 	 * @post true
 	 */
 	public Date getLastRunTime(){
-		throw new NotImplementedException();
+		return lastRunTime;
 	}
 }
