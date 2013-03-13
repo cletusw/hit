@@ -26,7 +26,7 @@ public class ExpiredItemsReportTest extends EasyMockSupport {
 		HomeInventoryTracker hit = new HomeInventoryTracker();
 		ExpiredItemsReport report = new ExpiredItemsReport(hit.getProductContainerManager());
 
-		ReportBuilder mockBuilder = createNiceMock(ReportBuilder.class);
+		ReportBuilder mockBuilder = createMock(ReportBuilder.class);
 		// Expect:
 		mockBuilder.setTitle("Expired Items");
 		mockBuilder.startTable(Arrays.asList("Description", "Storage Unit", "Product Group",
