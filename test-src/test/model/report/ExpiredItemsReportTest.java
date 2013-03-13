@@ -1,7 +1,10 @@
 package test.model.report;
 
-import model.ProductContainerManager;
+import java.util.Arrays;
+
+import model.HomeInventoryTracker;
 import model.report.ExpiredItemsReport;
+import model.report.builder.ReportBuilder;
 
 import org.easymock.EasyMockSupport;
 import org.junit.After;
@@ -19,8 +22,20 @@ public class ExpiredItemsReportTest extends EasyMockSupport {
 	}
 
 	@Test
-	public void test() {
-		ProductContainerManager productContainerManager = createNiceMock(ProductContainerManager.class);
-		new ExpiredItemsReport(productContainerManager);
+	public void testOnEmptyTree() {
+		HomeInventoryTracker hit = new HomeInventoryTracker();
+		ExpiredItemsReport report = new ExpiredItemsReport(hit.getProductContainerManager());
+
+		ReportBuilder mockBuilder = createNiceMock(ReportBuilder.class);
+		// Expect:
+		mockBuilder.setTitle("Expired Items");
+		mockBuilder.startTable(Arrays.asList("Description", "Storage Unit", "Product Group",
+				"Entry Date", "Expire Date", "Item Barcode"));
+
+		replayAll();
+
+		report.construct(mockBuilder);
+
+		verifyAll();
 	}
 }

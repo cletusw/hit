@@ -1,5 +1,7 @@
 package model.report;
 
+import java.util.Arrays;
+
 import model.Item;
 import model.Product;
 import model.ProductContainerManager;
@@ -32,7 +34,9 @@ public class ExpiredItemsReport extends Report implements InventoryVisitor {
 	 * @post (new Date()).getTime() - getLastRunTime().getTime() < 1000
 	 */
 	public void construct(ReportBuilder builder) {
-		throw new UnsupportedOperationException();
+		builder.setTitle("Expired Items");
+		builder.startTable(Arrays.asList("Description", "Storage Unit", "Product Group",
+				"Entry Date", "Expire Date", "Item Barcode"));
 	}
 
 	@Override
