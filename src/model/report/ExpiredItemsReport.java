@@ -37,6 +37,7 @@ public class ExpiredItemsReport extends Report implements InventoryVisitor {
 		builder.addTitle("Expired Items");
 		builder.startTable(Arrays.asList("Description", "Storage Unit", "Product Group",
 				"Entry Date", "Expire Date", "Item Barcode"));
+		builder.endTable();
 	}
 
 	@Override
