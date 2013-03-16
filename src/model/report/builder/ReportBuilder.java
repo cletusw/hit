@@ -21,11 +21,11 @@ public interface ReportBuilder {
 	 */
 	public void addRow(List<String> row);
 
+	public void addTitle(String title);
+
 	public void endList();
 
 	public void endTable();
-
-	public void setTitle(String title);
 
 	public void startList(String title);
 

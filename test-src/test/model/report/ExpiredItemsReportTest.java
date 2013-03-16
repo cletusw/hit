@@ -28,7 +28,7 @@ public class ExpiredItemsReportTest extends EasyMockSupport {
 
 		ReportBuilder mockBuilder = createMock(ReportBuilder.class);
 		// Expect:
-		mockBuilder.setTitle("Expired Items");
+		mockBuilder.addTitle("Expired Items");
 		mockBuilder.startTable(Arrays.asList("Description", "Storage Unit", "Product Group",
 				"Entry Date", "Expire Date", "Item Barcode"));
 

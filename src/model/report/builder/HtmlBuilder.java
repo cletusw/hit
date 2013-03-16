@@ -13,6 +13,10 @@ public class HtmlBuilder implements ReportBuilder {
 	}
 
 	@Override
+	public void addTitle(String title) {
+	}
+
+	@Override
 	public void endList() {
 	}
 
@@ -33,10 +37,6 @@ public class HtmlBuilder implements ReportBuilder {
 	 * @post A new file is created at filename
 	 */
 	public void printToFile(String filename) {
-	}
-
-	@Override
-	public void setTitle(String title) {
 	}
 
 	@Override
