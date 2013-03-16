@@ -69,43 +69,6 @@ public class BarcodePrinter {
 		itemsToPrint.add(i);
 	}
 
-	public boolean hasItemsToPrint() {
-		return itemsToPrint.size() > 0;
-	}
-
-	/**
-	 * Prints a pdf of Items in this batch (added by addItemToBatch()). Creates a unique
-	 * filename to save this batch of barcodes to. Filename is of the format labels-(Date).pdf
-	 * and is saved in the "Labels" directory. If the director does not exist, the directory
-	 * will first be created.
-	 * 
-	 * @return NonEmptyString filename where the batch was saved
-	 * 
-	 * @pre true
-	 * @post itemsToPrint.size() == 0
-	 * @post new pdf saved to Labels directory
-	 */
-	@SuppressWarnings("deprecation")
-	public NonEmptyString printBatch() {
-		Date now = new Date();
-		String monthString = Integer.toString(now.getMonth() + 1);
-		if (monthString.length() == 1) {
-			monthString = "0" + monthString;
-		}
-		String filename = "labels-" + monthString + now.getDate() + (now.getYear() + 1900)
-				+ now.getHours() + now.getMinutes() + now.getSeconds() + ".pdf";
-		try {
-			createDocument(filename);
-		} catch (FileNotFoundException e) {
-			e.printStackTrace();
-		} catch (DocumentException e) {
-			e.printStackTrace();
-		}
-
-		itemsToPrint.clear();
-		return new NonEmptyString(saveFolder + "/" + filename);
-	}
-
 	private void createDocument(String filename) throws FileNotFoundException,
 			DocumentException {
 
@@ -213,4 +176,40 @@ public class BarcodePrinter {
 		return cell;
 	}
 
+	public boolean hasItemsToPrint() {
+		return itemsToPrint.size() > 0;
+	}
+
+	/**
+	 * Prints a pdf of Items in this batch (added by addItemToBatch()). Creates a unique
+	 * filename to save this batch of barcodes to. Filename is of the format labels-(Date).pdf
+	 * and is saved in the "Labels" directory. If the director does not exist, the directory
+	 * will first be created.
+	 * 
+	 * @return NonEmptyString filename where the batch was saved
+	 * 
+	 * @pre true
+	 * @post itemsToPrint.size() == 0
+	 * @post new pdf saved to Labels directory
+	 */
+	@SuppressWarnings("deprecation")
+	public NonEmptyString printBatch() {
+		Date now = new Date();
+		String monthString = Integer.toString(now.getMonth() + 1);
+		if (monthString.length() == 1) {
+			monthString = "0" + monthString;
+		}
+		String filename = "labels-" + monthString + now.getDate() + (now.getYear() + 1900)
+				+ now.getHours() + now.getMinutes() + now.getSeconds() + ".pdf";
+		try {
+			createDocument(filename);
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		} catch (DocumentException e) {
+			e.printStackTrace();
+		}
+
+		itemsToPrint.clear();
+		return new NonEmptyString(saveFolder + "/" + filename);
+	}
 }
