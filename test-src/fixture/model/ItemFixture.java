@@ -8,6 +8,7 @@ import model.Item;
 import model.ItemManager;
 import model.Product;
 import model.ProductContainer;
+import builder.model.ProductBuilder;
 
 @SuppressWarnings("serial")
 public class ItemFixture extends Item {
@@ -20,6 +21,6 @@ public class ItemFixture extends Item {
 	}
 
 	public ItemFixture(ProductContainer productContainer) {
-		this(new ProductFixture(), productContainer);
+		this(new ProductBuilder().build(), productContainer);
 	}
 }
