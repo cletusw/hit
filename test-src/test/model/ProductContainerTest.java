@@ -19,8 +19,8 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
+import builder.model.ProductBuilder;
 import fixture.model.ItemFixture;
-import fixture.model.ProductFixture;
 import fixture.model.ProductGroupFixture;
 import fixture.model.StorageUnitFixture;
 
@@ -44,7 +44,7 @@ public class ProductContainerTest {
 		storageUnit = new StorageUnitFixture();
 		productGroup = new ProductGroupFixture(storageUnit);
 		nestedProductGroup = new ProductGroupFixture(productGroup);
-		product = new ProductFixture();
+		product = new ProductBuilder().build();
 		item = new ItemFixture();
 	}
 
@@ -184,21 +184,21 @@ public class ProductContainerTest {
 		ProductQuantity quantity = new ProductQuantity(1.1f, Unit.FLUID_OUNCES);
 		ProductGroup group = new ProductGroup("PG", quantity, Unit.FLUID_OUNCES, root, man);
 		group.edit("newPG", new ProductQuantity(1.0f, Unit.COUNT));
-		//root.editProductGroup("PG", "newPG", );
+		// root.editProductGroup("PG", "newPG", );
 		assertTrue(root.getProductGroup("newPG") != null);
 		assertTrue(root.getProductGroup("newPG").getThreeMonthSupply().getUnits()
 				.equals(Unit.COUNT));
 		assertTrue(root.getProductGroup("newPG").getThreeMonthSupply().getQuantity() == 1.0f);
 
 		group.edit(null, new ProductQuantity(2.2f, Unit.GALLONS));
-		//root.editProductGroup("newPG", null, );
+		// root.editProductGroup("newPG", null, );
 		assertTrue(root.getProductGroup("newPG") != null);
 		assertTrue(root.getProductGroup("newPG").getThreeMonthSupply().getUnits()
 				.equals(Unit.GALLONS));
 		assertTrue(root.getProductGroup("newPG").getThreeMonthSupply().getQuantity() == 2.2f);
 
 		group.edit("PG", null);
-		//root.editProductGroup("newPG", "PG", null);
+		// root.editProductGroup("newPG", "PG", null);
 		assertTrue(root.getProductGroup("PG") != null);
 		assertTrue(root.getProductGroup("PG").getThreeMonthSupply().getUnits()
 				.equals(Unit.GALLONS));
@@ -298,7 +298,7 @@ public class ProductContainerTest {
 		assertFalse(productGroup1.contains(product));
 		productGroup1.add(product);
 		assertTrue(productGroup1.contains(product));
-		Product product2 = new ProductFixture();
+		Product product2 = new ProductBuilder().build();
 		productGroup1.add(product2);
 		assertTrue(productGroup1.contains(product2));
 		assertTrue(productGroup1.containsProduct(product2.getBarcode()));

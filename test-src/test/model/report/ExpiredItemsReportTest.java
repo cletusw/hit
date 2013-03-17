@@ -12,9 +12,14 @@ import org.junit.Before;
 import org.junit.Test;
 
 public class ExpiredItemsReportTest extends EasyMockSupport {
+	private ExpiredItemsReport report;
+	private ReportBuilder mockBuilder;
 
 	@Before
 	public void setUp() throws Exception {
+		HomeInventoryTracker hit = new HomeInventoryTracker();
+		report = new ExpiredItemsReport(hit.getProductContainerManager());
+		mockBuilder = createMock(ReportBuilder.class);
 	}
 
 	@After
@@ -23,14 +28,11 @@ public class ExpiredItemsReportTest extends EasyMockSupport {
 
 	@Test
 	public void testOnEmptyTree() {
-		HomeInventoryTracker hit = new HomeInventoryTracker();
-		ExpiredItemsReport report = new ExpiredItemsReport(hit.getProductContainerManager());
-
-		ReportBuilder mockBuilder = createMock(ReportBuilder.class);
 		// Expect:
 		mockBuilder.addDocumentTitle("Expired Items");
 		mockBuilder.startTable(Arrays.asList("Description", "Storage Unit", "Product Group",
 				"Entry Date", "Expire Date", "Item Barcode"));
+		mockBuilder.endTable();
 
 		replayAll();
 
