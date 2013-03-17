@@ -1,5 +1,6 @@
 package model.report.builder;
 
+import java.io.IOException;
 import java.util.List;
 
 public interface ReportBuilder {
@@ -61,10 +62,14 @@ public interface ReportBuilder {
 	public void addTableRow(List<String> row);
 
 	/**
-	 * Closes any open elements in the document and closes the document. Nothing can be added
-	 * to the document after this is called.
+	 * Closes any open elements in the document and prints to the given filename
+	 * 
+	 * @param filename
+	 *            String filename to write to
+	 * @throws IOException
+	 *             If the file is not found, or cannot be written to
 	 */
-	public void finish();
+	public void print(String filename) throws IOException;
 
 	/**
 	 * Opens a new list with the first row equal to the value of title. This closes any

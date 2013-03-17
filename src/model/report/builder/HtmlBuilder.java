@@ -1,5 +1,6 @@
 package model.report.builder;
 
+import java.io.IOException;
 import java.util.List;
 
 public class HtmlBuilder implements ReportBuilder {
@@ -21,24 +22,9 @@ public class HtmlBuilder implements ReportBuilder {
 	}
 
 	@Override
-	public void finish() {
+	public void print(String filename) throws IOException {
 		// TODO Auto-generated method stub
 
-	}
-
-	/**
-	 * Creates a file containing the content added in the file filename. If the given filename
-	 * already exists, no report will be created.
-	 * 
-	 * @param filename
-	 *            Location to create the report
-	 * 
-	 * @pre PdfBuilder has content added
-	 * @pre filename is not already in use
-	 * 
-	 * @post A new file is created at filename
-	 */
-	public void printToFile(String filename) {
 	}
 
 	@Override

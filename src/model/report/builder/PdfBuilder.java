@@ -1,7 +1,8 @@
 package model.report.builder;
 
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 import com.itextpdf.text.Chunk;
@@ -13,30 +14,15 @@ import com.itextpdf.text.Paragraph;
 import com.itextpdf.text.pdf.PdfPCell;
 import com.itextpdf.text.pdf.PdfPTable;
 import com.itextpdf.text.pdf.PdfWriter;
-import common.NonEmptyString;
 
-public class PdfBuilder extends FileBuilder {
+public class PdfBuilder implements ReportBuilder {
 
-	private Document document;
-	private PdfWriter writer;
 	private PdfPTable table;
 	private Paragraph list;
+	private List<Element> elements;
 
-	/**
-	 * Constructs a new PdfBuilder writing to the specified filename.
-	 * 
-	 * @param file
-	 *            NonEmptyString filename to write pdf content to
-	 * @throws FileNotFoundException
-	 *             thrown if unable to create a FileOutputStream using filename
-	 * @throws DocumentException
-	 *             thrown if unable to get PdfWriter for document.
-	 */
-	public PdfBuilder(NonEmptyString file) throws FileNotFoundException, DocumentException {
-		super(file);
-		document = new Document();
-		writer = PdfWriter.getInstance(document, new FileOutputStream(filename.toString()));
-		document.open();
+	public PdfBuilder() {
+		elements = new ArrayList<Element>();
 	}
 
 	@Override
@@ -49,11 +35,7 @@ public class PdfBuilder extends FileBuilder {
 		titleParagraph.getFont().setSize(19);
 		titleParagraph.getFont().setStyle(Font.BOLD);
 		titleParagraph.add(new Chunk(title));
-		try {
-			document.add(titleParagraph);
-		} catch (DocumentException e) {
-			throw new IllegalStateException("Unable to add title to document");
-		}
+		elements.add(titleParagraph);
 	}
 
 	@Override
@@ -61,7 +43,7 @@ public class PdfBuilder extends FileBuilder {
 		if (list == null)
 			throw new IllegalStateException("List must be opened before adding content");
 
-		Chunk newLine = new Chunk(" - " + content);
+		Paragraph newLine = new Paragraph(" - " + content);
 		list.add(newLine);
 	}
 
@@ -91,11 +73,7 @@ public class PdfBuilder extends FileBuilder {
 		titleParagraph.setSpacingAfter(10);
 		titleParagraph.getFont().setSize(15);
 		titleParagraph.add(new Chunk(title));
-		try {
-			document.add(titleParagraph);
-		} catch (DocumentException e) {
-			throw new IllegalStateException("Unable to add subtitle to document");
-		}
+		elements.add(titleParagraph);
 	}
 
 	@Override
@@ -105,11 +83,7 @@ public class PdfBuilder extends FileBuilder {
 
 	private void endList() {
 		if (list != null)
-			try {
-				document.add(list);
-			} catch (DocumentException e) {
-				throw new IllegalStateException("Unable to end previous list");
-			}
+			elements.add(list);
 		list = null;
 	}
 
@@ -124,17 +98,27 @@ public class PdfBuilder extends FileBuilder {
 
 	private void endTable() {
 		if (table != null)
-			try {
-				document.add(table);
-			} catch (DocumentException e) {
-				throw new IllegalStateException("Unable to end table");
-			}
+			elements.add(table);
 		table = null;
 	}
 
 	@Override
-	public void finish() {
+	public void print(String filename) throws IOException {
 		endPreviousElement();
+		Document document = new Document();
+		try {
+			PdfWriter.getInstance(document, new FileOutputStream(filename.toString()));
+		} catch (DocumentException e) {
+			throw new IOException("Unable to write pdf content to file " + filename);
+		}
+		document.open();
+		for (Element element : elements) {
+			try {
+				document.add(element);
+			} catch (DocumentException e) {
+				e.printStackTrace();
+			}
+		}
 		document.close();
 	}
 
@@ -143,7 +127,7 @@ public class PdfBuilder extends FileBuilder {
 		endPreviousElement();
 
 		list = new Paragraph();
-		Chunk firstLine = new Chunk(title);
+		Paragraph firstLine = new Paragraph(title);
 		list.add(firstLine);
 	}
 
