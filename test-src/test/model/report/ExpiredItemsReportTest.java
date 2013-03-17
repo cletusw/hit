@@ -12,12 +12,13 @@ import org.junit.Before;
 import org.junit.Test;
 
 public class ExpiredItemsReportTest extends EasyMockSupport {
+	private HomeInventoryTracker hit;
 	private ExpiredItemsReport report;
 	private ReportBuilder mockBuilder;
 
 	@Before
 	public void setUp() throws Exception {
-		HomeInventoryTracker hit = new HomeInventoryTracker();
+		hit = new HomeInventoryTracker();
 		report = new ExpiredItemsReport(hit.getProductContainerManager());
 		mockBuilder = createMock(ReportBuilder.class);
 	}
