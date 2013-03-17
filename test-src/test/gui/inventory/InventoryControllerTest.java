@@ -5,7 +5,6 @@ import static org.easymock.EasyMock.expect;
 import static org.easymock.EasyMock.replay;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
-import fixture.model.ItemFixture;
 import fixture.model.ProductGroupFixture;
 import fixture.model.StorageUnitFixture;
 import gui.common.DataWrapper;
@@ -35,6 +34,8 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
+import builder.model.ItemBuilder;
+
 public class InventoryControllerTest extends EasyMockSupport {
 	private InventoryController inventoryController;
 	private IInventoryView mockView;
@@ -42,7 +43,7 @@ public class InventoryControllerTest extends EasyMockSupport {
 
 	@Before
 	public void setUp() throws Exception {
-		item = new ItemFixture();
+		item = new ItemBuilder().build();
 
 		ProductContainerManager mockProductContainerManager = createNiceMock(ProductContainerManager.class);
 		ItemManager mockItemManager = createNiceMock(ItemManager.class);

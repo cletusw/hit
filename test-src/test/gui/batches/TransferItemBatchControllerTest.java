@@ -12,7 +12,7 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-import fixture.model.ItemFixture;
+import builder.model.ItemBuilder;
 import fixture.model.StorageUnitFixture;
 import gui.batches.ITransferItemBatchView;
 import gui.batches.TransferItemBatchController;
@@ -32,7 +32,7 @@ public class TransferItemBatchControllerTest extends EasyMockSupport {
 	public void test() {
 		StorageUnit source = new StorageUnitFixture();
 		StorageUnit destination = new StorageUnitFixture();
-		Item item1 = new ItemFixture(source);
+		Item item1 = new ItemBuilder().container(source).build();
 
 		ITransferItemBatchView mockView = createNiceMock(ITransferItemBatchView.class);
 		ItemManager mockItemManager = createNiceMock(ItemManager.class);

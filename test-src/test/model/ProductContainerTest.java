@@ -19,8 +19,8 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
+import builder.model.ItemBuilder;
 import builder.model.ProductBuilder;
-import fixture.model.ItemFixture;
 import fixture.model.ProductGroupFixture;
 import fixture.model.StorageUnitFixture;
 
@@ -45,7 +45,7 @@ public class ProductContainerTest {
 		productGroup = new ProductGroupFixture(storageUnit);
 		nestedProductGroup = new ProductGroupFixture(productGroup);
 		product = new ProductBuilder().build();
-		item = new ItemFixture();
+		item = new ItemBuilder().build();
 	}
 
 	@After
@@ -219,7 +219,7 @@ public class ProductContainerTest {
 	public void testGetCurrentSupply() {
 		nestedProductGroup.add(item.getProduct());
 		storageUnit.add(item);
-		new ItemFixture(item.getProduct(), storageUnit);
+		new ItemBuilder().product(item.getProduct()).container(storageUnit).build();
 
 		assertTrue(storageUnit.getCurrentSupply(item.getProduct()).equals(
 				new ProductQuantity(2, Unit.COUNT)));
@@ -241,7 +241,7 @@ public class ProductContainerTest {
 	@Test
 	public void testMoveIntoContainer() {
 		productGroup.add(product);
-		Item item = new ItemFixture(product, storageUnit);
+		Item item = new ItemBuilder().product(product).container(storageUnit).build();
 		ProductGroup siblingProductGroup = new ProductGroupFixture(storageUnit);
 		productGroup.moveIntoContainer(item, siblingProductGroup);
 		assertTrue(siblingProductGroup.contains(item));
