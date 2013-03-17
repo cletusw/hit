@@ -34,7 +34,7 @@ public class ExpiredItemsReport extends Report implements InventoryVisitor {
 	 * @post (new Date()).getTime() - getLastRunTime().getTime() < 1000
 	 */
 	public void construct(ReportBuilder builder) {
-		builder.addTitle("Expired Items");
+		builder.addDocumentTitle("Expired Items");
 		builder.startTable(Arrays.asList("Description", "Storage Unit", "Product Group",
 				"Entry Date", "Expire Date", "Item Barcode"));
 	}

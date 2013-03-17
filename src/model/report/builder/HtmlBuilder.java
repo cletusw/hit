@@ -5,23 +5,19 @@ import java.util.List;
 public class HtmlBuilder implements ReportBuilder {
 
 	@Override
+	public void addDocumentTitle(String title) {
+	}
+
+	@Override
 	public void addListItem(String content) {
 	}
 
 	@Override
-	public void addRow(List<String> row) {
+	public void addSectionTitle(String title) {
 	}
 
 	@Override
-	public void addTitle(String title) {
-	}
-
-	@Override
-	public void endList() {
-	}
-
-	@Override
-	public void endTable() {
+	public void addTableRow(List<String> row) {
 	}
 
 	/**
@@ -46,9 +42,4 @@ public class HtmlBuilder implements ReportBuilder {
 	@Override
 	public void startTable(List<String> headers) {
 	}
-
-	@Override
-	public void startTable(String title, List<String> headers) {
-	}
-
 }
