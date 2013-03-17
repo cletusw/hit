@@ -25,6 +25,8 @@ public interface ReportBuilder {
 	 */
 	public void addTableRow(List<String> row);
 
+	public void finish();
+
 	public void startList(String title);
 
 	/**

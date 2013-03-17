@@ -134,6 +134,12 @@ public class PdfBuilder extends FileBuilder {
 	}
 
 	@Override
+	public void finish() {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
 	public void startList(String title) {
 		if (list != null || table != null) {
 			throw new IllegalStateException(

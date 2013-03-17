@@ -20,6 +20,12 @@ public class HtmlBuilder implements ReportBuilder {
 	public void addTableRow(List<String> row) {
 	}
 
+	@Override
+	public void finish() {
+		// TODO Auto-generated method stub
+
+	}
+
 	/**
 	 * Creates a file containing the content added in the file filename. If the given filename
 	 * already exists, no report will be created.
