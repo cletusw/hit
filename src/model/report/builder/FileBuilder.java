@@ -21,12 +21,6 @@ public abstract class FileBuilder implements ReportBuilder {
 	}
 
 	/**
-	 * Closes this builder's file resource, signaling that building is complete. Should finish
-	 * any incomplete sections and close the file.
-	 */
-	public abstract void close();
-
-	/**
 	 * Opens the file built by this builder.
 	 * 
 	 * @throws IOException

@@ -41,8 +41,7 @@ public class PdfBuilder extends FileBuilder {
 
 	@Override
 	public void addDocumentTitle(String title) {
-		if (list != null || table != null)
-			throw new IllegalStateException("Must have all elements closed");
+		endPreviousElement();
 
 		Paragraph titleParagraph = new Paragraph();
 		titleParagraph.setSpacingAfter(25);
@@ -69,8 +68,11 @@ public class PdfBuilder extends FileBuilder {
 	private void addRow(List<String> rowValues, int style, float fontSize) {
 		if (table == null)
 			throw new IllegalStateException("Cannot write row before opening table");
-		if (list != null)
-			throw new IllegalStateException("Must have all elements closed");
+
+		if (rowValues.size() != table.getNumberOfColumns())
+			throw new IllegalArgumentException(
+					"Number of strings in list must be equal to number of columns in table");
+
 		for (String value : rowValues) {
 			PdfPCell cell = new PdfPCell();
 			Chunk content = new Chunk(value);
@@ -83,8 +85,7 @@ public class PdfBuilder extends FileBuilder {
 
 	@Override
 	public void addSectionTitle(String title) {
-		if (list != null || table != null)
-			throw new IllegalStateException("Must have all elements closed");
+		endPreviousElement();
 
 		Paragraph titleParagraph = new Paragraph();
 		titleParagraph.setSpacingAfter(10);
@@ -102,17 +103,6 @@ public class PdfBuilder extends FileBuilder {
 		addRow(row, Font.NORMAL, 8);
 	}
 
-	private boolean canStartNewElement() {
-		return (list != null && table != null);
-	}
-
-	@Override
-	public void close() {
-		endTable();
-		endList();
-		document.close();
-	}
-
 	private void endList() {
 		if (list != null)
 			try {
@@ -121,6 +111,15 @@ public class PdfBuilder extends FileBuilder {
 				throw new IllegalStateException("Unable to end previous list");
 			}
 		list = null;
+	}
+
+	private void endPreviousElement() {
+		if (table != null)
+			endTable();
+
+		if (list != null)
+			endList();
+
 	}
 
 	private void endTable() {
@@ -135,16 +134,14 @@ public class PdfBuilder extends FileBuilder {
 
 	@Override
 	public void finish() {
-		// TODO Auto-generated method stub
-
+		endPreviousElement();
+		document.close();
 	}
 
 	@Override
 	public void startList(String title) {
-		if (list != null || table != null) {
-			throw new IllegalStateException(
-					"Must close previous table and list before starting new list");
-		}
+		endPreviousElement();
+
 		list = new Paragraph();
 		Chunk firstLine = new Chunk(title);
 		list.add(firstLine);
@@ -152,6 +149,8 @@ public class PdfBuilder extends FileBuilder {
 
 	@Override
 	public void startTable(List<String> headers) {
+		endPreviousElement();
+
 		table = new PdfPTable(headers.size());
 		table.setWidthPercentage(100);
 		table.setSpacingAfter(20);
