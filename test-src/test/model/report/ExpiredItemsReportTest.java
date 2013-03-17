@@ -32,7 +32,6 @@ public class ExpiredItemsReportTest extends EasyMockSupport {
 		mockBuilder.addDocumentTitle("Expired Items");
 		mockBuilder.startTable(Arrays.asList("Description", "Storage Unit", "Product Group",
 				"Entry Date", "Expire Date", "Item Barcode"));
-		mockBuilder.endTable();
 
 		replayAll();
 
