@@ -1,6 +1,7 @@
 package model;
 
 import java.util.Date;
+import java.util.Map;
 import java.util.Observer;
 import java.util.Set;
 
@@ -15,7 +16,7 @@ public interface ItemManager {
 
 	public Set<Item> getItemsByProduct(Product product);
 
-	public Set<Item> getRemovedItems();
+	public Map<Product, Set<Item>> getRemovedItemsByProduct();
 
 	public void manage(Item item);
 

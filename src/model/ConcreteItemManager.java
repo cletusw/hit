@@ -28,7 +28,7 @@ import common.ObservableWithPublicNotify;
 public class ConcreteItemManager extends ObservableWithPublicNotify implements ItemManager,
 		Serializable {
 	private final Set<Item> items;
-	private final Set<Item> removedItems;
+	private final Map<Product, Set<Item>> removedItems;
 	private final Map<Product, Set<Item>> productsToItems;
 
 	/**
@@ -40,7 +40,7 @@ public class ConcreteItemManager extends ObservableWithPublicNotify implements I
 	 */
 	public ConcreteItemManager() {
 		items = new TreeSet<Item>();
-		removedItems = new TreeSet<Item>();
+		removedItems = new TreeMap<Product, Set<Item>>();
 		productsToItems = new TreeMap<Product, Set<Item>>();
 	}
 
@@ -117,8 +117,8 @@ public class ConcreteItemManager extends ObservableWithPublicNotify implements I
 	 * @post true
 	 */
 	@Override
-	public Set<Item> getRemovedItems() {
-		return Collections.unmodifiableSet(removedItems);
+	public Map<Product, Set<Item>> getRemovedItemsByProduct() {
+		return Collections.unmodifiableMap(removedItems);
 	}
 
 	/**
@@ -201,6 +201,10 @@ public class ConcreteItemManager extends ObservableWithPublicNotify implements I
 	@Override
 	public void unmanage(Item item) {
 		undoManage(item);
-		removedItems.add(item);
+		Set<Item> items = new TreeSet<Item>();
+		if (removedItems.containsKey(item.getProduct()))
+			items = removedItems.get(item.getProduct());
+		items.add(item);
+		removedItems.put(item.getProduct(), items);
 	}
 }
