@@ -50,13 +50,15 @@ public class UndoManager {
 	 * @pre command != null
 	 * @post canUndo()
 	 * @post !canRedo()
+	 * @return the Command that was executed.
 	 */
-	public void execute(Command command) {
+	public Command execute(Command command) {
 		if (command == null)
 			throw new IllegalArgumentException("Null command");
 		command.execute();
 		undoStack.push(command);
 		redoStack.clear();
+		return command;
 	}
 
 	/**
@@ -64,14 +66,16 @@ public class UndoManager {
 	 * 
 	 * @pre canRedo()
 	 * @post canUndo()
+	 * @return the Command that was redone.
 	 */
-	public void redo() {
+	public Command redo() {
 		if (!canRedo()) {
 			throw new IllegalStateException("Cannot redo");
 		}
 		Command command = redoStack.pop();
 		command.execute();
 		undoStack.push(command);
+		return command;
 	}
 
 	/**
@@ -79,13 +83,15 @@ public class UndoManager {
 	 * 
 	 * @pre canUndo()
 	 * @post canRedo()
+	 * @return the Command that was undone.
 	 */
-	public void undo() {
+	public Command undo() {
 		if (!canUndo()) {
 			throw new IllegalStateException("Cannot undo");
 		}
 		Command command = undoStack.pop();
 		command.undo();
 		redoStack.push(command);
+		return command;
 	}
 }
