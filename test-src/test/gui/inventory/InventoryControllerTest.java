@@ -5,7 +5,6 @@ import static org.easymock.EasyMock.expect;
 import static org.easymock.EasyMock.replay;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
-import fixture.model.ProductGroupFixture;
 import fixture.model.StorageUnitFixture;
 import gui.common.DataWrapper;
 import gui.inventory.IInventoryView;
@@ -35,6 +34,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import builder.model.ItemBuilder;
+import builder.model.ProductGroupBuilder;
 
 public class InventoryControllerTest extends EasyMockSupport {
 	private InventoryController inventoryController;
@@ -170,7 +170,7 @@ public class InventoryControllerTest extends EasyMockSupport {
 	@Test
 	public void testCanEditProductGroup() {
 		ProductContainer container = item.getContainer();
-		ProductGroup selected = new ProductGroupFixture(container);
+		ProductGroup selected = new ProductGroupBuilder().parent(container).build();
 		expect(mockView.getSelectedProductContainer()).andStubReturn(
 				DataWrapper.wrap(selected));
 		replayAll();
@@ -247,7 +247,7 @@ public class InventoryControllerTest extends EasyMockSupport {
 	public void testDeleteProductGroup() {
 		ProductContainer container = item.getContainer();
 		Product selected = item.getProduct();
-		ProductGroup child = new ProductGroupFixture(container);
+		ProductGroup child = new ProductGroupBuilder().parent(container).build();
 		expect(mockView.getProductContainerManager()).andStubReturn(
 				new ConcreteProductContainerManager());
 		expect(mockView.getSelectedProductContainer()).andStubReturn(DataWrapper.wrap(child));
