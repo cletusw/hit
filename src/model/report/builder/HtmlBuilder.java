@@ -1,5 +1,6 @@
 package model.report.builder;
 
+import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -7,6 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class HtmlBuilder implements ReportBuilder {
+	private String EXTENSION = ".html";
 
 	private boolean openTable = false;
 	private int tableColumns = -1;
@@ -77,8 +79,9 @@ public class HtmlBuilder implements ReportBuilder {
 	}
 
 	@Override
-	public void print(String filename) throws IOException {
-		FileWriter file = new FileWriter(filename + ".html");
+	public File print(String filename) throws IOException {
+		filename += EXTENSION;
+		FileWriter file = new FileWriter(filename);
 		PrintWriter writer = new PrintWriter(file);
 
 		// start document
@@ -91,6 +94,7 @@ public class HtmlBuilder implements ReportBuilder {
 		writer.write(content.toString());
 		writer.write(closeBody);
 		writer.close();
+		return new File(filename);
 	}
 
 	@Override

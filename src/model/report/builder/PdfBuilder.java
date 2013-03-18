@@ -1,5 +1,6 @@
 package model.report.builder;
 
+import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -20,6 +21,7 @@ public class PdfBuilder implements ReportBuilder {
 	private PdfPTable table;
 	private Paragraph list;
 	private List<Element> elements;
+	private String EXTENSION = ".pdf";
 
 	public PdfBuilder() {
 		elements = new ArrayList<Element>();
@@ -64,8 +66,8 @@ public class PdfBuilder implements ReportBuilder {
 	}
 
 	@Override
-	public void print(String filename) throws IOException {
-		filename += ".pdf";
+	public File print(String filename) throws IOException {
+		filename += EXTENSION;
 		endPreviousElement();
 		Document document = new Document();
 		try {
@@ -82,6 +84,7 @@ public class PdfBuilder implements ReportBuilder {
 			}
 		}
 		document.close();
+		return new File(filename);
 	}
 
 	@Override
