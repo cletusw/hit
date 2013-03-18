@@ -4,9 +4,8 @@ import java.util.Arrays;
 
 import model.Item;
 import model.Product;
+import model.ProductContainer;
 import model.ProductContainerManager;
-import model.ProductGroup;
-import model.StorageUnit;
 import model.report.builder.ReportBuilder;
 import model.visitor.InventoryVisitor;
 
@@ -48,10 +47,6 @@ public class ExpiredItemsReport extends Report implements InventoryVisitor {
 	}
 
 	@Override
-	public void visit(ProductGroup productGroup) {
-	}
-
-	@Override
-	public void visit(StorageUnit storageUnit) {
+	public void visit(ProductContainer productContainer) {
 	}
 }
