@@ -1,9 +1,10 @@
 package model;
 
 import java.io.Serializable;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.Date;
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.Set;
 import java.util.TreeSet;
 
@@ -407,12 +408,15 @@ public class Product implements Comparable<Object>, Serializable, InventoryVisit
 	}
 
 	/**
-	 * Returns an iterator over items that refer to this Product
+	 * Gets all of the Items of this Product system-wide.
 	 * 
-	 * @return
+	 * @return an *unmodifiable* Collection of all of the Items of this Product
+	 * 
+	 * @pre true
+	 * @post true
 	 */
-	public Iterator<Item> getItemsIterator() {
-		return items.iterator();
+	public Collection<Item> getItems() {
+		return Collections.unmodifiableCollection(items);
 	}
 
 	/**
@@ -565,19 +569,6 @@ public class Product implements Comparable<Object>, Serializable, InventoryVisit
 		items.remove(item);
 	}
 
-	private void setBarcode(String barcode) {
-		this.barcode = new NonEmptyString(barcode);
-	}
-
-	private void setCreationDate(Date date) {
-		Date now = new Date();
-		if (!date.after(now)) {
-			creationDate = date;
-		} else {
-			throw new IllegalArgumentException("CreationDate cannot be in the future");
-		}
-	}
-
 	/**
 	 * Sets the description for this product object.
 	 * 
@@ -636,5 +627,18 @@ public class Product implements Comparable<Object>, Serializable, InventoryVisit
 			throw new IllegalArgumentException("Three Month Supply must be non-negative");
 
 		this.threeMonthSupply = threeMonthSupply;
+	}
+
+	private void setBarcode(String barcode) {
+		this.barcode = new NonEmptyString(barcode);
+	}
+
+	private void setCreationDate(Date date) {
+		Date now = new Date();
+		if (!date.after(now)) {
+			creationDate = date;
+		} else {
+			throw new IllegalArgumentException("CreationDate cannot be in the future");
+		}
 	}
 }
