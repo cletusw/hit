@@ -128,9 +128,7 @@ public abstract class InventoryListener {
 		if (selectedContainer != null) {
 			ProductContainer selected = (ProductContainer) selectedContainer.getTag();
 			if (selected != null) {
-				Iterator<Product> productIterator = selected.getProductsIterator();
-				while (productIterator.hasNext()) {
-					Product p = productIterator.next();
+				for (Product p : selected.getProducts()) {
 					int count = selected.getItemsForProduct(p).size();
 					productDataList.add(DataWrapper.wrap(p, count));
 				}

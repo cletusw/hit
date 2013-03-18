@@ -574,16 +574,16 @@ public abstract class ProductContainer implements Comparable<ProductContainer>, 
 	}
 
 	/**
-	 * Gets an iterator over this Container's Products
+	 * Gets all of the Products in this Product Container (non-recursive).
 	 * 
-	 * @return Iterator<Product> this Container's Products iterator
+	 * @return an *unmodifiable* Collection of all of the Products in this Product Container
+	 *         (non-recursive)
 	 * 
 	 * @pre true
 	 * @post true
-	 * 
 	 */
-	public Iterator<Product> getProductsIterator() {
-		return products.values().iterator();
+	public Collection<Product> getProducts() {
+		return Collections.unmodifiableCollection(products.values());
 	}
 
 	/**

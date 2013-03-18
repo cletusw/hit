@@ -308,7 +308,7 @@ public class ProductContainerTest {
 
 		productGroup1.remove(product);
 		assertEquals(1, productGroup1.getProductsSize());
-		assertTrue(productGroup1.getProductsIterator().next().equals(product2));
+		assertTrue(productGroup1.getProducts().contains(product2));
 
 		assertTrue(productGroup1.getProduct(product2.getBarcode()).equals(product2));
 		assertTrue(productGroup1.getProduct(product.getBarcode()) == null);
