@@ -2,6 +2,7 @@ package model;
 
 import java.io.Serializable;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
@@ -11,7 +12,6 @@ import java.util.TreeSet;
 import model.Action.ActionType;
 import model.visitor.InventoryVisitable;
 import model.visitor.InventoryVisitor;
-import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 import common.NonEmptyString;
 
@@ -68,7 +68,11 @@ public abstract class ProductContainer implements Comparable<ProductContainer>, 
 
 	@Override
 	public void accept(InventoryVisitor visitor) {
-		throw new NotImplementedException();
+		visitor.visit(this);
+
+		for (ProductGroup child : getProductGroups()) {
+			child.accept(visitor);
+		}
 	}
 
 	/**
@@ -548,12 +552,15 @@ public abstract class ProductContainer implements Comparable<ProductContainer>, 
 	}
 
 	/**
-	 * Gets an iterator for this ProductContainer's child Product Groups
+	 * Gets all of the child Product Groups for this Product Container.
 	 * 
-	 * @return an Iterator of the child Product Groups
+	 * @return an *unmodifiable* Collection of all of the child Product Groups
+	 * 
+	 * @pre true
+	 * @post true
 	 */
-	public Iterator<ProductGroup> getProductGroupIterator() {
-		return productGroups.values().iterator();
+	public Collection<ProductGroup> getProductGroups() {
+		return Collections.unmodifiableCollection(productGroups.values());
 	}
 
 	/**
@@ -570,16 +577,16 @@ public abstract class ProductContainer implements Comparable<ProductContainer>, 
 	}
 
 	/**
-	 * Gets an iterator over this Container's Products
+	 * Gets all of the Products in this Product Container (non-recursive).
 	 * 
-	 * @return Iterator<Product> this Container's Products iterator
+	 * @return an *unmodifiable* Collection of all of the Products in this Product Container
+	 *         (non-recursive)
 	 * 
 	 * @pre true
 	 * @post true
-	 * 
 	 */
-	public Iterator<Product> getProductsIterator() {
-		return products.values().iterator();
+	public Collection<Product> getProducts() {
+		return Collections.unmodifiableCollection(products.values());
 	}
 
 	/**

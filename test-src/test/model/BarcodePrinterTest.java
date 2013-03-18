@@ -12,15 +12,14 @@ import model.BarcodePrinter;
 import model.Item;
 import model.ItemManager;
 import model.Product;
-import model.ProductContainerManager;
-import model.ProductManager;
-import model.ProductQuantity;
 import model.StorageUnit;
-import model.Unit;
 
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+
+import builder.model.ProductBuilder;
+import builder.model.StorageUnitBuilder;
 
 /**
  * @author Matthew
@@ -35,12 +34,9 @@ public class BarcodePrinterTest {
 	 */
 	@Before
 	public void setUp() throws Exception {
-		ProductManager manager = createMock(ProductManager.class);
-		ProductContainerManager pcMan = createMock(ProductContainerManager.class);
 		ItemManager iMan = createMock(ItemManager.class);
-		StorageUnit su = new StorageUnit("su1", pcMan);
-		Product prod = new Product("RANDOMBARCODE", "Interesting description of a product",
-				new Date(), 3, 3, new ProductQuantity(3, Unit.FLUID_OUNCES), manager);
+		StorageUnit su = new StorageUnitBuilder().build();
+		Product prod = new ProductBuilder().build();
 		for (int i = 0; i < items.length; i++) {
 			items[i] = new Item(prod, su, new Date(), iMan);
 		}

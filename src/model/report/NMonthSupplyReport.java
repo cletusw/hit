@@ -2,10 +2,9 @@ package model.report;
 
 import model.Item;
 import model.Product;
+import model.ProductContainer;
 import model.ProductContainerManager;
-import model.ProductGroup;
 import model.ProductManager;
-import model.StorageUnit;
 import model.report.builder.ReportBuilder;
 import model.visitor.InventoryVisitor;
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;
@@ -51,11 +50,6 @@ public class NMonthSupplyReport extends Report implements InventoryVisitor {
 	}
 
 	@Override
-	public void visit(ProductGroup productGroup) {
+	public void visit(ProductContainer productContainer) {
 	}
-
-	@Override
-	public void visit(StorageUnit storageUnit) {
-	}
-
 }

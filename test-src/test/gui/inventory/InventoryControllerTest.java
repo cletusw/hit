@@ -5,9 +5,6 @@ import static org.easymock.EasyMock.expect;
 import static org.easymock.EasyMock.replay;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
-import fixture.model.ItemFixture;
-import fixture.model.ProductGroupFixture;
-import fixture.model.StorageUnitFixture;
 import gui.common.DataWrapper;
 import gui.inventory.IInventoryView;
 import gui.inventory.InventoryController;
@@ -35,6 +32,10 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
+import builder.model.ItemBuilder;
+import builder.model.ProductGroupBuilder;
+import builder.model.StorageUnitBuilder;
+
 public class InventoryControllerTest extends EasyMockSupport {
 	private InventoryController inventoryController;
 	private IInventoryView mockView;
@@ -42,7 +43,7 @@ public class InventoryControllerTest extends EasyMockSupport {
 
 	@Before
 	public void setUp() throws Exception {
-		item = new ItemFixture();
+		item = new ItemBuilder().build();
 
 		ProductContainerManager mockProductContainerManager = createNiceMock(ProductContainerManager.class);
 		ItemManager mockItemManager = createNiceMock(ItemManager.class);
@@ -169,7 +170,7 @@ public class InventoryControllerTest extends EasyMockSupport {
 	@Test
 	public void testCanEditProductGroup() {
 		ProductContainer container = item.getContainer();
-		ProductGroup selected = new ProductGroupFixture(container);
+		ProductGroup selected = new ProductGroupBuilder().parent(container).build();
 		expect(mockView.getSelectedProductContainer()).andStubReturn(
 				DataWrapper.wrap(selected));
 		replayAll();
@@ -246,7 +247,7 @@ public class InventoryControllerTest extends EasyMockSupport {
 	public void testDeleteProductGroup() {
 		ProductContainer container = item.getContainer();
 		Product selected = item.getProduct();
-		ProductGroup child = new ProductGroupFixture(container);
+		ProductGroup child = new ProductGroupBuilder().parent(container).build();
 		expect(mockView.getProductContainerManager()).andStubReturn(
 				new ConcreteProductContainerManager());
 		expect(mockView.getSelectedProductContainer()).andStubReturn(DataWrapper.wrap(child));
@@ -305,7 +306,7 @@ public class InventoryControllerTest extends EasyMockSupport {
 		Capture<ProductData[]> productListCapture = new Capture<ProductData[]>();
 
 		expect(mockView.getSelectedProductContainer()).andStubReturn(
-				DataWrapper.wrap(new StorageUnitFixture()));
+				DataWrapper.wrap(new StorageUnitBuilder().build()));
 		mockView.setProducts(capture(productListCapture));
 		replay(mockView);
 

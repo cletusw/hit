@@ -2,12 +2,10 @@ package model.report;
 
 import model.Item;
 import model.Product;
+import model.ProductContainer;
 import model.ProductContainerManager;
-import model.ProductGroup;
-import model.StorageUnit;
 import model.report.builder.ReportBuilder;
 import model.visitor.InventoryVisitor;
-import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 public class NoticesReport extends Report implements InventoryVisitor {
 	/**
@@ -32,26 +30,17 @@ public class NoticesReport extends Report implements InventoryVisitor {
 	 * @post (new Date()).getTime() - getLastRunTime().getTime() < 1000
 	 */
 	public void construct(ReportBuilder builder) {
-		throw new NotImplementedException();
 	}
 
 	@Override
 	public void visit(Item item) {
-		throw new NotImplementedException();
 	}
 
 	@Override
 	public void visit(Product product) {
-		throw new NotImplementedException();
 	}
 
 	@Override
-	public void visit(ProductGroup productGroup) {
-		throw new NotImplementedException();
-	}
-
-	@Override
-	public void visit(StorageUnit storageUnit) {
-		throw new NotImplementedException();
+	public void visit(ProductContainer productContainer) {
 	}
 }

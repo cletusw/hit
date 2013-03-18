@@ -19,10 +19,10 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
+import builder.model.ItemBuilder;
 import builder.model.ProductBuilder;
-import fixture.model.ItemFixture;
-import fixture.model.ProductGroupFixture;
-import fixture.model.StorageUnitFixture;
+import builder.model.ProductGroupBuilder;
+import builder.model.StorageUnitBuilder;
 
 public class ProductContainerTest {
 	private static void testInvariants(ProductContainer productContainer) {
@@ -41,11 +41,11 @@ public class ProductContainerTest {
 
 	@Before
 	public void setUp() throws Exception {
-		storageUnit = new StorageUnitFixture();
-		productGroup = new ProductGroupFixture(storageUnit);
-		nestedProductGroup = new ProductGroupFixture(productGroup);
+		storageUnit = new StorageUnitBuilder().build();
+		productGroup = new ProductGroupBuilder().parent(storageUnit).build();
+		nestedProductGroup = new ProductGroupBuilder().parent(productGroup).build();
 		product = new ProductBuilder().build();
-		item = new ItemFixture();
+		item = new ItemBuilder().build();
 	}
 
 	@After
@@ -149,9 +149,9 @@ public class ProductContainerTest {
 
 	@Test
 	public void testContainsExactProductGroup() {
-		ProductGroup level1 = new ProductGroupFixture(storageUnit, "p");
-		ProductGroup level2 = new ProductGroupFixture(level1, "p");
-		ProductGroup level3 = new ProductGroupFixture(level2, "p");
+		ProductGroup level1 = new ProductGroupBuilder().parent(storageUnit).name("p").build();
+		ProductGroup level2 = new ProductGroupBuilder().parent(level1).name("p").build();
+		ProductGroup level3 = new ProductGroupBuilder().parent(level2).name("p").build();
 
 		// test contains(ProductGroup) to show problems with it
 		// doesn't actually contain level3, but the names are the same
@@ -219,7 +219,7 @@ public class ProductContainerTest {
 	public void testGetCurrentSupply() {
 		nestedProductGroup.add(item.getProduct());
 		storageUnit.add(item);
-		new ItemFixture(item.getProduct(), storageUnit);
+		new ItemBuilder().product(item.getProduct()).container(storageUnit).build();
 
 		assertTrue(storageUnit.getCurrentSupply(item.getProduct()).equals(
 				new ProductQuantity(2, Unit.COUNT)));
@@ -241,8 +241,9 @@ public class ProductContainerTest {
 	@Test
 	public void testMoveIntoContainer() {
 		productGroup.add(product);
-		Item item = new ItemFixture(product, storageUnit);
-		ProductGroup siblingProductGroup = new ProductGroupFixture(storageUnit);
+		Item item = new ItemBuilder().product(product).container(storageUnit).build();
+		ProductGroup siblingProductGroup = new ProductGroupBuilder().parent(storageUnit)
+				.build();
 		productGroup.moveIntoContainer(item, siblingProductGroup);
 		assertTrue(siblingProductGroup.contains(item));
 		assertFalse(productGroup.contains(item));
@@ -251,22 +252,22 @@ public class ProductContainerTest {
 	@Test(expected = IllegalStateException.class)
 	public void testMoveIntoContainerDuplicate() {
 		storageUnit.add(item);
-		StorageUnit storageUnit2 = new StorageUnitFixture();
+		StorageUnit storageUnit2 = new StorageUnitBuilder().build();
 		storageUnit2.add(item);
 		storageUnit.moveIntoContainer(item, storageUnit2);
 	}
 
 	@Test(expected = IllegalStateException.class)
 	public void testMoveIntoContainerFromEmpty() {
-		StorageUnit storageUnit2 = new StorageUnitFixture();
-		ProductGroup productGroup2 = new ProductGroupFixture(storageUnit2);
+		StorageUnit storageUnit2 = new StorageUnitBuilder().build();
+		ProductGroup productGroup2 = new ProductGroupBuilder().parent(storageUnit2).build();
 		productGroup.moveIntoContainer(item, productGroup2);
 	}
 
 	@Test
 	public void testProductGroupProductGroups() {
 		ProductContainerManager pcManager = createNiceMock(ProductContainerManager.class);
-		ProductGroup productGroup1 = new ProductGroupFixture(storageUnit);
+		ProductGroup productGroup1 = new ProductGroupBuilder().parent(storageUnit).build();
 		assertEquals(0, productGroup1.getProductGroupsSize());
 		String productGroup2Name = "Chocolate Chip Cookies";
 		assertTrue(productGroup1.canAddProductGroup(productGroup2Name));
@@ -293,7 +294,7 @@ public class ProductContainerTest {
 
 	@Test
 	public void testProductGroupProducts() {
-		ProductGroup productGroup1 = new ProductGroupFixture(storageUnit);
+		ProductGroup productGroup1 = new ProductGroupBuilder().parent(storageUnit).build();
 		assertEquals(0, productGroup1.getProductsSize());
 		assertFalse(productGroup1.contains(product));
 		productGroup1.add(product);
@@ -307,7 +308,7 @@ public class ProductContainerTest {
 
 		productGroup1.remove(product);
 		assertEquals(1, productGroup1.getProductsSize());
-		assertTrue(productGroup1.getProductsIterator().next().equals(product2));
+		assertTrue(productGroup1.getProducts().contains(product2));
 
 		assertTrue(productGroup1.getProduct(product2.getBarcode()).equals(product2));
 		assertTrue(productGroup1.getProduct(product.getBarcode()) == null);
@@ -315,9 +316,9 @@ public class ProductContainerTest {
 
 	@Test
 	public void testStorageUnitCanAddProduct() {
-		StorageUnit storageUnit2 = new StorageUnitFixture();
-		ProductGroup productGroup2 = new ProductGroupFixture(storageUnit2);
-		ProductGroup productGroup3 = new ProductGroupFixture(productGroup2);
+		StorageUnit storageUnit2 = new StorageUnitBuilder().build();
+		ProductGroup productGroup2 = new ProductGroupBuilder().parent(storageUnit2).build();
+		ProductGroup productGroup3 = new ProductGroupBuilder().parent(productGroup2).build();
 		productGroup3.add(product);
 		assertTrue(storageUnit.canAddProduct(product.getBarcode()));
 		assertTrue(productGroup.canAddProduct(product.getBarcode()));

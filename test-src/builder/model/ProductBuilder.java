@@ -14,11 +14,44 @@ public class ProductBuilder {
 	private ProductQuantity productQuantity = new ProductQuantity(1, Unit.COUNT);
 	private ProductManager productManager = createNiceMock(ProductManager.class);
 
-	public ProductBuilder() {
+	public ProductBuilder barcode(String barcode) {
+		this.barcode = barcode;
+
+		return this;
 	}
 
 	public Product build() {
 		return new Product(barcode, description, shelfLife, threeMonthSupply, productQuantity,
 				productManager);
+	}
+
+	public ProductBuilder description(String description) {
+		this.description = description;
+
+		return this;
+	}
+
+	public ProductBuilder productManager(ProductManager productManager) {
+		this.productManager = productManager;
+
+		return this;
+	}
+
+	public ProductBuilder productQuantity(ProductQuantity productQuantity) {
+		this.productQuantity = productQuantity;
+
+		return this;
+	}
+
+	public ProductBuilder shelfLife(int shelfLife) {
+		this.shelfLife = shelfLife;
+
+		return this;
+	}
+
+	public ProductBuilder threeMonthSupply(int threeMonthSupply) {
+		this.threeMonthSupply = threeMonthSupply;
+
+		return this;
 	}
 }

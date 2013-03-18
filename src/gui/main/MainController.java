@@ -54,7 +54,7 @@ public class MainController extends Controller implements IMainController {
 	 */
 	@Override
 	public boolean canPrintProductReport() {
-		return false;
+		return true;
 	}
 
 	/**

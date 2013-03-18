@@ -1,6 +1,5 @@
 package model;
 
-import java.util.Iterator;
 
 /**
  * Product Group class. Inherits from ProductContainer.
@@ -68,6 +67,30 @@ public class ProductGroup extends ProductContainer {
 	}
 
 	/**
+	 * Allows the name and three month supply of a productContainer to be modified. Notifies
+	 * manager a change took place. If either is null, they will not be updated.
+	 * 
+	 * @param newName
+	 *            The new name of the ProductGroup. If null, no change to the name will take
+	 *            place
+	 * 
+	 * @param newTMS
+	 *            The new value for ProductQuantity. If null, no change to the threeMonthSupply
+	 *            will take place.
+	 * @pre newName != ""
+	 * @post value of this.name equals newName
+	 * @post this.threeMonthSupply equals newTMS
+	 */
+	public void edit(String newName, ProductQuantity newTMS) {
+
+		if (newTMS != null)
+			setThreeMonthSupply(newTMS);
+		String oldName = getName();
+		super.edit(newName);
+		container.updateChildProductGroup(oldName, this);
+	}
+
+	/**
 	 * Gets this ProductGroup's parent container
 	 * 
 	 * @return this ProductGroup's container
@@ -90,11 +113,10 @@ public class ProductGroup extends ProductContainer {
 	 * 
 	 */
 	public ProductQuantity getCurrentSupply() {
-		Iterator<Product> it = getProductsIterator();
 		ProductQuantity total = new ProductQuantity(0, groupUnit);
-		while (it.hasNext()) {
+		for (Product p : getProducts()) {
 			try {
-				ProductQuantity pSupply = getCurrentSupply(it.next());
+				ProductQuantity pSupply = getCurrentSupply(p);
 				total.add(pSupply);
 			} catch (IllegalArgumentException e) {
 				continue;
@@ -102,6 +124,14 @@ public class ProductGroup extends ProductContainer {
 		}
 
 		return total;
+	}
+
+	public StorageUnit getRoot() {
+		ProductContainer parent = container;
+		while (parent instanceof ProductGroup) {
+			parent = ((ProductGroup) parent).container;
+		}
+		return (StorageUnit) parent;
 	}
 
 	/**
@@ -178,37 +208,5 @@ public class ProductGroup extends ProductContainer {
 		}
 		this.threeMonthSupply = threeMonthSupply;
 		groupUnit = threeMonthSupply.getUnits();
-	}
-	
-	/**
-	 *  Allows the name and three month supply of a productContainer to be modified. Notifies manager a change took
-	 *  place. If either is null, they will not be updated.
-	 * 
-	 * @param newName
-	 *            The new name of the ProductGroup. If null, no change to the name will take
-	 *            place
-	 * 
-	 * @param newTMS
-	 *            The new value for ProductQuantity. If null, no change to the threeMonthSupply
-	 *            will take place.
-	 * @pre newName != ""
-	 * @post value of this.name equals newName
-	 * @post this.threeMonthSupply equals newTMS
-	 */
-	public void edit(String newName, ProductQuantity newTMS) {
-		
-		if(newTMS != null)
-			this.setThreeMonthSupply(newTMS);
-		String oldName = this.getName();
-		super.edit(newName);
-		this.container.updateChildProductGroup(oldName, this);
-	}
-	
-	public StorageUnit getRoot() {
-		ProductContainer parent = container;
-		while(parent instanceof ProductGroup){
-			parent = ((ProductGroup)parent).container;
-		}
-		return (StorageUnit)parent;
 	}
 }

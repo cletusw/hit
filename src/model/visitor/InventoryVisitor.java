@@ -2,8 +2,7 @@ package model.visitor;
 
 import model.Item;
 import model.Product;
-import model.ProductGroup;
-import model.StorageUnit;
+import model.ProductContainer;
 
 public interface InventoryVisitor {
 
@@ -30,24 +29,13 @@ public interface InventoryVisitor {
 	public void visit(Product product);
 
 	/**
-	 * Gathers reporting data about a ProductGroup.
+	 * Gathers reporting data about a ProductContainer.
 	 * 
-	 * @param productGroup
-	 *            ProductGroup to visit
+	 * @param productContainer
+	 *            ProductContainer to visit
 	 * 
-	 * @pre productGroup != null
+	 * @pre productContainer != null
 	 * @post true
 	 */
-	public void visit(ProductGroup productGroup);
-
-	/**
-	 * Gathers reporting data about a StorageUnit.
-	 * 
-	 * @param storageUnit
-	 *            StorageUnit to visit
-	 * 
-	 * @pre StorageUnit != null
-	 * @post true
-	 */
-	public void visit(StorageUnit storageUnit);
+	public void visit(ProductContainer productContainer);
 }

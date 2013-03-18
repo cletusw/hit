@@ -3,6 +3,13 @@ package gui.reports.productstats;
 import gui.common.Controller;
 import gui.common.IView;
 
+import java.io.File;
+import java.io.IOException;
+
+import model.report.builder.HtmlBuilder;
+import model.report.builder.PdfBuilder;
+import model.report.builder.ReportBuilder;
+
 /**
  * Controller class for the product statistics report view.
  */
@@ -31,6 +38,26 @@ public class ProductStatsReportController extends Controller implements
 	 */
 	@Override
 	public void display() {
+		ReportBuilder builder;
+		switch (getView().getFormat()) {
+		case HTML:
+			builder = new HtmlBuilder();
+			break;
+		case PDF:
+			builder = new PdfBuilder();
+			break;
+		default:
+			return;
+		}
+
+		builder.addDocumentTitle("NEW PRODUCT STATISTICS REPORT");
+		String filename = "test";
+		try {
+			File file = builder.print(filename);
+			java.awt.Desktop.getDesktop().open(file);
+		} catch (IOException e) {
+			getView().displayErrorMessage("Unable to create report '" + filename + "'");
+		}
 	}
 
 	/**
@@ -39,6 +66,7 @@ public class ProductStatsReportController extends Controller implements
 	 */
 	@Override
 	public void valuesChanged() {
+		enableComponents();
 	}
 
 	/**
@@ -52,6 +80,14 @@ public class ProductStatsReportController extends Controller implements
 	 */
 	@Override
 	protected void enableComponents() {
+		getView().enableFormat(true);
+		getView().enableMonths(true);
+		try {
+			int months = Integer.parseInt(getView().getMonths());
+			getView().enableOK(months >= 1 && months <= 100);
+		} catch (NumberFormatException ex) {
+			getView().enableOK(false);
+		}
 	}
 
 	//

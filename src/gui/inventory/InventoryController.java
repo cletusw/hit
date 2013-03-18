@@ -697,9 +697,7 @@ public class InventoryController extends Controller implements IInventoryControl
 		ProductContainerData pcData = new ProductContainerData(container.getName());
 		pcData.setTag(container);
 		parentData.addChild(pcData);
-		Iterator<ProductGroup> productGroupIterator = container.getProductGroupIterator();
-		while (productGroupIterator.hasNext()) {
-			ProductGroup child = productGroupIterator.next();
+		for (ProductGroup child : container.getProductGroups()) {
 			pcData = loadProductContainerData(pcData, child);
 		}
 		return parentData;

@@ -1,5 +1,6 @@
 package model.report.builder;
 
+import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -20,6 +21,7 @@ public class PdfBuilder implements ReportBuilder {
 	private PdfPTable table;
 	private Paragraph list;
 	private List<Element> elements;
+	private String EXTENSION = ".pdf";
 
 	public PdfBuilder() {
 		elements = new ArrayList<Element>();
@@ -47,6 +49,63 @@ public class PdfBuilder implements ReportBuilder {
 		list.add(newLine);
 	}
 
+	@Override
+	public void addSectionTitle(String title) {
+		endPreviousElement();
+
+		Paragraph titleParagraph = new Paragraph();
+		titleParagraph.setSpacingAfter(10);
+		titleParagraph.getFont().setSize(15);
+		titleParagraph.add(new Chunk(title));
+		elements.add(titleParagraph);
+	}
+
+	@Override
+	public void addTableRow(List<String> row) {
+		addRow(row, Font.NORMAL, 8);
+	}
+
+	@Override
+	public File print(String filename) throws IOException {
+		filename += EXTENSION;
+		endPreviousElement();
+		Document document = new Document();
+		try {
+			PdfWriter.getInstance(document, new FileOutputStream(filename.toString()));
+		} catch (DocumentException e) {
+			throw new IOException("Unable to write pdf content to file " + filename);
+		}
+		document.open();
+		for (Element element : elements) {
+			try {
+				document.add(element);
+			} catch (DocumentException e) {
+				e.printStackTrace();
+			}
+		}
+		document.close();
+		return new File(filename);
+	}
+
+	@Override
+	public void startList(String title) {
+		endPreviousElement();
+
+		list = new Paragraph();
+		Paragraph firstLine = new Paragraph(title);
+		list.add(firstLine);
+	}
+
+	@Override
+	public void startTable(List<String> headers) {
+		endPreviousElement();
+
+		table = new PdfPTable(headers.size());
+		table.setWidthPercentage(100);
+		table.setSpacingAfter(20);
+		addRow(headers, Font.BOLD, 10);
+	}
+
 	private void addRow(List<String> rowValues, int style, float fontSize) {
 		if (table == null)
 			throw new IllegalStateException("Cannot write row before opening table");
@@ -63,22 +122,6 @@ public class PdfBuilder implements ReportBuilder {
 			cell.addElement(content);
 			table.addCell(cell);
 		}
-	}
-
-	@Override
-	public void addSectionTitle(String title) {
-		endPreviousElement();
-
-		Paragraph titleParagraph = new Paragraph();
-		titleParagraph.setSpacingAfter(10);
-		titleParagraph.getFont().setSize(15);
-		titleParagraph.add(new Chunk(title));
-		elements.add(titleParagraph);
-	}
-
-	@Override
-	public void addTableRow(List<String> row) {
-		addRow(row, Font.NORMAL, 8);
 	}
 
 	private void endList() {
@@ -100,44 +143,5 @@ public class PdfBuilder implements ReportBuilder {
 		if (table != null)
 			elements.add(table);
 		table = null;
-	}
-
-	@Override
-	public void print(String filename) throws IOException {
-		endPreviousElement();
-		Document document = new Document();
-		try {
-			PdfWriter.getInstance(document, new FileOutputStream(filename.toString()));
-		} catch (DocumentException e) {
-			throw new IOException("Unable to write pdf content to file " + filename);
-		}
-		document.open();
-		for (Element element : elements) {
-			try {
-				document.add(element);
-			} catch (DocumentException e) {
-				e.printStackTrace();
-			}
-		}
-		document.close();
-	}
-
-	@Override
-	public void startList(String title) {
-		endPreviousElement();
-
-		list = new Paragraph();
-		Paragraph firstLine = new Paragraph(title);
-		list.add(firstLine);
-	}
-
-	@Override
-	public void startTable(List<String> headers) {
-		endPreviousElement();
-
-		table = new PdfPTable(headers.size());
-		table.setWidthPercentage(100);
-		table.setSpacingAfter(20);
-		addRow(headers, Font.BOLD, 10);
 	}
 }

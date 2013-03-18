@@ -5,7 +5,6 @@ import java.util.Date;
 
 import model.visitor.InventoryVisitable;
 import model.visitor.InventoryVisitor;
-import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 /**
  * Represents a physical item in the Home Inventory System.
@@ -108,7 +107,7 @@ public class Item implements Comparable<Object>, Serializable, InventoryVisitabl
 
 	@Override
 	public void accept(InventoryVisitor visitor) {
-		throw new NotImplementedException();
+		visitor.visit(this);
 	}
 
 	/**
@@ -224,6 +223,36 @@ public class Item implements Comparable<Object>, Serializable, InventoryVisitabl
 	 */
 	public String getProductBarcode() {
 		return product.getBarcode();
+	}
+
+	/**
+	 * Gets this Item's ProductGroup's name (or "" if it has none)
+	 * 
+	 * @return this Item's ProductGroup's name (or "" if it has none)
+	 * 
+	 * @pre true
+	 * @post true
+	 * 
+	 */
+	public String getProductGroupName() {
+		return (container instanceof ProductGroup) ? container.getName() : "";
+	}
+
+	/**
+	 * Gets this Item's StorageUnit's name
+	 * 
+	 * @return this Item's StorageUnit's name
+	 * 
+	 * @pre true
+	 * @post true
+	 * 
+	 */
+	public String getStorageUnitName() {
+		if (container instanceof ProductGroup) {
+			return ((ProductGroup) container).getRoot().getName();
+		} else {
+			return container.getName();
+		}
 	}
 
 	/**

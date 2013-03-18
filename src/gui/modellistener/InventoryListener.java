@@ -7,7 +7,7 @@ import gui.item.ItemData;
 import gui.product.ProductData;
 
 import java.util.ArrayList;
-import java.util.Iterator;
+import java.util.Collection;
 import java.util.List;
 
 import model.Item;
@@ -80,15 +80,15 @@ public abstract class InventoryListener {
 				throw new NullPointerException("Selected product container should not be null");
 			ProductContainer container = (ProductContainer) pcData.getTag();
 
-			Iterator<Item> itemIterator;
+			Collection<Item> items;
 
 			if (container == null) { // Root container is selected
-				itemIterator = product.getItemsIterator();
+				items = product.getItems();
 			} else {
-				itemIterator = container.getItemsForProduct(product).iterator();
+				items = container.getItemsForProduct(product);
 			}
-			while (itemIterator.hasNext()) {
-				ItemData id = DataWrapper.wrap(itemIterator.next());
+			for (Item item : items) {
+				ItemData id = DataWrapper.wrap(item);
 				itemsToDisplay.add(id);
 			}
 		}
@@ -128,9 +128,7 @@ public abstract class InventoryListener {
 		if (selectedContainer != null) {
 			ProductContainer selected = (ProductContainer) selectedContainer.getTag();
 			if (selected != null) {
-				Iterator<Product> productIterator = selected.getProductsIterator();
-				while (productIterator.hasNext()) {
-					Product p = productIterator.next();
+				for (Product p : selected.getProducts()) {
 					int count = selected.getItemsForProduct(p).size();
 					productDataList.add(DataWrapper.wrap(p, count));
 				}
