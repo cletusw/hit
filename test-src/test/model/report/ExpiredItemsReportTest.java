@@ -100,4 +100,25 @@ public class ExpiredItemsReportTest extends EasyMockSupport {
 
 		verifyAll();
 	}
+
+	@Test
+	public void testOnStorageUnitWithUnexpiredItem() {
+		String description = "test description";
+		Product product = new ProductBuilder().description(description).shelfLife(1).build();
+		StorageUnit storageUnit = new StorageUnitBuilder().manager(
+				hit.getProductContainerManager()).build();
+		new ItemBuilder().product(product).entryDate(new Date()).container(storageUnit)
+				.build();
+
+		// Expect:
+		mockBuilder.addDocumentTitle("Expired Items");
+		mockBuilder.startTable(Arrays.asList("Description", "Storage Unit", "Product Group",
+				"Entry Date", "Expire Date", "Item Barcode"));
+
+		replayAll();
+
+		report.construct(mockBuilder);
+
+		verifyAll();
+	}
 }
