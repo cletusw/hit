@@ -47,13 +47,29 @@ public class ExpiredItemsReport extends Report implements InventoryVisitor {
 		for (StorageUnit su : productContainerManager.getStorageUnits()) {
 			su.accept(this);
 		}
+
+		this.builder = null;
 	}
 
 	/**
+	 * Gathers reporting data about an Item.
+	 * 
+	 * @param item
+	 *            Item to visit
+	 * 
 	 * @pre builder != null
+	 * @pre item != null
+	 * @post true
 	 */
 	@Override
 	public void visit(Item item) {
+		if (builder == null) {
+			throw new NullPointerException("visit(Item) called outside a construct operation");
+		}
+		if (item == null) {
+			throw new NullPointerException("Null Item item");
+		}
+
 		if (item.getExpirationDate().before(new Date())) {
 			builder.addTableRow(Arrays.asList(item.getProduct().getDescription(), item
 					.getStorageUnitName(), item.getProductGroupName(), item.getEntryDate()
@@ -61,13 +77,47 @@ public class ExpiredItemsReport extends Report implements InventoryVisitor {
 		}
 	}
 
+	/**
+	 * Gathers reporting data about a Product.
+	 * 
+	 * @param product
+	 *            Product to visit
+	 * 
+	 * @pre builder != null
+	 * @pre product != null
+	 * @post true
+	 */
 	@Override
 	public void visit(Product product) {
+		if (builder == null) {
+			throw new NullPointerException("visit(Item) called outside a construct operation");
+		}
+		if (product == null) {
+			throw new NullPointerException("Null Product product");
+		}
+
 		// Do nothing
 	}
 
+	/**
+	 * Gathers reporting data about a ProductContainer.
+	 * 
+	 * @param productContainer
+	 *            ProductContainer to visit
+	 * 
+	 * @pre builder != null
+	 * @pre productContainer != null
+	 * @post true
+	 */
 	@Override
 	public void visit(ProductContainer productContainer) {
+		if (builder == null) {
+			throw new NullPointerException("visit(Item) called outside a construct operation");
+		}
+		if (productContainer == null) {
+			throw new NullPointerException("Null ProductContainer productContainer");
+		}
+
 		for (Product product : productContainer.getProducts()) {
 			for (Item item : productContainer.getItemsForProduct(product)) {
 				item.accept(this);
