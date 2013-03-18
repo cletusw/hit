@@ -7,7 +7,6 @@ import model.Item;
 import model.Product;
 import model.ProductContainer;
 import model.ProductContainerManager;
-import model.ProductGroup;
 import model.StorageUnit;
 import model.report.builder.ReportBuilder;
 import model.visitor.InventoryVisitor;
@@ -55,15 +54,10 @@ public class ExpiredItemsReport extends Report implements InventoryVisitor {
 	 */
 	@Override
 	public void visit(Item item) {
-		ProductContainer itemContainer = item.getContainer();
-		String storageUnit = (itemContainer instanceof StorageUnit) ? itemContainer.getName()
-				: productContainerManager.getRootStorageUnitForChild(itemContainer).getName();
-		String productGroup = (itemContainer instanceof ProductGroup) ? itemContainer
-				.getName() : "";
 		if (item.getExpirationDate().before(new Date())) {
-			builder.addTableRow(Arrays.asList(item.getProduct().getDescription(), storageUnit,
-					productGroup, item.getEntryDate().toString(), item.getExpirationDate()
-							.toString(), item.getBarcode()));
+			builder.addTableRow(Arrays.asList(item.getProduct().getDescription(), item
+					.getStorageUnitName(), item.getProductGroupName(), item.getEntryDate()
+					.toString(), item.getExpirationDate().toString(), item.getBarcode()));
 		}
 	}
 

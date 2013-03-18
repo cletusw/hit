@@ -226,6 +226,36 @@ public class Item implements Comparable<Object>, Serializable, InventoryVisitabl
 	}
 
 	/**
+	 * Gets this Item's ProductGroup's name (or "" if it has none)
+	 * 
+	 * @return this Item's ProductGroup's name (or "" if it has none)
+	 * 
+	 * @pre true
+	 * @post true
+	 * 
+	 */
+	public String getProductGroupName() {
+		return (container instanceof ProductGroup) ? container.getName() : "";
+	}
+
+	/**
+	 * Gets this Item's StorageUnit's name
+	 * 
+	 * @return this Item's StorageUnit's name
+	 * 
+	 * @pre true
+	 * @post true
+	 * 
+	 */
+	public String getStorageUnitName() {
+		if (container instanceof ProductGroup) {
+			return ((ProductGroup) container).getRoot().getName();
+		} else {
+			return container.getName();
+		}
+	}
+
+	/**
 	 * Sets exit time to now, container to null
 	 * 
 	 * @pre true
