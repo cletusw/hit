@@ -1,6 +1,7 @@
 package model.report;
 
 import java.util.Arrays;
+import java.util.Date;
 
 import model.Item;
 import model.Product;
@@ -59,9 +60,11 @@ public class ExpiredItemsReport extends Report implements InventoryVisitor {
 				: productContainerManager.getRootStorageUnitForChild(itemContainer).getName();
 		String productGroup = (itemContainer instanceof ProductGroup) ? itemContainer
 				.getName() : "";
-		builder.addTableRow(Arrays.asList(item.getProduct().getDescription(), storageUnit,
-				productGroup, item.getEntryDate().toString(), item.getExpirationDate()
-						.toString(), item.getBarcode()));
+		if (item.getExpirationDate().before(new Date())) {
+			builder.addTableRow(Arrays.asList(item.getProduct().getDescription(), storageUnit,
+					productGroup, item.getEntryDate().toString(), item.getExpirationDate()
+							.toString(), item.getBarcode()));
+		}
 	}
 
 	@Override
