@@ -5,7 +5,6 @@ import java.util.Date;
 
 import model.visitor.InventoryVisitable;
 import model.visitor.InventoryVisitor;
-import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 /**
  * Represents a physical item in the Home Inventory System.
@@ -108,7 +107,7 @@ public class Item implements Comparable<Object>, Serializable, InventoryVisitabl
 
 	@Override
 	public void accept(InventoryVisitor visitor) {
-		throw new NotImplementedException();
+		visitor.visit(this);
 	}
 
 	/**

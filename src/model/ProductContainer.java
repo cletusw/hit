@@ -12,7 +12,6 @@ import java.util.TreeSet;
 import model.Action.ActionType;
 import model.visitor.InventoryVisitable;
 import model.visitor.InventoryVisitor;
-import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 import common.NonEmptyString;
 
@@ -69,7 +68,11 @@ public abstract class ProductContainer implements Comparable<ProductContainer>, 
 
 	@Override
 	public void accept(InventoryVisitor visitor) {
-		throw new NotImplementedException();
+		visitor.visit(this);
+
+		for (ProductGroup child : getProductGroups()) {
+			child.accept(visitor);
+		}
 	}
 
 	/**
