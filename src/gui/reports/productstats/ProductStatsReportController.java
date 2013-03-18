@@ -3,6 +3,7 @@ package gui.reports.productstats;
 import gui.common.Controller;
 import gui.common.IView;
 
+import java.io.File;
 import java.io.IOException;
 
 import model.report.builder.HtmlBuilder;
@@ -52,7 +53,8 @@ public class ProductStatsReportController extends Controller implements
 		builder.addDocumentTitle("NEW PRODUCT STATISTICS REPORT");
 		String filename = "test";
 		try {
-			builder.print(filename);
+			File file = builder.print(filename);
+			java.awt.Desktop.getDesktop().open(file);
 		} catch (IOException e) {
 			getView().displayErrorMessage("Unable to create report '" + filename + "'");
 		}
