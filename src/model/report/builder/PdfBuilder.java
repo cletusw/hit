@@ -103,7 +103,7 @@ public class PdfBuilder implements ReportBuilder {
 		table = new PdfPTable(headers.size());
 		table.setWidthPercentage(100);
 		table.setSpacingAfter(20);
-		addRow(headers, Font.BOLD, 10);
+		addRow(headers, Font.BOLD, 8);
 	}
 
 	private void addRow(List<String> rowValues, int style, float fontSize) {

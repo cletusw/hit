@@ -63,7 +63,7 @@ public class PdfBuilderTest {
 		}
 
 		try {
-			builder.print("helloworld.pdf");
+			builder.print("helloworld");
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
