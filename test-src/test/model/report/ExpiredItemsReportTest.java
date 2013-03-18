@@ -51,8 +51,7 @@ public class ExpiredItemsReportTest extends EasyMockSupport {
 
 	@Test
 	public void testOnStorageUnitWithExpiredAndUnexpiredItems() {
-		String description = "test description";
-		Product product = new ProductBuilder().description(description).shelfLife(1).build();
+		Product product = new ProductBuilder().shelfLife(1).build();
 		StorageUnit storageUnit = new StorageUnitBuilder().manager(
 				hit.getProductContainerManager()).build();
 		@SuppressWarnings("deprecation")
@@ -65,9 +64,9 @@ public class ExpiredItemsReportTest extends EasyMockSupport {
 		mockBuilder.addDocumentTitle("Expired Items");
 		mockBuilder.startTable(Arrays.asList("Description", "Storage Unit", "Product Group",
 				"Entry Date", "Expire Date", "Item Barcode"));
-		mockBuilder.addTableRow(Arrays.asList(description, storageUnit.getName(), "", item
-				.getEntryDate().toString(), item.getExpirationDate().toString(), item
-				.getBarcode()));
+		mockBuilder.addTableRow(Arrays.asList(product.getDescription(), storageUnit.getName(),
+				"", item.getEntryDate().toString(), item.getExpirationDate().toString(),
+				item.getBarcode()));
 
 		replayAll();
 
@@ -78,8 +77,7 @@ public class ExpiredItemsReportTest extends EasyMockSupport {
 
 	@Test
 	public void testOnStorageUnitWithExpiredItem() {
-		String description = "test description";
-		Product product = new ProductBuilder().description(description).shelfLife(1).build();
+		Product product = new ProductBuilder().shelfLife(1).build();
 		StorageUnit storageUnit = new StorageUnitBuilder().manager(
 				hit.getProductContainerManager()).build();
 		@SuppressWarnings("deprecation")
@@ -90,9 +88,9 @@ public class ExpiredItemsReportTest extends EasyMockSupport {
 		mockBuilder.addDocumentTitle("Expired Items");
 		mockBuilder.startTable(Arrays.asList("Description", "Storage Unit", "Product Group",
 				"Entry Date", "Expire Date", "Item Barcode"));
-		mockBuilder.addTableRow(Arrays.asList(description, storageUnit.getName(), "", item
-				.getEntryDate().toString(), item.getExpirationDate().toString(), item
-				.getBarcode()));
+		mockBuilder.addTableRow(Arrays.asList(product.getDescription(), storageUnit.getName(),
+				"", item.getEntryDate().toString(), item.getExpirationDate().toString(),
+				item.getBarcode()));
 
 		replayAll();
 
@@ -103,8 +101,7 @@ public class ExpiredItemsReportTest extends EasyMockSupport {
 
 	@Test
 	public void testOnStorageUnitWithUnexpiredItem() {
-		String description = "test description";
-		Product product = new ProductBuilder().description(description).shelfLife(1).build();
+		Product product = new ProductBuilder().shelfLife(1).build();
 		StorageUnit storageUnit = new StorageUnitBuilder().manager(
 				hit.getProductContainerManager()).build();
 		new ItemBuilder().product(product).entryDate(new Date()).container(storageUnit)
