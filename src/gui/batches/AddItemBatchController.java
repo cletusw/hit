@@ -11,8 +11,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Date;
-
-import common.NonEmptyString;
+import java.util.Set;
 
 import model.BarcodePrinter;
 import model.Item;
@@ -21,6 +20,11 @@ import model.ProductContainer;
 import model.ProductManager;
 import model.ProductQuantity;
 import model.Unit;
+import model.undo.AddItems;
+import model.undo.AddProduct;
+import model.undo.UndoManager;
+
+import common.NonEmptyString;
 
 /**
  * Controller class for the add item batch view.
@@ -29,6 +33,7 @@ public class AddItemBatchController extends Controller implements IAddItemBatchC
 	ArrayList<ArrayList<ItemData>> items;
 	ArrayList<ProductData> products;
 	ProductContainer container;
+	UndoManager undoManager;
 	private final int maxAddableItems = 1000000;
 
 	/**
@@ -41,6 +46,8 @@ public class AddItemBatchController extends Controller implements IAddItemBatchC
 	 */
 	public AddItemBatchController(IView view, ProductContainerData target) {
 		super(view);
+		undoManager = new UndoManager();
+
 		// Phase 2: not using the scanner
 		getView().setUseScanner(false);
 		getView().setCount("1");
@@ -60,58 +67,43 @@ public class AddItemBatchController extends Controller implements IAddItemBatchC
 	 */
 	@Override
 	public void addItem() {
-		ProductData selectedProduct = getView().getSelectedProduct();
-		ItemData selectedItem = getView().getSelectedItem();
 		String productBarcode = getView().getBarcode();
 		ProductManager productManager = getProductManager();
+		productManager.setPendingProductCommand(null);
 		Product product = null;
-		ProductData productData = null;
+
 		if (productManager.containsProduct(productBarcode)) {
 			product = productManager.getByBarcode(productBarcode);
-			boolean found = false;
-			for (ProductData pd : products) {
-				if (pd.getBarcode().equals(product.getBarcode())) {
-					productData = pd;
-					found = true;
-				}
-			}
-			if (!found) {
-				productData = addProduct(product);
-			}
+
 		} else {
 			getView().displayAddProductView();
-			product = productManager.getByBarcode(productBarcode);
-			if (product == null)
-				return;
-			productData = addProduct(product);
 		}
-		if (container.canAddProduct(product.getBarcode()))
-			container.add(product);
 
 		Date entryDate = getView().getEntryDate();
-		int count = Integer.parseInt(productData.getCount());
 		int itemCount = Integer.parseInt(getView().getCount());
-		count += itemCount;
-		productData.setCount("" + count);
 
-		for (int i = 0; i < itemCount; i++) {
-			Item item = new Item(product, container, entryDate, getItemManager());
-
-			BarcodePrinter.getInstance().addItemToBatch(item);
-
-			ItemData id = DataWrapper.wrap(item);
-			items.get(products.indexOf(productData)).add(id);
+		AddProduct addProduct = (AddProduct) productManager.getPendingProductCommand();
+		if (addProduct == null) {
+			if (product == null) // User hit "Cancel"
+				return;
+			addProduct = new AddProduct(product.getBarcode(), product.getDescription(),
+					product.getShelfLife(), product.getThreeMonthSupply(), product
+							.getProductQuantity().getQuantity(), product.getProductQuantity()
+							.getUnits(), productManager);
 		}
+		addProduct.setContainer(container);
+
+		AddItems addItemsCommand = new AddItems(container, addProduct, product, entryDate,
+				itemCount, productManager, getItemManager());
+
+		undoManager.execute(addItemsCommand);
+
+		updateViewAfterExecute(addItemsCommand);
+
 		// Clear the view for the next item!
 		getView().setBarcode("");
 		getView().setCount("1");
-		refreshItems();
-		refreshProducts();
 		enableComponents();
-		if (selectedProduct != null)
-			getView().selectProduct(selectedProduct);
-		if (selectedItem != null)
-			getView().selectItem(selectedItem);
 		getView().giveBarcodeFocus();
 	}
 
@@ -165,6 +157,8 @@ public class AddItemBatchController extends Controller implements IAddItemBatchC
 	 */
 	@Override
 	public void redo() {
+		updateViewAfterExecute((AddItems) undoManager.redo());
+		enableComponents();
 	}
 
 	/**
@@ -180,6 +174,8 @@ public class AddItemBatchController extends Controller implements IAddItemBatchC
 	 */
 	@Override
 	public void undo() {
+		updateViewAfterUndo((AddItems) undoManager.undo());
+		enableComponents();
 	}
 
 	/**
@@ -197,7 +193,7 @@ public class AddItemBatchController extends Controller implements IAddItemBatchC
 		ProductData productData = DataWrapper.wrap(product, 0);
 		products.add(productData);
 		items.add(new ArrayList<ItemData>());
-		// refreshProducts();
+		refreshProducts();
 		return productData;
 	}
 
@@ -213,6 +209,81 @@ public class AddItemBatchController extends Controller implements IAddItemBatchC
 		getView().setProducts(products.toArray(pd));
 	}
 
+	private void updateViewAfterExecute(AddItems addItemsCommand) {
+		ProductData selectedProduct = getView().getSelectedProduct();
+		ItemData selectedItem = getView().getSelectedItem();
+		AddProduct addProductCommand = addItemsCommand.getAddProductCommand();
+		ProductManager productManager = getProductManager();
+		String productBarcode = addProductCommand.getBarcode();
+		int itemCount = addItemsCommand.getItemCount();
+
+		Product product = productManager.getByBarcode(productBarcode);
+		ProductData productData = null;
+		boolean found = false;
+		for (ProductData pd : products) {
+			if (pd.getBarcode().equals(product.getBarcode())) {
+				productData = pd;
+				found = true;
+			}
+		}
+		if (!found) {
+			productData = addProduct(product);
+		}
+
+		for (Item item : addItemsCommand.getAddedItems()) {
+			ItemData id = DataWrapper.wrap(item);
+			items.get(products.indexOf(productData)).add(id);
+		}
+		refreshItems();
+
+		int count = Integer.parseInt(productData.getCount()) + itemCount;
+		productData.setCount("" + count);
+		refreshProducts();
+
+		refreshProducts();
+
+		if (selectedProduct != null)
+			getView().selectProduct(selectedProduct);
+		if (selectedItem != null)
+			getView().selectItem(selectedItem);
+	}
+
+	private void updateViewAfterUndo(AddItems addItemsCommand) {
+		ProductData selectedProduct = getView().getSelectedProduct();
+		ItemData selectedItem = getView().getSelectedItem();
+		AddProduct addProductCommand = addItemsCommand.getAddProductCommand();
+		String productBarcode = addProductCommand.getBarcode();
+		int itemCount = addItemsCommand.getItemCount();
+		ProductData productData = null;
+		for (int i = 0; i < products.size(); i++) {
+			productData = products.get(i);
+			if (productData.getBarcode().equals(productBarcode)) {
+				Set<Item> addedItems = addItemsCommand.getAddedItems();
+				ArrayList<ItemData> itemsToRemove = new ArrayList<ItemData>();
+				for (ItemData itemData : items.get(i)) {
+					Item item = (Item) itemData.getTag();
+					if (addedItems.contains(item)) {
+						itemsToRemove.add(itemData);
+					}
+				}
+				for (ItemData itemData : itemsToRemove)
+					items.get(products.indexOf(productData)).remove(itemData);
+				refreshItems();
+				break;
+			}
+		}
+		assert (productData != null);
+		int count = Integer.parseInt(productData.getCount()) - itemCount;
+		productData.setCount("" + count);
+		if (count == 0)
+			products.remove(productData);
+		refreshProducts();
+		if (selectedProduct != null)
+			getView().selectProduct(selectedProduct);
+		if (selectedItem != null)
+			getView().selectItem(selectedItem);
+	}
+
 	/**
 	 * Sets the enable/disable state of all components in the controller's view. A component
 	 * should be enabled only if the user is currently allowed to interact with that component.
@@ -224,8 +295,8 @@ public class AddItemBatchController extends Controller implements IAddItemBatchC
 	 */
 	@Override
 	protected void enableComponents() {
-		getView().enableUndo(false);
-		getView().enableRedo(false);
+		getView().enableUndo(undoManager.canUndo());
+		getView().enableRedo(undoManager.canRedo());
 		boolean isValidCount = true;
 		try {
 			int count = Integer.parseInt(getView().getCount());

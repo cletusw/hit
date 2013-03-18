@@ -19,6 +19,8 @@ public interface ItemManager {
 
 	public void manage(Item item);
 
+	public void undoManage(Item item);
+
 	public void unmanage(Item item);
 
 	void addObserver(Observer o);

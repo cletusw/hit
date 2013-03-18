@@ -138,30 +138,6 @@ public abstract class ProductContainer implements Comparable<ProductContainer>, 
 	}
 
 	/**
-	 * Method that adds a ProductGroup object to the collection. This method should only be
-	 * called from the ProductGroup constructor.
-	 * 
-	 * @param productGroup
-	 *            - the ProductGroup object to add to the collection
-	 * 
-	 * @pre productGroup != null
-	 * @pre canAddProductGroup(productGroup.getName())
-	 * @post pGroups.size() == pGroups.size()@pre + 1
-	 * @post pGroups.contains(productGroup)
-	 * 
-	 */
-	protected void add(ProductGroup productGroup) {
-		if (productGroup == null) {
-			throw new NullPointerException("Null ProductGroup productGroup");
-		}
-		if (!canAddProductGroup(productGroup.getName()))
-			throw new IllegalStateException(
-					"Cannot add two product groups of the same name into a container");
-		productGroups.put(productGroup.getName(), productGroup);
-		productGroup.setContainer(this);
-	}
-
-	/**
 	 * Determines whether the specified Product can be added to this Storage Unit.
 	 * 
 	 * @param productBarcode
@@ -651,24 +627,6 @@ public abstract class ProductContainer implements Comparable<ProductContainer>, 
 	}
 
 	/**
-	 * Internal method: Used to determine whether it is possible to add a Product
-	 * 
-	 * @param productBarcode
-	 *            Product to look for
-	 * @return
-	 */
-	protected boolean hasDescendantProduct(String productBarcode) {
-		if (containsProduct(productBarcode)) {
-			return true;
-		}
-		for (ProductGroup productGroup : productGroups.values()) {
-			if (productGroup.hasDescendantProduct(productBarcode))
-				return true;
-		}
-		return false;
-	}
-
-	/**
 	 * Removes the specified item from this ProductContainer. Use this only
 	 * 
 	 * @param item
@@ -708,51 +666,8 @@ public abstract class ProductContainer implements Comparable<ProductContainer>, 
 		destination.registerItem(item);
 	}
 
-	/**
-	 * Helper Method for adding items to this productContainer or any of its children
-	 * (recursively). If no product matching i's product is found, no item is registered.
-	 * 
-	 * @param i
-	 *            Item to add
-	 * 
-	 * @return true if item is registered, false if otherwise.
-	 */
-	protected boolean recursivelyRegisterItem(Item i) {
-		if (productGroups == null)
-			return false;
-
-		if (containsProduct(i.getProductBarcode())) {
-			registerItem(i);
-			return true;
-		}
-
-		if (!productGroups.isEmpty()) {
-			for (ProductContainer container : productGroups.values()) {
-				return container.recursivelyRegisterItem(i);
-			}
-		}
-
-		return false;
-	}
-
-	/**
-	 * Helper method for adding items
-	 * 
-	 * @param i
-	 *            Item to add
-	 */
-	protected void registerItem(Item i) {
-		items.put(i.getBarcode(), i);
-		i.setContainer(this);
-		i.getProduct().addItem(i);
-		Set<Item> newItemsForProduct;
-		if (productsToItems.containsKey(i.getProduct())) {
-			newItemsForProduct = productsToItems.get(i.getProduct());
-		} else {
-			newItemsForProduct = new TreeSet<Item>();
-		}
-		newItemsForProduct.add(i);
-		productsToItems.put(i.getProduct(), newItemsForProduct);
+	public Item remove(Item item, ItemManager manager) {
+		return remove(item, manager, true);
 	}
 
 	/**
@@ -770,7 +685,7 @@ public abstract class ProductContainer implements Comparable<ProductContainer>, 
 	 * @pre productsToItems.containsKey(item.getProduct())
 	 * @post !containsItem(item.getBarcode())
 	 */
-	public Item remove(Item item, ItemManager manager) {
+	public Item remove(Item item, ItemManager manager, boolean keepHistory) {
 		if (item == null) {
 			throw new NullPointerException("Null Item item");
 		}
@@ -786,7 +701,10 @@ public abstract class ProductContainer implements Comparable<ProductContainer>, 
 		newItemsForProduct.remove(item);
 		productsToItems.put(item.getProduct(), newItemsForProduct);
 		Item removed = items.remove(item.getBarcode());
-		manager.unmanage(item);
+		if (keepHistory)
+			manager.unmanage(item);
+		else
+			manager.undoManage(item);
 		return removed;
 	}
 
@@ -869,6 +787,100 @@ public abstract class ProductContainer implements Comparable<ProductContainer>, 
 		this.name = new NonEmptyString(name);
 	}
 
+	public void updateChildProductGroup(String oldName, ProductGroup p) {
+		productGroups.remove(oldName);
+		productGroups.put(p.getName(), p);
+	}
+
+	/**
+	 * Method that adds a ProductGroup object to the collection. This method should only be
+	 * called from the ProductGroup constructor.
+	 * 
+	 * @param productGroup
+	 *            - the ProductGroup object to add to the collection
+	 * 
+	 * @pre productGroup != null
+	 * @pre canAddProductGroup(productGroup.getName())
+	 * @post pGroups.size() == pGroups.size()@pre + 1
+	 * @post pGroups.contains(productGroup)
+	 * 
+	 */
+	protected void add(ProductGroup productGroup) {
+		if (productGroup == null) {
+			throw new NullPointerException("Null ProductGroup productGroup");
+		}
+		if (!canAddProductGroup(productGroup.getName()))
+			throw new IllegalStateException(
+					"Cannot add two product groups of the same name into a container");
+		productGroups.put(productGroup.getName(), productGroup);
+		productGroup.setContainer(this);
+	}
+
+	/**
+	 * Internal method: Used to determine whether it is possible to add a Product
+	 * 
+	 * @param productBarcode
+	 *            Product to look for
+	 * @return
+	 */
+	protected boolean hasDescendantProduct(String productBarcode) {
+		if (containsProduct(productBarcode)) {
+			return true;
+		}
+		for (ProductGroup productGroup : productGroups.values()) {
+			if (productGroup.hasDescendantProduct(productBarcode))
+				return true;
+		}
+		return false;
+	}
+
+	/**
+	 * Helper Method for adding items to this productContainer or any of its children
+	 * (recursively). If no product matching i's product is found, no item is registered.
+	 * 
+	 * @param i
+	 *            Item to add
+	 * 
+	 * @return true if item is registered, false if otherwise.
+	 */
+	protected boolean recursivelyRegisterItem(Item i) {
+		if (productGroups == null)
+			return false;
+
+		if (containsProduct(i.getProductBarcode())) {
+			registerItem(i);
+			return true;
+		}
+
+		if (!productGroups.isEmpty()) {
+			for (ProductContainer container : productGroups.values()) {
+				return container.recursivelyRegisterItem(i);
+			}
+		}
+
+		return false;
+	}
+
+	/**
+	 * Helper method for adding items
+	 * 
+	 * @param i
+	 *            Item to add
+	 */
+	protected void registerItem(Item i) {
+		items.put(i.getBarcode(), i);
+		i.setContainer(this);
+		i.getProduct().addItem(i);
+		Set<Item> newItemsForProduct;
+		if (productsToItems.containsKey(i.getProduct())) {
+			newItemsForProduct = productsToItems.get(i.getProduct());
+		} else {
+			newItemsForProduct = new TreeSet<Item>();
+		}
+		newItemsForProduct.add(i);
+		productsToItems.put(i.getProduct(), newItemsForProduct);
+	}
+
 	/**
 	 * Helper method for moving / removing items
 	 * 
@@ -886,10 +898,5 @@ public abstract class ProductContainer implements Comparable<ProductContainer>, 
 		}
 		newItemsForProduct.remove(i);
 		productsToItems.put(i.getProduct(), newItemsForProduct);
-	}
-
-	public void updateChildProductGroup(String oldName, ProductGroup p) {
-		productGroups.remove(oldName);
-		productGroups.put(p.getName(), p);
 	}
 }

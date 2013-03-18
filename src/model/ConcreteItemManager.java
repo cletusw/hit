@@ -155,22 +155,15 @@ public class ConcreteItemManager extends ObservableWithPublicNotify implements I
 	}
 
 	/**
-	 * Adds the specified item to a productContainer
+	 * Undo the management of an Item without adding it to the RemovedItems list.
 	 * 
 	 * @param item
-	 *            The Item to add
-	 * @param container
-	 *            The ProductContainer to add the Item to
-	 * 
-	 * @pre item != null
-	 * @pre items.contains(item)
-	 * @pre productsToItems.get(item.getProduct()).contains(item)
-	 * @post removedItems.contains(item)
-	 * @post !items.contains(item)
-	 * 
+	 *            the Item to unmanage
+	 * @pre true
+	 * @post !items.contains(item) && !removedItems.contains(item);
 	 */
 	@Override
-	public void unmanage(Item item) {
+	public void undoManage(Item item) {
 		if (item == null)
 			throw new IllegalArgumentException("Item to unmanage can't be null.");
 		// System.out.println("Unmanaging item " + item.getBarcode() + " "
@@ -187,8 +180,27 @@ public class ConcreteItemManager extends ObservableWithPublicNotify implements I
 			productsToItems.remove(item.getProduct());
 
 		item.remove();
-		removedItems.add(item);
-
 		notifyObservers(new Action(item, ActionType.DELETE));
+	}
+
+	/**
+	 * Adds the specified item to a productContainer
+	 * 
+	 * @param item
+	 *            The Item to add
+	 * @param container
+	 *            The ProductContainer to add the Item to
+	 * 
+	 * @pre item != null
+	 * @pre items.contains(item)
+	 * @pre productsToItems.get(item.getProduct()).contains(item)
+	 * @post removedItems.contains(item)
+	 * @post !items.contains(item)
+	 * 
+	 */
+	@Override
+	public void unmanage(Item item) {
+		undoManage(item);
+		removedItems.add(item);
 	}
 }

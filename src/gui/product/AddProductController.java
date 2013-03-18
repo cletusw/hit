@@ -7,6 +7,7 @@ import model.Product;
 import model.ProductManager;
 import model.ProductQuantity;
 import model.Unit;
+import model.undo.AddProduct;
 
 /**
  * Controller class for the add item view.
@@ -67,9 +68,10 @@ public class AddProductController extends Controller implements IAddProductContr
 
 		Unit unit = Unit.convertFromSizeUnits(getView().getSizeUnit());
 		currentUnit = unit;
-		ProductQuantity pq = new ProductQuantity(quantity, unit);
 
-		new Product(barcode, description, shelfLife, threeMonthSupply, pq, productManager);
+		getProductManager().setPendingProductCommand(
+				new AddProduct(barcode, description, shelfLife, threeMonthSupply, quantity,
+						unit, productManager));
 	}
 
 	/**

@@ -8,6 +8,7 @@ import java.util.TreeMap;
 import java.util.TreeSet;
 
 import model.Action.ActionType;
+import model.undo.Command;
 
 import common.ObservableWithPublicNotify;
 
@@ -20,6 +21,7 @@ public class ConcreteProductManager extends ObservableWithPublicNotify implement
 		ProductManager, Serializable {
 	private final Set<Product> products;
 	private final Map<String, Product> barcodesToProducts;
+	private Command pendingProductCommand;
 
 	/**
 	 * Creates an empty ConcreteProductManager
@@ -27,6 +29,7 @@ public class ConcreteProductManager extends ObservableWithPublicNotify implement
 	public ConcreteProductManager() {
 		products = new TreeSet<Product>();
 		barcodesToProducts = new TreeMap<String, Product>();
+		pendingProductCommand = null;
 	}
 
 	/**
@@ -80,6 +83,19 @@ public class ConcreteProductManager extends ObservableWithPublicNotify implement
 	}
 
 	/**
+	 * Gets the pending command for Product manipulation. Used by the GUI for undo / redo state
+	 * across multiple controllers.
+	 * 
+	 * @return the Command to be executed that affects the ProductManager, null if none
+	 * @pre true
+	 * @post true
+	 */
+	@Override
+	public Command getPendingProductCommand() {
+		return pendingProductCommand;
+	}
+
+	/**
 	 * Gets all Products in the System.
 	 * 
 	 * @return an *unmodifiable* set of products
@@ -109,6 +125,20 @@ public class ConcreteProductManager extends ObservableWithPublicNotify implement
 		barcodesToProducts.put(product.getBarcode(), product);
 
 		notifyObservers(new Action(product, ActionType.CREATE));
+	}
+
+	/**
+	 * Sets the pending command for Product manipulation. Used by the GUI for undo / redo state
+	 * across multiple controllers.
+	 * 
+	 * @param command
+	 *            the Command to be executed by a controller
+	 * @pre true
+	 * @post true
+	 */
+	@Override
+	public void setPendingProductCommand(Command command) {
+		pendingProductCommand = command;
 	}
 
 	/**

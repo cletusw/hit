@@ -123,8 +123,8 @@ public class Product implements Comparable<Object>, Serializable, InventoryVisit
 	private int threeMonthSupply;
 	private final Set<ProductContainer> productContainers;
 	private final Set<Item> items;
-	private ProductManager manager;
 
+	private final ProductManager manager;
 	private ProductQuantity productQuantity;
 
 	/**
@@ -279,10 +279,10 @@ public class Product implements Comparable<Object>, Serializable, InventoryVisit
 	@Override
 	public int compareTo(Object o) {
 		if (o == null) {
-			throw new NullPointerException("Null Object o");
+			return 1;
 		}
 		if (!(o instanceof Product) && !(o instanceof NonEmptyString)) {
-			throw new ClassCastException("Invalid class for Object o");
+			return -1;
 		}
 
 		NonEmptyString otherBarcode;
@@ -413,6 +413,10 @@ public class Product implements Comparable<Object>, Serializable, InventoryVisit
 	 */
 	public Iterator<Item> getItemsIterator() {
 		return items.iterator();
+	}
+
+	public final Set<ProductContainer> getProductContainers() {
+		return productContainers;
 	}
 
 	/**
@@ -565,19 +569,6 @@ public class Product implements Comparable<Object>, Serializable, InventoryVisit
 		items.remove(item);
 	}
 
-	private void setBarcode(String barcode) {
-		this.barcode = new NonEmptyString(barcode);
-	}
-
-	private void setCreationDate(Date date) {
-		Date now = new Date();
-		if (!date.after(now)) {
-			creationDate = date;
-		} else {
-			throw new IllegalArgumentException("CreationDate cannot be in the future");
-		}
-	}
-
 	/**
 	 * Sets the description for this product object.
 	 * 
@@ -636,5 +627,18 @@ public class Product implements Comparable<Object>, Serializable, InventoryVisit
 			throw new IllegalArgumentException("Three Month Supply must be non-negative");
 
 		this.threeMonthSupply = threeMonthSupply;
+	}
+
+	private void setBarcode(String barcode) {
+		this.barcode = new NonEmptyString(barcode);
+	}
+
+	private void setCreationDate(Date date) {
+		Date now = new Date();
+		if (!date.after(now)) {
+			creationDate = date;
+		} else {
+			throw new IllegalArgumentException("CreationDate cannot be in the future");
+		}
 	}
 }
