@@ -76,20 +76,9 @@ public class HtmlBuilder implements ReportBuilder {
 
 	}
 
-	private void endPreviousElement() {
-		endTable();
-	}
-
-	private void endTable() {
-		if (openTable)
-			content.append("</table>");
-		openTable = false;
-		tableColumns = -1;
-	}
-
 	@Override
 	public void print(String filename) throws IOException {
-		FileWriter file = new FileWriter(filename);
+		FileWriter file = new FileWriter(filename + ".html");
 		PrintWriter writer = new PrintWriter(file);
 
 		// start document
@@ -120,5 +109,16 @@ public class HtmlBuilder implements ReportBuilder {
 		content.append("</tr>");
 		openTable = true;
 		tableColumns = headers.size();
+	}
+
+	private void endPreviousElement() {
+		endTable();
+	}
+
+	private void endTable() {
+		if (openTable)
+			content.append("</table>");
+		openTable = false;
+		tableColumns = -1;
 	}
 }

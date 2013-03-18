@@ -62,7 +62,9 @@ public interface ReportBuilder {
 	public void addTableRow(List<String> row);
 
 	/**
-	 * Closes any open elements in the document and prints to the given filename
+	 * Closes any open elements in the document and prints to the given filename. The filename
+	 * should not include an extension, the builder will create a file with the appropriate
+	 * file extension.
 	 * 
 	 * @param filename
 	 *            String filename to write to
