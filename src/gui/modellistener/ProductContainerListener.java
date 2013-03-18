@@ -3,7 +3,6 @@ package gui.modellistener;
 import gui.inventory.IInventoryView;
 import gui.inventory.ProductContainerData;
 
-import java.util.Iterator;
 import java.util.Observable;
 import java.util.Observer;
 
@@ -91,9 +90,7 @@ public class ProductContainerListener extends InventoryListener implements Obser
 		ProductContainerData pcData = new ProductContainerData(container.getName());
 		pcData.setTag(container);
 		parentData.addChild(pcData);
-		Iterator<ProductGroup> productGroupIterator = container.getProductGroupIterator();
-		while (productGroupIterator.hasNext()) {
-			ProductGroup child = productGroupIterator.next();
+		for (ProductGroup child : container.getProductGroups()) {
 			pcData = loadProductContainerData(pcData, child);
 		}
 		return parentData;
