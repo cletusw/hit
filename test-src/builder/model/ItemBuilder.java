@@ -8,11 +8,10 @@ import model.Item;
 import model.ItemManager;
 import model.Product;
 import model.ProductContainer;
-import fixture.model.StorageUnitFixture;
 
 public class ItemBuilder {
 	private Product product = new ProductBuilder().build();
-	private ProductContainer container = new StorageUnitFixture();
+	private ProductContainer container = new StorageUnitBuilder().build();
 	private Date entryDate = new Date();
 	private ItemManager manager = createNiceMock(ItemManager.class);
 

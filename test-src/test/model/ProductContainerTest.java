@@ -22,7 +22,7 @@ import org.junit.Test;
 import builder.model.ItemBuilder;
 import builder.model.ProductBuilder;
 import builder.model.ProductGroupBuilder;
-import fixture.model.StorageUnitFixture;
+import builder.model.StorageUnitBuilder;
 
 public class ProductContainerTest {
 	private static void testInvariants(ProductContainer productContainer) {
@@ -41,7 +41,7 @@ public class ProductContainerTest {
 
 	@Before
 	public void setUp() throws Exception {
-		storageUnit = new StorageUnitFixture();
+		storageUnit = new StorageUnitBuilder().build();
 		productGroup = new ProductGroupBuilder().parent(storageUnit).build();
 		nestedProductGroup = new ProductGroupBuilder().parent(productGroup).build();
 		product = new ProductBuilder().build();
@@ -252,14 +252,14 @@ public class ProductContainerTest {
 	@Test(expected = IllegalStateException.class)
 	public void testMoveIntoContainerDuplicate() {
 		storageUnit.add(item);
-		StorageUnit storageUnit2 = new StorageUnitFixture();
+		StorageUnit storageUnit2 = new StorageUnitBuilder().build();
 		storageUnit2.add(item);
 		storageUnit.moveIntoContainer(item, storageUnit2);
 	}
 
 	@Test(expected = IllegalStateException.class)
 	public void testMoveIntoContainerFromEmpty() {
-		StorageUnit storageUnit2 = new StorageUnitFixture();
+		StorageUnit storageUnit2 = new StorageUnitBuilder().build();
 		ProductGroup productGroup2 = new ProductGroupBuilder().parent(storageUnit2).build();
 		productGroup.moveIntoContainer(item, productGroup2);
 	}
@@ -316,7 +316,7 @@ public class ProductContainerTest {
 
 	@Test
 	public void testStorageUnitCanAddProduct() {
-		StorageUnit storageUnit2 = new StorageUnitFixture();
+		StorageUnit storageUnit2 = new StorageUnitBuilder().build();
 		ProductGroup productGroup2 = new ProductGroupBuilder().parent(storageUnit2).build();
 		ProductGroup productGroup3 = new ProductGroupBuilder().parent(productGroup2).build();
 		productGroup3.add(product);

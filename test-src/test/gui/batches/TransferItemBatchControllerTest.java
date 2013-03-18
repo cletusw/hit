@@ -3,6 +3,9 @@ package test.gui.batches;
 import static org.easymock.EasyMock.expect;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
+import gui.batches.ITransferItemBatchView;
+import gui.batches.TransferItemBatchController;
+import gui.common.DataWrapper;
 import model.Item;
 import model.ItemManager;
 import model.StorageUnit;
@@ -13,10 +16,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import builder.model.ItemBuilder;
-import fixture.model.StorageUnitFixture;
-import gui.batches.ITransferItemBatchView;
-import gui.batches.TransferItemBatchController;
-import gui.common.DataWrapper;
+import builder.model.StorageUnitBuilder;
 
 public class TransferItemBatchControllerTest extends EasyMockSupport {
 
@@ -30,8 +30,8 @@ public class TransferItemBatchControllerTest extends EasyMockSupport {
 
 	@Test
 	public void test() {
-		StorageUnit source = new StorageUnitFixture();
-		StorageUnit destination = new StorageUnitFixture();
+		StorageUnit source = new StorageUnitBuilder().build();
+		StorageUnit destination = new StorageUnitBuilder().build();
 		Item item1 = new ItemBuilder().container(source).build();
 
 		ITransferItemBatchView mockView = createNiceMock(ITransferItemBatchView.class);

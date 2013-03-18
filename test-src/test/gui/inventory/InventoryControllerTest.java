@@ -5,7 +5,6 @@ import static org.easymock.EasyMock.expect;
 import static org.easymock.EasyMock.replay;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
-import fixture.model.StorageUnitFixture;
 import gui.common.DataWrapper;
 import gui.inventory.IInventoryView;
 import gui.inventory.InventoryController;
@@ -35,6 +34,7 @@ import org.junit.Test;
 
 import builder.model.ItemBuilder;
 import builder.model.ProductGroupBuilder;
+import builder.model.StorageUnitBuilder;
 
 public class InventoryControllerTest extends EasyMockSupport {
 	private InventoryController inventoryController;
@@ -306,7 +306,7 @@ public class InventoryControllerTest extends EasyMockSupport {
 		Capture<ProductData[]> productListCapture = new Capture<ProductData[]>();
 
 		expect(mockView.getSelectedProductContainer()).andStubReturn(
-				DataWrapper.wrap(new StorageUnitFixture()));
+				DataWrapper.wrap(new StorageUnitBuilder().build()));
 		mockView.setProducts(capture(productListCapture));
 		replay(mockView);
 

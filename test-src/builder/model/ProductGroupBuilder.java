@@ -6,13 +6,12 @@ import model.ProductContainerManager;
 import model.ProductGroup;
 import model.ProductQuantity;
 import model.Unit;
-import fixture.model.StorageUnitFixture;
 
 public class ProductGroupBuilder {
 	private String name = "ProductGroup " + Long.toString(System.nanoTime());
 	private ProductQuantity threeMonthSupply = new ProductQuantity(1, Unit.COUNT);
 	private Unit groupUnit = Unit.COUNT;
-	private ProductContainer parent = new StorageUnitFixture();
+	private ProductContainer parent = new StorageUnitBuilder().build();
 	private ProductContainerManager manager = createNiceMock(ProductContainerManager.class);
 
 	public ProductGroup build() {
