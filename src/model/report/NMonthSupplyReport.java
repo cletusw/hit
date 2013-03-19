@@ -39,6 +39,7 @@ public class NMonthSupplyReport extends Report implements InventoryVisitor {
 	 */
 	public void construct(ReportBuilder builder, int months) {
 		updateLastRunTime();
+		builder.addDocumentTitle(Integer.toString(months) + "-Month Supply Report");
 	}
 
 	@Override

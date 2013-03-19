@@ -2,8 +2,12 @@ package test.model.report;
 
 import static org.junit.Assert.assertTrue;
 
+import java.util.Arrays;
 import java.util.Date;
+import java.util.List;
 
+import model.ConcreteProductContainerManager;
+import model.ConcreteProductManager;
 import model.HomeInventoryTracker;
 import model.report.NMonthSupplyReport;
 import model.report.builder.ReportBuilder;
@@ -14,6 +18,9 @@ import org.junit.Before;
 import org.junit.Test;
 
 public class NMonthSupplyReportTest extends EasyMockSupport {
+	private static final List<String> HEADERS_FOR_3_MONTHS = Arrays.asList("Description",
+			"Barcode", "3-Month Supply", "Current Supply");
+
 	private HomeInventoryTracker hit;
 	private NMonthSupplyReport report;
 	private ReportBuilder mockBuilder;
@@ -31,6 +38,36 @@ public class NMonthSupplyReportTest extends EasyMockSupport {
 	}
 
 	@Test
+	public void testOnEmptyTreeFor3Months() {
+		NMonthSupplyReport report = new NMonthSupplyReport(new ConcreteProductManager(),
+				new ConcreteProductContainerManager());
+
+		// Expect:
+		mockBuilder.addDocumentTitle("3-Month Supply Report");
+
+		replayAll();
+
+		report.construct(mockBuilder, 3);
+
+		verifyAll();
+	}
+
+	@Test
+	public void testOnEmptyTreeFor4Months() {
+		NMonthSupplyReport report = new NMonthSupplyReport(new ConcreteProductManager(),
+				new ConcreteProductContainerManager());
+
+		// Expect:
+		mockBuilder.addDocumentTitle("4-Month Supply Report");
+
+		replayAll();
+
+		report.construct(mockBuilder, 4);
+
+		verifyAll();
+	}
+
+	@Test
 	public void testRunTime() {
 		report.construct(mockBuilder, 3);
 		Date firstRunTime = report.getLastRunTime();
@@ -44,5 +81,4 @@ public class NMonthSupplyReportTest extends EasyMockSupport {
 		report.construct(mockBuilder, 3);
 		assertTrue(firstRunTime.before(report.getLastRunTime()));
 	}
-
 }
