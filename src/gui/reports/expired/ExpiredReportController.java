@@ -38,6 +38,7 @@ public class ExpiredReportController extends Controller implements IExpiredRepor
 	 */
 	@Override
 	public void valuesChanged() {
+		enableComponents();
 	}
 
 	/**
@@ -51,6 +52,8 @@ public class ExpiredReportController extends Controller implements IExpiredRepor
 	 */
 	@Override
 	protected void enableComponents() {
+		getView().enableFormat(true);
+		getView().enableOK(true);
 	}
 
 	//
