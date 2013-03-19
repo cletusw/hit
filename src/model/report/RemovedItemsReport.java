@@ -78,7 +78,7 @@ public class RemovedItemsReport extends Report {
 		}
 
 		try {
-			File file = builder.print("removedItems.pdf");
+			File file = builder.print("removedItems");
 			java.awt.Desktop.getDesktop().open(file);
 		} catch (IOException e) {
 			e.printStackTrace();

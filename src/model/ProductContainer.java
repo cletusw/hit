@@ -712,15 +712,12 @@ public abstract class ProductContainer implements Comparable<ProductContainer>, 
 		}
 
 		item.setContainer(null);
-		Set<Item> newItemsForProduct = productsToItems.get(item.getProduct());
-		newItemsForProduct.remove(item);
-		productsToItems.put(item.getProduct(), newItemsForProduct);
-		Item removed = items.remove(item.getBarcode());
+		unregisterItem(item);
 		if (keepHistory)
 			manager.unmanage(item);
 		else
 			manager.undoManage(item);
-		return removed;
+		return item;
 	}
 
 	/**
