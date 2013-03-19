@@ -41,10 +41,16 @@ public class RemovedReportController extends Controller implements IRemovedRepor
 		Date sinceDate = getView().getSinceDate() ? getView().getSinceDateValue() : report
 				.getLastRunTime();
 		ReportBuilder builder;
-		if (getView().getFormat().equals("PDF"))
-			builder = new PdfBuilder();
-		else
+		switch (getView().getFormat()) {
+		case HTML:
 			builder = new HtmlBuilder();
+			break;
+		case PDF:
+			builder = new PdfBuilder();
+			break;
+		default:
+			return;
+		}
 
 		report.construct(builder, sinceDate);
 	}
