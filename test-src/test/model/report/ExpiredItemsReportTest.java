@@ -196,7 +196,7 @@ public class ExpiredItemsReportTest extends EasyMockSupport {
 	 */
 	private List<String> asExpiredItemsReportTableRow(Item item) {
 		return Arrays.asList(item.getProduct().getDescription(), item.getStorageUnitName(),
-				item.getProductGroupName(), item.getEntryDate().toString(), item
-						.getExpirationDate().toString(), item.getBarcode());
+				item.getProductGroupName(), report.formatForReport(item.getEntryDate()),
+				report.formatForReport(item.getExpirationDate()), item.getBarcode());
 	}
 }
