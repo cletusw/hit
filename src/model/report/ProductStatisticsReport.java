@@ -76,13 +76,11 @@ public class ProductStatisticsReport extends Report {
 			row.add("Cur Age");
 			builder.addTableRow(row);
 		}
-
-		File file = null;
 		try {
-			file = builder.print(getFileName());
+			File file = builder.print(getFileName());
 			java.awt.Desktop.getDesktop().open(file);
 		} catch (IOException e) {
-			System.out.println("Not able to open!! " + file.getAbsolutePath());
+			System.out.println("Not able to open!! " + getFileName());
 		}
 	}
 }
