@@ -2,6 +2,8 @@ package model.report;
 
 import java.io.File;
 import java.io.Serializable;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 
@@ -11,7 +13,9 @@ import java.util.Date;
  * @author Matthew
  * 
  */
+@SuppressWarnings("serial")
 public abstract class Report implements Serializable {
+	private static final DateFormat dateFormatter = new SimpleDateFormat("MM/dd/yyyy");
 
 	private Date lastRunTime;
 	protected final String directory = "reports/";
@@ -23,6 +27,19 @@ public abstract class Report implements Serializable {
 			reportDirectory.mkdirs();
 		}
 		lastRunTime = null;
+	}
+
+	/**
+	 * Returns String representation of the given Date according to the Report's default date
+	 * format
+	 * 
+	 * @param date
+	 *            Date to format
+	 * @return String representation of the given Date according to the Report's default date
+	 *         format
+	 */
+	public String formatForReport(Date date) {
+		return dateFormatter.format(date);
 	}
 
 	public String getFileName() {

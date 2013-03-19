@@ -1,5 +1,6 @@
 package model.report;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.Date;
@@ -11,8 +12,8 @@ import model.ItemManager;
 import model.Product;
 import model.report.builder.ReportBuilder;
 
+@SuppressWarnings("serial")
 public class RemovedItemsReport extends Report {
-	private ReportBuilder builder;
 	private final ItemManager itemManager;
 
 	/**
@@ -40,7 +41,6 @@ public class RemovedItemsReport extends Report {
 	 */
 	public void construct(ReportBuilder builder) {
 		construct(builder, getLastRunTime());
-		updateLastRunTime();
 	}
 
 	/**
@@ -56,7 +56,6 @@ public class RemovedItemsReport extends Report {
 	 */
 	public void construct(ReportBuilder builder, Date startDate) {
 		updateLastRunTime();
-		this.builder = builder;
 
 		builder.addDocumentTitle("Removed Items");
 		builder.startTable(Arrays.asList("Description", "Size", "Product Barcode", "Removed",
@@ -77,12 +76,13 @@ public class RemovedItemsReport extends Report {
 						+ removedCount, "" + product.getItems().size()));
 			}
 		}
+
 		try {
-			builder.print("removedItems.pdf");
+			File file = builder.print("removedItems.pdf");
+			java.awt.Desktop.getDesktop().open(file);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		this.builder = null;
 	}
 
 }

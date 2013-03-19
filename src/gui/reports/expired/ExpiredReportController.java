@@ -3,6 +3,14 @@ package gui.reports.expired;
 import gui.common.Controller;
 import gui.common.IView;
 
+import java.io.File;
+import java.io.IOException;
+
+import model.report.ExpiredItemsReport;
+import model.report.builder.HtmlBuilder;
+import model.report.builder.PdfBuilder;
+import model.report.builder.ReportBuilder;
+
 /**
  * Controller class for the expired items report view.
  */
@@ -30,6 +38,26 @@ public class ExpiredReportController extends Controller implements IExpiredRepor
 	 */
 	@Override
 	public void display() {
+		ReportBuilder builder;
+		switch (getView().getFormat()) {
+		case HTML:
+			builder = new HtmlBuilder();
+			break;
+		case PDF:
+			builder = new PdfBuilder();
+			break;
+		default:
+			return;
+		}
+		ExpiredItemsReport report = getReportManager().getExpiredItemsReport();
+		report.construct(builder);
+
+		try {
+			File file = builder.print(report.getFileName());
+			java.awt.Desktop.getDesktop().open(file);
+		} catch (IOException e) {
+			System.out.println("Not able to open!! " + report.getFileName());
+		}
 	}
 
 	/**
@@ -38,6 +66,7 @@ public class ExpiredReportController extends Controller implements IExpiredRepor
 	 */
 	@Override
 	public void valuesChanged() {
+		enableComponents();
 	}
 
 	/**
@@ -51,6 +80,8 @@ public class ExpiredReportController extends Controller implements IExpiredRepor
 	 */
 	@Override
 	protected void enableComponents() {
+		getView().enableFormat(true);
+		getView().enableOK(true);
 	}
 
 	//

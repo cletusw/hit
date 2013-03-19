@@ -7,6 +7,7 @@ import model.ProductContainerManager;
 import model.report.builder.ReportBuilder;
 import model.visitor.InventoryVisitor;
 
+@SuppressWarnings("serial")
 public class NoticesReport extends Report implements InventoryVisitor {
 	/**
 	 * Set up an empty NoticesReport.

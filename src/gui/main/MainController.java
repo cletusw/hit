@@ -37,8 +37,7 @@ public class MainController extends Controller implements IMainController {
 	 */
 	@Override
 	public boolean canPrintExpiredReport() {
-		// Reports disabled for phase 2
-		return false;
+		return true;
 	}
 
 	/**

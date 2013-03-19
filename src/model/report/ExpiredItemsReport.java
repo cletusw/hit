@@ -11,6 +11,7 @@ import model.StorageUnit;
 import model.report.builder.ReportBuilder;
 import model.visitor.InventoryVisitor;
 
+@SuppressWarnings("serial")
 public class ExpiredItemsReport extends Report implements InventoryVisitor {
 	private ReportBuilder builder;
 	private ProductContainerManager productContainerManager;
@@ -39,6 +40,9 @@ public class ExpiredItemsReport extends Report implements InventoryVisitor {
 	 * @post (new Date()).getTime() - getLastRunTime().getTime() < 1000
 	 */
 	public void construct(ReportBuilder builder) {
+		updateLastRunTime();
+
+		// Store the builder for use by the Visitor pattern
 		this.builder = builder;
 
 		builder.addDocumentTitle("Expired Items");
@@ -71,9 +75,10 @@ public class ExpiredItemsReport extends Report implements InventoryVisitor {
 		}
 
 		if (item.getExpirationDate().before(new Date())) {
-			builder.addTableRow(Arrays.asList(item.getProduct().getDescription(), item
-					.getStorageUnitName(), item.getProductGroupName(), item.getEntryDate()
-					.toString(), item.getExpirationDate().toString(), item.getBarcode()));
+			builder.addTableRow(Arrays.asList(item.getProduct().getDescription(),
+					item.getStorageUnitName(), item.getProductGroupName(),
+					formatForReport(item.getEntryDate()),
+					formatForReport(item.getExpirationDate()), item.getBarcode()));
 		}
 	}
 
@@ -118,10 +123,6 @@ public class ExpiredItemsReport extends Report implements InventoryVisitor {
 			throw new NullPointerException("Null ProductContainer productContainer");
 		}
 
-		for (Product product : productContainer.getProducts()) {
-			for (Item item : productContainer.getItemsForProduct(product)) {
-				item.accept(this);
-			}
-		}
+		// Do nothing
 	}
 }

@@ -18,6 +18,7 @@ import model.Product;
 import model.ProductManager;
 import model.report.builder.ReportBuilder;
 
+@SuppressWarnings("serial")
 public class ProductStatisticsReport extends Report {
 	private ItemManager itemManager;
 	private ProductManager productManager;
@@ -146,13 +147,11 @@ public class ProductStatisticsReport extends Report {
 			row.add(twoDForm.format(averageCurrentAge(product)) + "/" + maxCurrentAge(product));
 			builder.addTableRow(row);
 		}
-
-		File file = null;
 		try {
-			file = builder.print(getFileName());
+			File file = builder.print(getFileName());
 			java.awt.Desktop.getDesktop().open(file);
 		} catch (IOException e) {
-			System.out.println("Not able to open!! " + file.getAbsolutePath());
+			System.out.println("Not able to open!! " + getFileName());
 		}
 	}
 

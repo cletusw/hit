@@ -46,8 +46,7 @@ public class ProductStatsReportController extends Controller implements
 		default:
 			return;
 		}
-		ProductStatisticsReport report = new ProductStatisticsReport(getView()
-				.getItemManager(), getView().getProductManager());
+		ProductStatisticsReport report = getReportManager().getProductStatisticsReport();
 		report.construct(builder, Integer.parseInt(getView().getMonths()));
 	}
 
