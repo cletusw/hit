@@ -1,6 +1,7 @@
 package model.report;
 
 import java.io.File;
+import java.io.Serializable;
 import java.util.Calendar;
 import java.util.Date;
 
@@ -10,7 +11,7 @@ import java.util.Date;
  * @author Matthew
  * 
  */
-public abstract class Report {
+public abstract class Report implements Serializable {
 
 	private Date lastRunTime;
 	protected final String directory = "reports/";

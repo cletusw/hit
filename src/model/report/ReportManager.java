@@ -1,5 +1,7 @@
 package model.report;
 
+import java.io.Serializable;
+
 import model.ItemManager;
 import model.ProductContainerManager;
 import model.ProductManager;
@@ -10,7 +12,7 @@ import model.ProductManager;
  * @author Seth Stewart
  * 
  */
-public class ReportManager {
+public class ReportManager implements Serializable {
 	private final ExpiredItemsReport expiredItemsReport;
 	private final NMonthSupplyReport nMonthSupplyReport;
 	private final NoticesReport noticesReport;
