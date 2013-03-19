@@ -42,8 +42,14 @@ public class NMonthSupplyReport extends Report implements InventoryVisitor {
 	public void construct(ReportBuilder builder, int months) {
 		updateLastRunTime();
 		builder.addDocumentTitle(Integer.toString(months) + "-Month Supply Report");
+
+		builder.addSectionTitle("Products");
 		builder.startTable(Arrays.asList("Description", "Barcode", Integer.toString(months)
 				+ "-Month Supply", "Current Supply"));
+
+		builder.addSectionTitle("Product Groups");
+		builder.startTable(Arrays.asList("Product Group", "Storage Unit",
+				Integer.toString(months) + "-Month Supply", "Current Supply"));
 	}
 
 	@Override

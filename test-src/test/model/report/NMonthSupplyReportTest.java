@@ -18,6 +18,11 @@ import org.junit.Before;
 import org.junit.Test;
 
 public class NMonthSupplyReportTest extends EasyMockSupport {
+	private static List<String> productGroupsHeaders(int months) {
+		return Arrays.asList("Product Group", "Storage Unit", Integer.toString(months)
+				+ "-Month Supply", "Current Supply");
+	}
+
 	private static List<String> productsHeaders(int months) {
 		return Arrays.asList("Description", "Barcode", Integer.toString(months)
 				+ "-Month Supply", "Current Supply");
@@ -46,7 +51,12 @@ public class NMonthSupplyReportTest extends EasyMockSupport {
 
 		// Expect:
 		mockBuilder.addDocumentTitle("3-Month Supply Report");
+
+		mockBuilder.addSectionTitle("Products");
 		mockBuilder.startTable(productsHeaders(3));
+
+		mockBuilder.addSectionTitle("Product Groups");
+		mockBuilder.startTable(productGroupsHeaders(3));
 
 		replayAll();
 
@@ -62,7 +72,12 @@ public class NMonthSupplyReportTest extends EasyMockSupport {
 
 		// Expect:
 		mockBuilder.addDocumentTitle("4-Month Supply Report");
+
+		mockBuilder.addSectionTitle("Products");
 		mockBuilder.startTable(productsHeaders(4));
+
+		mockBuilder.addSectionTitle("Product Groups");
+		mockBuilder.startTable(productGroupsHeaders(4));
 
 		replayAll();
 
