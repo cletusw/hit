@@ -1,12 +1,14 @@
 package model.undo;
 
+import java.io.Serializable;
+
 import model.Product;
 import model.ProductContainer;
 import model.ProductManager;
 import model.ProductQuantity;
 import model.Unit;
 
-public class AddProduct implements Command {
+public class AddProduct implements Command, Serializable {
 	private final ProductManager productManager;
 	private final float quantity;
 	private final Unit unit;
