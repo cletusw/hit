@@ -2,10 +2,7 @@ package gui.reports.productstats;
 
 import gui.common.Controller;
 import gui.common.IView;
-
-import java.io.File;
-import java.io.IOException;
-
+import model.report.ProductStatisticsReport;
 import model.report.builder.HtmlBuilder;
 import model.report.builder.PdfBuilder;
 import model.report.builder.ReportBuilder;
@@ -49,15 +46,9 @@ public class ProductStatsReportController extends Controller implements
 		default:
 			return;
 		}
-
-		builder.addDocumentTitle("NEW PRODUCT STATISTICS REPORT");
-		String filename = "test";
-		try {
-			File file = builder.print(filename);
-			java.awt.Desktop.getDesktop().open(file);
-		} catch (IOException e) {
-			getView().displayErrorMessage("Unable to create report '" + filename + "'");
-		}
+		ProductStatisticsReport report = new ProductStatisticsReport(getView()
+				.getItemManager(), getView().getProductManager());
+		report.construct(builder, Integer.parseInt(getView().getMonths()));
 	}
 
 	/**
