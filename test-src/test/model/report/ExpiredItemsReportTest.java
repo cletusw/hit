@@ -102,6 +102,7 @@ public class ExpiredItemsReportTest extends EasyMockSupport {
 
 	@Test
 	public void testOnStorageUnitWithExpiredItemsOfDifferingEntryDates() {
+		@SuppressWarnings("deprecation")
 		Item expiredItem2001 = new ItemBuilder().product(perishableProduct)
 				.entryDate(new Date(2001 - 1900, 1, 1)).container(storageUnit).build();
 		Item expiredItem2000 = new ItemBuilder().product(perishableProduct)

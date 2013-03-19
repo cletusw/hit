@@ -11,6 +11,7 @@ import model.ItemManager;
 import model.Product;
 import model.report.builder.ReportBuilder;
 
+@SuppressWarnings("serial")
 public class RemovedItemsReport extends Report {
 	private ReportBuilder builder;
 	private final ItemManager itemManager;

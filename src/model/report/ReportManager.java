@@ -12,6 +12,7 @@ import model.ProductManager;
  * @author Seth Stewart
  * 
  */
+@SuppressWarnings("serial")
 public class ReportManager implements Serializable {
 	private final ExpiredItemsReport expiredItemsReport;
 	private final NMonthSupplyReport nMonthSupplyReport;

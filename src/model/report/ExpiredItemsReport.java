@@ -11,6 +11,7 @@ import model.StorageUnit;
 import model.report.builder.ReportBuilder;
 import model.visitor.InventoryVisitor;
 
+@SuppressWarnings("serial")
 public class ExpiredItemsReport extends Report implements InventoryVisitor {
 	private ReportBuilder builder;
 	private ProductContainerManager productContainerManager;

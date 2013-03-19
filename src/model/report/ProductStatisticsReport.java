@@ -13,6 +13,7 @@ import model.Product;
 import model.ProductManager;
 import model.report.builder.ReportBuilder;
 
+@SuppressWarnings("serial")
 public class ProductStatisticsReport extends Report {
 	private ItemManager itemManager;
 	private ProductManager productManager;

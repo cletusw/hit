@@ -11,6 +11,7 @@ import java.util.Date;
  * @author Matthew
  * 
  */
+@SuppressWarnings("serial")
 public abstract class Report implements Serializable {
 
 	private Date lastRunTime;
