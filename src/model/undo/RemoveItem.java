@@ -3,6 +3,7 @@ package model.undo;
 import model.Item;
 import model.ItemManager;
 import model.ProductContainer;
+import gui.batches.RemoveItemBatchController;
 
 /**
  * Class that stores the RemoveItem state for undo/redo operations
@@ -16,6 +17,7 @@ import model.ProductContainer;
  */
 public class RemoveItem implements Command {
 	private ItemManager manager;
+	private RemoveItemBatchController controller;
 	private Item toRemove;
 	private ProductContainer itemContainer;
 
@@ -34,10 +36,14 @@ public class RemoveItem implements Command {
 	 * @post true
 	 * 
 	 */
-	public RemoveItem(String itemBarcode, ItemManager manager) {
+	public RemoveItem(String itemBarcode, ItemManager manager, RemoveItemBatchController controller) {
 		this.manager = manager;
+		
+		this.controller = controller;
 
 		toRemove = manager.getItemByItemBarcode(itemBarcode);
+		if(toRemove == null)
+			throw new NullPointerException("manager must contain item");
 		itemContainer = toRemove.getContainer();
 	}
 
@@ -50,8 +56,10 @@ public class RemoveItem implements Command {
 	 */
 	@Override
 	public void execute() {
-		// TODO Auto-generated method stub
-
+		itemContainer.remove(toRemove,manager);
+		
+		controller.addItemToRemoved(toRemove,itemContainer);
+		controller.updateOnExecuteOrRedo(toRemove);
 	}
 
 	/**
@@ -75,8 +83,11 @@ public class RemoveItem implements Command {
 	 */
 	@Override
 	public void undo() {
-		// TODO Auto-generated method stub
-
+		itemContainer.add(toRemove);
+		manager.remanage(toRemove);
+		
+		controller.removeItemFromRemoved(toRemove);
+		controller.updateOnUndo(toRemove);
 	}
 
 }
