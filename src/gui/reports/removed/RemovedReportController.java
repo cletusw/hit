@@ -3,6 +3,7 @@ package gui.reports.removed;
 import gui.common.Controller;
 import gui.common.IView;
 
+import java.io.IOException;
 import java.util.Date;
 
 import model.report.RemovedItemsReport;
@@ -47,6 +48,12 @@ public class RemovedReportController extends Controller implements IRemovedRepor
 			builder = new HtmlBuilder();
 
 		report.construct(builder, sinceDate);
+
+		try {
+			builder.print("removedItems.pdf");
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
 
 	/**
