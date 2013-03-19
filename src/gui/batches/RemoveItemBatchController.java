@@ -134,7 +134,7 @@ public class RemoveItemBatchController extends Controller implements
 		int counter = 0;
 		for(Item item : productItems) {
 			items[counter] = DataWrapper.wrap(item);
-			items[counter++].setProductGroup(itemsPCnames.get(item));
+			items[counter++].setStorageUnit(itemsPCnames.get(item));
 		}
 		getView().setItems(items);
 	}
