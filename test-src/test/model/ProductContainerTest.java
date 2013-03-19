@@ -216,18 +216,6 @@ public class ProductContainerTest {
 	}
 
 	@Test
-	public void testGetCurrentSupply() {
-		nestedProductGroup.add(item.getProduct());
-		storageUnit.add(item);
-		new ItemBuilder().product(item.getProduct()).container(storageUnit).build();
-
-		assertTrue(storageUnit.getCurrentSupply(item.getProduct()).equals(
-				new ProductQuantity(2, Unit.COUNT)));
-		assertTrue(productGroup.getCurrentSupply(item.getProduct()).equals(
-				new ProductQuantity(2, Unit.COUNT)));
-	}
-
-	@Test
 	public void testHasChild() {
 		assertTrue(storageUnit.hasChild(productGroup));
 		assertTrue(storageUnit.hasChild(nestedProductGroup));
