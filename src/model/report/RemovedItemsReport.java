@@ -1,12 +1,20 @@
 package model.report;
 
+import java.io.IOException;
+import java.util.Arrays;
 import java.util.Date;
+import java.util.Map;
+import java.util.Set;
 
+import model.Item;
 import model.ItemManager;
+import model.Product;
 import model.report.builder.ReportBuilder;
-import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 public class RemovedItemsReport extends Report {
+	private ReportBuilder builder;
+	private final ItemManager itemManager;
+
 	/**
 	 * Set up an empty RemovedItemsReport.
 	 * 
@@ -17,6 +25,7 @@ public class RemovedItemsReport extends Report {
 	 * @post true
 	 */
 	public RemovedItemsReport(ItemManager itemManager) {
+		this.itemManager = itemManager;
 	}
 
 	/**
@@ -47,6 +56,33 @@ public class RemovedItemsReport extends Report {
 	 */
 	public void construct(ReportBuilder builder, Date startDate) {
 		updateLastRunTime();
-		throw new NotImplementedException();
+		this.builder = builder;
+
+		builder.addDocumentTitle("Removed Items");
+		builder.startTable(Arrays.asList("Description", "Size", "Product Barcode", "Removed",
+				"Current Supply"));
+
+		Map<Product, Set<Item>> removedItemsByProduct = itemManager.getRemovedItemsByProduct();
+		for (Product product : removedItemsByProduct.keySet()) {
+			int removedCount = 0;
+			Set<Item> removedItems = removedItemsByProduct.get(product);
+			for (Item item : removedItems) {
+				if (item.getExitTime().after(startDate)) {
+					removedCount++;
+				}
+			}
+			if (removedCount > 0) {
+				builder.addTableRow(Arrays.asList(product.getDescription(), ""
+						+ product.getSize().toString(), product.getBarcode(), ""
+						+ removedCount, "" + product.getItems().size()));
+			}
+		}
+		try {
+			builder.print("removedItems.pdf");
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		this.builder = null;
 	}
+
 }

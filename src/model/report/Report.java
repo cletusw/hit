@@ -22,6 +22,7 @@ public abstract class Report implements Serializable {
 		if (!reportDirectory.exists()) {
 			reportDirectory.mkdirs();
 		}
+		lastRunTime = null;
 	}
 
 	public String getFileName() {

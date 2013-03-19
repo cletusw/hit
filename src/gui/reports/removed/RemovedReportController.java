@@ -14,6 +14,7 @@ import model.report.builder.ReportBuilder;
  * Controller class for the removed items report view.
  */
 public class RemovedReportController extends Controller implements IRemovedReportController {
+	private final RemovedItemsReport report;
 
 	/**
 	 * Constructor.
@@ -23,7 +24,7 @@ public class RemovedReportController extends Controller implements IRemovedRepor
 	 */
 	public RemovedReportController(IView view) {
 		super(view);
-
+		report = getReportManager().getRemovedItemsReport();
 		construct();
 	}
 
@@ -37,7 +38,6 @@ public class RemovedReportController extends Controller implements IRemovedRepor
 	 */
 	@Override
 	public void display() {
-		RemovedItemsReport report = new RemovedItemsReport(getItemManager());
 		Date sinceDate = getView().getSinceDate() ? getView().getSinceDateValue() : report
 				.getLastRunTime();
 		ReportBuilder builder;
@@ -46,7 +46,6 @@ public class RemovedReportController extends Controller implements IRemovedRepor
 		else
 			builder = new HtmlBuilder();
 
-		builder.addDocumentTitle("REMOVED ITEMS REPORT");
 		report.construct(builder, sinceDate);
 	}
 
@@ -71,6 +70,7 @@ public class RemovedReportController extends Controller implements IRemovedRepor
 	@Override
 	protected void enableComponents() {
 		getView().enableSinceDateValue(getView().getSinceDate());
+		getView().enableSinceLast(report.getLastRunTime() != null);
 	}
 
 	//
@@ -98,8 +98,11 @@ public class RemovedReportController extends Controller implements IRemovedRepor
 	 */
 	@Override
 	protected void loadValues() {
-		getView().setSinceLast(true);
-		getView().setSinceLastValue(new Date());// report.getLastRunTime());
+		getView().setSinceDate(true);
+		if (report.getLastRunTime() != null) {
+			getView().setSinceLast(true);
+			getView().setSinceLastValue(report.getLastRunTime());
+		}
 	}
 
 }
