@@ -2,6 +2,7 @@ package test.model.report;
 
 import java.util.Arrays;
 import java.util.Date;
+import java.util.List;
 
 import model.ConcreteProductContainerManager;
 import model.HomeInventoryTracker;
@@ -72,9 +73,7 @@ public class ExpiredItemsReportTest extends EasyMockSupport {
 		mockBuilder.addDocumentTitle("Expired Items");
 		mockBuilder.startTable(Arrays.asList("Description", "Storage Unit", "Product Group",
 				"Entry Date", "Expire Date", "Item Barcode"));
-		mockBuilder.addTableRow(Arrays.asList(perishableProduct.getDescription(), storageUnit
-				.getName(), "", expiredItem.getEntryDate().toString(), expiredItem
-				.getExpirationDate().toString(), expiredItem.getBarcode()));
+		mockBuilder.addTableRow(asExpiredItemsReportTableRow(expiredItem));
 
 		replayAll();
 
@@ -92,9 +91,7 @@ public class ExpiredItemsReportTest extends EasyMockSupport {
 		mockBuilder.addDocumentTitle("Expired Items");
 		mockBuilder.startTable(Arrays.asList("Description", "Storage Unit", "Product Group",
 				"Entry Date", "Expire Date", "Item Barcode"));
-		mockBuilder.addTableRow(Arrays.asList(perishableProduct.getDescription(), storageUnit
-				.getName(), "", expiredItem.getEntryDate().toString(), expiredItem
-				.getExpirationDate().toString(), expiredItem.getBarcode()));
+		mockBuilder.addTableRow(asExpiredItemsReportTableRow(expiredItem));
 
 		replayAll();
 
@@ -118,12 +115,8 @@ public class ExpiredItemsReportTest extends EasyMockSupport {
 		mockBuilder.addDocumentTitle("Expired Items");
 		mockBuilder.startTable(Arrays.asList("Description", "Storage Unit", "Product Group",
 				"Entry Date", "Expire Date", "Item Barcode"));
-		mockBuilder.addTableRow(Arrays.asList(perishableProduct1.getDescription(),
-				storageUnit.getName(), "", expiredItem1.getEntryDate().toString(),
-				expiredItem1.getExpirationDate().toString(), expiredItem1.getBarcode()));
-		mockBuilder.addTableRow(Arrays.asList(perishableProduct2.getDescription(),
-				storageUnit.getName(), "", expiredItem2.getEntryDate().toString(),
-				expiredItem2.getExpirationDate().toString(), expiredItem2.getBarcode()));
+		mockBuilder.addTableRow(asExpiredItemsReportTableRow(expiredItem1));
+		mockBuilder.addTableRow(asExpiredItemsReportTableRow(expiredItem2));
 
 		replayAll();
 
@@ -164,17 +157,28 @@ public class ExpiredItemsReportTest extends EasyMockSupport {
 		mockBuilder.addDocumentTitle("Expired Items");
 		mockBuilder.startTable(Arrays.asList("Description", "Storage Unit", "Product Group",
 				"Entry Date", "Expire Date", "Item Barcode"));
-		mockBuilder.addTableRow(Arrays.asList(perishableProduct.getDescription(),
-				storageUnit1.getName(), "", expiredItem1.getEntryDate().toString(),
-				expiredItem1.getExpirationDate().toString(), expiredItem1.getBarcode()));
-		mockBuilder.addTableRow(Arrays.asList(perishableProduct.getDescription(),
-				storageUnit2.getName(), "", expiredItem2.getEntryDate().toString(),
-				expiredItem2.getExpirationDate().toString(), expiredItem2.getBarcode()));
+		mockBuilder.addTableRow(asExpiredItemsReportTableRow(expiredItem1));
+		mockBuilder.addTableRow(asExpiredItemsReportTableRow(expiredItem2));
 
 		replayAll();
 
 		report.construct(mockBuilder);
 
 		verifyAll();
+	}
+
+	/**
+	 * Returns a List of String that represents how this item should appear in the
+	 * ExpiredItemsReport table.
+	 * 
+	 * @param item
+	 *            Item to represent as row in the ExpiredItemsReport table
+	 * @return a List of String that represents how this item should appear in the
+	 *         ExpiredItemsReport table
+	 */
+	private List<String> asExpiredItemsReportTableRow(Item item) {
+		return Arrays.asList(item.getProduct().getDescription(), item.getStorageUnitName(),
+				item.getProductGroupName(), item.getEntryDate().toString(), item
+						.getExpirationDate().toString(), item.getBarcode());
 	}
 }
