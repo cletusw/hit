@@ -3,6 +3,14 @@ package gui.reports.supply;
 import gui.common.Controller;
 import gui.common.IView;
 
+import java.io.File;
+import java.io.IOException;
+
+import model.report.NMonthSupplyReport;
+import model.report.builder.HtmlBuilder;
+import model.report.builder.PdfBuilder;
+import model.report.builder.ReportBuilder;
+
 /**
  * Controller class for the N-month supply report view.
  */
@@ -30,6 +38,26 @@ public class SupplyReportController extends Controller implements ISupplyReportC
 	 */
 	@Override
 	public void display() {
+		ReportBuilder builder;
+		switch (getView().getFormat()) {
+		case HTML:
+			builder = new HtmlBuilder();
+			break;
+		case PDF:
+			builder = new PdfBuilder();
+			break;
+		default:
+			return;
+		}
+		NMonthSupplyReport report = getReportManager().getnMonthSupplyReport();
+		report.construct(builder, Integer.parseInt(getView().getMonths()));
+
+		try {
+			File file = builder.print(report.getFileName());
+			java.awt.Desktop.getDesktop().open(file);
+		} catch (IOException e) {
+			System.out.println("Not able to open!! " + report.getFileName());
+		}
 	}
 
 	/**
@@ -38,6 +66,7 @@ public class SupplyReportController extends Controller implements ISupplyReportC
 	 */
 	@Override
 	public void valuesChanged() {
+		enableComponents();
 	}
 
 	/**
@@ -51,6 +80,14 @@ public class SupplyReportController extends Controller implements ISupplyReportC
 	 */
 	@Override
 	protected void enableComponents() {
+		getView().enableFormat(true);
+		getView().enableMonths(true);
+		try {
+			int months = Integer.parseInt(getView().getMonths());
+			getView().enableOK(months >= 1 && months <= 100);
+		} catch (NumberFormatException ex) {
+			getView().enableOK(false);
+		}
 	}
 
 	//
