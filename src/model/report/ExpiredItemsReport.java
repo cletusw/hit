@@ -118,10 +118,6 @@ public class ExpiredItemsReport extends Report implements InventoryVisitor {
 			throw new NullPointerException("Null ProductContainer productContainer");
 		}
 
-		for (Product product : productContainer.getProducts()) {
-			for (Item item : productContainer.getItemsForProduct(product)) {
-				item.accept(this);
-			}
-		}
+		// Do nothing
 	}
 }

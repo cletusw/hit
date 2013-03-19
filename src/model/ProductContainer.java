@@ -70,6 +70,14 @@ public abstract class ProductContainer implements Comparable<ProductContainer>, 
 	public void accept(InventoryVisitor visitor) {
 		visitor.visit(this);
 
+		for (Product product : getProducts()) {
+			product.accept(visitor);
+
+			for (Item item : getItemsForProduct(product)) {
+				item.accept(visitor);
+			}
+		}
+
 		for (ProductGroup child : getProductGroups()) {
 			child.accept(visitor);
 		}
