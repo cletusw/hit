@@ -51,6 +51,7 @@ public class ProductStatisticsReport extends Report {
 	 * @post (new Date()).getTime() - getLastRunTime().getTime() < 1000
 	 */
 	public void construct(ReportBuilder builder, int months) {
+		updateLastRunTime();
 		builder.addDocumentTitle("Product Report (" + months + " Months)");
 		builder.startTable(headers);
 
