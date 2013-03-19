@@ -7,8 +7,8 @@ import model.ProductContainerManager;
 import model.ProductManager;
 import model.report.builder.ReportBuilder;
 import model.visitor.InventoryVisitor;
-import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
+@SuppressWarnings("serial")
 public class NMonthSupplyReport extends Report implements InventoryVisitor {
 	/**
 	 * Set up an empty NMonthSupplyReport.
@@ -38,7 +38,6 @@ public class NMonthSupplyReport extends Report implements InventoryVisitor {
 	 * @post (new Date()).getTime() - getLastRunTime().getTime() < 1000
 	 */
 	public void construct(ReportBuilder builder, int months) {
-		throw new NotImplementedException();
 	}
 
 	@Override
