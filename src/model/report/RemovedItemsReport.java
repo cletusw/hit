@@ -31,6 +31,7 @@ public class RemovedItemsReport extends Report {
 	 */
 	public void construct(ReportBuilder builder) {
 		construct(builder, getLastRunTime());
+		updateLastRunTime();
 	}
 
 	/**
@@ -45,6 +46,7 @@ public class RemovedItemsReport extends Report {
 	 * @post (new Date()).getTime() - getLastRunTime().getTime() < 1000
 	 */
 	public void construct(ReportBuilder builder, Date startDate) {
+		updateLastRunTime();
 		throw new NotImplementedException();
 	}
 }

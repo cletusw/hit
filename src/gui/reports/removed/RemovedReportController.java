@@ -3,6 +3,13 @@ package gui.reports.removed;
 import gui.common.Controller;
 import gui.common.IView;
 
+import java.util.Date;
+
+import model.report.RemovedItemsReport;
+import model.report.builder.HtmlBuilder;
+import model.report.builder.PdfBuilder;
+import model.report.builder.ReportBuilder;
+
 /**
  * Controller class for the removed items report view.
  */
@@ -30,6 +37,17 @@ public class RemovedReportController extends Controller implements IRemovedRepor
 	 */
 	@Override
 	public void display() {
+		RemovedItemsReport report = new RemovedItemsReport(getItemManager());
+		Date sinceDate = getView().getSinceDate() ? getView().getSinceDateValue() : report
+				.getLastRunTime();
+		ReportBuilder builder;
+		if (getView().getFormat().equals("PDF"))
+			builder = new PdfBuilder();
+		else
+			builder = new HtmlBuilder();
+
+		builder.addDocumentTitle("REMOVED ITEMS REPORT");
+		report.construct(builder, sinceDate);
 	}
 
 	/**
@@ -38,6 +56,7 @@ public class RemovedReportController extends Controller implements IRemovedRepor
 	 */
 	@Override
 	public void valuesChanged() {
+		enableComponents();
 	}
 
 	/**
@@ -51,6 +70,7 @@ public class RemovedReportController extends Controller implements IRemovedRepor
 	 */
 	@Override
 	protected void enableComponents() {
+		getView().enableSinceDateValue(getView().getSinceDate());
 	}
 
 	//
@@ -78,6 +98,8 @@ public class RemovedReportController extends Controller implements IRemovedRepor
 	 */
 	@Override
 	protected void loadValues() {
+		getView().setSinceLast(true);
+		getView().setSinceLastValue(new Date());// report.getLastRunTime());
 	}
 
 }
