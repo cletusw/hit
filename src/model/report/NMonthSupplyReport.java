@@ -12,6 +12,9 @@ import model.visitor.InventoryVisitor;
 
 @SuppressWarnings("serial")
 public class NMonthSupplyReport extends Report implements InventoryVisitor {
+	private ProductManager productManager;
+	private ProductContainerManager productContainerManager;
+
 	/**
 	 * Set up an empty NMonthSupplyReport.
 	 * 
@@ -25,6 +28,8 @@ public class NMonthSupplyReport extends Report implements InventoryVisitor {
 	 */
 	public NMonthSupplyReport(ProductManager productManager,
 			ProductContainerManager productContainerManager) {
+		this.productManager = productManager;
+		this.productContainerManager = productContainerManager;
 	}
 
 	/**
@@ -46,6 +51,12 @@ public class NMonthSupplyReport extends Report implements InventoryVisitor {
 		builder.addSectionTitle("Products");
 		builder.startTable(Arrays.asList("Description", "Barcode", Integer.toString(months)
 				+ "-Month Supply", "Current Supply"));
+
+		for (Product product : productManager.getProducts()) {
+			builder.addTableRow(Arrays.asList(product.getDescription(), product.getBarcode(),
+					Integer.toString(product.getThreeMonthSupply()), product
+							.getCurrentSupply().toString()));
+		}
 
 		builder.addSectionTitle("Product Groups");
 		builder.startTable(Arrays.asList("Product Group", "Storage Unit",
