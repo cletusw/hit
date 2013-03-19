@@ -1,5 +1,7 @@
 package model.report;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.Arrays;
 import java.util.Date;
 
@@ -74,10 +76,12 @@ public class ExpiredItemsReport extends Report implements InventoryVisitor {
 			throw new NullPointerException("Null Item item");
 		}
 
+		DateFormat dateFormatter = new SimpleDateFormat("MM/dd/yyyy");
 		if (item.getExpirationDate().before(new Date())) {
-			builder.addTableRow(Arrays.asList(item.getProduct().getDescription(), item
-					.getStorageUnitName(), item.getProductGroupName(), item.getEntryDate()
-					.toString(), item.getExpirationDate().toString(), item.getBarcode()));
+			builder.addTableRow(Arrays.asList(item.getProduct().getDescription(),
+					item.getStorageUnitName(), item.getProductGroupName(),
+					dateFormatter.format(item.getEntryDate()),
+					dateFormatter.format(item.getExpirationDate()), item.getBarcode()));
 		}
 	}
 
