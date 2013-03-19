@@ -38,7 +38,7 @@ public class HtmlBuilder implements ReportBuilder {
 				+ "margin-bottom:20px;margin-top:20px;}");
 		styles.add("\n.sectionTitle{text-align:left;font-size:22px;font-weight:normal;"
 				+ "width:70%;margin: 15px auto;}");
-		styles.add("\n.listTitle{font-size:18px;margin: 1px auto;width:70%;}");
+		styles.add("\n.listTitle{font-size:18px;margin: 20px auto 0px auto;width:70%;}");
 		styles.add("\n.listItem{font-size:18px;margin: 1px auto;width:70%;}");
 
 		content = new StringBuilder();
@@ -78,6 +78,17 @@ public class HtmlBuilder implements ReportBuilder {
 
 	}
 
+	private void endPreviousElement() {
+		endTable();
+	}
+
+	private void endTable() {
+		if (openTable)
+			content.append("</table>");
+		openTable = false;
+		tableColumns = -1;
+	}
+
 	@Override
 	public File print(String filename) throws IOException {
 		filename += EXTENSION;
@@ -113,16 +124,5 @@ public class HtmlBuilder implements ReportBuilder {
 		content.append("</tr>");
 		openTable = true;
 		tableColumns = headers.size();
-	}
-
-	private void endPreviousElement() {
-		endTable();
-	}
-
-	private void endTable() {
-		if (openTable)
-			content.append("</table>");
-		openTable = false;
-		tableColumns = -1;
 	}
 }
