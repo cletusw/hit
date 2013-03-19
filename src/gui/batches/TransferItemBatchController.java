@@ -4,6 +4,7 @@ import gui.common.Controller;
 import gui.common.DataWrapper;
 import gui.common.IView;
 import gui.inventory.ProductContainerData;
+import gui.item.ItemData;
 import gui.product.ProductData;
 
 import java.util.Map;
@@ -14,14 +15,17 @@ import java.util.TreeSet;
 import model.Item;
 import model.Product;
 import model.ProductContainer;
+import model.undo.TransferItem;
+import model.undo.UndoManager;
 
 /**
  * Controller class for the transfer item batch view.
  */
 public class TransferItemBatchController extends Controller implements
 		ITransferItemBatchController {
-	private ProductContainer target;
-	private Map<Product, Set<Item>> transferredProductToItems;
+	private final ProductContainer target;
+	private final Map<Product, Set<Item>> transferredProductToItems;
+	private final UndoManager undoManager;
 
 	/**
 	 * Constructor.
@@ -34,6 +38,7 @@ public class TransferItemBatchController extends Controller implements
 	public TransferItemBatchController(IView view, ProductContainerData target) {
 		super(view);
 
+		undoManager = new UndoManager();
 		this.target = (ProductContainer) target.getTag();
 		transferredProductToItems = new TreeMap<Product, Set<Item>>();
 
@@ -63,6 +68,8 @@ public class TransferItemBatchController extends Controller implements
 	 */
 	@Override
 	public void redo() {
+		TransferItem transferItem = (TransferItem) undoManager.redo();
+		updateDisplayAfterExecute(transferItem);
 	}
 
 	/**
@@ -70,6 +77,7 @@ public class TransferItemBatchController extends Controller implements
 	 */
 	@Override
 	public void selectedProductChanged() {
+		refreshItems();
 	}
 
 	/**
@@ -86,15 +94,15 @@ public class TransferItemBatchController extends Controller implements
 		}
 
 		ProductContainer source = item.getContainer();
-		source.moveIntoContainer(item, target);
-
-		if (!transferredProductToItems.containsKey(item.getProduct())) {
-			transferredProductToItems.put(item.getProduct(), new TreeSet<Item>());
-			refreshProducts();
+		if (target.contains(item)) {
+			getView().displayErrorMessage("Source and destination containers are the same!");
+			getView().setBarcode("");
+			return;
 		}
 
-		transferredProductToItems.get(item.getProduct()).add(item);
-		refreshItems();
+		TransferItem transferItemCommand = new TransferItem(item, source, target);
+		undoManager.execute(transferItemCommand);
+		updateDisplayAfterExecute(transferItemCommand);
 	}
 
 	/**
@@ -103,6 +111,8 @@ public class TransferItemBatchController extends Controller implements
 	 */
 	@Override
 	public void undo() {
+		TransferItem transferItem = (TransferItem) undoManager.undo();
+		updateDisplayAfterUndo(transferItem);
 	}
 
 	/**
@@ -114,13 +124,48 @@ public class TransferItemBatchController extends Controller implements
 	}
 
 	private void refreshItems() {
-		// ItemData[] items = DataWrapper.wrap();
-		// getView().setItems(items);
+		ProductData selectedProduct = getView().getSelectedProduct();
+		ItemData[] items = new ItemData[0];
+		if (selectedProduct != null) {
+			if (selectedProduct.getTag() != null) {
+				Product product = (Product) selectedProduct.getTag();
+				items = DataWrapper.wrap(transferredProductToItems.get(product));
+			}
+		}
+
+		getView().setItems(items);
 	}
 
 	private void refreshProducts() {
 		ProductData[] products = DataWrapper.wrap(transferredProductToItems);
 		getView().setProducts(products);
+	}
+
+	private void updateDisplayAfterExecute(TransferItem transferItemCommand) {
+		Item item = transferItemCommand.getTransferredItem();
+
+		if (!transferredProductToItems.containsKey(item.getProduct())) {
+			transferredProductToItems.put(item.getProduct(), new TreeSet<Item>());
+		}
+		transferredProductToItems.get(item.getProduct()).add(item);
+		refreshProducts();
+		refreshItems();
+		enableComponents();
+	}
+
+	private void updateDisplayAfterUndo(TransferItem transferItemCommand) {
+		Item item = transferItemCommand.getTransferredItem();
+		transferredProductToItems.get(item.getProduct()).remove(item);
+
+		Set<Item> itemsForProduct = transferredProductToItems.get(item.getProduct());
+		itemsForProduct.remove(item);
+		if (itemsForProduct.size() == 0)
+			transferredProductToItems.remove(item.getProduct());
+		else
+			transferredProductToItems.put(item.getProduct(), itemsForProduct);
+		refreshProducts();
+		refreshItems();
+		enableComponents();
 	}
 
 	/**
@@ -134,6 +179,8 @@ public class TransferItemBatchController extends Controller implements
 	 */
 	@Override
 	protected void enableComponents() {
+		getView().enableRedo(undoManager.canRedo());
+		getView().enableUndo(undoManager.canUndo());
 	}
 
 	/**

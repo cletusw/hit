@@ -2,11 +2,11 @@ package model;
 
 public class Action {
 	public enum ActionType {
-		CREATE, EDIT, DELETE
+		CREATE, EDIT, DELETE, MOVE
 	}
 
-	private Object object;
-	private ActionType action;
+	private final Object object;
+	private final ActionType action;
 
 	public Action(Object o, ActionType a) {
 		object = o;

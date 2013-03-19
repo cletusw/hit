@@ -11,9 +11,9 @@ import model.ProductContainer;
  * @invariant getTransferredItem() != null
  */
 public class TransferItem implements Command {
-	private Item transferredItem;
-	private ProductContainer source;
-	private ProductContainer destination;
+	private final Item transferredItem;
+	private final ProductContainer source;
+	private final ProductContainer destination;
 
 	/**
 	 * Constructs a TransferItem command with the given dependencies.
@@ -32,6 +32,8 @@ public class TransferItem implements Command {
 	 */
 	public TransferItem(Item toTransfer, ProductContainer source, ProductContainer destination) {
 		transferredItem = toTransfer;
+		this.source = source;
+		this.destination = destination;
 	}
 
 	/**
@@ -42,6 +44,7 @@ public class TransferItem implements Command {
 	 */
 	@Override
 	public void execute() {
+		source.moveIntoContainer(transferredItem, destination);
 	}
 
 	/**
@@ -64,5 +67,6 @@ public class TransferItem implements Command {
 	 */
 	@Override
 	public void undo() {
+		destination.moveIntoContainer(transferredItem, source);
 	}
 }

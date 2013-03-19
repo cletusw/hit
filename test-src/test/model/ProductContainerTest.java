@@ -244,9 +244,10 @@ public class ProductContainerTest {
 		Item item = new ItemBuilder().product(product).container(storageUnit).build();
 		ProductGroup siblingProductGroup = new ProductGroupBuilder().parent(storageUnit)
 				.build();
+		assertTrue(productGroup.contains(item));
 		productGroup.moveIntoContainer(item, siblingProductGroup);
-		assertTrue(siblingProductGroup.contains(item));
 		assertFalse(productGroup.contains(item));
+		assertTrue(siblingProductGroup.contains(item));
 	}
 
 	@Test(expected = IllegalStateException.class)

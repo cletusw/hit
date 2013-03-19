@@ -679,6 +679,7 @@ public abstract class ProductContainer implements Comparable<ProductContainer>, 
 
 		unregisterItem(item);
 		destination.registerItem(item);
+		manager.notifyObservers(new Action(this, ActionType.MOVE));
 	}
 
 	public Item remove(Item item, ItemManager manager) {

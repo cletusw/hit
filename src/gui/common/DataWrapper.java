@@ -94,4 +94,21 @@ public class DataWrapper {
 
 		return productContainerData;
 	}
+
+	/**
+	 * Wraps a Collection of Items from our model in the intermediary ItemData class
+	 * 
+	 * @param items
+	 *            Items to wrap
+	 * @return ItemData[] version of Items
+	 */
+	public static ItemData[] wrap(Set<Item> items) {
+		ArrayList<ItemData> wrappedItems = new ArrayList<ItemData>();
+
+		for (Item item : items) {
+			wrappedItems.add(wrap(item));
+		}
+
+		return wrappedItems.toArray(new ItemData[0]);
+	}
 }
