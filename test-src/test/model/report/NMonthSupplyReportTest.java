@@ -44,6 +44,7 @@ public class NMonthSupplyReportTest extends EasyMockSupport {
 
 		// Expect:
 		mockBuilder.addDocumentTitle("3-Month Supply Report");
+		mockBuilder.startTable(HEADERS_FOR_3_MONTHS);
 
 		replayAll();
 
@@ -59,6 +60,8 @@ public class NMonthSupplyReportTest extends EasyMockSupport {
 
 		// Expect:
 		mockBuilder.addDocumentTitle("4-Month Supply Report");
+		mockBuilder.startTable(Arrays.asList("Description", "Barcode", "4-Month Supply",
+				"Current Supply"));
 
 		replayAll();
 

@@ -1,5 +1,7 @@
 package model.report;
 
+import java.util.Arrays;
+
 import model.Item;
 import model.Product;
 import model.ProductContainer;
@@ -40,6 +42,8 @@ public class NMonthSupplyReport extends Report implements InventoryVisitor {
 	public void construct(ReportBuilder builder, int months) {
 		updateLastRunTime();
 		builder.addDocumentTitle(Integer.toString(months) + "-Month Supply Report");
+		builder.startTable(Arrays.asList("Description", "Barcode", Integer.toString(months)
+				+ "-Month Supply", "Current Supply"));
 	}
 
 	@Override
