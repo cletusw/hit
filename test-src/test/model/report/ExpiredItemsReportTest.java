@@ -1,7 +1,5 @@
 package test.model.report;
 
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
@@ -197,10 +195,8 @@ public class ExpiredItemsReportTest extends EasyMockSupport {
 	 *         ExpiredItemsReport table
 	 */
 	private List<String> asExpiredItemsReportTableRow(Item item) {
-		DateFormat dateFormatter = new SimpleDateFormat("MM/dd/yyyy");
-
 		return Arrays.asList(item.getProduct().getDescription(), item.getStorageUnitName(),
-				item.getProductGroupName(), dateFormatter.format(item.getEntryDate()),
-				dateFormatter.format(item.getExpirationDate()), item.getBarcode());
+				item.getProductGroupName(), report.formatForReport(item.getEntryDate()),
+				report.formatForReport(item.getExpirationDate()), item.getBarcode());
 	}
 }
