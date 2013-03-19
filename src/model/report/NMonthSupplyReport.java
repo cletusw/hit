@@ -38,6 +38,7 @@ public class NMonthSupplyReport extends Report implements InventoryVisitor {
 	 * @post (new Date()).getTime() - getLastRunTime().getTime() < 1000
 	 */
 	public void construct(ReportBuilder builder, int months) {
+		updateLastRunTime();
 	}
 
 	@Override
