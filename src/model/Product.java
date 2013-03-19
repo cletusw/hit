@@ -486,6 +486,11 @@ public class Product implements Comparable<Object>, Serializable, InventoryVisit
 		return threeMonthSupply;
 	}
 
+	public ProductQuantity getThreeMonthSupplyAsProductQuantity() {
+		return new ProductQuantity(productQuantity.getQuantity() * getThreeMonthSupply(),
+				productQuantity.getUnits());
+	}
+
 	/**
 	 * Determines whether this Product has the specified ProductContainer as a parent.
 	 * 

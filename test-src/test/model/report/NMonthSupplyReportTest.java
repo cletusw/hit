@@ -148,8 +148,8 @@ public class NMonthSupplyReportTest extends EasyMockSupport {
 	 *         table
 	 */
 	private List<String> asTableRow(Product product) {
-		return Arrays.asList(product.getDescription(), product.getBarcode(), Integer
-				.toString(product.getThreeMonthSupply()), product.getCurrentSupply()
+		return Arrays.asList(product.getDescription(), product.getBarcode(), product
+				.getThreeMonthSupplyAsProductQuantity().toString(), product.getCurrentSupply()
 				.toString());
 	}
 }

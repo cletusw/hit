@@ -54,7 +54,7 @@ public class NMonthSupplyReport extends Report implements InventoryVisitor {
 
 		for (Product product : productManager.getProducts()) {
 			builder.addTableRow(Arrays.asList(product.getDescription(), product.getBarcode(),
-					Integer.toString(product.getThreeMonthSupply()), product
+					product.getThreeMonthSupplyAsProductQuantity().toString(), product
 							.getCurrentSupply().toString()));
 		}
 
