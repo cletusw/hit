@@ -8,7 +8,7 @@ import model.Unit;
 
 public class ProductBuilder {
 	private String barcode = "ProductBarcode " + Long.toString(System.nanoTime());
-	private String description = "Description";
+	private String description = "Description " + Long.toString(System.nanoTime());
 	private int shelfLife = 1;
 	private int threeMonthSupply = 1;
 	private ProductQuantity productQuantity = new ProductQuantity(1, Unit.COUNT);
