@@ -18,8 +18,10 @@ import org.junit.Before;
 import org.junit.Test;
 
 public class NMonthSupplyReportTest extends EasyMockSupport {
-	private static final List<String> HEADERS_FOR_3_MONTHS = Arrays.asList("Description",
-			"Barcode", "3-Month Supply", "Current Supply");
+	private static List<String> productsHeaders(int months) {
+		return Arrays.asList("Description", "Barcode", Integer.toString(months)
+				+ "-Month Supply", "Current Supply");
+	}
 
 	private HomeInventoryTracker hit;
 	private NMonthSupplyReport report;
@@ -44,7 +46,7 @@ public class NMonthSupplyReportTest extends EasyMockSupport {
 
 		// Expect:
 		mockBuilder.addDocumentTitle("3-Month Supply Report");
-		mockBuilder.startTable(HEADERS_FOR_3_MONTHS);
+		mockBuilder.startTable(productsHeaders(3));
 
 		replayAll();
 
@@ -60,8 +62,7 @@ public class NMonthSupplyReportTest extends EasyMockSupport {
 
 		// Expect:
 		mockBuilder.addDocumentTitle("4-Month Supply Report");
-		mockBuilder.startTable(Arrays.asList("Description", "Barcode", "4-Month Supply",
-				"Current Supply"));
+		mockBuilder.startTable(productsHeaders(4));
 
 		replayAll();
 
