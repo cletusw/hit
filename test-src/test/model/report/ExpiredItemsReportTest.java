@@ -101,6 +101,26 @@ public class ExpiredItemsReportTest extends EasyMockSupport {
 	}
 
 	@Test
+	public void testOnStorageUnitWithExpiredItemsOfDifferingEntryDates() {
+		Item expiredItem2001 = new ItemBuilder().product(perishableProduct)
+				.entryDate(new Date(2001 - 1900, 1, 1)).container(storageUnit).build();
+		Item expiredItem2000 = new ItemBuilder().product(perishableProduct)
+				.entryDate(JAN1ST2000).container(storageUnit).build();
+
+		// Expect:
+		mockBuilder.addDocumentTitle("Expired Items");
+		mockBuilder.startTable(HEADERS);
+		mockBuilder.addTableRow(asExpiredItemsReportTableRow(expiredItem2000));
+		mockBuilder.addTableRow(asExpiredItemsReportTableRow(expiredItem2001));
+
+		replayAll();
+
+		report.construct(mockBuilder);
+
+		verifyAll();
+	}
+
+	@Test
 	public void testOnStorageUnitWithExpiredItemsOfDifferingProducts() {
 		Product perishableProduct2 = new ProductBuilder().description("Product2").shelfLife(1)
 				.build();
