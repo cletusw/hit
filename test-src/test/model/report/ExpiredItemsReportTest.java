@@ -104,6 +104,35 @@ public class ExpiredItemsReportTest extends EasyMockSupport {
 	}
 
 	@Test
+	public void testOnStorageUnitWithExpiredItemsOfDifferingProducts() {
+		Product perishableProduct2 = new ProductBuilder().description("Product2").shelfLife(1)
+				.build();
+		Product perishableProduct1 = new ProductBuilder().description("Product1").shelfLife(1)
+				.build();
+		Item expiredItem2 = new ItemBuilder().product(perishableProduct2)
+				.entryDate(JAN1ST2000).container(storageUnit).build();
+		Item expiredItem1 = new ItemBuilder().product(perishableProduct1)
+				.entryDate(JAN1ST2000).container(storageUnit).build();
+
+		// Expect:
+		mockBuilder.addDocumentTitle("Expired Items");
+		mockBuilder.startTable(Arrays.asList("Description", "Storage Unit", "Product Group",
+				"Entry Date", "Expire Date", "Item Barcode"));
+		mockBuilder.addTableRow(Arrays.asList(perishableProduct1.getDescription(),
+				storageUnit.getName(), "", expiredItem1.getEntryDate().toString(),
+				expiredItem1.getExpirationDate().toString(), expiredItem1.getBarcode()));
+		mockBuilder.addTableRow(Arrays.asList(perishableProduct2.getDescription(),
+				storageUnit.getName(), "", expiredItem2.getEntryDate().toString(),
+				expiredItem2.getExpirationDate().toString(), expiredItem2.getBarcode()));
+
+		replayAll();
+
+		report.construct(mockBuilder);
+
+		verifyAll();
+	}
+
+	@Test
 	public void testOnStorageUnitWithUnexpiredItem() {
 		new ItemBuilder().product(perishableProduct).entryDate(new Date())
 				.container(storageUnit).build();
