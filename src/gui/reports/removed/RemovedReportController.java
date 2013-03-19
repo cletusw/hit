@@ -51,6 +51,7 @@ public class RemovedReportController extends Controller implements IRemovedRepor
 		default:
 			return;
 		}
+
 		report.construct(builder, sinceDate);
 	}
 
