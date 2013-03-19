@@ -62,7 +62,7 @@ public class MainController extends Controller implements IMainController {
 	 */
 	@Override
 	public boolean canPrintRemovedReport() {
-		return false;
+		return true;
 	}
 
 	/**

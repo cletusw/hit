@@ -3,6 +3,7 @@ package gui.common;
 import model.ItemManager;
 import model.ProductContainerManager;
 import model.ProductManager;
+import model.report.ReportManager;
 
 /**
  * Controller is a base class that provides common functionality required by all controllers in
@@ -82,6 +83,10 @@ public abstract class Controller implements IController {
 
 	protected ProductManager getProductManager() {
 		return _view.getProductManager();
+	}
+
+	protected ReportManager getReportManager() {
+		return _view.getReportManager();
 	}
 
 	/**

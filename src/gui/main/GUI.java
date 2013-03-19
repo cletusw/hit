@@ -26,6 +26,7 @@ import model.PersistentStorageManager;
 import model.ProductContainerManager;
 import model.ProductManager;
 import model.SerializationManager;
+import model.report.ReportManager;
 
 @SuppressWarnings("serial")
 public final class GUI extends JFrame implements IMainView {
@@ -52,7 +53,7 @@ public final class GUI extends JFrame implements IMainView {
 
 	private InventoryView _inventoryView;
 	private final HomeInventoryTracker _tracker;
-	private PersistentStorageManager _persistentStorageManager;
+	private final PersistentStorageManager _persistentStorageManager;
 
 	public GUI(String[] args) {
 		super("Home Inventory Tracker");
@@ -147,6 +148,11 @@ public final class GUI extends JFrame implements IMainView {
 	@Override
 	public ProductManager getProductManager() {
 		return _tracker.getProductManager();
+	}
+
+	@Override
+	public ReportManager getReportManager() {
+		return _tracker.getReportManager();
 	}
 
 	private void createInventoryView() {

@@ -3,6 +3,7 @@ package gui.common;
 import model.ItemManager;
 import model.ProductContainerManager;
 import model.ProductManager;
+import model.report.ReportManager;
 
 /**
  * IView defines functionality that is supported by all views in the program. Controllers
@@ -51,4 +52,7 @@ public interface IView {
 	ProductContainerManager getProductContainerManager();
 
 	ProductManager getProductManager();
+
+	ReportManager getReportManager();
+
 }

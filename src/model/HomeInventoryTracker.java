@@ -2,14 +2,17 @@ package model;
 
 import java.io.Serializable;
 
+import model.report.ReportManager;
+
 /**
  * System for tracking home storage inventories.
  */
 @SuppressWarnings("serial")
 public class HomeInventoryTracker implements Serializable {
-	private ItemManager itemManager;
-	private ProductManager productManager;
-	private ProductContainerManager productContainerManager;
+	private final ItemManager itemManager;
+	private final ProductManager productManager;
+	private final ProductContainerManager productContainerManager;
+	private final ReportManager reportManager;
 
 	/**
 	 * Initializes the HomeInventoryTracker.
@@ -21,6 +24,7 @@ public class HomeInventoryTracker implements Serializable {
 		itemManager = new ConcreteItemManager();
 		productManager = new ConcreteProductManager();
 		productContainerManager = new ConcreteProductContainerManager();
+		reportManager = new ReportManager(productContainerManager, productManager, itemManager);
 	}
 
 	public ItemManager getItemManager() {
@@ -33,5 +37,9 @@ public class HomeInventoryTracker implements Serializable {
 
 	public ProductManager getProductManager() {
 		return productManager;
+	}
+
+	public ReportManager getReportManager() {
+		return reportManager;
 	}
 }

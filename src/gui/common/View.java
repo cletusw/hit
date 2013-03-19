@@ -16,6 +16,7 @@ import javax.swing.table.TableColumn;
 import model.ItemManager;
 import model.ProductContainerManager;
 import model.ProductManager;
+import model.report.ReportManager;
 
 /**
  * View is a base class that provides common functionality required by all views in the program
@@ -53,7 +54,7 @@ public abstract class View extends JPanel implements IView {
 		/**
 		 * Font to be used to draw table cells.
 		 */
-		private Font _customFont;
+		private final Font _customFont;
 
 		/**
 		 * Constructor.
@@ -276,6 +277,11 @@ public abstract class View extends JPanel implements IView {
 	@Override
 	public ProductManager getProductManager() {
 		return _parent.getProductManager();
+	}
+
+	@Override
+	public ReportManager getReportManager() {
+		return _parent.getReportManager();
 	}
 
 	/**
