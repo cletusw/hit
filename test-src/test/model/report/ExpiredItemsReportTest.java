@@ -24,6 +24,9 @@ import builder.model.StorageUnitBuilder;
 public class ExpiredItemsReportTest extends EasyMockSupport {
 	@SuppressWarnings("deprecation")
 	private static final Date JAN1ST2000 = new Date(2000 - 1900, 1, 1);
+	private static final List<String> HEADERS = Arrays.asList("Description", "Storage Unit",
+			"Product Group", "Entry Date", "Expire Date", "Item Barcode");
+
 	private HomeInventoryTracker hit;
 	private ExpiredItemsReport report;
 	private ReportBuilder mockBuilder;
@@ -52,8 +55,7 @@ public class ExpiredItemsReportTest extends EasyMockSupport {
 
 		// Expect:
 		mockBuilder.addDocumentTitle("Expired Items");
-		mockBuilder.startTable(Arrays.asList("Description", "Storage Unit", "Product Group",
-				"Entry Date", "Expire Date", "Item Barcode"));
+		mockBuilder.startTable(HEADERS);
 
 		replayAll();
 
@@ -71,8 +73,7 @@ public class ExpiredItemsReportTest extends EasyMockSupport {
 
 		// Expect:
 		mockBuilder.addDocumentTitle("Expired Items");
-		mockBuilder.startTable(Arrays.asList("Description", "Storage Unit", "Product Group",
-				"Entry Date", "Expire Date", "Item Barcode"));
+		mockBuilder.startTable(HEADERS);
 		mockBuilder.addTableRow(asExpiredItemsReportTableRow(expiredItem));
 
 		replayAll();
@@ -89,8 +90,7 @@ public class ExpiredItemsReportTest extends EasyMockSupport {
 
 		// Expect:
 		mockBuilder.addDocumentTitle("Expired Items");
-		mockBuilder.startTable(Arrays.asList("Description", "Storage Unit", "Product Group",
-				"Entry Date", "Expire Date", "Item Barcode"));
+		mockBuilder.startTable(HEADERS);
 		mockBuilder.addTableRow(asExpiredItemsReportTableRow(expiredItem));
 
 		replayAll();
@@ -113,8 +113,7 @@ public class ExpiredItemsReportTest extends EasyMockSupport {
 
 		// Expect:
 		mockBuilder.addDocumentTitle("Expired Items");
-		mockBuilder.startTable(Arrays.asList("Description", "Storage Unit", "Product Group",
-				"Entry Date", "Expire Date", "Item Barcode"));
+		mockBuilder.startTable(HEADERS);
 		mockBuilder.addTableRow(asExpiredItemsReportTableRow(expiredItem1));
 		mockBuilder.addTableRow(asExpiredItemsReportTableRow(expiredItem2));
 
@@ -132,8 +131,7 @@ public class ExpiredItemsReportTest extends EasyMockSupport {
 
 		// Expect:
 		mockBuilder.addDocumentTitle("Expired Items");
-		mockBuilder.startTable(Arrays.asList("Description", "Storage Unit", "Product Group",
-				"Entry Date", "Expire Date", "Item Barcode"));
+		mockBuilder.startTable(HEADERS);
 
 		replayAll();
 
@@ -155,8 +153,7 @@ public class ExpiredItemsReportTest extends EasyMockSupport {
 
 		// Expect:
 		mockBuilder.addDocumentTitle("Expired Items");
-		mockBuilder.startTable(Arrays.asList("Description", "Storage Unit", "Product Group",
-				"Entry Date", "Expire Date", "Item Barcode"));
+		mockBuilder.startTable(HEADERS);
 		mockBuilder.addTableRow(asExpiredItemsReportTableRow(expiredItem1));
 		mockBuilder.addTableRow(asExpiredItemsReportTableRow(expiredItem2));
 
