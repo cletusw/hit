@@ -40,6 +40,9 @@ public class ExpiredItemsReport extends Report implements InventoryVisitor {
 	 * @post (new Date()).getTime() - getLastRunTime().getTime() < 1000
 	 */
 	public void construct(ReportBuilder builder) {
+		updateLastRunTime();
+
+		// Store the builder for use by the Visitor pattern
 		this.builder = builder;
 
 		builder.addDocumentTitle("Expired Items");
