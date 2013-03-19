@@ -79,7 +79,7 @@ public class HtmlBuilderTest {
 		}
 
 		try {
-			builder.print("helloworld.html");
+			builder.print("helloworld");
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
