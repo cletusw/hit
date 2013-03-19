@@ -3,7 +3,6 @@ package model;
 import java.io.Serializable;
 import java.util.Collection;
 import java.util.Collections;
-import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
 import java.util.TreeMap;
@@ -431,58 +430,6 @@ public abstract class ProductContainer implements Comparable<ProductContainer>, 
 		}
 
 		return null;
-	}
-
-	/**
-	 * Defines equality with another ProductContainer descendant.
-	 * 
-	 * @param o
-	 *            - the object to be compared to.
-	 * @returns True if the objects are equal, false otherwise.
-	 * 
-	 * @pre true
-	 * @post true
-	 * @Override public boolean equals(Object o) { if (o == null) { return false; }
-	 * 
-	 *           if (o instanceof ProductContainer) { ProductContainer other =
-	 *           (ProductContainer) o; return getName().equals(other.getName()); } else {
-	 *           return super.equals(o); } }
-	 */
-	/**
-	 * Method that calculates and returns the amount of a product in this container.
-	 * 
-	 * @param p
-	 *            - the Product to be found
-	 * @return ProductQuantity - the current supply of the found product, or null.
-	 * 
-	 * @pre p != null
-	 * @post true
-	 * 
-	 */
-	public ProductQuantity getCurrentSupply(Product p) {
-		if (p == null) {
-			throw new NullPointerException("Null Product p");
-		}
-
-		ProductQuantity pSize = p.getSize();
-
-		// Get sum of all pGroup product quantities
-		Iterator<ProductGroup> it = productGroups.values().iterator();
-		ProductQuantity total = new ProductQuantity(0, p.getSize().getUnits());
-		while (it.hasNext()) {
-			ProductGroup current = it.next();
-			total.add(current.getCurrentSupply(p));
-		}
-
-		// add product quantity of items in this container
-		if (productsToItems.containsKey(p)) {
-			for (@SuppressWarnings("unused")
-			Item item : productsToItems.get(p)) {
-				total.add(new ProductQuantity(pSize.getQuantity(), pSize.getUnits()));
-			}
-		}
-
-		return total;
 	}
 
 	/**

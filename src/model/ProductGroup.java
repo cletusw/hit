@@ -1,6 +1,5 @@
 package model;
 
-
 /**
  * Product Group class. Inherits from ProductContainer.
  * 
@@ -101,29 +100,6 @@ public class ProductGroup extends ProductContainer {
 	 */
 	public ProductContainer getContainer() {
 		return container;
-	}
-
-	/**
-	 * Method that calculates and returns the amount of a product group in this container.
-	 * 
-	 * @return ProductQuantity - the current supply of this container
-	 * 
-	 * @pre true
-	 * @post true
-	 * 
-	 */
-	public ProductQuantity getCurrentSupply() {
-		ProductQuantity total = new ProductQuantity(0, groupUnit);
-		for (Product p : getProducts()) {
-			try {
-				ProductQuantity pSupply = getCurrentSupply(p);
-				total.add(pSupply);
-			} catch (IllegalArgumentException e) {
-				continue;
-			}
-		}
-
-		return total;
 	}
 
 	public StorageUnit getRoot() {
