@@ -1,5 +1,7 @@
 package model.report;
 
+import java.util.Arrays;
+
 import model.Item;
 import model.Product;
 import model.ProductContainer;
@@ -7,8 +9,8 @@ import model.ProductContainerManager;
 import model.ProductManager;
 import model.report.builder.ReportBuilder;
 import model.visitor.InventoryVisitor;
-import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
+@SuppressWarnings("serial")
 public class NMonthSupplyReport extends Report implements InventoryVisitor {
 	/**
 	 * Set up an empty NMonthSupplyReport.
@@ -38,7 +40,16 @@ public class NMonthSupplyReport extends Report implements InventoryVisitor {
 	 * @post (new Date()).getTime() - getLastRunTime().getTime() < 1000
 	 */
 	public void construct(ReportBuilder builder, int months) {
-		throw new NotImplementedException();
+		updateLastRunTime();
+		builder.addDocumentTitle(Integer.toString(months) + "-Month Supply Report");
+
+		builder.addSectionTitle("Products");
+		builder.startTable(Arrays.asList("Description", "Barcode", Integer.toString(months)
+				+ "-Month Supply", "Current Supply"));
+
+		builder.addSectionTitle("Product Groups");
+		builder.startTable(Arrays.asList("Product Group", "Storage Unit",
+				Integer.toString(months) + "-Month Supply", "Current Supply"));
 	}
 
 	@Override

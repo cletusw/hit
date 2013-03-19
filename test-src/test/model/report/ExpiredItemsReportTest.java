@@ -1,5 +1,7 @@
 package test.model.report;
 
+import static org.junit.Assert.assertTrue;
+
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
@@ -183,6 +185,21 @@ public class ExpiredItemsReportTest extends EasyMockSupport {
 		report.construct(mockBuilder);
 
 		verifyAll();
+	}
+
+	@Test
+	public void testRunTime() {
+		report.construct(mockBuilder);
+		Date firstRunTime = report.getLastRunTime();
+
+		try {
+			Thread.sleep(1000);
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
+
+		report.construct(mockBuilder);
+		assertTrue(firstRunTime.before(report.getLastRunTime()));
 	}
 
 	/**

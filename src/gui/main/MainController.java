@@ -45,7 +45,7 @@ public class MainController extends Controller implements IMainController {
 	 */
 	@Override
 	public boolean canPrintNoticesReport() {
-		return false;
+		return true;
 	}
 
 	/**
@@ -77,6 +77,14 @@ public class MainController extends Controller implements IMainController {
 	 */
 	@Override
 	public void exit() {
+	}
+
+	/**
+	 * Returns a reference to the view for this controller.
+	 */
+	@Override
+	protected IMainView getView() {
+		return (IMainView) super.getView();
 	}
 
 	/**
@@ -117,14 +125,6 @@ public class MainController extends Controller implements IMainController {
 	@Override
 	public void printSupplyReport() {
 		getView().displaySupplyReportView();
-	}
-
-	/**
-	 * Returns a reference to the view for this controller.
-	 */
-	@Override
-	protected IMainView getView() {
-		return (IMainView) super.getView();
 	}
 
 }

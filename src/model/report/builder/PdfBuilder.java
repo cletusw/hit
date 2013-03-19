@@ -49,6 +49,24 @@ public class PdfBuilder implements ReportBuilder {
 		list.add(newLine);
 	}
 
+	private void addRow(List<String> rowValues, int style, float fontSize) {
+		if (table == null)
+			throw new IllegalStateException("Cannot write row before opening table");
+
+		if (rowValues.size() != table.getNumberOfColumns())
+			throw new IllegalArgumentException(
+					"Number of strings in list must be equal to number of columns in table");
+
+		for (String value : rowValues) {
+			PdfPCell cell = new PdfPCell();
+			Chunk content = new Chunk(value);
+			content.getFont().setSize(fontSize);
+			content.getFont().setStyle(style);
+			cell.addElement(content);
+			table.addCell(cell);
+		}
+	}
+
 	@Override
 	public void addSectionTitle(String title) {
 		endPreviousElement();
@@ -63,6 +81,27 @@ public class PdfBuilder implements ReportBuilder {
 	@Override
 	public void addTableRow(List<String> row) {
 		addRow(row, Font.NORMAL, 8);
+	}
+
+	private void endList() {
+		if (list != null)
+			elements.add(list);
+		list = null;
+	}
+
+	private void endPreviousElement() {
+		if (table != null)
+			endTable();
+
+		if (list != null)
+			endList();
+
+	}
+
+	private void endTable() {
+		if (table != null)
+			elements.add(table);
+		table = null;
 	}
 
 	@Override
@@ -94,6 +133,7 @@ public class PdfBuilder implements ReportBuilder {
 		list = new Paragraph();
 		Paragraph firstLine = new Paragraph(title);
 		list.add(firstLine);
+		list.setSpacingAfter(20f);
 	}
 
 	@Override
@@ -104,44 +144,5 @@ public class PdfBuilder implements ReportBuilder {
 		table.setWidthPercentage(100);
 		table.setSpacingAfter(20);
 		addRow(headers, Font.BOLD, 8);
-	}
-
-	private void addRow(List<String> rowValues, int style, float fontSize) {
-		if (table == null)
-			throw new IllegalStateException("Cannot write row before opening table");
-
-		if (rowValues.size() != table.getNumberOfColumns())
-			throw new IllegalArgumentException(
-					"Number of strings in list must be equal to number of columns in table");
-
-		for (String value : rowValues) {
-			PdfPCell cell = new PdfPCell();
-			Chunk content = new Chunk(value);
-			content.getFont().setSize(fontSize);
-			content.getFont().setStyle(style);
-			cell.addElement(content);
-			table.addCell(cell);
-		}
-	}
-
-	private void endList() {
-		if (list != null)
-			elements.add(list);
-		list = null;
-	}
-
-	private void endPreviousElement() {
-		if (table != null)
-			endTable();
-
-		if (list != null)
-			endList();
-
-	}
-
-	private void endTable() {
-		if (table != null)
-			elements.add(table);
-		table = null;
 	}
 }

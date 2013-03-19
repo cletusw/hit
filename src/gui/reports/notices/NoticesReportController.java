@@ -2,6 +2,10 @@ package gui.reports.notices;
 
 import gui.common.Controller;
 import gui.common.IView;
+import model.report.NoticesReport;
+import model.report.builder.HtmlBuilder;
+import model.report.builder.PdfBuilder;
+import model.report.builder.ReportBuilder;
 
 /**
  * Controller class for the notices report view.
@@ -16,7 +20,6 @@ public class NoticesReportController extends Controller implements INoticesRepor
 	 */
 	public NoticesReportController(IView view) {
 		super(view);
-
 		construct();
 	}
 
@@ -29,14 +32,19 @@ public class NoticesReportController extends Controller implements INoticesRepor
 	 */
 	@Override
 	public void display() {
-	}
-
-	/**
-	 * This method is called when any of the fields in the notices report view is changed by
-	 * the user.
-	 */
-	@Override
-	public void valuesChanged() {
+		ReportBuilder builder;
+		switch (getView().getFormat()) {
+		case HTML:
+			builder = new HtmlBuilder();
+			break;
+		case PDF:
+			builder = new PdfBuilder();
+			break;
+		default:
+			return;
+		}
+		NoticesReport report = getReportManager().getNoticesReport();
+		report.construct(builder);
 	}
 
 	/**
@@ -52,10 +60,6 @@ public class NoticesReportController extends Controller implements INoticesRepor
 	protected void enableComponents() {
 	}
 
-	//
-	// IExpiredReportController overrides
-	//
-
 	/**
 	 * Returns a reference to the view for this controller.
 	 * 
@@ -68,6 +72,10 @@ public class NoticesReportController extends Controller implements INoticesRepor
 		return (INoticesReportView) super.getView();
 	}
 
+	//
+	// IExpiredReportController overrides
+	//
+
 	/**
 	 * Loads data into the controller's view.
 	 * 
@@ -77,6 +85,14 @@ public class NoticesReportController extends Controller implements INoticesRepor
 	 */
 	@Override
 	protected void loadValues() {
+	}
+
+	/**
+	 * This method is called when any of the fields in the notices report view is changed by
+	 * the user.
+	 */
+	@Override
+	public void valuesChanged() {
 	}
 
 }
