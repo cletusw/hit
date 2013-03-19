@@ -19,6 +19,8 @@ public interface ItemManager {
 	public Map<Product, Set<Item>> getRemovedItemsByProduct();
 
 	public void manage(Item item);
+	
+	public void remanage(Item item);
 
 	public void undoManage(Item item);
 

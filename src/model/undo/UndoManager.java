@@ -1,6 +1,10 @@
 package model.undo;
 
+import java.util.ArrayList;
+import java.util.Map;
 import java.util.Stack;
+
+import model.Product;
 
 /**
  * Manager that takes care of Doing, Undoing, and Redoing Commands
