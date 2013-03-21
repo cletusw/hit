@@ -313,7 +313,10 @@ public class Item implements Comparable<Object>, Serializable, InventoryVisitabl
 	@SuppressWarnings("deprecation")
 	private void setExpirationDate() {
 		Date d = entryDate;
-		expirationDate = new Date(d.getYear(), d.getMonth() + product.getShelfLife(),
-				d.getDate(), d.getHours(), d.getMinutes(), d.getSeconds());
+		if (product.getShelfLife() < 1)
+			expirationDate = null;
+		else
+			expirationDate = new Date(d.getYear(), d.getMonth() + product.getShelfLife(),
+					d.getDate(), d.getHours(), d.getMinutes(), d.getSeconds());
 	}
 }
