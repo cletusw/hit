@@ -74,7 +74,9 @@ public class ExpiredItemsReport extends Report implements InventoryVisitor {
 			throw new NullPointerException("Null Item item");
 		}
 
-		if (item.getExpirationDate().before(new Date())) {
+		Date expDate = item.getExpirationDate();
+
+		if (expDate != null && expDate.before(new Date())) {
 			builder.addTableRow(Arrays.asList(item.getProduct().getDescription(),
 					item.getStorageUnitName(), item.getProductGroupName(),
 					formatForReport(item.getEntryDate()),
