@@ -76,6 +76,7 @@ public class AddItems implements Command {
 			for (Item item : addedItems) {
 				container.add(item);
 				itemManager.manage(item);
+				product.addItem(item);
 				BarcodePrinter.getInstance().addItemToBatch(item);
 			}
 		} else {
