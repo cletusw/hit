@@ -166,6 +166,14 @@ public abstract class InventoryListener {
 				view.setContextUnit("All");
 			}
 		}
+
+		Collections.sort(productDataList, new Comparator<ProductData>() {
+			@Override
+			public int compare(ProductData o1, ProductData o2) {
+				return o1.getDescription().compareTo(o2.getDescription());
+			}
+		});
+
 		view.setProducts(productDataList.toArray(new ProductData[productDataList.size()]));
 		if (restoreSelected && selectedProduct != null)
 			view.selectProduct(selectedProduct);
