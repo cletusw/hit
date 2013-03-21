@@ -8,6 +8,8 @@ import gui.product.ProductData;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 import model.Item;
@@ -92,6 +94,14 @@ public abstract class InventoryListener {
 				itemsToDisplay.add(id);
 			}
 		}
+
+		Collections.sort(itemsToDisplay, new Comparator<ItemData>() {
+			@Override
+			public int compare(ItemData arg0, ItemData arg1) {
+				return arg0.getEntryDate().compareTo(arg1.getEntryDate());
+			}
+		});
+
 		view.setItems(itemsToDisplay.toArray(new ItemData[itemsToDisplay.size()]));
 		if (restoreSelected && selectedItem != null)
 			view.selectItem(selectedItem);
