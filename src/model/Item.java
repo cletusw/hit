@@ -3,6 +3,7 @@ package model;
 import java.io.Serializable;
 import java.util.Date;
 
+import model.Action.ActionType;
 import model.visitor.InventoryVisitable;
 import model.visitor.InventoryVisitor;
 
@@ -266,6 +267,7 @@ public class Item implements Comparable<Object>, Serializable, InventoryVisitabl
 	public void remove() {
 		exitTime = new Date();
 		container = null;
+		manager.notifyObservers(new Action(this, ActionType.DELETE));
 	}
 
 	/**
@@ -279,6 +281,7 @@ public class Item implements Comparable<Object>, Serializable, InventoryVisitabl
 	public void setContainer(ProductContainer productContainer) {
 		// productContainer can be null if the item has been removed from the system.
 		container = productContainer;
+		manager.notifyObservers(new Action(this, ActionType.EDIT));
 	}
 
 	/**
@@ -325,6 +328,6 @@ public class Item implements Comparable<Object>, Serializable, InventoryVisitabl
 			expirationDate = new Date(d.getYear(), d.getMonth() + product.getShelfLife(),
 					d.getDate(), d.getHours(), d.getMinutes(), d.getSeconds());
 		// TODO: Store the manager locally so we can do this:
-		// manager.notifyObservers(new Action(this, ActionType.EDIT));
+		manager.notifyObservers(new Action(this, ActionType.EDIT));
 	}
 }
