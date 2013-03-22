@@ -155,6 +155,32 @@ public class NMonthSupplyReportTest extends EasyMockSupport {
 	}
 
 	@Test
+	public void testOnProductWithNoThreeMonthSupply() {
+		int months = 3;
+		StorageUnit storageUnit = new StorageUnitBuilder().manager(
+				hit.getProductContainerManager()).build();
+		Product product1 = new ProductBuilder().productManager(hit.getProductManager())
+				.threeMonthSupply(0).build();
+		new ItemBuilder().product(product1).container(storageUnit).build();
+		new ItemBuilder().product(product1).container(storageUnit).build();
+
+		// Expect:
+		mockBuilder.addDocumentTitle(Integer.toString(months) + "-Month Supply Report");
+
+		mockBuilder.addSectionTitle("Products");
+		mockBuilder.startTable(productsHeaders(months));
+
+		mockBuilder.addSectionTitle("Product Groups");
+		mockBuilder.startTable(productGroupsHeaders(months));
+
+		replayAll();
+
+		report.construct(mockBuilder, months);
+
+		verifyAll();
+	}
+
+	@Test
 	public void testRunTime() {
 		report.construct(mockBuilder, 3);
 		Date firstRunTime = report.getLastRunTime();
