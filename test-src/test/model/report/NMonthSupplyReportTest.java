@@ -93,7 +93,7 @@ public class NMonthSupplyReportTest extends EasyMockSupport {
 	}
 
 	@Test
-	public void testOnFilledTreeFor3Months() {
+	public void testOnProductsFor3Months() {
 		int months = 3;
 		StorageUnit storageUnit = new StorageUnitBuilder().manager(
 				hit.getProductContainerManager()).build();
@@ -118,7 +118,38 @@ public class NMonthSupplyReportTest extends EasyMockSupport {
 
 		replayAll();
 
-		report.construct(mockBuilder, 3);
+		report.construct(mockBuilder, months);
+
+		verifyAll();
+	}
+
+	@Test
+	public void testOnProductsFor4Months() {
+		int months = 4;
+		StorageUnit storageUnit = new StorageUnitBuilder().manager(
+				hit.getProductContainerManager()).build();
+		Product product2 = new ProductBuilder().productManager(hit.getProductManager())
+				.description("2").threeMonthSupply(3).build();
+		Product product1 = new ProductBuilder().productManager(hit.getProductManager())
+				.description("1").threeMonthSupply(2).build();
+		new ItemBuilder().product(product2).container(storageUnit).build();
+		new ItemBuilder().product(product2).container(storageUnit).build();
+		new ItemBuilder().product(product1).container(storageUnit).build();
+		new ItemBuilder().product(product1).container(storageUnit).build();
+
+		// Expect:
+		mockBuilder.addDocumentTitle(Integer.toString(months) + "-Month Supply Report");
+
+		mockBuilder.addSectionTitle("Products");
+		mockBuilder.startTable(productsHeaders(months));
+		mockBuilder.addTableRow(asTableRow(product2, months));
+
+		mockBuilder.addSectionTitle("Product Groups");
+		mockBuilder.startTable(productGroupsHeaders(months));
+
+		replayAll();
+
+		report.construct(mockBuilder, months);
 
 		verifyAll();
 	}
