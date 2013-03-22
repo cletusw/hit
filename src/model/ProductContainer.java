@@ -262,7 +262,15 @@ public abstract class ProductContainer implements Comparable<ProductContainer>, 
 		if (item == null) {
 			throw new NullPointerException("Null Item item");
 		}
-		return items.containsKey(item.getBarcode());
+		if (items.containsKey(item.getBarcode()))
+			return true;
+
+		for (ProductGroup pGroup : productGroups.values()) {
+			if (pGroup.contains(item))
+				return true;
+		}
+		return false;
+
 	}
 
 	/**
@@ -620,11 +628,9 @@ public abstract class ProductContainer implements Comparable<ProductContainer>, 
 					"Destination container already contains the item to be moved");
 		}
 
-		// if (!destination.contains(item.getProduct())) {
-		// destination.add(item.getProduct());
-		// }
-
-		unregisterItem(item);
+		Product product = item.getProduct();
+		ProductContainer containerInTree = getContainerForProduct(product);
+		containerInTree.unregisterItem(item);
 		destination.registerItem(item);
 		manager.notifyObservers(new Action(this, ActionType.MOVE));
 	}
@@ -655,12 +661,13 @@ public abstract class ProductContainer implements Comparable<ProductContainer>, 
 		if (manager == null) {
 			throw new NullPointerException("Null Manager manager");
 		}
-		if (!productsToItems.containsKey(item.getProduct())) {
+		if (!contains(item)) {
 			throw new IllegalStateException("ProductContainer does not contain Item item");
 		}
 
 		item.setContainer(null);
-		unregisterItem(item);
+		ProductContainer container = getContainerForProduct(item.getProduct());
+		container.unregisterItem(item);
 		if (keepHistory)
 			manager.unmanage(item);
 		else

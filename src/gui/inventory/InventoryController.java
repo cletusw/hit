@@ -8,7 +8,6 @@ import gui.modellistener.ProductContainerListener;
 import gui.modellistener.ProductListener;
 import gui.product.ProductData;
 
-import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
 
@@ -507,53 +506,8 @@ public class InventoryController extends Controller implements IInventoryControl
 		// targetContainer);
 
 		Item firstItem = (Item) itemData.getTag();
-		Product productToAdd = firstItem.getProduct();
-
 		StorageUnit su = getProductContainerManager().getRootStorageUnitForChild(
 				targetContainer);
-		ProductContainer containerInTree = su.getContainerForProduct(productToAdd);
-		if (containerInTree == null) {
-			targetContainer.add(productToAdd);
-			su.add(firstItem);
-		} else {
-			ItemManager itemManager = getItemManager();
-			Set<Item> itemsToMove = itemManager.getItemsByProduct(productToAdd);
-			boolean moveItems = itemsToMove != null;
-
-			// copy the items so we can loop over them to remove and add
-			Set<Item> itemsToRemove = new HashSet<Item>();
-			Set<Item> itemsToAdd = new HashSet<Item>();
-
-			if (moveItems) {
-				for (Item item : itemsToMove) {
-					if (containerInTree.contains(item)) {
-						itemsToAdd.add(item);
-						itemsToRemove.add(item);
-					}
-				}
-
-				// remove the items so we can remove the product
-				for (Item item : itemsToRemove) {
-					containerInTree.remove(item, itemManager);
-				}
-			}
-
-			// remove the product
-			containerInTree.remove(productToAdd);
-			productToAdd.removeContainer(containerInTree);
-
-			// add the product to the target
-			productToAdd.addContainer(targetContainer);
-			targetContainer.add(productToAdd);
-
-			if (moveItems) {
-				// add the items
-				for (Item item : itemsToAdd) {
-					targetContainer.add(item);
-					itemManager.manage(item);
-				}
-			}
-		}
 		StorageUnit thisSu = getProductContainerManager().getRootStorageUnitForChild(
 				getSelectedProductContainerTag());
 		if (!su.equals(thisSu)) {
