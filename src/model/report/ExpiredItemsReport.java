@@ -1,7 +1,11 @@
 package model.report;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
+import java.util.List;
 
 import model.Item;
 import model.Product;
@@ -15,6 +19,7 @@ import model.visitor.InventoryVisitor;
 public class ExpiredItemsReport extends Report implements InventoryVisitor {
 	private ReportBuilder builder;
 	private ProductContainerManager productContainerManager;
+	private List<Item> items;
 
 	/**
 	 * Set up an empty ExpiredItemsReport.
@@ -27,6 +32,7 @@ public class ExpiredItemsReport extends Report implements InventoryVisitor {
 	 */
 	public ExpiredItemsReport(ProductContainerManager productContainerManager) {
 		this.productContainerManager = productContainerManager;
+		items = new ArrayList<Item>();
 	}
 
 	/**
@@ -52,6 +58,35 @@ public class ExpiredItemsReport extends Report implements InventoryVisitor {
 			su.accept(this);
 		}
 
+		Collections.sort(items, new Comparator<Item>() {
+
+			@Override
+			public int compare(Item o1, Item o2) {
+				// compare by container name
+				int comparison = o1.getContainer().getName()
+						.compareTo(o2.getContainer().getName());
+				if (comparison != 0)
+					return comparison;
+
+				// compare by product description
+				comparison = o1.getProduct().getDescription()
+						.compareTo(o2.getProduct().getDescription());
+				if (comparison != 0)
+					return comparison;
+
+				// compare by entry date
+				return o1.getEntryDate().compareTo(o2.getEntryDate());
+			}
+		});
+
+		for (Item item : items) {
+			builder.addTableRow(Arrays.asList(item.getProduct().getDescription(),
+					item.getStorageUnitName(), item.getProductGroupName(),
+					formatForReport(item.getEntryDate()),
+					formatForReport(item.getExpirationDate()), item.getBarcode()));
+		}
+
+		items.clear();
 		this.builder = null;
 	}
 
@@ -77,10 +112,13 @@ public class ExpiredItemsReport extends Report implements InventoryVisitor {
 		Date expDate = item.getExpirationDate();
 
 		if (expDate != null && expDate.before(new Date())) {
-			builder.addTableRow(Arrays.asList(item.getProduct().getDescription(),
-					item.getStorageUnitName(), item.getProductGroupName(),
-					formatForReport(item.getEntryDate()),
-					formatForReport(item.getExpirationDate()), item.getBarcode()));
+			items.add(item);
+			/*
+			 * builder.addTableRow(Arrays.asList(item.getProduct().getDescription(),
+			 * item.getStorageUnitName(), item.getProductGroupName(),
+			 * formatForReport(item.getEntryDate()), formatForReport(item.getExpirationDate()),
+			 * item.getBarcode()));
+			 */
 		}
 	}
 
