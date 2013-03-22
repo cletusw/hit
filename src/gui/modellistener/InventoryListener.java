@@ -8,11 +8,14 @@ import gui.product.ProductData;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 import model.Item;
 import model.Product;
 import model.ProductContainer;
+import model.ProductContainerManager;
 import model.ProductGroup;
 import model.ProductManager;
 import model.StorageUnit;
@@ -92,6 +95,14 @@ public abstract class InventoryListener {
 				itemsToDisplay.add(id);
 			}
 		}
+
+		Collections.sort(itemsToDisplay, new Comparator<ItemData>() {
+			@Override
+			public int compare(ItemData arg0, ItemData arg1) {
+				return arg0.getEntryDate().compareTo(arg1.getEntryDate());
+			}
+		});
+
 		view.setItems(itemsToDisplay.toArray(new ItemData[itemsToDisplay.size()]));
 		if (restoreSelected && selectedItem != null)
 			view.selectItem(selectedItem);
@@ -150,12 +161,25 @@ public abstract class InventoryListener {
 			} else {
 				// Root "Storage units" node is selected; display all Products in system
 				ProductManager manager = view.getProductManager();
+				ProductContainerManager pcManager = view.getProductContainerManager();
 				for (Product p : manager.getProducts()) {
-					productDataList.add(DataWrapper.wrap(p, p.getItemCount()));
+					int count = 0;
+					for (StorageUnit su : pcManager.getStorageUnits()) {
+						count += su.getItemsForProduct(p).size();
+					}
+					productDataList.add(DataWrapper.wrap(p, count));
 				}
 				view.setContextUnit("All");
 			}
 		}
+
+		Collections.sort(productDataList, new Comparator<ProductData>() {
+			@Override
+			public int compare(ProductData o1, ProductData o2) {
+				return o1.getDescription().compareTo(o2.getDescription());
+			}
+		});
+
 		view.setProducts(productDataList.toArray(new ProductData[productDataList.size()]));
 		if (restoreSelected && selectedProduct != null)
 			view.selectProduct(selectedProduct);

@@ -70,10 +70,11 @@ public class RemovedItemsReport extends Report {
 					removedCount++;
 				}
 			}
+
 			if (removedCount > 0) {
 				builder.addTableRow(Arrays.asList(product.getDescription(), ""
 						+ product.getSize().toString(), product.getBarcode(), ""
-						+ removedCount, "" + product.getItems().size()));
+						+ removedCount, "" + itemManager.getItemsByProduct(product).size()));
 			}
 		}
 
@@ -84,5 +85,4 @@ public class RemovedItemsReport extends Report {
 			e.printStackTrace();
 		}
 	}
-
 }
