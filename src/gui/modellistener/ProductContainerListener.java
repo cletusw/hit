@@ -48,6 +48,8 @@ public class ProductContainerListener extends InventoryListener implements Obser
 		ActionType type = action.getAction();
 		Object pc = action.getObject();
 
+		ProductContainerData selectedContainer = view.getSelectedProductContainer();
+
 		if (action.getAction().equals(ActionType.CREATE)) {
 			ProductContainerData newData = new ProductContainerData();
 			if (pc instanceof ProductGroup) {
@@ -80,6 +82,7 @@ public class ProductContainerListener extends InventoryListener implements Obser
 			showContext(null);
 			return; // nothing should be selected
 		}
+		view.selectProductContainer(selectedContainer);
 		updateProducts(true);
 		updateItems(true);
 		showContext((ProductContainer) pc);

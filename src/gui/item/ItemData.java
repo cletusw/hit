@@ -7,7 +7,7 @@ import java.util.Date;
 /**
  * Display data class for items.
  */
-public class ItemData extends Tagable {
+public class ItemData extends Tagable implements Comparable<ItemData> {
 
 	/**
 	 * EntryDate attribute.
@@ -49,6 +49,15 @@ public class ItemData extends Tagable {
 		_barcode = "";
 		_storageUnit = "";
 		_productGroup = "";
+	}
+
+	@Override
+	public int compareTo(ItemData other) {
+		return _barcode.compareTo(other._barcode);
+	}
+
+	public boolean equals(ItemData other) {
+		return compareTo(other) == 0;
 	}
 
 	/**

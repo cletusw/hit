@@ -6,7 +6,7 @@ import model.Product;
 /**
  * Display data class for products.
  */
-public class ProductData extends Tagable {
+public class ProductData extends Tagable implements Comparable<ProductData> {
 
 	/**
 	 * Description attribute.
@@ -66,6 +66,15 @@ public class ProductData extends Tagable {
 		_supply = "" + product.getThreeMonthSupply();
 		_barcode = "" + product.getBarcode();
 		setTag(product);
+	}
+
+	@Override
+	public int compareTo(ProductData other) {
+		return _barcode.compareTo(other._barcode);
+	}
+
+	public boolean equals(ProductData other) {
+		return compareTo(other) == 0;
 	}
 
 	/**

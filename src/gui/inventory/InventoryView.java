@@ -74,7 +74,7 @@ public class InventoryView extends View implements IInventoryView {
 
 	private class InventoryTransferable implements Transferable {
 
-		private Object _data;
+		private final Object _data;
 
 		public InventoryTransferable(Object data) {
 			_data = data;
@@ -103,7 +103,7 @@ public class InventoryView extends View implements IInventoryView {
 	}
 
 	private class ItemFormatter extends Tagable {
-		private int column;
+		private final int column;
 
 		public ItemFormatter(int column) {
 			this.column = column;
@@ -265,7 +265,7 @@ public class InventoryView extends View implements IInventoryView {
 	}
 
 	private class ProductFormatter extends Tagable {
-		private int column;
+		private final int column;
 
 		public ProductFormatter(int column) {
 			this.column = column;
@@ -630,7 +630,7 @@ public class InventoryView extends View implements IInventoryView {
 			for (int i = 0; i < _itemTableModel.getRowCount(); ++i) {
 				ItemFormatter formatter = (ItemFormatter) _itemTableModel.getValueAt(i, 0);
 				ItemData id = (ItemData) formatter.getTag();
-				if (id == item) {
+				if (id.equals(item)) {
 					TableOperations.selectTableRow(_itemTable, i);
 					return;
 				}
@@ -650,7 +650,7 @@ public class InventoryView extends View implements IInventoryView {
 				ProductFormatter formatter = (ProductFormatter) _productTableModel.getValueAt(
 						i, 0);
 				ProductData id = (ProductData) formatter.getTag();
-				if (id == product) {
+				if (id.equals(product)) {
 					TableOperations.selectTableRow(_productTable, i);
 					return;
 				}
@@ -1366,7 +1366,7 @@ public class InventoryView extends View implements IInventoryView {
 @SuppressWarnings("serial")
 class ProductContainerTreeCellRenderer extends DefaultTreeCellRenderer {
 
-	private Icon _storageUnitIcon;
+	private final Icon _storageUnitIcon;
 
 	public ProductContainerTreeCellRenderer() {
 		_storageUnitIcon = new ImageIcon("images" + java.io.File.separator + "door-icon.png");

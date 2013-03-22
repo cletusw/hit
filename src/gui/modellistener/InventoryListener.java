@@ -182,8 +182,9 @@ public abstract class InventoryListener {
 		});
 
 		view.setProducts(productDataList.toArray(new ProductData[productDataList.size()]));
-		if (restoreSelected && selectedProduct != null)
+		if (restoreSelected && selectedProduct != null) {
 			view.selectProduct(selectedProduct);
+		}
 		updateItems(restoreSelected);
 	}
 }

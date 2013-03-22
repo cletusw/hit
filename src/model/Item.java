@@ -40,7 +40,7 @@ public class Item implements Comparable<Object>, Serializable, InventoryVisitabl
 	private Date entryDate;
 	private Date expirationDate;
 	private Date exitTime;
-
+	private final ItemManager manager;
 	private ProductContainer container;
 
 	/**
@@ -74,6 +74,7 @@ public class Item implements Comparable<Object>, Serializable, InventoryVisitabl
 
 		this.product = product;
 		this.barcode = barcode;
+		this.manager = manager;
 		setEntryDate(entryDate);
 		setExpirationDate();
 		setContainer(container);

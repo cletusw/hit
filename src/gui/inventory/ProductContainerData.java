@@ -18,7 +18,7 @@ public class ProductContainerData extends Tagable {
 	/**
 	 * List of children.
 	 */
-	private List<ProductContainerData> _children;
+	private final List<ProductContainerData> _children;
 
 	/**
 	 * Constructs a new ProductContainerData object.
@@ -222,5 +222,4 @@ public class ProductContainerData extends Tagable {
 		child.setName(newName);
 		_children.add(newIndex, child);
 	}
-
 }
