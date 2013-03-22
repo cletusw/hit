@@ -76,6 +76,9 @@ public class ProductStatisticsReport extends Report {
 		DecimalFormat twoDForm = new DecimalFormat("#.##");
 
 		for (Product product : products.values()) {
+			if (startPeriod.before(product.getCreationDate())) {
+				startPeriod = product.getCreationDate();
+			}
 			List<String> row = new ArrayList<String>();
 
 			// description
@@ -132,7 +135,7 @@ public class ProductStatisticsReport extends Report {
 		Date today = new Date();
 		for (Item item : items) {
 			long diff = today.getTime() - item.getEntryDate().getTime();
-			totalDays += (diff / millisPerDay);
+			totalDays += (diff / millisPerDay) + 1;
 		}
 		return totalDays / totalItems;
 	}
@@ -145,7 +148,7 @@ public class ProductStatisticsReport extends Report {
 				if (usedItem.getExitTime().after(startPeriod)) {
 					long timeStored = usedItem.getExitTime().getTime()
 							- usedItem.getEntryDate().getTime();
-					daysStored += (timeStored / millisPerDay);
+					daysStored += (timeStored / millisPerDay) + 1;
 				}
 			}
 		} else {
@@ -162,19 +165,22 @@ public class ProductStatisticsReport extends Report {
 		Set<Item> removed = itemManager.getRemovedItemsByProduct().get(product);
 		if (removed != null) {
 			for (Item item : removed) {
-				if (item.getEntryDate().after(startDate))
+				if (item.getEntryDate().after(startDate)
+						|| item.getEntryDate().getDate() == startDate.getDate())
 					count++;
 			}
 		}
 
 		for (Item item : items) {
-			if (item.getEntryDate().after(startDate))
+			if (item.getEntryDate().after(startDate)
+					|| item.getEntryDate().getDate() == startDate.getDate())
 				count++;
 		}
 		return count;
 	}
 
 	private double getAverageSupply(Product product, Date startDate) {
+		// yesterday's count
 		int current = getInitialCount(product, startDate);
 		double count = 0;
 
@@ -184,28 +190,20 @@ public class ProductStatisticsReport extends Report {
 
 		// recreate the usage
 		for (Date d : dates) {
-			if (history.get(d) > 0) {
-				// added
-				long days = getDaysDifference(lastChange, d);
-				count += (days * current);
-				current++;
-				lastChange = d;
-			} else {
-				// removed
-				long days = getDaysDifference(lastChange, d);
-				count += (days * current);
-				current--;
-				lastChange = d;
-			}
+			int change = history.get(d);
+			long days = getDaysDifference(lastChange, d);
+			count += (days * current);
+			current += change;
+			lastChange = d;
 		}
 
 		Date today = new Date();
 		if (lastChange.before(today)) {
-			long days = getDaysDifference(lastChange, today);
+			long days = getDaysDifference(lastChange, today) + 1; // for end of day
 			count += (days * current);
 		}
 
-		return count / getDaysDifference(startDate, today);
+		return count / (getDaysDifference(startDate, today) + 1);
 	}
 
 	private int getCurrentSupply(Product product) {
@@ -213,10 +211,12 @@ public class ProductStatisticsReport extends Report {
 	}
 
 	private long getDaysDifference(Date first, Date second) {
+		if (first.equals(second))
+			return 1;
 		if (first.after(second))
 			throw new IllegalArgumentException("Second date must be after first date");
 		long timeDiff = second.getTime() - first.getTime();
-		return timeDiff / millisPerDay;
+		return (timeDiff / millisPerDay);
 	}
 
 	private Map<Date, Integer> getHistory(Product product, Date startDate) {
@@ -245,7 +245,7 @@ public class ProductStatisticsReport extends Report {
 		}
 
 		for (Item item : itemManager.getItemsByProduct(product)) {
-			if (item.getEntryDate().after(startDate)) {
+			if (!item.getEntryDate().before(startDate)) {
 				if (dateItemMap.containsKey(item.getEntryDate())) {
 					int oldCount = dateItemMap.get(item.getEntryDate());
 					dateItemMap.put(item.getEntryDate(), ++oldCount);
@@ -258,8 +258,16 @@ public class ProductStatisticsReport extends Report {
 		return dateItemMap;
 	}
 
+	/**
+	 * get yesterday's total
+	 * 
+	 * @param product
+	 * @param startPeriod
+	 * @return
+	 */
 	private int getInitialCount(Product product, Date startPeriod) {
 		Date today = new Date();
+		today.setDate(today.getDate() - 1);
 		Set<Item> items = itemManager.getItemsByProduct(product);
 		Set<Item> removed = itemManager.getRemovedItemsByProduct().get(product);
 		int currentCount = items.size();
@@ -331,7 +339,7 @@ public class ProductStatisticsReport extends Report {
 		int maxDays = 0;
 		Date now = new Date();
 		for (Item item : items) {
-			int daysInStorage = (int) ((now.getTime() - item.getEntryDate().getTime()) / millisPerDay);
+			int daysInStorage = (int) ((now.getTime() - item.getEntryDate().getTime()) / millisPerDay) + 1;
 			if (daysInStorage > maxDays)
 				maxDays = daysInStorage;
 		}
@@ -346,7 +354,7 @@ public class ProductStatisticsReport extends Report {
 				if (usedItem.getExitTime().after(startPeriod)) {
 					long timeStored = usedItem.getExitTime().getTime()
 							- usedItem.getEntryDate().getTime();
-					long daysStored = (timeStored / millisPerDay);
+					long daysStored = (timeStored / millisPerDay) + 1;
 					maxDaysStored = Math.max(maxDaysStored, daysStored);
 				}
 			}
