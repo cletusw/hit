@@ -665,7 +665,6 @@ public abstract class ProductContainer implements Comparable<ProductContainer>, 
 			throw new IllegalStateException("ProductContainer does not contain Item item");
 		}
 
-		item.setContainer(null);
 		ProductContainer container = getContainerForProduct(item.getProduct());
 		container.unregisterItem(item);
 		if (keepHistory)
