@@ -15,6 +15,7 @@ import java.util.List;
 import model.Item;
 import model.Product;
 import model.ProductContainer;
+import model.ProductContainerManager;
 import model.ProductGroup;
 import model.ProductManager;
 import model.StorageUnit;
@@ -160,8 +161,13 @@ public abstract class InventoryListener {
 			} else {
 				// Root "Storage units" node is selected; display all Products in system
 				ProductManager manager = view.getProductManager();
+				ProductContainerManager pcManager = view.getProductContainerManager();
 				for (Product p : manager.getProducts()) {
-					productDataList.add(DataWrapper.wrap(p, p.getItemCount()));
+					int count = 0;
+					for (StorageUnit su : pcManager.getStorageUnits()) {
+						count += su.getItemsForProduct(p).size();
+					}
+					productDataList.add(DataWrapper.wrap(p, count));
 				}
 				view.setContextUnit("All");
 			}
