@@ -388,15 +388,14 @@ public class Product implements Comparable<Object>, Serializable, InventoryVisit
 	/**
 	 * Gets the current supply of this Product in the system.
 	 * 
-	 * @return ProductQuantity the current supply of this Product in the system
+	 * @return int The number of items of this Product in the system
 	 * 
 	 * @pre true
 	 * @post true
 	 * 
 	 */
-	public ProductQuantity getCurrentSupply() {
-		return new ProductQuantity(productQuantity.getQuantity() * items.size(),
-				productQuantity.getUnits());
+	public int getCurrentSupply() {
+		return items.size();
 	}
 
 	/**
@@ -432,6 +431,10 @@ public class Product implements Comparable<Object>, Serializable, InventoryVisit
 	 */
 	public Collection<Item> getItems() {
 		return Collections.unmodifiableCollection(items);
+	}
+
+	public int getNMonthSupply(int months) {
+		return threeMonthSupply * months / 3;
 	}
 
 	public final Set<ProductContainer> getProductContainers() {

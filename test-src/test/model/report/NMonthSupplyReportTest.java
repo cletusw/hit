@@ -94,27 +94,27 @@ public class NMonthSupplyReportTest extends EasyMockSupport {
 
 	@Test
 	public void testOnFilledTreeFor3Months() {
+		int months = 3;
 		StorageUnit storageUnit = new StorageUnitBuilder().manager(
 				hit.getProductContainerManager()).build();
 		Product product2 = new ProductBuilder().productManager(hit.getProductManager())
-				.description("2").build();
+				.description("2").threeMonthSupply(3).build();
 		Product product1 = new ProductBuilder().productManager(hit.getProductManager())
-				.description("1").build();
+				.description("1").threeMonthSupply(2).build();
 		new ItemBuilder().product(product2).container(storageUnit).build();
 		new ItemBuilder().product(product2).container(storageUnit).build();
 		new ItemBuilder().product(product1).container(storageUnit).build();
 		new ItemBuilder().product(product1).container(storageUnit).build();
 
 		// Expect:
-		mockBuilder.addDocumentTitle("3-Month Supply Report");
+		mockBuilder.addDocumentTitle(Integer.toString(months) + "-Month Supply Report");
 
 		mockBuilder.addSectionTitle("Products");
-		mockBuilder.startTable(productsHeaders(3));
-		mockBuilder.addTableRow(asTableRow(product1));
-		mockBuilder.addTableRow(asTableRow(product2));
+		mockBuilder.startTable(productsHeaders(months));
+		mockBuilder.addTableRow(asTableRow(product2, months));
 
 		mockBuilder.addSectionTitle("Product Groups");
-		mockBuilder.startTable(productGroupsHeaders(3));
+		mockBuilder.startTable(productGroupsHeaders(months));
 
 		replayAll();
 
@@ -147,9 +147,9 @@ public class NMonthSupplyReportTest extends EasyMockSupport {
 	 * @return a List of String that represents how this item should appear in the NMonthSupply
 	 *         table
 	 */
-	private List<String> asTableRow(Product product) {
-		return Arrays.asList(product.getDescription(), product.getBarcode(), product
-				.getThreeMonthSupplyAsProductQuantity().toString(), product.getCurrentSupply()
-				.toString());
+	private List<String> asTableRow(Product product, int months) {
+		return Arrays.asList(product.getDescription(), product.getBarcode(),
+				Integer.toString(product.getThreeMonthSupply() * months / 3) + " count",
+				Integer.toString(product.getCurrentSupply()) + " count");
 	}
 }

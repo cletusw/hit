@@ -53,9 +53,12 @@ public class NMonthSupplyReport extends Report implements InventoryVisitor {
 				+ "-Month Supply", "Current Supply"));
 
 		for (Product product : productManager.getProducts()) {
-			builder.addTableRow(Arrays.asList(product.getDescription(), product.getBarcode(),
-					product.getThreeMonthSupplyAsProductQuantity().toString(), product
-							.getCurrentSupply().toString()));
+			if (product.getCurrentSupply() < product.getNMonthSupply(months)) {
+				builder.addTableRow(Arrays.asList(product.getDescription(),
+						product.getBarcode(),
+						Integer.toString(product.getNMonthSupply(months)) + " count",
+						Integer.toString(product.getCurrentSupply()) + " count"));
+			}
 		}
 
 		builder.addSectionTitle("Product Groups");

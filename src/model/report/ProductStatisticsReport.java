@@ -46,40 +46,6 @@ public class ProductStatisticsReport extends Report {
 		reportName = "product-statistics";
 	}
 
-	private double averageCurrentAge(Product product) {
-		Set<Item> items = itemManager.getItemsByProduct(product);
-		double totalDays = 0;
-		int totalItems = items.size();
-
-		if (totalItems == 0)
-			return 0;
-
-		Date today = new Date();
-		for (Item item : items) {
-			long diff = today.getTime() - item.getEntryDate().getTime();
-			totalDays += (diff / millisPerDay);
-		}
-		return totalDays / totalItems;
-	}
-
-	private double averageUsedAge(Product product, Date startPeriod) {
-		double daysStored = 0;
-		Set<Item> usedItems = itemManager.getRemovedItemsByProduct().get(product);
-		if (usedItems != null) {
-			for (Item usedItem : usedItems) {
-				if (usedItem.getExitTime().after(startPeriod)) {
-					long timeStored = usedItem.getExitTime().getTime()
-							- usedItem.getEntryDate().getTime();
-					daysStored += (timeStored / millisPerDay);
-				}
-			}
-		} else {
-			return 0;
-		}
-
-		return (daysStored / getUsedItemCount(product, startPeriod));
-	}
-
 	/**
 	 * Construct a completed ProductStatisticsReport where the reporting period is the number
 	 * of months specified
@@ -155,6 +121,40 @@ public class ProductStatisticsReport extends Report {
 		}
 	}
 
+	private double averageCurrentAge(Product product) {
+		Set<Item> items = itemManager.getItemsByProduct(product);
+		double totalDays = 0;
+		int totalItems = items.size();
+
+		if (totalItems == 0)
+			return 0;
+
+		Date today = new Date();
+		for (Item item : items) {
+			long diff = today.getTime() - item.getEntryDate().getTime();
+			totalDays += (diff / millisPerDay);
+		}
+		return totalDays / totalItems;
+	}
+
+	private double averageUsedAge(Product product, Date startPeriod) {
+		double daysStored = 0;
+		Set<Item> usedItems = itemManager.getRemovedItemsByProduct().get(product);
+		if (usedItems != null) {
+			for (Item usedItem : usedItems) {
+				if (usedItem.getExitTime().after(startPeriod)) {
+					long timeStored = usedItem.getExitTime().getTime()
+							- usedItem.getEntryDate().getTime();
+					daysStored += (timeStored / millisPerDay);
+				}
+			}
+		} else {
+			return 0;
+		}
+
+		return (daysStored / getUsedItemCount(product, startPeriod));
+	}
+
 	private int getAddedItemCount(Product product, Date startDate) {
 		Set<Item> items = itemManager.getItemsByProduct(product);
 		int count = 0;
@@ -225,16 +225,33 @@ public class ProductStatisticsReport extends Report {
 		// build sorted list of history
 		if (removed != null) {
 			for (Item item : removed) {
-				if (item.getExitTime().after(startDate))
-					dateItemMap.put(item.getExitTime(), -1);
-				if (item.getEntryDate().after(startDate))
-					dateItemMap.put(item.getEntryDate(), 1);
+				if (item.getExitTime().after(startDate)) { // if item was removed this period
+					if (dateItemMap.containsKey(item.getExitTime())) {
+						int oldCount = dateItemMap.get(item.getExitTime());
+						dateItemMap.put(item.getExitTime(), --oldCount);
+					} else {
+						dateItemMap.put(item.getExitTime(), -1);
+					}
+				}
+				if (item.getEntryDate().after(startDate)) {
+					if (dateItemMap.containsKey(item.getEntryDate())) {
+						int oldCount = dateItemMap.get(item.getEntryDate());
+						dateItemMap.put(item.getEntryDate(), ++oldCount);
+					} else {
+						dateItemMap.put(item.getEntryDate(), 1);
+					}
+				}
 			}
 		}
 
 		for (Item item : itemManager.getItemsByProduct(product)) {
 			if (item.getEntryDate().after(startDate)) {
-				dateItemMap.put(item.getEntryDate(), 1);
+				if (dateItemMap.containsKey(item.getEntryDate())) {
+					int oldCount = dateItemMap.get(item.getEntryDate());
+					dateItemMap.put(item.getEntryDate(), ++oldCount);
+				} else {
+					dateItemMap.put(item.getEntryDate(), 1);
+				}
 			}
 		}
 
