@@ -143,7 +143,7 @@ public class ProductStatisticsReport extends Report {
 	private double averageUsedAge(Product product, Date startPeriod) {
 		double daysStored = 0;
 		Set<Item> usedItems = itemManager.getRemovedItemsByProduct().get(product);
-		if (usedItems != null) {
+		if (usedItems != null && usedItems.size() > 0) {
 			for (Item usedItem : usedItems) {
 				if (usedItem.getExitTime().after(startPeriod)) {
 					long timeStored = usedItem.getExitTime().getTime()

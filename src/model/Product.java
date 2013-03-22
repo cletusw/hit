@@ -548,7 +548,7 @@ public class Product implements Comparable<Object>, Serializable, InventoryVisit
 				// add the items
 				for (Item item : itemsToAdd) {
 					newContainer.add(item);
-					itemManager.manage(item);
+					itemManager.remanage(item);
 				}
 			}
 		} else {
