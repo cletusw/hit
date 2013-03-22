@@ -165,7 +165,8 @@ public abstract class InventoryListener {
 				for (Product p : manager.getProducts()) {
 					int count = 0;
 					for (StorageUnit su : pcManager.getStorageUnits()) {
-						count += su.getItemsForProduct(p).size();
+						if (su.getItemsForProduct(p) != null)
+							count += su.getItemsForProduct(p).size();
 					}
 					productDataList.add(DataWrapper.wrap(p, count));
 				}
