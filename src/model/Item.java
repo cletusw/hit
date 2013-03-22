@@ -309,14 +309,21 @@ public class Item implements Comparable<Object>, Serializable, InventoryVisitabl
 		setExpirationDate();
 	}
 
-	// private setters
+	/**
+	 * Called when Product is edited to update the expiration date
+	 * 
+	 * @pre true
+	 * @post expirationDate = entryDate + shelfLife
+	 */
 	@SuppressWarnings("deprecation")
-	private void setExpirationDate() {
+	public void setExpirationDate() {
 		Date d = entryDate;
 		if (product.getShelfLife() < 1)
 			expirationDate = null;
 		else
 			expirationDate = new Date(d.getYear(), d.getMonth() + product.getShelfLife(),
 					d.getDate(), d.getHours(), d.getMinutes(), d.getSeconds());
+		// TODO: Store the manager locally so we can do this:
+		// manager.notifyObservers(new Action(this, ActionType.EDIT));
 	}
 }

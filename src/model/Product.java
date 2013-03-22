@@ -332,7 +332,9 @@ public class Product implements Comparable<Object>, Serializable, InventoryVisit
 
 		if (newTms >= 0)
 			setThreeMonthSupply(newTms);
-
+		for (Item item : items) {
+			item.setExpirationDate();
+		}
 		manager.notifyObservers(new Action(this, ActionType.EDIT));
 	}
 
