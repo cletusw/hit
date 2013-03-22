@@ -86,12 +86,14 @@ public class AddItemBatchController extends Controller implements IAddItemBatchC
 		if (addProduct == null) {
 			if (product == null) // User hit "Cancel" in AddProductView; do nothing
 				return;
-			addProduct = new AddProduct(product.getBarcode(), product.getDescription(),
-					product.getShelfLife(), product.getThreeMonthSupply(), product
-							.getProductQuantity().getQuantity(), product.getProductQuantity()
-							.getUnits(), productManager);
-		}
-		addProduct.setContainer(container);
+			/*
+			 * addProduct = new AddProduct(product.getBarcode(), product.getDescription(),
+			 * product.getShelfLife(), product.getThreeMonthSupply(), product
+			 * .getProductQuantity().getQuantity(), product.getProductQuantity() .getUnits(),
+			 * productManager);
+			 */
+		} else
+			addProduct.setContainer(container);
 
 		AddItems addItemsCommand = new AddItems(container, addProduct, product, entryDate,
 				itemCount, productManager, getItemManager());
@@ -212,9 +214,13 @@ public class AddItemBatchController extends Controller implements IAddItemBatchC
 	private void updateViewAfterExecute(AddItems addItemsCommand) {
 		ProductData selectedProduct = getView().getSelectedProduct();
 		ItemData selectedItem = getView().getSelectedItem();
-		AddProduct addProductCommand = addItemsCommand.getAddProductCommand();
+		// AddProduct addProductCommand = addItemsCommand.getAddProductCommand();
 		ProductManager productManager = getProductManager();
-		String productBarcode = addProductCommand.getBarcode();
+		String productBarcode = null;
+		// if (addProductCommand != null)
+		// productBarcode = addProductCommand.getBarcode();
+		// else
+		productBarcode = addItemsCommand.getProduct().getBarcode();
 		int itemCount = addItemsCommand.getItemCount();
 
 		Product product = productManager.getByBarcode(productBarcode);
@@ -252,7 +258,11 @@ public class AddItemBatchController extends Controller implements IAddItemBatchC
 		ProductData selectedProduct = getView().getSelectedProduct();
 		ItemData selectedItem = getView().getSelectedItem();
 		AddProduct addProductCommand = addItemsCommand.getAddProductCommand();
-		String productBarcode = addProductCommand.getBarcode();
+		String productBarcode = null;
+		if (addProductCommand != null)
+			productBarcode = addProductCommand.getBarcode();
+		else
+			productBarcode = addItemsCommand.getProduct().getBarcode();
 		int itemCount = addItemsCommand.getItemCount();
 		ProductData productData = null;
 		for (int i = 0; i < products.size(); i++) {

@@ -108,6 +108,10 @@ public class AddItems implements Command {
 		return count;
 	}
 
+	public Product getProduct() {
+		return product;
+	}
+
 	/**
 	 * Remove an Item previously added by the execute method.
 	 * 
@@ -121,8 +125,9 @@ public class AddItems implements Command {
 			BarcodePrinter.getInstance().removeItemFromBatch(item);
 		}
 		// addedItems.clear();
-		if (addProduct != null)
+		if (addProduct != null) {
 			addProduct.undo();
-		product = null;
+			product = null;
+		}
 	}
 }
