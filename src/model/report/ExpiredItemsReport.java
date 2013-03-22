@@ -113,12 +113,6 @@ public class ExpiredItemsReport extends Report implements InventoryVisitor {
 
 		if (expDate != null && expDate.before(new Date())) {
 			items.add(item);
-			/*
-			 * builder.addTableRow(Arrays.asList(item.getProduct().getDescription(),
-			 * item.getStorageUnitName(), item.getProductGroupName(),
-			 * formatForReport(item.getEntryDate()), formatForReport(item.getExpirationDate()),
-			 * item.getBarcode()));
-			 */
 		}
 	}
 
