@@ -465,6 +465,26 @@ public abstract class ProductContainer implements Comparable<ProductContainer>, 
 	}
 
 	/**
+	 * Gets the size of the items collection for this ProductContainer and all its children.
+	 * 
+	 * @return int - the number of elements in the items collection and all this Container's
+	 *         children's items collections
+	 * 
+	 * @pre true
+	 * @post true
+	 * 
+	 */
+	public int getItemsSizeRecursive() {
+		int total = items.size();
+
+		for (ProductGroup productGroup : productGroups.values()) {
+			total += productGroup.getItemsSizeRecursive();
+		}
+
+		return total;
+	}
+
+	/**
 	 * Attribute getter - name
 	 * 
 	 * @return The String name of the ProductContainer
