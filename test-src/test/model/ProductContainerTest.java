@@ -254,6 +254,39 @@ public class ProductContainerTest {
 	}
 
 	@Test
+	public void testProductGroupGetCurrentSupplyCount() {
+		StorageUnit storageUnit = new StorageUnitBuilder().build();
+		ProductGroup productGroup = new ProductGroupBuilder()
+				.threeMonthSupply(new ProductQuantity(3, Unit.COUNT)).parent(storageUnit)
+				.build();
+		Product product = new ProductBuilder().build();
+		productGroup.add(product);
+		new ItemBuilder().product(product).container(storageUnit).build();
+		new ItemBuilder().product(product).container(storageUnit).build();
+
+		assertTrue(productGroup.getCurrentSupply().equals(new ProductQuantity(2, Unit.COUNT)));
+	}
+
+	@Test
+	public void testProductGroupGetCurrentSupplyCountRecursive() {
+		StorageUnit storageUnit = new StorageUnitBuilder().build();
+		ProductGroup productGroup = new ProductGroupBuilder()
+				.threeMonthSupply(new ProductQuantity(3, Unit.COUNT)).parent(storageUnit)
+				.build();
+		Product product = new ProductBuilder().build();
+		productGroup.add(product);
+		new ItemBuilder().product(product).container(storageUnit).build();
+		new ItemBuilder().product(product).container(storageUnit).build();
+		ProductGroup productGroup2 = new ProductGroupBuilder().parent(productGroup).build();
+		Product product2 = new ProductBuilder().build();
+		productGroup2.add(product2);
+		new ItemBuilder().product(product2).container(storageUnit).build();
+		new ItemBuilder().product(product2).container(storageUnit).build();
+
+		assertTrue(productGroup.getCurrentSupply().equals(new ProductQuantity(4, Unit.COUNT)));
+	}
+
+	@Test
 	public void testProductGroupProductGroups() {
 		ProductContainerManager pcManager = createNiceMock(ProductContainerManager.class);
 		ProductGroup productGroup1 = new ProductGroupBuilder().parent(storageUnit).build();

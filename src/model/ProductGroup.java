@@ -108,6 +108,9 @@ public class ProductGroup extends ProductContainer {
 	 * @return the current supply of items in this ProductGroup
 	 */
 	public ProductQuantity getCurrentSupply() {
+		if (threeMonthSupply.getUnits() == Unit.COUNT) {
+			return new ProductQuantity(getItemsSizeRecursive(), Unit.COUNT);
+		}
 		return new ProductQuantity(1, Unit.POUNDS);
 	}
 
