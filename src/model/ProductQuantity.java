@@ -94,6 +94,24 @@ public class ProductQuantity implements Serializable {
 		quantity += (otherQuantity.quantity * conversionFactor);
 	}
 
+	public int compareTo(ProductQuantity other) {
+		if (other == null) {
+			throw new NullPointerException("Null ProductQuantity other");
+		}
+		if (!units.equals(other.units)) {
+			throw new IllegalArgumentException(
+					"Cannot compare quantities with different units.");
+		}
+
+		if (quantity < other.quantity) {
+			return -1;
+		} else if (quantity > other.quantity) {
+			return 1;
+		} else {
+			return 0;
+		}
+	}
+
 	/**
 	 * Determines whether this ProductQuantity is equal to another.
 	 * 
@@ -106,7 +124,7 @@ public class ProductQuantity implements Serializable {
 	 */
 	@Override
 	public boolean equals(Object other) {
-		if (other == null) 
+		if (other == null)
 			return false;
 		if (!(other instanceof ProductQuantity))
 			return super.equals(other);

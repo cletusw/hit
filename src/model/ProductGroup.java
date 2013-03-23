@@ -108,7 +108,7 @@ public class ProductGroup extends ProductContainer {
 	 * @return the current supply of items in this ProductGroup
 	 */
 	public ProductQuantity getCurrentSupply() {
-		return new ProductQuantity(1, Unit.COUNT);
+		return new ProductQuantity(1, Unit.POUNDS);
 	}
 
 	public StorageUnit getRoot() {
