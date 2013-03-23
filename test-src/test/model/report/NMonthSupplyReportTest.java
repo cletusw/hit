@@ -10,7 +10,10 @@ import model.ConcreteProductContainerManager;
 import model.ConcreteProductManager;
 import model.HomeInventoryTracker;
 import model.Product;
+import model.ProductGroup;
+import model.ProductQuantity;
 import model.StorageUnit;
+import model.Unit;
 import model.report.NMonthSupplyReport;
 import model.report.builder.ReportBuilder;
 
@@ -21,6 +24,7 @@ import org.junit.Test;
 
 import builder.model.ItemBuilder;
 import builder.model.ProductBuilder;
+import builder.model.ProductGroupBuilder;
 import builder.model.StorageUnitBuilder;
 
 public class NMonthSupplyReportTest extends EasyMockSupport {
@@ -88,6 +92,38 @@ public class NMonthSupplyReportTest extends EasyMockSupport {
 		replayAll();
 
 		report.construct(mockBuilder, 4);
+
+		verifyAll();
+	}
+
+	@Test
+	public void testOnProductGroupsFor3Months() {
+		int months = 3;
+		StorageUnit storageUnit = new StorageUnitBuilder().manager(
+				hit.getProductContainerManager()).build();
+		ProductGroup productGroup = new ProductGroupBuilder()
+				.threeMonthSupply(new ProductQuantity(3, Unit.POUNDS)).parent(storageUnit)
+				.build();
+		Product product1 = new ProductBuilder().productManager(hit.getProductManager())
+				.threeMonthSupply(0).productQuantity(new ProductQuantity(1, Unit.POUNDS))
+				.build();
+		productGroup.add(product1);
+		new ItemBuilder().product(product1).container(storageUnit).build();
+		new ItemBuilder().product(product1).container(storageUnit).build();
+
+		// Expect:
+		mockBuilder.addDocumentTitle(Integer.toString(months) + "-Month Supply Report");
+
+		mockBuilder.addSectionTitle("Products");
+		mockBuilder.startTable(productsHeaders(months));
+
+		mockBuilder.addSectionTitle("Product Groups");
+		mockBuilder.startTable(productGroupsHeaders(months));
+		mockBuilder.addTableRow(asTableRow(productGroup, months));
+
+		replayAll();
+
+		report.construct(mockBuilder, months);
 
 		verifyAll();
 	}
@@ -196,17 +232,32 @@ public class NMonthSupplyReportTest extends EasyMockSupport {
 	}
 
 	/**
-	 * Returns a List of String that represents how this item should appear in the NMonthSupply
-	 * table.
+	 * Returns a List of String that represents how this Product should appear in the
+	 * NMonthSupply table.
 	 * 
-	 * @param item
-	 *            Item to represent as row in the NMonthSupply table
-	 * @return a List of String that represents how this item should appear in the NMonthSupply
-	 *         table
+	 * @param product
+	 *            Product to represent as row in the NMonthSupply table
+	 * @return a List of String that represents how this Product should appear in the
+	 *         NMonthSupply table
 	 */
 	private List<String> asTableRow(Product product, int months) {
 		return Arrays.asList(product.getDescription(), product.getBarcode(),
 				Integer.toString(product.getThreeMonthSupply() * months / 3) + " count",
 				Integer.toString(product.getCurrentSupply()) + " count");
+	}
+
+	/**
+	 * Returns a List of String that represents how this ProductGroup should appear in the
+	 * NMonthSupply table.
+	 * 
+	 * @param productGroup
+	 *            ProductGroup to represent as row in the NMonthSupply table
+	 * @return a List of String that represents how this ProductGroup should appear in the
+	 *         NMonthSupply table
+	 */
+	private List<String> asTableRow(ProductGroup productGroup, int months) {
+		return Arrays.asList(productGroup.getName(), productGroup.getRoot().getName(),
+				productGroup.getThreeMonthSupply().toString(), productGroup.getCurrentSupply()
+						.toString());
 	}
 }

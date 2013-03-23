@@ -102,6 +102,15 @@ public class ProductGroup extends ProductContainer {
 		return container;
 	}
 
+	/**
+	 * Gets the current supply of items in this ProductGroup.
+	 * 
+	 * @return the current supply of items in this ProductGroup
+	 */
+	public ProductQuantity getCurrentSupply() {
+		return new ProductQuantity(1, Unit.COUNT);
+	}
+
 	public StorageUnit getRoot() {
 		ProductContainer parent = container;
 		while (parent instanceof ProductGroup) {
