@@ -440,6 +440,10 @@ public abstract class ProductContainer implements Comparable<ProductContainer>, 
 		return null;
 	}
 
+	public Collection<Item> getItems() {
+		return items.values();
+	}
+
 	/**
 	 * Gets the set of items in the container of Product p
 	 * 

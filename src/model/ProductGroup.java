@@ -111,7 +111,8 @@ public class ProductGroup extends ProductContainer {
 		if (threeMonthSupply.getUnits() == Unit.COUNT) {
 			return new ProductQuantity(getItemsSizeRecursive(), Unit.COUNT);
 		}
-		return new ProductQuantity(1, Unit.POUNDS);
+
+		return getCurrentSupplyRecursive(threeMonthSupply.getUnits());
 	}
 
 	public StorageUnit getRoot() {
@@ -196,5 +197,22 @@ public class ProductGroup extends ProductContainer {
 		}
 		this.threeMonthSupply = threeMonthSupply;
 		groupUnit = threeMonthSupply.getUnits();
+	}
+
+	private ProductQuantity getCurrentSupplyRecursive(Unit unit) {
+		ProductQuantity sum = new ProductQuantity(0, unit);
+		for (Item item : getItems()) {
+			try {
+				sum.add(item.getProduct().getProductQuantity());
+			} catch (IllegalArgumentException e) {
+				// Ignore items of incompatible product types
+			}
+		}
+
+		for (ProductGroup productGroup : getProductGroups()) {
+			sum.add(productGroup.getCurrentSupplyRecursive(unit));
+		}
+
+		return sum;
 	}
 }

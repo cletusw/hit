@@ -287,6 +287,48 @@ public class ProductContainerTest {
 	}
 
 	@Test
+	public void testProductGroupGetCurrentSupplyVolumeRecursive() {
+		StorageUnit storageUnit = new StorageUnitBuilder().build();
+		ProductGroup productGroup = new ProductGroupBuilder()
+				.threeMonthSupply(new ProductQuantity(3, Unit.PINTS)).parent(storageUnit)
+				.build();
+		Product product = new ProductBuilder().productQuantity(
+				new ProductQuantity(1, Unit.PINTS)).build();
+		productGroup.add(product);
+		new ItemBuilder().product(product).container(storageUnit).build();
+		new ItemBuilder().product(product).container(storageUnit).build();
+		ProductGroup productGroup2 = new ProductGroupBuilder().parent(productGroup).build();
+		Product product2 = new ProductBuilder().productQuantity(
+				new ProductQuantity(1, Unit.PINTS)).build();
+		productGroup2.add(product2);
+		new ItemBuilder().product(product2).container(storageUnit).build();
+		new ItemBuilder().product(product2).container(storageUnit).build();
+
+		assertTrue(productGroup.getCurrentSupply().equals(new ProductQuantity(4, Unit.PINTS)));
+	}
+
+	@Test
+	public void testProductGroupGetCurrentSupplyWeightRecursive() {
+		StorageUnit storageUnit = new StorageUnitBuilder().build();
+		ProductGroup productGroup = new ProductGroupBuilder()
+				.threeMonthSupply(new ProductQuantity(3, Unit.POUNDS)).parent(storageUnit)
+				.build();
+		Product product = new ProductBuilder().productQuantity(
+				new ProductQuantity(1, Unit.POUNDS)).build();
+		productGroup.add(product);
+		new ItemBuilder().product(product).container(storageUnit).build();
+		new ItemBuilder().product(product).container(storageUnit).build();
+		ProductGroup productGroup2 = new ProductGroupBuilder().parent(productGroup).build();
+		Product product2 = new ProductBuilder().productQuantity(
+				new ProductQuantity(1, Unit.POUNDS)).build();
+		productGroup2.add(product2);
+		new ItemBuilder().product(product2).container(storageUnit).build();
+		new ItemBuilder().product(product2).container(storageUnit).build();
+
+		assertTrue(productGroup.getCurrentSupply().equals(new ProductQuantity(4, Unit.POUNDS)));
+	}
+
+	@Test
 	public void testProductGroupProductGroups() {
 		ProductContainerManager pcManager = createNiceMock(ProductContainerManager.class);
 		ProductGroup productGroup1 = new ProductGroupBuilder().parent(storageUnit).build();
