@@ -142,6 +142,7 @@ public class NMonthSupplyReportTest extends EasyMockSupport {
 		productGroup.add(product1);
 		new ItemBuilder().product(product1).container(storageUnit).build();
 		new ItemBuilder().product(product1).container(storageUnit).build();
+		new ItemBuilder().product(product1).container(storageUnit).build();
 
 		// Expect:
 		mockBuilder.addDocumentTitle(Integer.toString(months) + "-Month Supply Report");
