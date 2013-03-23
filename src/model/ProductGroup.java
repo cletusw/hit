@@ -115,6 +115,10 @@ public class ProductGroup extends ProductContainer {
 		return getCurrentSupplyRecursive(threeMonthSupply.getUnits());
 	}
 
+	public ProductQuantity getNMonthSupply(int months) {
+		return threeMonthSupply.multiplyBy(months / 3.0f);
+	}
+
 	public StorageUnit getRoot() {
 		ProductContainer parent = container;
 		while (parent instanceof ProductGroup) {

@@ -105,11 +105,10 @@ public class NMonthSupplyReport extends Report implements InventoryVisitor {
 
 			try {
 				if (productGroup.getCurrentSupply().compareTo(
-						productGroup.getThreeMonthSupply()) < 0) {
+						productGroup.getNMonthSupply(months)) < 0) {
 					builder.addTableRow(Arrays.asList(productGroup.getName(), productGroup
-							.getRoot().getName(), productGroup.getThreeMonthSupply()
-							.multiplyBy(months / 3.0f).toString(), productGroup
-							.getCurrentSupply().toString()));
+							.getRoot().getName(), productGroup.getNMonthSupply(months)
+							.toString(), productGroup.getCurrentSupply().toString()));
 				}
 			} catch (IllegalArgumentException e) {
 				// Skip this node
