@@ -153,7 +153,7 @@ public class ConcreteItemManager extends ObservableWithPublicNotify implements I
 
 		notifyObservers(new Action(item, ActionType.CREATE));
 	}
-	
+
 	/**
 	 * 
 	 * @param item
@@ -164,17 +164,19 @@ public class ConcreteItemManager extends ObservableWithPublicNotify implements I
 	 * @post items.contains(item)
 	 * @post productsToItems.contains(item.getBarcode())
 	 */
+	@Override
 	public void remanage(Item item) {
-		if(item == null) {
+		if (item == null) {
 			throw new IllegalArgumentException("Null Item item");
 		}
-		
-		if(removedItems.get(item.getProduct()) == null || !removedItems.get(item.getProduct()).contains(item))
+
+		if (removedItems.get(item.getProduct()) == null
+				|| !removedItems.get(item.getProduct()).contains(item))
 			throw new IllegalStateException("removedItems does not contain this item");
-		
+
 		removedItems.get(item.getProduct()).remove(item);
 		manage(item);
-		
+
 		notifyObservers(new Action(item, ActionType.CREATE));
 	}
 
@@ -230,7 +232,7 @@ public class ConcreteItemManager extends ObservableWithPublicNotify implements I
 			items = removedItems.get(item.getProduct());
 		items.add(item);
 		removedItems.put(item.getProduct(), items);
-		
+
 		notifyObservers(new Action(item, ActionType.DELETE));
 	}
 }

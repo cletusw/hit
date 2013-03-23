@@ -339,7 +339,8 @@ public class ProductStatisticsReport extends Report {
 		int maxDays = 0;
 		Date now = new Date();
 		for (Item item : items) {
-			int daysInStorage = (int) ((now.getTime() - item.getEntryDate().getTime()) / millisPerDay) + 1;
+			long difference = (now.getTime() - item.getEntryDate().getTime());
+			int daysInStorage = (int) (difference / millisPerDay) + 1;
 			if (daysInStorage > maxDays)
 				maxDays = daysInStorage;
 		}
