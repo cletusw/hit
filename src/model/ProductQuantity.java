@@ -157,6 +157,10 @@ public class ProductQuantity implements Serializable {
 		return units;
 	}
 
+	public ProductQuantity multiplyBy(float f) {
+		return new ProductQuantity(quantity * f, units);
+	}
+
 	/**
 	 * Attribute setter for quantity. This setter enforces that if the units are COUNT, the
 	 * quantity must be an Integer

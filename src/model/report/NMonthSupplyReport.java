@@ -17,6 +17,7 @@ public class NMonthSupplyReport extends Report implements InventoryVisitor {
 	private ProductManager productManager;
 	private ProductContainerManager productContainerManager;
 	private ReportBuilder builder;
+	private int months;
 
 	/**
 	 * Set up an empty NMonthSupplyReport.
@@ -33,6 +34,7 @@ public class NMonthSupplyReport extends Report implements InventoryVisitor {
 			ProductContainerManager productContainerManager) {
 		this.productManager = productManager;
 		this.productContainerManager = productContainerManager;
+		months = -1;
 	}
 
 	/**
@@ -49,6 +51,7 @@ public class NMonthSupplyReport extends Report implements InventoryVisitor {
 	 */
 	public void construct(ReportBuilder builder, int months) {
 		this.builder = builder;
+		this.months = months;
 
 		updateLastRunTime();
 		builder.addDocumentTitle(Integer.toString(months) + "-Month Supply Report");
@@ -75,6 +78,7 @@ public class NMonthSupplyReport extends Report implements InventoryVisitor {
 		}
 
 		this.builder = null;
+		this.months = -1;
 	}
 
 	@Override
@@ -87,6 +91,15 @@ public class NMonthSupplyReport extends Report implements InventoryVisitor {
 
 	@Override
 	public void visit(ProductContainer productContainer) {
+		if (builder == null) {
+			throw new NullPointerException(
+					"visit(ProductContainer) called outside a construct operation");
+		}
+		if (months == -1) {
+			throw new IllegalStateException(
+					"visit(ProductContainer) called outside a construct operation");
+		}
+
 		if (productContainer instanceof ProductGroup) {
 			ProductGroup productGroup = (ProductGroup) productContainer;
 
@@ -95,7 +108,8 @@ public class NMonthSupplyReport extends Report implements InventoryVisitor {
 						productGroup.getThreeMonthSupply()) < 0) {
 					builder.addTableRow(Arrays.asList(productGroup.getName(), productGroup
 							.getRoot().getName(), productGroup.getThreeMonthSupply()
-							.toString(), productGroup.getCurrentSupply().toString()));
+							.multiplyBy(months / 3.0f).toString(), productGroup
+							.getCurrentSupply().toString()));
 				}
 			} catch (IllegalArgumentException e) {
 				// Skip this node

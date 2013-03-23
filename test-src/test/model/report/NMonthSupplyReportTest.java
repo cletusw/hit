@@ -129,6 +129,38 @@ public class NMonthSupplyReportTest extends EasyMockSupport {
 	}
 
 	@Test
+	public void testOnProductGroupFor4Months() {
+		int months = 4;
+		StorageUnit storageUnit = new StorageUnitBuilder().manager(
+				hit.getProductContainerManager()).build();
+		ProductGroup productGroup = new ProductGroupBuilder()
+				.threeMonthSupply(new ProductQuantity(3, Unit.POUNDS)).parent(storageUnit)
+				.build();
+		Product product1 = new ProductBuilder().productManager(hit.getProductManager())
+				.threeMonthSupply(0).productQuantity(new ProductQuantity(1, Unit.POUNDS))
+				.build();
+		productGroup.add(product1);
+		new ItemBuilder().product(product1).container(storageUnit).build();
+		new ItemBuilder().product(product1).container(storageUnit).build();
+
+		// Expect:
+		mockBuilder.addDocumentTitle(Integer.toString(months) + "-Month Supply Report");
+
+		mockBuilder.addSectionTitle("Products");
+		mockBuilder.startTable(productsHeaders(months));
+
+		mockBuilder.addSectionTitle("Product Groups");
+		mockBuilder.startTable(productGroupsHeaders(months));
+		mockBuilder.addTableRow(asTableRow(productGroup, months));
+
+		replayAll();
+
+		report.construct(mockBuilder, months);
+
+		verifyAll();
+	}
+
+	@Test
 	public void testOnProductGroupWithNoThreeMonthSupply() {
 		int months = 3;
 		StorageUnit storageUnit = new StorageUnitBuilder().manager(
@@ -288,7 +320,7 @@ public class NMonthSupplyReportTest extends EasyMockSupport {
 	 */
 	private List<String> asTableRow(ProductGroup productGroup, int months) {
 		return Arrays.asList(productGroup.getName(), productGroup.getRoot().getName(),
-				productGroup.getThreeMonthSupply().toString(), productGroup.getCurrentSupply()
-						.toString());
+				productGroup.getThreeMonthSupply().multiplyBy(months / 3.0f).toString(),
+				productGroup.getCurrentSupply().toString());
 	}
 }
