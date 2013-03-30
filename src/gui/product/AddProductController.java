@@ -34,8 +34,10 @@ public class AddProductController extends Controller implements IAddProductContr
 		getView().setSizeValue("1");
 		getView().setSupply("0");
 		getView().setShelfLife("0");
-		construct();
 
+		// TODO: Product auto-identify here
+
+		construct();
 	}
 
 	//
