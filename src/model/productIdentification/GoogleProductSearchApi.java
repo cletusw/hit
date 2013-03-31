@@ -2,6 +2,13 @@ package model.productIdentification;
 
 import model.Product;
 
+/**
+ * Finds descriptions for Product objects using the Google ProductSearch API
+ * 
+ * @author Matthew
+ * @version 1.0 -- Snell CS 340 Phase 4.0
+ * 
+ */
 public class GoogleProductSearchApi extends ProductIdentificationPlugin {
 
 	@Override
