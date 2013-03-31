@@ -4,6 +4,12 @@ import java.util.Observable;
 
 import model.HomeInventoryTracker;
 
+/**
+ * On application close, persists the model by serializing the HomeInventoryTracker class
+ * 
+ * @author Matthew
+ * @version 1.0 -- Snell CS 340 Phase 4.0
+ */
 public class SerializationDao extends InventoryDao {
 
 	@Override
