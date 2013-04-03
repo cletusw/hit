@@ -82,6 +82,12 @@ public class ConcreteProductManager extends ObservableWithPublicNotify implement
 		return barcodesToProducts.get(barcode);
 	}
 
+	@Override
+	public String getDescriptionForProduct(String barcode) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 	/**
 	 * Gets the pending command for Product manipulation. Used by the GUI for undo / redo state
 	 * across multiple controllers.

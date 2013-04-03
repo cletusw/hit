@@ -16,6 +16,8 @@ public interface ProductManager {
 
 	public Product getByBarcode(String barcodeScanned);
 
+	public String getDescriptionForProduct(String barcode);
+
 	public Command getPendingProductCommand();
 
 	public Set<Product> getProducts();
