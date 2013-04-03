@@ -12,7 +12,7 @@ public class BingWebSearchApi implements ProductIdentificationPlugin {
 	@Override
 	public String getDescriptionForProduct(String productBarcode) {
 		// TODO Auto-generated method stub
-		return "BingProductDescription!";
+		return null;
 	}
 
 }

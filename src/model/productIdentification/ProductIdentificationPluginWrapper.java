@@ -29,7 +29,7 @@ public class ProductIdentificationPluginWrapper {
 		String description = plugin.getDescriptionForProduct(productBarcode);
 		if (description == null && successor != null)
 			return successor.getDescriptionForProduct(productBarcode);
-		return null;
+		return description;
 	}
 
 	/**

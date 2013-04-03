@@ -36,7 +36,8 @@ public class AddProductController extends Controller implements IAddProductContr
 		getView().setShelfLife("0");
 
 		// TODO: Product auto-identify here
-		String description = view.getProductManager().getDescriptionForProduct(barcode);
+		String description = view.getProductIdentificationPluginManager()
+				.getDescriptionForProduct(barcode);
 		if (description != null)
 			getView().setDescription(description);
 		construct();
