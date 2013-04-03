@@ -3,7 +3,7 @@ package model.productIdentification;
 import com.google.gson.Gson;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
-import common.util.HttpClient;
+import common.util.IHttpClient;
 
 /**
  * Finds descriptions for Product objects using the UpcSearch API at upcdatabase.org
@@ -21,9 +21,9 @@ public class UpcSearchApi implements ProductIdentificationPlugin {
 	 */
 	private final String baseUrl = "http://upcdatabase.org/api/json/";
 	private final String apiKey = "249dbc28bb5c3d7dbdbcf6a564dec307";
-	private HttpClient client;
+	private IHttpClient client;
 
-	public UpcSearchApi(HttpClient c) {
+	public UpcSearchApi(IHttpClient c) {
 		client = c;
 	}
 
