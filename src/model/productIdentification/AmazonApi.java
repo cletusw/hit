@@ -1,6 +1,5 @@
 package model.productIdentification;
 
-
 /**
  * Finds descriptions for Product objects using the Amazon Product Search API
  * 
@@ -8,7 +7,7 @@ package model.productIdentification;
  * @version 1.0 -- Snell CS 340 Phase 4.0
  * 
  */
-public class AmazonApi extends ProductIdentificationPlugin {
+public class AmazonApi implements ProductIdentificationPlugin {
 
 	@Override
 	public String getDescriptionForProduct(String productBarcode) {

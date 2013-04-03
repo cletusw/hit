@@ -8,10 +8,10 @@ package model.productIdentification;
  */
 public class ProductIdentificationPluginManager {
 
-	private ProductIdentificationPlugin root;
+	private ProductIdentificationPluginWrapper root;
 
 	/**
-	 * Uses the ProductIdentificationPlugin to determine the description of the product
+	 * Uses the ProductIdentificationPlugin to determine the desription of the product
 	 * 
 	 * @param productBarcode
 	 * @return the description for the product, or null if not found
@@ -29,5 +29,4 @@ public class ProductIdentificationPluginManager {
 	public void loadPlugins() {
 
 	}
-
 }
