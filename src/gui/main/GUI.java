@@ -26,6 +26,7 @@ import model.PersistentStorageManager;
 import model.ProductContainerManager;
 import model.ProductManager;
 import model.SerializationManager;
+import model.productIdentification.ProductIdentificationPluginManager;
 import model.report.ReportManager;
 
 @SuppressWarnings("serial")
@@ -54,12 +55,15 @@ public final class GUI extends JFrame implements IMainView {
 	private InventoryView _inventoryView;
 	private final HomeInventoryTracker _tracker;
 	private final PersistentStorageManager _persistentStorageManager;
+	private final ProductIdentificationPluginManager _productIdentificationPluginManager;
 
 	public GUI(String[] args) {
 		super("Home Inventory Tracker");
 
 		_persistentStorageManager = new SerializationManager();
 		_tracker = _persistentStorageManager.load();
+		_productIdentificationPluginManager = new ProductIdentificationPluginManager();
+		_productIdentificationPluginManager.loadPlugins();
 
 		setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
 		addWindowListener(new WindowAdapter() {
@@ -143,6 +147,11 @@ public final class GUI extends JFrame implements IMainView {
 	@Override
 	public ProductContainerManager getProductContainerManager() {
 		return _tracker.getProductContainerManager();
+	}
+
+	@Override
+	public ProductIdentificationPluginManager getProductIdentificationPluginManager() {
+		return _productIdentificationPluginManager;
 	}
 
 	@Override

@@ -3,6 +3,7 @@ package gui.common;
 import model.ItemManager;
 import model.ProductContainerManager;
 import model.ProductManager;
+import model.productIdentification.ProductIdentificationPluginManager;
 import model.report.ReportManager;
 
 /**
@@ -50,6 +51,8 @@ public interface IView {
 	ItemManager getItemManager();
 
 	ProductContainerManager getProductContainerManager();
+
+	ProductIdentificationPluginManager getProductIdentificationPluginManager();
 
 	ProductManager getProductManager();
 

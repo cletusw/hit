@@ -16,6 +16,7 @@ import javax.swing.table.TableColumn;
 import model.ItemManager;
 import model.ProductContainerManager;
 import model.ProductManager;
+import model.productIdentification.ProductIdentificationPluginManager;
 import model.report.ReportManager;
 
 /**
@@ -272,6 +273,11 @@ public abstract class View extends JPanel implements IView {
 	@Override
 	public ProductContainerManager getProductContainerManager() {
 		return _parent.getProductContainerManager();
+	}
+
+	@Override
+	public ProductIdentificationPluginManager getProductIdentificationPluginManager() {
+		return _parent.getProductIdentificationPluginManager();
 	}
 
 	@Override

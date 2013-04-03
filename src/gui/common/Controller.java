@@ -3,6 +3,7 @@ package gui.common;
 import model.ItemManager;
 import model.ProductContainerManager;
 import model.ProductManager;
+import model.productIdentification.ProductIdentificationPluginManager;
 import model.report.ReportManager;
 
 /**
@@ -79,6 +80,10 @@ public abstract class Controller implements IController {
 
 	protected ProductContainerManager getProductContainerManager() {
 		return _view.getProductContainerManager();
+	}
+
+	protected ProductIdentificationPluginManager getProductIdentificationPluginManager() {
+		return _view.getProductIdentificationPluginManager();
 	}
 
 	protected ProductManager getProductManager() {

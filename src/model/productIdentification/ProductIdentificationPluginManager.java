@@ -11,7 +11,7 @@ public class ProductIdentificationPluginManager {
 	private ProductIdentificationPlugin root;
 
 	/**
-	 * Uses the ProductIdentificationPlugin to determine the desription of the product
+	 * Uses the ProductIdentificationPlugin to determine the description of the product
 	 * 
 	 * @param productBarcode
 	 * @return the description for the product, or null if not found
