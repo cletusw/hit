@@ -1,7 +1,5 @@
 package model.productIdentification;
 
-import model.Product;
-
 /**
  * Initializes and maintains ProductIdentificationPlugins.
  * 
@@ -15,14 +13,14 @@ public class ProductIdentificationPluginManager {
 	/**
 	 * Uses the ProductIdentificationPlugin to determine the desription of the product
 	 * 
-	 * @param product
+	 * @param productBarcode
 	 * @return the description for the product, or null if not found
 	 * 
 	 * @pre product != null
 	 * @post true
 	 */
-	public String getDescriptionForProduct(Product product) {
-		return root.getDescriptionForProduct(product);
+	public String getDescriptionForProduct(String productBarcode) {
+		return root.getDescriptionForProduct(productBarcode);
 	}
 
 	/**

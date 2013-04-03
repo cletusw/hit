@@ -1,6 +1,5 @@
 package model.productIdentification;
 
-import model.Product;
 
 /**
  * Finds descriptions for Product objects
@@ -15,14 +14,14 @@ public abstract class ProductIdentificationPlugin {
 	/**
 	 * Returns the description of the Product
 	 * 
-	 * @param product
+	 * @param productBarcode
 	 *            Product for which to find description
 	 * @return description of Product product
 	 * 
 	 * @pre product != null
 	 * @post true
 	 */
-	public abstract String getDescriptionForProduct(Product product);
+	public abstract String getDescriptionForProduct(String productBarcode);
 
 	/**
 	 * Get the successor ProductIdentificationPlugin

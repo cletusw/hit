@@ -1,6 +1,5 @@
 package model.productIdentification;
 
-import model.Product;
 
 /**
  * Finds descriptions for Product objects using the Google ProductSearch API
@@ -12,7 +11,7 @@ import model.Product;
 public class GoogleProductSearchApi extends ProductIdentificationPlugin {
 
 	@Override
-	public String getDescriptionForProduct(Product product) {
+	public String getDescriptionForProduct(String productBarcode) {
 		// TODO Auto-generated method stub
 		return null;
 	}

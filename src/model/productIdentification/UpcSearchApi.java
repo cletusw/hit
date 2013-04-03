@@ -1,6 +1,5 @@
 package model.productIdentification;
 
-import model.Product;
 
 /**
  * Finds descriptions for Product objects using the UpcSearch API at upcdatabase.org
@@ -20,7 +19,7 @@ public class UpcSearchApi extends ProductIdentificationPlugin {
 	private String apiKey = "249dbc28bb5c3d7dbdbcf6a564dec307";
 
 	@Override
-	public String getDescriptionForProduct(Product product) {
+	public String getDescriptionForProduct(String productBarcode) {
 		// TODO Auto-generated method stub
 		return null;
 	}
