@@ -8,8 +8,13 @@ package model.productIdentification;
  */
 public class ProductIdentificationPluginWrapper {
 
-	private ProductIdentificationPlugin plugin;
+	private final ProductIdentificationPlugin plugin;
 	private ProductIdentificationPluginWrapper successor;
+
+	public ProductIdentificationPluginWrapper(ProductIdentificationPlugin plugin) {
+		this.plugin = plugin;
+		successor = null;
+	}
 
 	/**
 	 * Uses the ProductIdentificationPlugin to determine the description of the product
