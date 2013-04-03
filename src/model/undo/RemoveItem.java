@@ -1,9 +1,9 @@
 package model.undo;
 
+import gui.batches.RemoveItemBatchController;
 import model.Item;
 import model.ItemManager;
 import model.ProductContainer;
-import gui.batches.RemoveItemBatchController;
 
 /**
  * Class that stores the RemoveItem state for undo/redo operations
@@ -36,13 +36,14 @@ public class RemoveItem implements Command {
 	 * @post true
 	 * 
 	 */
-	public RemoveItem(String itemBarcode, ItemManager manager, RemoveItemBatchController controller) {
+	public RemoveItem(String itemBarcode, ItemManager manager,
+			RemoveItemBatchController controller) {
 		this.manager = manager;
-		
+
 		this.controller = controller;
 
 		toRemove = manager.getItemByItemBarcode(itemBarcode);
-		if(toRemove == null)
+		if (toRemove == null)
 			throw new NullPointerException("manager must contain item");
 		itemContainer = toRemove.getContainer();
 	}
@@ -56,9 +57,9 @@ public class RemoveItem implements Command {
 	 */
 	@Override
 	public void execute() {
-		itemContainer.remove(toRemove,manager);
-		
-		controller.addItemToRemoved(toRemove,itemContainer);
+		itemContainer.remove(toRemove, manager);
+
+		controller.addItemToRemoved(toRemove, itemContainer);
 		controller.updateOnExecuteOrRedo(toRemove);
 	}
 
@@ -85,7 +86,7 @@ public class RemoveItem implements Command {
 	public void undo() {
 		itemContainer.add(toRemove);
 		manager.remanage(toRemove);
-		
+
 		controller.removeItemFromRemoved(toRemove);
 		controller.updateOnUndo(toRemove);
 	}

@@ -6,7 +6,9 @@ import model.Item;
 import model.Product;
 import model.ProductContainer;
 import model.ProductContainerManager;
+import model.ProductGroup;
 import model.ProductManager;
+import model.StorageUnit;
 import model.report.builder.ReportBuilder;
 import model.visitor.InventoryVisitor;
 
@@ -14,6 +16,8 @@ import model.visitor.InventoryVisitor;
 public class NMonthSupplyReport extends Report implements InventoryVisitor {
 	private ProductManager productManager;
 	private ProductContainerManager productContainerManager;
+	private ReportBuilder builder;
+	private int months;
 
 	/**
 	 * Set up an empty NMonthSupplyReport.
@@ -30,6 +34,7 @@ public class NMonthSupplyReport extends Report implements InventoryVisitor {
 			ProductContainerManager productContainerManager) {
 		this.productManager = productManager;
 		this.productContainerManager = productContainerManager;
+		months = -1;
 	}
 
 	/**
@@ -45,6 +50,9 @@ public class NMonthSupplyReport extends Report implements InventoryVisitor {
 	 * @post (new Date()).getTime() - getLastRunTime().getTime() < 1000
 	 */
 	public void construct(ReportBuilder builder, int months) {
+		this.builder = builder;
+		this.months = months;
+
 		updateLastRunTime();
 		builder.addDocumentTitle(Integer.toString(months) + "-Month Supply Report");
 
@@ -64,6 +72,13 @@ public class NMonthSupplyReport extends Report implements InventoryVisitor {
 		builder.addSectionTitle("Product Groups");
 		builder.startTable(Arrays.asList("Product Group", "Storage Unit",
 				Integer.toString(months) + "-Month Supply", "Current Supply"));
+
+		for (StorageUnit storageUnit : productContainerManager.getStorageUnits()) {
+			storageUnit.accept(this);
+		}
+
+		this.builder = null;
+		this.months = -1;
 	}
 
 	@Override
@@ -76,5 +91,28 @@ public class NMonthSupplyReport extends Report implements InventoryVisitor {
 
 	@Override
 	public void visit(ProductContainer productContainer) {
+		if (builder == null) {
+			throw new NullPointerException(
+					"visit(ProductContainer) called outside a construct operation");
+		}
+		if (months == -1) {
+			throw new IllegalStateException(
+					"visit(ProductContainer) called outside a construct operation");
+		}
+
+		if (productContainer instanceof ProductGroup) {
+			ProductGroup productGroup = (ProductGroup) productContainer;
+
+			try {
+				if (productGroup.getCurrentSupply().compareTo(
+						productGroup.getNMonthSupply(months)) < 0) {
+					builder.addTableRow(Arrays.asList(productGroup.getName(), productGroup
+							.getRoot().getName(), productGroup.getNMonthSupply(months)
+							.toString(), productGroup.getCurrentSupply().toString()));
+				}
+			} catch (IllegalArgumentException e) {
+				// Skip this node
+			}
+		}
 	}
 }

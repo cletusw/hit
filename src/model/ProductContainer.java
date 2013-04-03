@@ -440,6 +440,10 @@ public abstract class ProductContainer implements Comparable<ProductContainer>, 
 		return null;
 	}
 
+	public Collection<Item> getItems() {
+		return items.values();
+	}
+
 	/**
 	 * Gets the set of items in the container of Product p
 	 * 
@@ -462,6 +466,26 @@ public abstract class ProductContainer implements Comparable<ProductContainer>, 
 	 */
 	public int getItemsSize() {
 		return items.size();
+	}
+
+	/**
+	 * Gets the size of the items collection for this ProductContainer and all its children.
+	 * 
+	 * @return int - the number of elements in the items collection and all this Container's
+	 *         children's items collections
+	 * 
+	 * @pre true
+	 * @post true
+	 * 
+	 */
+	public int getItemsSizeRecursive() {
+		int total = items.size();
+
+		for (ProductGroup productGroup : productGroups.values()) {
+			total += productGroup.getItemsSizeRecursive();
+		}
+
+		return total;
 	}
 
 	/**
