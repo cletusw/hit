@@ -1,15 +1,9 @@
 package model.productIdentification;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.net.URLConnection;
-
 import com.google.gson.Gson;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
+import common.util.HttpClient;
 
 /**
  * Finds descriptions for Product objects using the UpcSearch API at upcdatabase.org
@@ -27,10 +21,15 @@ public class UpcSearchApi implements ProductIdentificationPlugin {
 	 */
 	private final String baseUrl = "http://upcdatabase.org/api/json/";
 	private final String apiKey = "249dbc28bb5c3d7dbdbcf6a564dec307";
+	private HttpClient client;
+
+	public UpcSearchApi(HttpClient c) {
+		client = c;
+	}
 
 	@Override
 	public String getDescriptionForProduct(String productBarcode) {
-		String content = getHttpRequest(baseUrl + apiKey + "/" + productBarcode);
+		String content = client.getHttpRequest(baseUrl + apiKey + "/" + productBarcode);
 		if (content == null)
 			return null;
 
@@ -40,37 +39,5 @@ public class UpcSearchApi implements ProductIdentificationPlugin {
 			return null;
 		else
 			return result.getAsString();
-	}
-
-	/**
-	 * Makes an HTTP request to the given url, returning the content
-	 * 
-	 * @param url
-	 *            webpage to request
-	 * @return string content of the page requested or null if the url given is invalid, or an
-	 *         IOException occurs
-	 */
-	private String getHttpRequest(String url) {
-		try {
-			StringBuilder content = new StringBuilder();
-			URL requestUrl = new URL(url);
-			URLConnection connection;
-			try {
-				connection = requestUrl.openConnection();
-				BufferedReader in = new BufferedReader(new InputStreamReader(
-						connection.getInputStream()));
-				String inputLine;
-
-				while ((inputLine = in.readLine()) != null)
-					System.out.println(inputLine);
-				in.close();
-			} catch (IOException e) {
-				return null;
-			}
-
-			return content.toString();
-		} catch (MalformedURLException e) {
-			return null;
-		}
 	}
 }
