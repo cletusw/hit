@@ -34,19 +34,26 @@ public class UpcDatabaseApi implements ProductIdentificationPlugin {
 
 	@Override
 	public String getDescriptionForProduct(String productBarcode) {
-		if (client == null)
-			return null;
+		if (client == null) {
+			throw new IllegalStateException("Client is null!");
+		}
 		String content = client.getHttpRequest(baseUrl + apiKey + "/" + productBarcode);
-		if (content == null)
+		if (content == null) {
+			// System.err.println("Null content retrieved!");
 			return null;
 
-		Pattern pattern = Pattern
-				.compile("<tr><td>Description</td><td></td><td>(.*)</td></tr>");
+		}
+
+		Pattern pattern = Pattern.compile(// "<!DOCTYPE(.*)", Pattern.DOTALL |
+											// Pattern.MULTILINE);
+				"<tr><td>Description</td><td></td><td>(.*)</td></tr>"); // , Pattern.DOTALL);
+		// while ()
 		Matcher matcher = pattern.matcher(content);
 		String result = null;
 		if (matcher.find()) {
 			if (matcher.groupCount() >= 1) {
 				result = matcher.group(1);
+				System.err.println(result);
 			}
 		}
 
