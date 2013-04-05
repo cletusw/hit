@@ -1,5 +1,7 @@
 package model.productIdentification;
 
+import common.util.IHttpClient;
+
 /**
  * Finds descriptions for Product objects using the Bing WebSearch API
  * 
@@ -13,6 +15,12 @@ public class BingWebSearchApi implements ProductIdentificationPlugin {
 	public String getDescriptionForProduct(String productBarcode) {
 		// TODO Auto-generated method stub
 		return null;
+	}
+
+	@Override
+	public void setClient(IHttpClient client) {
+		// TODO Auto-generated method stub
+
 	}
 
 }

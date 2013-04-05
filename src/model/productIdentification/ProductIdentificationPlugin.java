@@ -1,5 +1,7 @@
 package model.productIdentification;
 
+import common.util.IHttpClient;
+
 /**
  * Finds descriptions for Product objects
  * 
@@ -20,4 +22,6 @@ public interface ProductIdentificationPlugin {
 	 * @post true
 	 */
 	public String getDescriptionForProduct(String productBarcode);
+
+	public void setClient(IHttpClient client);
 }

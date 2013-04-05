@@ -1,29 +1,34 @@
 package model.productIdentification;
 
-import com.google.gson.Gson;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 import common.util.IHttpClient;
 
 /**
  * Finds descriptions for Product objects using the UpcSearch API at upcdatabase.org
  * 
- * @author Matthew
+ * @author Seth
  * @version 1.0 -- Snell CS 340 Phase 4.0
  * 
  */
-public class UpcSearchApi implements ProductIdentificationPlugin {
+public class UpcDatabaseApi implements ProductIdentificationPlugin {
 
 	/*
 	 * For implementation purposes:
 	 * 
 	 * Url is of format http://upcdatabase.org/api/json/<KEY>/<UPC>
 	 */
-	private final String baseUrl = "http://upcdatabase.org/api/json/";
-	private final String apiKey = "249dbc28bb5c3d7dbdbcf6a564dec307";
+	private final String baseUrl = "http://www.upcdatabase.com/item/";
+	private final String apiKey = ""; // "249dbc28bb5c3d7dbdbcf6a564dec307";
+
 	private IHttpClient client;
 
-	public UpcSearchApi(IHttpClient c) {
+	public UpcDatabaseApi() {
+		client = null;
+	}
+
+	public UpcDatabaseApi(IHttpClient c) {
 		client = c;
 	}
 
@@ -35,17 +40,24 @@ public class UpcSearchApi implements ProductIdentificationPlugin {
 		if (content == null)
 			return null;
 
-		JsonObject jObject = new Gson().fromJson(content, JsonObject.class);
-		JsonElement result = jObject.get("itemname");
+		Pattern pattern = Pattern
+				.compile("<tr><td>Description</td><td></td><td>(.*)</td></tr>");
+		Matcher matcher = pattern.matcher(content);
+		String result = null;
+		if (matcher.find()) {
+			if (matcher.groupCount() >= 1) {
+				result = matcher.group(1);
+			}
+		}
+
 		if (result == null)
 			return null;
 		else
-			return result.getAsString();
+			return result;
 	}
 
 	@Override
 	public void setClient(IHttpClient client) {
 		this.client = client;
-
 	}
 }
