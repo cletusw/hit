@@ -21,12 +21,16 @@ public class HttpClient implements IHttpClient {
 						connection.getInputStream()));
 				String inputLine;
 
-				while ((inputLine = in.readLine()) != null)
-					System.out.println(inputLine);
+				while ((inputLine = in.readLine()) != null) {
+					content.append(inputLine + "\n");
+					// System.out.println(inputLine);
+				}
 				in.close();
 			} catch (IOException e) {
 				return null;
 			}
+
+			System.out.println(content.toString());
 
 			return content.toString();
 		} catch (MalformedURLException e) {
