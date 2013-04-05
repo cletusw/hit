@@ -14,7 +14,25 @@ import model.undo.AddProduct;
  */
 public class AddProductController extends Controller implements IAddProductController {
 
+	private class ProductIdentificationThread extends Thread {
+		@Override
+		public void run() {
+			getView().setDescription("Auto-identifying product, please wait...");
+			getView().enableDescription(false);
+			getView().enableOK(false);
+
+			String description = getView().getProductIdentificationPluginManager()
+					.getDescriptionForProduct(barcode);
+			if (description != null)
+				getView().setDescription(description);
+			else
+				getView().setDescription("");
+			enableComponents();
+		}
+	}
+
 	private final String barcode;
+
 	private Unit currentUnit;
 
 	/**
@@ -35,12 +53,9 @@ public class AddProductController extends Controller implements IAddProductContr
 		getView().setSupply("0");
 		getView().setShelfLife("0");
 
-		// TODO: Product auto-identify here
-		String description = view.getProductIdentificationPluginManager()
-				.getDescriptionForProduct(barcode);
-		if (description != null)
-			getView().setDescription(description);
 		construct();
+
+		(new ProductIdentificationThread()).start();
 	}
 
 	//
