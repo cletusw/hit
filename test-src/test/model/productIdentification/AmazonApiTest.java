@@ -24,7 +24,7 @@ public class AmazonApiTest extends EasyMockSupport {
 
 	@Test
 	public void testGetDescriptionForProduct() {
-		IHttpClient c = createMock(IHttpClient.class);
+		IHttpClient client = createMock(IHttpClient.class);
 		String response = "<ItemLookupResponse "
 				+ "xmlns=\"http://webservices.amazon.com/AWSECommerceService/2011-08-01\">"
 				+ "<Items>" + "<Request>" + "<IsValid>True</IsValid>" + "</Request>"
@@ -32,14 +32,15 @@ public class AmazonApiTest extends EasyMockSupport {
 				+ "<ProductGroup>Home</ProductGroup>"
 				+ "<Title>Ajax Cleaner Bonus Size, 28 Oz</Title>" + "</ItemAttributes>"
 				+ "</Item>" + "</Items>" + "</ItemLookupResponse>";
-		expect(c.getHttpRequest((String) EasyMock.notNull())).andStubReturn(response);
+		expect(client.getHttpRequest((String) EasyMock.notNull())).andStubReturn(response);
 
 		replayAll();
 
-		AmazonApi api = new AmazonApi(c);
+		AmazonApi api = new AmazonApi();
+		api.setClient(client);
 		String desc = api.getDescriptionForProduct("035000053640");
 		assertTrue(desc != null);
-		assertTrue(desc.equals("Ajax with Bleach Poweder Cleaner"));
+		assertTrue(desc.equals("Ajax Cleaner Bonus Size, 28 Oz"));
 
 		verifyAll();
 	}
