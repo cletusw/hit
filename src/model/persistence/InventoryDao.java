@@ -1,5 +1,6 @@
 package model.persistence;
 
+import java.io.IOException;
 import java.util.Observable;
 import java.util.Observer;
 
@@ -25,7 +26,7 @@ public abstract class InventoryDao implements Observer {
 	 * @pre hit != null
 	 * @post hit data is persisted
 	 */
-	public abstract void applicationClose(HomeInventoryTracker hit);
+	public abstract void applicationClose(HomeInventoryTracker hit) throws IOException;
 
 	/**
 	 * Creates a HomeInventoryTracker model from persisted data.
@@ -35,7 +36,7 @@ public abstract class InventoryDao implements Observer {
 	 * @pre true
 	 * @post HomeInventoryTracker is a full initialized model
 	 */
-	public abstract HomeInventoryTracker LoadHomeInventoryTracker();
+	public abstract HomeInventoryTracker loadHomeInventoryTracker();
 
 	/**
 	 * Called when changes are made to the model. Updates the necessary persisted data.

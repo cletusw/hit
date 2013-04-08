@@ -20,7 +20,7 @@ public class RdbDao extends InventoryDao {
 	}
 
 	@Override
-	public HomeInventoryTracker LoadHomeInventoryTracker() {
+	public HomeInventoryTracker loadHomeInventoryTracker() {
 		// TODO Auto-generated method stub
 		return null;
 	}

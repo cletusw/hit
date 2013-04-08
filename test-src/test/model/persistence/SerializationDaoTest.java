@@ -1,4 +1,4 @@
-package test.model;
+package test.model.persistence;
 
 import static org.junit.Assert.assertTrue;
 
@@ -6,16 +6,17 @@ import java.io.File;
 import java.io.IOException;
 
 import model.HomeInventoryTracker;
-import model.PersistentStorageManager;
 import model.ProductContainerManager;
-import model.SerializationManager;
 import model.StorageUnit;
+import model.persistence.InventoryDao;
+import model.persistence.SerializationDao;
 
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-public class SerializationManagerTest {
+public class SerializationDaoTest {
+
 	private static final String testTarget = "TestHITTracker.ser";
 
 	@Before
@@ -41,14 +42,13 @@ public class SerializationManagerTest {
 		assertTrue(pcManager.getStorageUnitByName(name1) != null);
 		assertTrue(pcManager.getStorageUnitByName(name2) != null);
 
-		PersistentStorageManager persistentStorageManager = new SerializationManager(
-				testTarget);
-		persistentStorageManager.save(hit);
+		InventoryDao inventoryDao = new SerializationDao(testTarget);
+		inventoryDao.applicationClose(hit);
 
 		hit = null;
 		pcManager = null;
 
-		hit = persistentStorageManager.load();
+		hit = inventoryDao.loadHomeInventoryTracker();
 		pcManager = hit.getProductContainerManager();
 		assertTrue(pcManager.getStorageUnitByName(name1) != null);
 		assertTrue(pcManager.getStorageUnitByName(name2) != null);

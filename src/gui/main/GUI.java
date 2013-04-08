@@ -22,10 +22,12 @@ import javax.swing.WindowConstants;
 
 import model.HomeInventoryTracker;
 import model.ItemManager;
-import model.PersistentStorageManager;
 import model.ProductContainerManager;
 import model.ProductManager;
-import model.SerializationManager;
+import model.persistence.InventoryDao;
+import model.persistence.factory.DaoFactory;
+import model.persistence.factory.RdbDaoFactory;
+import model.persistence.factory.SerializationDaoFactory;
 import model.productIdentification.ProductIdentificationPluginManager;
 import model.report.ReportManager;
 
@@ -54,14 +56,24 @@ public final class GUI extends JFrame implements IMainView {
 
 	private InventoryView _inventoryView;
 	private final HomeInventoryTracker _tracker;
-	private final PersistentStorageManager _persistentStorageManager;
+	private final InventoryDao _inventoryDao;
 	private final ProductIdentificationPluginManager _productIdentificationPluginManager;
 
 	public GUI(String[] args) {
 		super("Home Inventory Tracker");
 
-		_persistentStorageManager = new SerializationManager();
-		_tracker = _persistentStorageManager.load();
+		String hitType = "ser";
+		for (String arg : args)
+			if (arg.equals("sql") || arg.equals("-sql"))
+				hitType = "sql";
+		DaoFactory factory;
+		if (hitType.equals("sql"))
+			factory = new RdbDaoFactory();
+		else
+			factory = new SerializationDaoFactory();
+
+		_inventoryDao = factory.getDao();
+		_tracker = _inventoryDao.loadHomeInventoryTracker();
 		_productIdentificationPluginManager = new ProductIdentificationPluginManager();
 		_productIdentificationPluginManager.loadPlugins();
 
@@ -70,7 +82,7 @@ public final class GUI extends JFrame implements IMainView {
 			@Override
 			public void windowClosing(WindowEvent evt) {
 				try {
-					_persistentStorageManager.save(_tracker);
+					_inventoryDao.applicationClose(_tracker);
 				} catch (IOException e) {
 					displayErrorMessage("Unable to save to persistent storage");
 				}
