@@ -1,6 +1,7 @@
 package model.persistence.factory;
 
 import model.persistence.InventoryDao;
+import model.persistence.RdbDao;
 
 /**
  * Creates and maintains an RdbDao object to be used for persistence.
@@ -14,8 +15,7 @@ public class RdbDaoFactory implements DaoFactory {
 
 	@Override
 	public InventoryDao getDao() {
-		// TODO Auto-generated method stub
-		return null;
+		return new RdbDao();
 	}
 
 }

@@ -1,6 +1,7 @@
 package model.persistence.factory;
 
 import model.persistence.InventoryDao;
+import model.persistence.SerializationDao;
 
 /**
  * Creates and maintains a SerializationDao object to be used for persistence.
@@ -14,8 +15,6 @@ public class SerializationDaoFactory implements DaoFactory {
 
 	@Override
 	public InventoryDao getDao() {
-		// TODO Auto-generated method stub
-		return null;
+		return new SerializationDao();
 	}
-
 }
