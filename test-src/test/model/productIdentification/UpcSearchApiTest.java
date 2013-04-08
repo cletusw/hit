@@ -32,7 +32,8 @@ public class UpcSearchApiTest extends EasyMockSupport {
 		expect(client.getHttpRequest((String) EasyMock.notNull())).andStubReturn(response);
 		replayAll();
 
-		UpcSearchApi usa = new UpcSearchApi(client);
+		UpcSearchApi usa = new UpcSearchApi();
+		usa.setClient(client);
 		String d = usa.getDescriptionForProduct("035000053640");
 		assertTrue(d.equals(description));
 	}
@@ -46,7 +47,8 @@ public class UpcSearchApiTest extends EasyMockSupport {
 		expect(client.getHttpRequest((String) EasyMock.notNull())).andStubReturn(response);
 		replayAll();
 
-		UpcSearchApi usa = new UpcSearchApi(client);
+		UpcSearchApi usa = new UpcSearchApi();
+		usa.setClient(client);
 		String d = usa.getDescriptionForProduct("035000053640");
 		assertTrue(d == null);
 	}
@@ -59,7 +61,8 @@ public class UpcSearchApiTest extends EasyMockSupport {
 		expect(client.getHttpRequest((String) EasyMock.notNull())).andStubReturn(response);
 		replayAll();
 
-		UpcSearchApi usa = new UpcSearchApi(client);
+		UpcSearchApi usa = new UpcSearchApi();
+		usa.setClient(client);
 		String d = usa.getDescriptionForProduct("035000053640");
 		assertTrue(d == null);
 	}
@@ -72,7 +75,8 @@ public class UpcSearchApiTest extends EasyMockSupport {
 		expect(client.getHttpRequest((String) EasyMock.notNull())).andStubReturn(response);
 		replayAll();
 
-		UpcSearchApi usa = new UpcSearchApi(client);
+		UpcSearchApi usa = new UpcSearchApi();
+		usa.setClient(client);
 		String d = usa.getDescriptionForProduct("035000053640");
 		assertTrue(d == null);
 	}

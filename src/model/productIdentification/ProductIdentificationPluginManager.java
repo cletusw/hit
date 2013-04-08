@@ -2,10 +2,16 @@ package model.productIdentification;
 
 import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.io.Reader;
+import java.io.StringReader;
 import java.net.URL;
 import java.net.URLClassLoader;
+
+import common.util.HttpClient;
+import common.util.IHttpClient;
 
 /**
  * Initializes and maintains ProductIdentificationPlugins.
@@ -27,12 +33,36 @@ public class ProductIdentificationPluginManager {
 		}
 	}
 
-	private final String configFileName = "plugins.cfg";
-
+	private BufferedReader pluginsBufferedReader;
 	private ProductIdentificationPluginWrapper root;
+	private IHttpClient httpClient;
+
+	public ProductIdentificationPluginManager() {
+		Reader pluginsReader;
+		try {
+			pluginsReader = new FileReader(new File("plugins.cfg"));
+		} catch (FileNotFoundException e) {
+			pluginsReader = new StringReader("");
+		}
+
+		pluginsBufferedReader = new BufferedReader(pluginsReader);
+
+		httpClient = new HttpClient();
+
+		loadPlugins();
+	}
+
+	public ProductIdentificationPluginManager(String pluginString, IHttpClient httpClient) {
+		Reader pluginsReader = new StringReader(pluginString);
+		pluginsBufferedReader = new BufferedReader(pluginsReader);
+
+		this.httpClient = httpClient;
+
+		loadPlugins();
+	}
 
 	/**
-	 * Uses the ProductIdentificationPlugin to determine the desription of the product
+	 * Uses the ProductIdentificationPlugin to determine the description of the product
 	 * 
 	 * @param productBarcode
 	 * @return the description for the product, or null if not found
@@ -49,15 +79,14 @@ public class ProductIdentificationPluginManager {
 	 */
 	public void loadPlugins() {
 		try {
-			FileReader fileReader = new FileReader(new File(configFileName));
-			BufferedReader bufferedReader = new BufferedReader(fileReader);
 			// printClasspath();
 
 			ProductIdentificationPluginWrapper previousWrapper = null;
 
 			String line = null;
-			while ((line = bufferedReader.readLine()) != null) {
+			while ((line = pluginsBufferedReader.readLine()) != null) {
 				Class c = null;
+				System.out.println(line);
 				try {
 					c = Class.forName(line);
 				} catch (ClassNotFoundException e) {
@@ -69,7 +98,7 @@ public class ProductIdentificationPluginManager {
 				try {
 					plugin = (ProductIdentificationPlugin) c.newInstance();
 				} catch (InstantiationException e) {
-					// TODO Auto-generated catch block
+					System.out.println("Unable to instantiate " + c.getCanonicalName());
 					e.printStackTrace();
 					continue;
 				} catch (IllegalAccessException e) {
@@ -77,6 +106,8 @@ public class ProductIdentificationPluginManager {
 					e.printStackTrace();
 					continue;
 				}
+
+				plugin.setClient(httpClient);
 				ProductIdentificationPluginWrapper currentWrapper = new ProductIdentificationPluginWrapper(
 						plugin);
 				System.out.println("Successfully loaded plugin: " + line);
@@ -88,9 +119,9 @@ public class ProductIdentificationPluginManager {
 				}
 				previousWrapper = currentWrapper;
 			}
-			bufferedReader.close();
+			pluginsBufferedReader.close();
 		} catch (IOException e) {
-			System.err.println("Cannot open plugin configuration file: .\\" + configFileName);
+			System.err.println("Unable to read plugin configuration");
 		}
 	}
 }

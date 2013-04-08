@@ -75,7 +75,6 @@ public final class GUI extends JFrame implements IMainView {
 		_inventoryDao = factory.getDao();
 		_tracker = _inventoryDao.loadHomeInventoryTracker();
 		_productIdentificationPluginManager = new ProductIdentificationPluginManager();
-		_productIdentificationPluginManager.loadPlugins();
 
 		setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
 		addWindowListener(new WindowAdapter() {

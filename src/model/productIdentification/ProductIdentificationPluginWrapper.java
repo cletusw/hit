@@ -1,6 +1,5 @@
 package model.productIdentification;
 
-import common.util.HttpClient;
 
 /**
  * Initializes and maintains ProductIdentificationPlugins.
@@ -14,7 +13,6 @@ public class ProductIdentificationPluginWrapper {
 	private ProductIdentificationPluginWrapper successor;
 
 	public ProductIdentificationPluginWrapper(ProductIdentificationPlugin plugin) {
-		plugin.setClient(new HttpClient());
 		this.plugin = plugin;
 		successor = null;
 	}
