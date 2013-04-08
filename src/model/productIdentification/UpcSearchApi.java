@@ -23,8 +23,8 @@ public class UpcSearchApi implements ProductIdentificationPlugin {
 	private final String apiKey = "249dbc28bb5c3d7dbdbcf6a564dec307";
 	private IHttpClient client;
 
-	public UpcSearchApi(IHttpClient c) {
-		client = c;
+	public UpcSearchApi() {
+		client = null;
 	}
 
 	@Override
