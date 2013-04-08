@@ -69,7 +69,7 @@ public class ProductIdentificationPluginManager {
 				try {
 					plugin = (ProductIdentificationPlugin) c.newInstance();
 				} catch (InstantiationException e) {
-					// TODO Auto-generated catch block
+					System.out.println("Unable to instantiate " + c.getCanonicalName());
 					e.printStackTrace();
 					continue;
 				} catch (IllegalAccessException e) {
