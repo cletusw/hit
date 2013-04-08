@@ -31,10 +31,19 @@ public class UpcDatabaseApi implements ProductIdentificationPlugin {
 		client = c;
 	}
 
+	/**
+	 * Returns the String description for the specified product barcode, or null if none found.
+	 * 
+	 * @pre productBarcode != null
+	 * @post return a String with the product's description, or null if not found.
+	 */
 	@Override
 	public String getDescriptionForProduct(String productBarcode) {
 		if (client == null) {
-			throw new IllegalStateException("Client is null!");
+			throw new IllegalStateException("HTTP client is null!");
+		}
+		if (productBarcode == null) {
+			throw new IllegalStateException("Product barcode is null!");
 		}
 		String content = client.getHttpRequest(baseUrl + "/" + productBarcode);
 		if (content == null) {
