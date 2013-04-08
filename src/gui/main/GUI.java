@@ -63,7 +63,6 @@ public final class GUI extends JFrame implements IMainView {
 		_persistentStorageManager = new SerializationManager();
 		_tracker = _persistentStorageManager.load();
 		_productIdentificationPluginManager = new ProductIdentificationPluginManager();
-		_productIdentificationPluginManager.loadPlugins();
 
 		setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
 		addWindowListener(new WindowAdapter() {
