@@ -298,6 +298,7 @@
 			<classpath refid="easymock-classpath" />
 			<classpath refid="itext-classpath" />
 			<classpath refid="sqlite-classpath" />
+			<classpath refid="gson-classpath" />
 			<classpath refid="plugins-classpath" />
 
 			<sysproperty key="net.sourceforge.cobertura.datafile"
@@ -308,6 +309,7 @@
 			<batchtest fork="yes" todir="${test-reports}">
 				<fileset dir="${test-src}">
 					<include name="**/*.java"/>
+					<exclude name="**/builder/**/*.java"/>
 				</fileset>
 			</batchtest>
 		</junit>
