@@ -267,7 +267,7 @@ public class Item implements Comparable<Object>, Serializable, InventoryVisitabl
 	public void remove() {
 		exitTime = new Date();
 		container = null;
-		manager.notifyObservers(new Action(this, ActionType.DELETE));
+		// manager.notifyObservers(new Action(this, ActionType.DELETE));
 	}
 
 	/**
@@ -310,6 +310,7 @@ public class Item implements Comparable<Object>, Serializable, InventoryVisitabl
 			throw new IllegalArgumentException("Date is not valid");
 
 		entryDate = date;
+		// The call below will already notify observers.
 		setExpirationDate();
 	}
 

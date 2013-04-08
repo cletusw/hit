@@ -232,6 +232,7 @@ public class Product implements Comparable<Object>, Serializable, InventoryVisit
 			throw new IllegalArgumentException(
 					"Duplicate Product Container in Product's parents");
 		productContainers.add(pc);
+		manager.notifyObservers(new Action(this, ActionType.EDIT));
 	}
 
 	/**
@@ -250,6 +251,7 @@ public class Product implements Comparable<Object>, Serializable, InventoryVisit
 		}
 
 		items.add(item);
+		manager.notifyObservers(new Action(this, ActionType.EDIT));
 	}
 
 	/**
@@ -555,6 +557,7 @@ public class Product implements Comparable<Object>, Serializable, InventoryVisit
 			// the Product doesn't already exist in the subtree, so we'll just add it here
 			newContainer.add(this);
 		}
+		manager.notifyObservers(new Action(this, ActionType.MOVE));
 	}
 
 	/**
@@ -573,6 +576,7 @@ public class Product implements Comparable<Object>, Serializable, InventoryVisit
 		}
 
 		productContainers.remove(pc);
+		manager.notifyObservers(new Action(this, ActionType.EDIT));
 	}
 
 	/**
@@ -594,6 +598,7 @@ public class Product implements Comparable<Object>, Serializable, InventoryVisit
 		}
 
 		items.remove(item);
+		manager.notifyObservers(new Action(this, ActionType.EDIT));
 	}
 
 	/**
@@ -609,6 +614,8 @@ public class Product implements Comparable<Object>, Serializable, InventoryVisit
 	 */
 	public void setDescription(String descr) {
 		description = new NonEmptyString(descr);
+		if (manager != null)
+			manager.notifyObservers(new Action(this, ActionType.EDIT));
 	}
 
 	/**
@@ -624,6 +631,8 @@ public class Product implements Comparable<Object>, Serializable, InventoryVisit
 			throw new IllegalArgumentException("Product quantity for product is invalid");
 		}
 		productQuantity = pq;
+		if (manager != null)
+			manager.notifyObservers(new Action(this, ActionType.EDIT));
 	}
 
 	/**
@@ -639,6 +648,8 @@ public class Product implements Comparable<Object>, Serializable, InventoryVisit
 			throw new IllegalArgumentException("ShelfLife must be non-negative");
 
 		this.shelfLife = shelfLife;
+		if (manager != null)
+			manager.notifyObservers(new Action(this, ActionType.EDIT));
 	}
 
 	/**
@@ -654,10 +665,14 @@ public class Product implements Comparable<Object>, Serializable, InventoryVisit
 			throw new IllegalArgumentException("Three Month Supply must be non-negative");
 
 		this.threeMonthSupply = threeMonthSupply;
+		if (manager != null)
+			manager.notifyObservers(new Action(this, ActionType.EDIT));
 	}
 
 	private void setBarcode(String barcode) {
 		this.barcode = new NonEmptyString(barcode);
+		if (manager != null)
+			manager.notifyObservers(new Action(this, ActionType.EDIT));
 	}
 
 	private void setCreationDate(Date date) {
@@ -667,5 +682,7 @@ public class Product implements Comparable<Object>, Serializable, InventoryVisit
 		} else {
 			throw new IllegalArgumentException("CreationDate cannot be in the future");
 		}
+		if (manager != null)
+			manager.notifyObservers(new Action(this, ActionType.EDIT));
 	}
 }
