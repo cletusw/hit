@@ -12,6 +12,8 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Set;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import model.BarcodePrinter;
 import model.Item;
@@ -30,11 +32,29 @@ import common.NonEmptyString;
  * Controller class for the add item batch view.
  */
 public class AddItemBatchController extends Controller implements IAddItemBatchController {
+	/**
+	 * Task runs when barcode scanner is enabled
+	 * 
+	 * @author Matthew
+	 * 
+	 */
+	private class CreateItemTask extends TimerTask {
+
+		@Override
+		public void run() {
+			if (getView().getUseScanner() && getView().getBarcode().length() > 0)
+				addItem();
+		}
+	}
+
 	ArrayList<ArrayList<ItemData>> items;
 	ArrayList<ProductData> products;
 	ProductContainer container;
 	UndoManager undoManager;
 	private final int maxAddableItems = 1000000;
+
+	private Timer timer;
+	private CreateItemTask createItemTask;
 
 	/**
 	 * Constructor.
@@ -47,9 +67,10 @@ public class AddItemBatchController extends Controller implements IAddItemBatchC
 	public AddItemBatchController(IView view, ProductContainerData target) {
 		super(view);
 		undoManager = new UndoManager();
+		timer = new Timer();
+		createItemTask = new CreateItemTask();
 
-		// Phase 2: not using the scanner
-		getView().setUseScanner(false);
+		getView().setUseScanner(true);
 		getView().setCount("1");
 		items = new ArrayList<ArrayList<ItemData>>();
 		products = new ArrayList<ProductData>();
@@ -115,6 +136,8 @@ public class AddItemBatchController extends Controller implements IAddItemBatchC
 	 */
 	@Override
 	public void barcodeChanged() {
+		if (getView().getUseScanner())
+			setTimer();
 		enableComponents();
 	}
 
@@ -209,6 +232,12 @@ public class AddItemBatchController extends Controller implements IAddItemBatchC
 	private void refreshProducts() {
 		ProductData[] pd = new ProductData[0];
 		getView().setProducts(products.toArray(pd));
+	}
+
+	private void setTimer() {
+		createItemTask.cancel();
+		createItemTask = new CreateItemTask();
+		timer.schedule(createItemTask, 700l);
 	}
 
 	private void updateViewAfterExecute(AddItems addItemsCommand) {
@@ -341,5 +370,4 @@ public class AddItemBatchController extends Controller implements IAddItemBatchC
 		refreshProducts();
 		refreshItems();
 	}
-
 }
