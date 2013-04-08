@@ -24,12 +24,16 @@ public class UpcSearchApiTest extends EasyMockSupport {
 
 	@Test
 	public void testGetDescriptionForProduct() {
-		IHttpClient c = createNiceMock(IHttpClient.class);
-		String expectedJson = "";
-		expect(c.getHttpRequest(EasyMock.anyObject(String.class))).andStubReturn(expectedJson);
+		String description = "Ajax with Bleach Poweder Cleaner";
+		IHttpClient client = createMock(IHttpClient.class);
+		String response = "{" + "valid: \"true\"," + "number: \"0035000053640\","
+				+ "itemname: \"" + description + "\"," + "description: \"\","
+				+ "price: \"0.00\"," + "ratingsup: 0," + "ratingsdown: 0" + "}";
+		expect(client.getHttpRequest((String) EasyMock.notNull())).andStubReturn(response);
+		replayAll();
 
-		UpcSearchApi usa = new UpcSearchApi(c);
-		String desc = usa.getDescriptionForProduct("035000053640");
-		assertTrue(desc.equals("Ajax with Bleach Poweder Cleaner"));
+		UpcSearchApi usa = new UpcSearchApi(client);
+		String d = usa.getDescriptionForProduct("035000053640");
+		assertTrue(d.equals(description));
 	}
 }
