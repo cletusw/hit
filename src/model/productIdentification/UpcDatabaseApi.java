@@ -20,7 +20,6 @@ public class UpcDatabaseApi implements ProductIdentificationPlugin {
 	 * Url is of format http://upcdatabase.org/api/json/<KEY>/<UPC>
 	 */
 	private final String baseUrl = "http://www.upcdatabase.com/item/";
-	private final String apiKey = ""; // "249dbc28bb5c3d7dbdbcf6a564dec307";
 
 	private IHttpClient client;
 
@@ -37,10 +36,9 @@ public class UpcDatabaseApi implements ProductIdentificationPlugin {
 		if (client == null) {
 			throw new IllegalStateException("Client is null!");
 		}
-		String content = client.getHttpRequest(baseUrl + apiKey + "/" + productBarcode);
+		String content = client.getHttpRequest(baseUrl + "/" + productBarcode);
 		if (content == null) {
 			return null;
-
 		}
 
 		Pattern pattern = Pattern
@@ -50,7 +48,6 @@ public class UpcDatabaseApi implements ProductIdentificationPlugin {
 		if (matcher.find()) {
 			if (matcher.groupCount() >= 1) {
 				result = matcher.group(1);
-				System.err.println(result);
 			}
 		}
 
