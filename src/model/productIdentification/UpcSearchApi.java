@@ -41,8 +41,13 @@ public class UpcSearchApi implements ProductIdentificationPlugin {
 		JsonElement result = jObject.get("itemname");
 		if (result == null)
 			return null;
-		else
-			return result.getAsString();
+		else {
+			String stringResult = result.getAsString();
+			if (stringResult.length() > 0)
+				return result.getAsString();
+
+			return null;
+		}
 	}
 
 	@Override

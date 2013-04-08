@@ -36,4 +36,44 @@ public class UpcSearchApiTest extends EasyMockSupport {
 		String d = usa.getDescriptionForProduct("035000053640");
 		assertTrue(d.equals(description));
 	}
+
+	@Test
+	public void testGetEmptyDescriptionForProduct() {
+		IHttpClient client = createMock(IHttpClient.class);
+		String response = "{" + "valid: \"true\"," + "number: \"0035000053640\","
+				+ "itemname: \"\"," + "description: \"\"," + "price: \"0.00\","
+				+ "ratingsup: 0," + "ratingsdown: 0" + "}";
+		expect(client.getHttpRequest((String) EasyMock.notNull())).andStubReturn(response);
+		replayAll();
+
+		UpcSearchApi usa = new UpcSearchApi(client);
+		String d = usa.getDescriptionForProduct("035000053640");
+		assertTrue(d == null);
+	}
+
+	@Test
+	public void testGetInvalidDescriptionForProduct() {
+		IHttpClient client = createMock(IHttpClient.class);
+		String response = "{" + "valid: \"false\"," + "reason: \"Non-numeric code entered.\""
+				+ "}";
+		expect(client.getHttpRequest((String) EasyMock.notNull())).andStubReturn(response);
+		replayAll();
+
+		UpcSearchApi usa = new UpcSearchApi(client);
+		String d = usa.getDescriptionForProduct("035000053640");
+		assertTrue(d == null);
+	}
+
+	@Test
+	public void testGetNoDescriptionForProduct() {
+		IHttpClient client = createMock(IHttpClient.class);
+		String response = "{" + "valid: \"false\","
+				+ "reason: \"Code not found in database.\"" + "}";
+		expect(client.getHttpRequest((String) EasyMock.notNull())).andStubReturn(response);
+		replayAll();
+
+		UpcSearchApi usa = new UpcSearchApi(client);
+		String d = usa.getDescriptionForProduct("035000053640");
+		assertTrue(d == null);
+	}
 }
