@@ -1,7 +1,18 @@
 package model.productIdentification;
 
+import java.io.IOException;
+import java.io.StringReader;
 import java.util.HashMap;
 import java.util.Map;
+
+import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.parsers.SAXParser;
+import javax.xml.parsers.SAXParserFactory;
+
+import org.xml.sax.Attributes;
+import org.xml.sax.InputSource;
+import org.xml.sax.SAXException;
+import org.xml.sax.helpers.DefaultHandler;
 
 import common.util.IHttpClient;
 import common.util.SignedRequestsHelper;
@@ -17,11 +28,8 @@ public class AmazonApi implements ProductIdentificationPlugin {
 	private static final String AWS_ACCESS_KEY_ID = "AKIAJSHRDD3C24XD7DMA";
 	private static final String AWS_SECRET_KEY = "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";
 	private static final String ENDPOINT = "ecs.amazonaws.com";
-	private final IHttpClient client;
-
-	public AmazonApi(IHttpClient client) {
-		this.client = client;
-	}
+	private IHttpClient client;
+	private String title;
 
 	@Override
 	public String getDescriptionForProduct(String productBarcode) {
@@ -49,12 +57,49 @@ public class AmazonApi implements ProductIdentificationPlugin {
 
 		String response = client.getHttpRequest(requestUrl);
 
-		return response;
+		String description = parseDescription(response);
+
+		return description;
 	}
 
 	@Override
 	public void setClient(IHttpClient client) {
-		// TODO Auto-generated method stub
+		this.client = client;
 	}
 
+	private String parseDescription(String xml) {
+		SAXParserFactory spf = SAXParserFactory.newInstance();
+
+		try {
+			SAXParser saxParser = spf.newSAXParser();
+			DefaultHandler handler = new DefaultHandler() {
+				boolean inTitle = false;
+
+				@Override
+				public void characters(char ch[], int start, int length) throws SAXException {
+					if (inTitle && title == null) {
+						title = new String(ch, start, length);
+						inTitle = false;
+					}
+				}
+
+				@Override
+				public void startElement(String uri, String localName, String qName,
+						Attributes attributes) throws SAXException {
+					if (qName.equalsIgnoreCase("title")) {
+						inTitle = true;
+					}
+				}
+			};
+			saxParser.parse(new InputSource(new StringReader(xml)), handler);
+		} catch (SAXException se) {
+			se.printStackTrace();
+		} catch (ParserConfigurationException pce) {
+			pce.printStackTrace();
+		} catch (IOException ie) {
+			ie.printStackTrace();
+		}
+
+		return title;
+	}
 }
