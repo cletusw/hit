@@ -28,10 +28,12 @@ public class AmazonApiTest extends EasyMockSupport {
 		String response = "<ItemLookupResponse "
 				+ "xmlns=\"http://webservices.amazon.com/AWSECommerceService/2011-08-01\">"
 				+ "<Items>" + "<Request>" + "<IsValid>True</IsValid>" + "</Request>"
-				+ "<Item>" + "<ItemAttributes>" + "<Manufacturer>Lagasse Inc.</Manufacturer>"
-				+ "<ProductGroup>Home</ProductGroup>"
+				+ "<Item>" + "<ItemAttributes>"
 				+ "<Title>Ajax Cleaner Bonus Size, 28 Oz</Title>" + "</ItemAttributes>"
-				+ "</Item>" + "</Items>" + "</ItemLookupResponse>";
+				+ "</Item>" + "<Item>" + "<ItemAttributes>"
+				+ "<Title>Colgate Palmolive Co. 05364 \"Ajax\" Cleanser "
+				+ "with Bleach 28 Oz (Pack of 24)</Title>" + "</ItemAttributes>" + "</Item>"
+				+ "</Items>" + "</ItemLookupResponse>";
 		expect(client.getHttpRequest((String) EasyMock.notNull())).andStubReturn(response);
 
 		replayAll();

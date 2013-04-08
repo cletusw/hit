@@ -77,7 +77,7 @@ public class AmazonApi implements ProductIdentificationPlugin {
 
 				@Override
 				public void characters(char ch[], int start, int length) throws SAXException {
-					if (inTitle) {
+					if (inTitle && title == null) {
 						title = new String(ch, start, length);
 						inTitle = false;
 					}
