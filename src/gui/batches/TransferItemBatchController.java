@@ -9,6 +9,8 @@ import gui.product.ProductData;
 
 import java.util.Map;
 import java.util.Set;
+import java.util.Timer;
+import java.util.TimerTask;
 import java.util.TreeMap;
 import java.util.TreeSet;
 
@@ -23,6 +25,24 @@ import model.undo.UndoManager;
  */
 public class TransferItemBatchController extends Controller implements
 		ITransferItemBatchController {
+	/**
+	 * Task runs when barcode scanner is enabled
+	 * 
+	 * @author Matthew
+	 * 
+	 */
+	private class TransferItemTask extends TimerTask {
+
+		@Override
+		public void run() {
+			if (getView().getUseScanner() && getView().getBarcode().length() > 0)
+				transferItem();
+		}
+	}
+
+	private Timer timer;
+	private TransferItemTask transferItemTask;
+
 	private final ProductContainer target;
 	private final Map<Product, Set<Item>> transferredProductToItems;
 	private final UndoManager undoManager;
@@ -38,6 +58,9 @@ public class TransferItemBatchController extends Controller implements
 	public TransferItemBatchController(IView view, ProductContainerData target) {
 		super(view);
 
+		getView().setUseScanner(true);
+		timer = new Timer();
+		transferItemTask = new TransferItemTask();
 		undoManager = new UndoManager();
 		this.target = (ProductContainer) target.getTag();
 		transferredProductToItems = new TreeMap<Product, Set<Item>>();
@@ -51,6 +74,9 @@ public class TransferItemBatchController extends Controller implements
 	 */
 	@Override
 	public void barcodeChanged() {
+		if (getView().getUseScanner())
+			setTimer();
+		enableComponents();
 	}
 
 	/**
@@ -139,6 +165,12 @@ public class TransferItemBatchController extends Controller implements
 	private void refreshProducts() {
 		ProductData[] products = DataWrapper.wrap(transferredProductToItems);
 		getView().setProducts(products);
+	}
+
+	private void setTimer() {
+		transferItemTask.cancel();
+		transferItemTask = new TransferItemTask();
+		timer.schedule(transferItemTask, 700l);
 	}
 
 	private void updateDisplayAfterExecute(TransferItem transferItemCommand) {
