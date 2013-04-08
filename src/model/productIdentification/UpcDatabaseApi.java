@@ -39,15 +39,12 @@ public class UpcDatabaseApi implements ProductIdentificationPlugin {
 		}
 		String content = client.getHttpRequest(baseUrl + apiKey + "/" + productBarcode);
 		if (content == null) {
-			// System.err.println("Null content retrieved!");
 			return null;
 
 		}
 
-		Pattern pattern = Pattern.compile(// "<!DOCTYPE(.*)", Pattern.DOTALL |
-											// Pattern.MULTILINE);
-				"<tr><td>Description</td><td></td><td>(.*)</td></tr>"); // , Pattern.DOTALL);
-		// while ()
+		Pattern pattern = Pattern
+				.compile("<tr><td>Description</td><td></td><td>(.*)</td></tr>");
 		Matcher matcher = pattern.matcher(content);
 		String result = null;
 		if (matcher.find()) {
