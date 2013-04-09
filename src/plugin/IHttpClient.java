@@ -1,4 +1,4 @@
-package common.util;
+package plugin;
 
 public interface IHttpClient {
 	/**

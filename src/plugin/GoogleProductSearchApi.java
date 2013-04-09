@@ -1,6 +1,5 @@
 package plugin;
 
-import common.util.IHttpClient;
 
 /**
  * Finds descriptions for Product objects using the Google ProductSearch API

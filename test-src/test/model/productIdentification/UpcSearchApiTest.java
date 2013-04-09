@@ -9,9 +9,9 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
+import plugin.IHttpClient;
 import plugin.ProductIdentificationPluginManager;
 
-import common.util.IHttpClient;
 
 public class UpcSearchApiTest extends EasyMockSupport {
 	private IHttpClient client;

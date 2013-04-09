@@ -10,8 +10,6 @@ import java.io.StringReader;
 import java.net.URL;
 import java.net.URLClassLoader;
 
-import common.util.HttpClient;
-import common.util.IHttpClient;
 
 /**
  * Initializes and maintains ProductIdentificationPlugins.

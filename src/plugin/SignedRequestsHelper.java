@@ -19,7 +19,7 @@
  *
  */
 
-package common.util;
+package plugin;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;

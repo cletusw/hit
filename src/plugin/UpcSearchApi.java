@@ -2,7 +2,6 @@ package plugin;
 
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
-import common.util.IHttpClient;
 
 /**
  * Finds descriptions for Product objects using the UpcSearch API at upcdatabase.org

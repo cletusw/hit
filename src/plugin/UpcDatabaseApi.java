@@ -3,7 +3,6 @@ package plugin;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import common.util.IHttpClient;
 
 /**
  * Finds descriptions for Product objects using the UpcSearch API at upcdatabase.org

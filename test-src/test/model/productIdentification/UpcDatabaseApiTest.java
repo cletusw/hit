@@ -5,10 +5,10 @@ import static org.junit.Assert.assertTrue;
 import org.easymock.EasyMockSupport;
 import org.junit.Test;
 
+import plugin.HttpClient;
+import plugin.IHttpClient;
 import plugin.UpcDatabaseApi;
 
-import common.util.HttpClient;
-import common.util.IHttpClient;
 
 public class UpcDatabaseApiTest extends EasyMockSupport {
 
