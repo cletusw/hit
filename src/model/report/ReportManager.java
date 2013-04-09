@@ -5,6 +5,7 @@ import java.io.Serializable;
 import model.ItemManager;
 import model.ProductContainerManager;
 import model.ProductManager;
+import model.persistence.InventoryDao;
 
 /**
  * A class for managing persistent reports
@@ -14,11 +15,11 @@ import model.ProductManager;
  */
 @SuppressWarnings("serial")
 public class ReportManager implements Serializable {
-	private final ExpiredItemsReport expiredItemsReport;
-	private final NMonthSupplyReport nMonthSupplyReport;
-	private final NoticesReport noticesReport;
-	private final ProductStatisticsReport productStatisticsReport;
-	private final RemovedItemsReport removedItemsReport;
+	private ExpiredItemsReport expiredItemsReport;
+	private NMonthSupplyReport nMonthSupplyReport;
+	private NoticesReport noticesReport;
+	private ProductStatisticsReport productStatisticsReport;
+	private RemovedItemsReport removedItemsReport;
 
 	public ReportManager(ProductContainerManager productContainerManager,
 			ProductManager productManager, ItemManager itemManager) {
@@ -74,4 +75,73 @@ public class ReportManager implements Serializable {
 		return removedItemsReport;
 	}
 
+	/**
+	 * 
+	 * @param r
+	 * @param dao
+	 * @throws IllegalAccessException
+	 */
+	public void setExpiredItemsReport(ExpiredItemsReport r, InventoryDao dao)
+			throws IllegalAccessException {
+		if (dao == null)
+			throw new IllegalAccessException("Must be accessed by valid dao object");
+
+		expiredItemsReport = r;
+	}
+
+	/**
+	 * 
+	 * @param r
+	 * @param dao
+	 * @throws IllegalAccessException
+	 */
+	public void setNMonthSupplyReport(NMonthSupplyReport r, InventoryDao dao)
+			throws IllegalAccessException {
+		if (dao == null)
+			throw new IllegalAccessException("Must be accessed by valid dao object");
+
+		nMonthSupplyReport = r;
+	}
+
+	/**
+	 * 
+	 * @param r
+	 * @param dao
+	 * @throws IllegalAccessException
+	 */
+	public void setNoticesReport(NoticesReport r, InventoryDao dao)
+			throws IllegalAccessException {
+		if (dao == null)
+			throw new IllegalAccessException("Must be accessed by valid dao object");
+
+		noticesReport = r;
+	}
+
+	/**
+	 * 
+	 * @param r
+	 * @param dao
+	 * @throws IllegalAccessException
+	 */
+	public void setProductStatiscticsReport(ProductStatisticsReport r, InventoryDao dao)
+			throws IllegalAccessException {
+		if (dao == null)
+			throw new IllegalAccessException("Must be accessed by valid dao object");
+
+		productStatisticsReport = r;
+	}
+
+	/**
+	 * 
+	 * @param r
+	 * @param dao
+	 * @throws IllegalAccessException
+	 */
+	public void setRemovedItemsReport(RemovedItemsReport r, InventoryDao dao)
+			throws IllegalAccessException {
+		if (dao == null)
+			throw new IllegalAccessException("Must be accessed by valid dao object");
+
+		removedItemsReport = r;
+	}
 }

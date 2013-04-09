@@ -6,10 +6,12 @@ import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Observable;
 
+import model.Barcode;
 import model.HomeInventoryTracker;
 import model.Item;
 import model.Product;
@@ -18,6 +20,11 @@ import model.ProductGroup;
 import model.ProductQuantity;
 import model.StorageUnit;
 import model.Unit;
+import model.report.ExpiredItemsReport;
+import model.report.NMonthSupplyReport;
+import model.report.NoticesReport;
+import model.report.ProductStatisticsReport;
+import model.report.RemovedItemsReport;
 
 /**
  * Observes the model and persists all changes made to it an a local MySQL database
@@ -123,6 +130,105 @@ public class RdbDao extends InventoryDao {
 				productContainerIdToReference.put(id, pg);
 				referenceToId.put(pg, id);
 			}
+
+			results = statement.executeQuery("SELECT * FROM Product");
+			while (results.next()) {
+				Integer id = results.getInt("Product_id");
+				Date creationDate = results.getDate("creationDate");
+				String barcode = results.getString("barcode");
+				String description = results.getString("description");
+				Integer quantityId = results.getInt("ProductQuantity_id");
+				Integer shelfLife = results.getInt("shelfLife");
+				Integer tms = results.getInt("threeMonthSupply");
+				ProductQuantity quantity = productQuantityIdToReference.get(quantityId);
+
+				Product p = new Product(barcode, description, creationDate, shelfLife, tms,
+						quantity, hit.getProductManager());
+
+				productIdToReference.put(id, p);
+				referenceToId.put(p, id);
+			}
+
+			results = statement.executeQuery("SELECT * FROM Product_has_ProductContainer");
+			while (results.next()) {
+				Integer productId = results.getInt("Product_id");
+				Integer containerId = results.getInt("ProductContainer_id");
+
+				Product product = productIdToReference.get(productId);
+				ProductContainer container = productContainerIdToReference.get(containerId);
+
+				product.addContainer(container);
+				container.add(product);
+			}
+
+			results = statement.executeQuery("SELECT * FROM Item");
+			while (results.next()) {
+				Integer itemId = results.getInt("Item_id");
+				Date entryDate = results.getDate("entryDate");
+				Date exitTime = results.getDate("exitTime");
+				String barcode = results.getString("barcode");
+				Date expirationDate = results.getDate("expirationDate");
+				Integer productId = results.getInt("Product_id");
+				Integer containerId = results.getInt("ProductContainer_id");
+				Product product = productIdToReference.get(productId);
+				ProductContainer container = productContainerIdToReference.get(containerId);
+				Barcode code = new Barcode(barcode);
+
+				Item i = new Item(code, product, container, entryDate, hit.getItemManager());
+				i.setExpirationDate(expirationDate, this);
+
+				if (exitTime != null) {
+					container.remove(i, hit.getItemManager());
+					i.setExitDate(exitTime, this);
+				}
+
+				itemIdToReference.put(itemId, i);
+				referenceToId.put(i, itemId);
+			}
+
+			results = statement.executeQuery("SELECT * FROM Report");
+			while (results.next()) {
+				Integer reportId = results.getInt("Report_id");
+				Date runtime = results.getDate("Report_runtime");
+
+				switch (reportId) {
+				case 0: // ExpiredItemsReport
+					ExpiredItemsReport eir = new ExpiredItemsReport(
+							hit.getProductContainerManager());
+					eir.setLastRuntime(runtime, this);
+					hit.getReportManager().setExpiredItemsReport(eir, this);
+					break;
+				case 1:// NMonthSupplyReport
+					NMonthSupplyReport nmsr = new NMonthSupplyReport(hit.getProductManager(),
+							hit.getProductContainerManager());
+					nmsr.setLastRuntime(runtime, this);
+					hit.getReportManager().setNMonthSupplyReport(nmsr, this);
+					break;
+
+				case 2:// NoticesReport
+					NoticesReport nr = new NoticesReport(hit.getProductContainerManager());
+					nr.setLastRuntime(runtime, this);
+					hit.getReportManager().setNoticesReport(nr, this);
+
+					break;
+				case 3:// ProductStatisticsReport
+					ProductStatisticsReport psr = new ProductStatisticsReport(
+							hit.getItemManager(), hit.getProductManager());
+					psr.setLastRuntime(runtime, this);
+					hit.getReportManager().setProductStatiscticsReport(psr, this);
+					break;
+
+				case 4: // RemovedItemsReport
+					RemovedItemsReport rir = new RemovedItemsReport(hit.getItemManager());
+					rir.setLastRuntime(runtime, this);
+					hit.getReportManager().setRemovedItemsReport(rir, this);
+					break;
+
+				default:
+					throw new Exception("Unknown report id: " + reportId);
+				}
+			}
+
 			return hit;
 		} catch (Exception e) {
 			if (f != null) {

@@ -7,6 +7,8 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 
+import model.persistence.InventoryDao;
+
 /**
  * Abstract class for reports.
  * 
@@ -81,6 +83,21 @@ public abstract class Report implements Serializable {
 	 */
 	public Date getLastRunTime() {
 		return lastRunTime;
+	}
+
+	/**
+	 * FOR USE BY DAO ONLY!
+	 * 
+	 * @param lastRuntime
+	 * @param dao
+	 * @throws IllegalAccessException
+	 */
+	public void setLastRuntime(Date lastRuntime, InventoryDao dao)
+			throws IllegalAccessException {
+		if (dao == null)
+			throw new IllegalAccessException("Must be called by a valid dao object");
+
+		lastRunTime = lastRuntime;
 	}
 
 	/**
