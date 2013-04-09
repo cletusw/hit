@@ -39,9 +39,10 @@ public class ItemTest {
 		itemManager = createMock(ItemManager.class);
 		productManager = createMock(ProductManager.class);
 		pq = new ProductQuantity(2.2f, Unit.FLUID_OUNCES);
-		product = new Product("validBarcode", "A product", 3, 3, pq, productManager);
 		productGroup = new ProductGroup("Test product group", pq, Unit.GALLONS,
 				new StorageUnit("Test storage unit", pcManager), pcManager);
+		product = new Product("validBarcode", "A product", 3, 3, pq, productGroup,
+				productManager);
 		entryDateLastMonth = new Date(113, 0, 1, 12, 45, 45);
 		item = new Item(validUPCABarcode, product, productGroup, entryDateLastMonth,
 				itemManager);
@@ -60,16 +61,6 @@ public class ItemTest {
 		assertTrue(item.getBarcode() != null);
 		assertTrue(item.getEntryDate() != null);
 		assertTrue(item.getExpirationDate() != null);
-	}
-
-	@Test
-	public void testCompareTo() {
-		Item sameItem = new Item(validUPCABarcode, product, productGroup, new Date(),
-				itemManager);
-		Item newItem = new Item(new Barcode("412345688919"), new Product("abc", "abcd", 3, 3,
-				pq, productManager), productGroup, new Date(), itemManager);
-		assertTrue(item.compareTo(sameItem) == 0);
-		assertTrue(item.compareTo(newItem) != 0);
 	}
 
 	@Test
@@ -95,12 +86,6 @@ public class ItemTest {
 		assertTrue(expiration.getDate() == entryDateLastMonth.getDate());
 		// assertTrue(expiration.getHours() == entryDateLastMonth.getHours());
 		// assertTrue(expiration.getMinutes() == entryDateLastMonth.getMinutes());
-	}
-
-	@Test
-	public void testItemInvalidBarcode() {
-		item = new Item(validUPCABarcode, product, productGroup, entryDateLastMonth,
-				itemManager);
 	}
 
 	@Test

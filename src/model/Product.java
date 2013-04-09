@@ -165,7 +165,7 @@ public class Product implements Comparable<Object>, Serializable, InventoryVisit
 	 * @post this.size = pq
 	 */
 	public Product(String barcode, String description, Date creationDate, int shelfLife,
-			int tms, ProductQuantity pq, ProductManager manager) {
+			int tms, ProductQuantity pq, ProductContainer container, ProductManager manager) {
 		setBarcode(barcode);
 		this.description = new NonEmptyString(description);
 		setCreationDate(creationDate);
@@ -175,6 +175,8 @@ public class Product implements Comparable<Object>, Serializable, InventoryVisit
 		items = new TreeSet<Item>();
 		setProductQuantity(pq);
 		this.manager = manager;
+		if (container.canAddProduct(barcode))
+			container.add(this);
 		this.manager.manage(this);
 	}
 
@@ -209,8 +211,8 @@ public class Product implements Comparable<Object>, Serializable, InventoryVisit
 	 * @post this.size = pq
 	 */
 	public Product(String barcode, String description, int shelfLife, int tms,
-			ProductQuantity pq, ProductManager manager) {
-		this(barcode, description, new Date(), shelfLife, tms, pq, manager);
+			ProductQuantity pq, ProductContainer container, ProductManager manager) {
+		this(barcode, description, new Date(), shelfLife, tms, pq, container, manager);
 	}
 
 	@Override

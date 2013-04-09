@@ -37,10 +37,7 @@ public class AddProduct implements Command, Serializable {
 	public void execute() {
 		ProductQuantity pq = new ProductQuantity(quantity, unit);
 		product = new Product(barcode, description, shelfLife, threeMonthSupply, pq,
-				productManager);
-		if (container.canAddProduct(product.getBarcode())) {
-			container.add(product);
-		}
+				container, productManager);
 	}
 
 	public String getBarcode() {

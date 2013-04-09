@@ -15,6 +15,8 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
+import builder.model.ProductBuilder;
+
 public class ProductTest {
 
 	private static final String validBarcode = "testBarcode";
@@ -29,8 +31,9 @@ public class ProductTest {
 	public void setUp() throws Exception {
 		productManager = createMock(ProductManager.class);
 		size = new ProductQuantity(2.3f, Unit.GALLONS);
-		product = new Product(validBarcode, validDescription, shelfLife, threeMonthSupply,
-				size, productManager);
+		product = new ProductBuilder().barcode(validBarcode).description(validDescription)
+				.productQuantity(size).productManager(productManager).shelfLife(shelfLife)
+				.threeMonthSupply(threeMonthSupply).build();
 
 		// test invariants
 		assertTrue(product.getBarcode() != null);
@@ -54,10 +57,13 @@ public class ProductTest {
 
 	@Test
 	public void testCompareTo() {
-		Product sameProduct = new Product(product.getBarcode(), product.getDescription(), 0,
-				0, size, productManager);
-		Product differentProduct = new Product("DifferentBarcode", "DifferentDescription", 0,
-				0, size, productManager);
+		Product sameProduct = new ProductBuilder().barcode(validBarcode)
+				.description(validDescription).productQuantity(size)
+				.productManager(productManager).shelfLife(shelfLife)
+				.threeMonthSupply(threeMonthSupply).build();
+		Product differentProduct = new ProductBuilder().barcode("DifferentBarcode")
+				.description("DifferentDescription").productQuantity(size)
+				.productManager(productManager).build();
 
 		assertTrue(product.compareTo(sameProduct) == 0);
 		assertTrue(product.compareTo(differentProduct) != 0);
@@ -78,8 +84,7 @@ public class ProductTest {
 
 	@Test(expected = IllegalArgumentException.class)
 	public void testInvalidProductQuantity() {
-		new Product(validBarcode, validDescription, shelfLife, threeMonthSupply,
-				new ProductQuantity(3, Unit.COUNT), productManager);
+		new ProductBuilder().productQuantity(new ProductQuantity(3, Unit.COUNT)).build();
 	}
 
 	@Test
@@ -101,8 +106,7 @@ public class ProductTest {
 		assertTrue(Product.isValidProductQuantity(new ProductQuantity(1, Unit.COUNT)));
 		assertFalse(Product.isValidProductQuantity(new ProductQuantity(3, Unit.COUNT)));
 		ProductQuantity pq = new ProductQuantity(15, Unit.LITERS);
-		product = new Product(validBarcode, validDescription, shelfLife, threeMonthSupply, pq,
-				productManager);
+		product = new ProductBuilder().productQuantity(pq).build();
 		assertTrue(product.getProductQuantity().equals(pq));
 	}
 
@@ -133,63 +137,54 @@ public class ProductTest {
 
 	@Test(expected = IllegalArgumentException.class)
 	public void testProductInvalidBarcode() {
-		new Product("", validDescription, 3, 3, size, productManager);
+		new ProductBuilder().barcode("").build();
 	}
 
 	@Test(expected = IllegalArgumentException.class)
 	public void testProductInvalidDescription() {
-		new Product(validBarcode, "", 3, 3, size, productManager);
+		new ProductBuilder().description("").build();
 	}
 
 	@Test(expected = IllegalArgumentException.class)
 	public void testProductInvalidShelflife() {
-		new Product(validBarcode, "", -1, 3, size, productManager);
+		new ProductBuilder().shelfLife(-1).build();
 	}
 
 	@Test(expected = IllegalArgumentException.class)
 	public void testProductInvalidThreeMonthSupply() {
-		new Product(validBarcode, "", 3, -1, size, productManager);
+		new ProductBuilder().threeMonthSupply(-1).build();
 	}
 
 	@Test(expected = IllegalArgumentException.class)
 	public void testProductNullBarcode() {
-		new Product(null, "", 3, -1, size, productManager);
-	}
-
-	@Test(expected = IllegalArgumentException.class)
-	public void testProductNullDescription() {
-		new Product(validBarcode, null, 3, 3, size, productManager);
+		new ProductBuilder().barcode(null).build();
 	}
 
 	@Test(expected = IllegalArgumentException.class)
 	public void testSetIllegalShelfLife() {
-		new Product(validBarcode, validDescription, -1, threeMonthSupply, size, productManager);
+		new ProductBuilder().shelfLife(-1).build();
 	}
 
 	@Test(expected = IllegalArgumentException.class)
 	public void testSetIllegalThreeMonthSupply() {
-		new Product(validBarcode, validDescription, shelfLife, -1, size, productManager);
+		new ProductBuilder().threeMonthSupply(-1).build();
 	}
 
 	@Test
 	public void testSetShelfLife() {
 		assertTrue(product.getShelfLife() == shelfLife);
-		product = new Product(validBarcode, validDescription, 0, threeMonthSupply, size,
-				productManager);
+		product = new ProductBuilder().shelfLife(0).build();
 		assertTrue(product.getShelfLife() == 0);
-		product = new Product(validBarcode, validDescription, 100, threeMonthSupply, size,
-				productManager);
+		product = new ProductBuilder().shelfLife(100).build();
 		assertTrue(product.getShelfLife() == 100);
 	}
 
 	@Test
 	public void testSetThreeMonthSupply() {
 		assertTrue(product.getThreeMonthSupply() == threeMonthSupply);
-		product = new Product(validBarcode, validDescription, shelfLife, 0, size,
-				productManager);
+		product = new ProductBuilder().threeMonthSupply(0).build();
 		assertTrue(product.getThreeMonthSupply() == 0);
-		product = new Product(validBarcode, validDescription, shelfLife, 5, size,
-				productManager);
+		product = new ProductBuilder().threeMonthSupply(5).build();
 		assertTrue(product.getThreeMonthSupply() == 5);
 	}
 }
