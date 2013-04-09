@@ -1,10 +1,11 @@
 package test.model.productIdentification;
 
 import static org.junit.Assert.assertTrue;
-import model.productIdentification.UpcDatabaseApi;
 
 import org.easymock.EasyMockSupport;
 import org.junit.Test;
+
+import plugin.UpcDatabaseApi;
 
 import common.util.HttpClient;
 import common.util.IHttpClient;

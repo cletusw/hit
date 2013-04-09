@@ -1,15 +1,15 @@
-package model.productIdentification;
+package plugin;
 
 import common.util.IHttpClient;
 
 /**
- * Finds descriptions for Product objects using the Bing WebSearch API
+ * Finds descriptions for Product objects using the Google ProductSearch API
  * 
  * @author Matthew
  * @version 1.0 -- Snell CS 340 Phase 4.0
  * 
  */
-public class BingWebSearchApi implements ProductIdentificationPlugin {
+public class GoogleProductSearchApi implements ProductIdentificationPlugin {
 
 	@Override
 	public String getDescriptionForProduct(String productBarcode) {

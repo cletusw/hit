@@ -1,16 +1,10 @@
-package model.productIdentification;
+package plugin;
 
 import common.util.IHttpClient;
 
-/**
- * Finds descriptions for Product objects using the Google ProductSearch API
- * 
- * @author Matthew
- * @version 1.0 -- Snell CS 340 Phase 4.0
- * 
- */
-public class GoogleProductSearchApi implements ProductIdentificationPlugin {
+public class CheckUpcSearch implements ProductIdentificationPlugin {
 
+	// Example: http://www.checkupc.com/product-54091
 	@Override
 	public String getDescriptionForProduct(String productBarcode) {
 		// TODO Auto-generated method stub

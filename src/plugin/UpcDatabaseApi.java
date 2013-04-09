@@ -1,4 +1,4 @@
-package model.productIdentification;
+package plugin;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;

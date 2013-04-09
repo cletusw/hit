@@ -2,14 +2,15 @@ package test.model.productIdentification;
 
 import static org.easymock.EasyMock.expect;
 import static org.junit.Assert.assertTrue;
-import model.productIdentification.ProductIdentificationPlugin;
-import model.productIdentification.UpcSearchApi;
 
 import org.easymock.EasyMock;
 import org.easymock.EasyMockSupport;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+
+import plugin.ProductIdentificationPlugin;
+import plugin.UpcSearchApi;
 
 import common.util.IHttpClient;
 

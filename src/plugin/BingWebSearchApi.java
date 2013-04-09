@@ -1,10 +1,16 @@
-package model.productIdentification;
+package plugin;
 
 import common.util.IHttpClient;
 
-public class CheckUpcSearch implements ProductIdentificationPlugin {
+/**
+ * Finds descriptions for Product objects using the Bing WebSearch API
+ * 
+ * @author Matthew
+ * @version 1.0 -- Snell CS 340 Phase 4.0
+ * 
+ */
+public class BingWebSearchApi implements ProductIdentificationPlugin {
 
-	// Example: http://www.checkupc.com/product-54091
 	@Override
 	public String getDescriptionForProduct(String productBarcode) {
 		// TODO Auto-generated method stub
