@@ -30,7 +30,7 @@ public class HttpClient implements IHttpClient {
 				return null;
 			}
 
-			System.out.println(content.toString());
+			// System.out.println(content.toString());
 
 			return content.toString();
 		} catch (MalformedURLException e) {

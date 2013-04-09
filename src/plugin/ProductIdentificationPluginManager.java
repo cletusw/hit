@@ -7,8 +7,6 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.io.Reader;
 import java.io.StringReader;
-import java.net.URL;
-import java.net.URLClassLoader;
 
 /**
  * Initializes and maintains ProductIdentificationPlugins.
@@ -17,22 +15,9 @@ import java.net.URLClassLoader;
  * @version 1.0 -- Snell CS 340 Phase 4.0
  */
 public class ProductIdentificationPluginManager {
-	public static void printClasspath() {
-
-		// Get the System Classloader
-		ClassLoader sysClassLoader = ClassLoader.getSystemClassLoader();
-
-		// Get the URLs
-		URL[] urls = ((URLClassLoader) sysClassLoader).getURLs();
-
-		for (int i = 0; i < urls.length; i++) {
-			System.err.println(urls[i].getFile());
-		}
-	}
-
-	private BufferedReader pluginsBufferedReader;
+	private final BufferedReader pluginsBufferedReader;
 	private ProductIdentificationPluginWrapper root;
-	private IHttpClient httpClient;
+	private final IHttpClient httpClient;
 
 	public ProductIdentificationPluginManager() {
 		Reader pluginsReader;
@@ -76,14 +61,12 @@ public class ProductIdentificationPluginManager {
 	 */
 	public void loadPlugins() {
 		try {
-			// printClasspath();
-
 			ProductIdentificationPluginWrapper previousWrapper = null;
 
 			String line = null;
 			while ((line = pluginsBufferedReader.readLine()) != null) {
 				Class c = null;
-				System.out.println(line);
+
 				try {
 					c = Class.forName(line);
 				} catch (ClassNotFoundException e) {
@@ -107,8 +90,6 @@ public class ProductIdentificationPluginManager {
 				plugin.setClient(httpClient);
 				ProductIdentificationPluginWrapper currentWrapper = new ProductIdentificationPluginWrapper(
 						plugin);
-				System.out.println("Successfully loaded plugin: " + line);
-				// System.out.println(plugin.getDescriptionForProduct("A Product!"));
 				if (root == null) {
 					root = currentWrapper;
 				} else {
