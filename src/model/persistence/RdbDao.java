@@ -445,13 +445,12 @@ public class RdbDao extends InventoryDao implements Observer {
 			referenceToId.put(p, key);
 
 			Set<ProductContainer> containers = p.getProductContainers();
-			if (containers.size() == 1)
-				for (ProductContainer pc : containers) {
-					Integer containerId = referenceToId.get(pc);
-					insertStatement = "INSERT INTO Product_has_ProductContainer VALUES(null,"
-							+ key + "," + containerId + ")";
-					statement.executeUpdate(insertStatement);
-				}
+			for (ProductContainer pc : containers) {
+				Integer containerId = referenceToId.get(pc);
+				insertStatement = "INSERT INTO Product_has_ProductContainer VALUES(null,"
+						+ key + "," + containerId + ")";
+				statement.executeUpdate(insertStatement);
+			}
 
 		} catch (SQLException e) {
 			e.printStackTrace();
