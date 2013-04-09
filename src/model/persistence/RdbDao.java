@@ -10,6 +10,8 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Observable;
+import java.util.Observer;
+import java.util.Set;
 
 import model.Action;
 import model.Action.ActionType;
@@ -35,7 +37,7 @@ import model.report.RemovedItemsReport;
  * @version 1.0 -- Snell CS 340 Phase 4.0
  * 
  */
-public class RdbDao extends InventoryDao {
+public class RdbDao extends InventoryDao implements Observer {
 	private static final String dbFile = "inventory.sqlite";
 
 	// Used when persisting to DB
@@ -47,6 +49,7 @@ public class RdbDao extends InventoryDao {
 	private Map<Integer, ProductContainer> productContainerIdToReference;
 	private Map<Integer, ProductQuantity> productQuantityIdToReference;
 	private Map<Integer, Unit> unitIdToReference;
+	private Map<String, Integer> unitToId;
 
 	public RdbDao() {
 		referenceToId = new HashMap<Object, Integer>();
@@ -56,11 +59,24 @@ public class RdbDao extends InventoryDao {
 		productContainerIdToReference = new HashMap<Integer, ProductContainer>();
 		productQuantityIdToReference = new HashMap<Integer, ProductQuantity>();
 		unitIdToReference = new HashMap<Integer, Unit>();
+
+		int index = 0;
+		unitToId = new HashMap<String, Integer>();
+		unitToId.put(Unit.COUNT.toDBString(), index++);
+		unitToId.put(Unit.POUNDS.toDBString(), index++);
+		unitToId.put(Unit.OUNCES.toDBString(), index++);
+		unitToId.put(Unit.GRAMS.toDBString(), index++);
+		unitToId.put(Unit.KILOGRAMS.toDBString(), index++);
+		unitToId.put(Unit.GALLONS.toDBString(), index++);
+		unitToId.put(Unit.QUARTS.toDBString(), index++);
+		unitToId.put(Unit.PINTS.toDBString(), index++);
+		unitToId.put(Unit.FLUID_OUNCES.toDBString(), index++);
+		unitToId.put(Unit.LITERS.toDBString(), index++);
 	}
 
 	@Override
 	public void applicationClose(HomeInventoryTracker hit) {
-		// Do nothing
+		// update the report last runtime???
 	}
 
 	@Override
@@ -230,13 +246,24 @@ public class RdbDao extends InventoryDao {
 				}
 			}
 
+			hit.getItemManager().addObserver(this);
+			hit.getProductContainerManager().addObserver(this);
+			hit.getProductManager().addObserver(this);
+
 			return hit;
 		} catch (Exception e) {
 			if (f != null) {
 				f.delete();
 			}
 			e.printStackTrace();
-			return new HomeInventoryTracker();
+
+			HomeInventoryTracker h = new HomeInventoryTracker();
+
+			h.getItemManager().addObserver(this);
+			h.getProductContainerManager().addObserver(this);
+			h.getProductManager().addObserver(this);
+
+			return h;
 		}
 	}
 
@@ -279,6 +306,12 @@ public class RdbDao extends InventoryDao {
 		statement.executeUpdate("DROP TABLE IF EXISTS `Unit`");
 		statement.executeUpdate("CREATE TABLE IF NOT EXISTS `Unit` (`Unit_id` INTEGER "
 				+ "NOT NULL PRIMARY KEY AUTOINCREMENT , `Unit_name` VARCHAR(45) NULL )");
+
+		Set<String> units = unitToId.keySet();
+		for (String unitString : units) {
+			statement.executeUpdate("INSERT INTO Unit VALUES(" + unitToId.get(unitString)
+					+ ",\"" + unitString + "\")");
+		}
 
 		statement.executeUpdate("DROP TABLE IF EXISTS `ProductQuantity`");
 		statement.executeUpdate("CREATE TABLE IF NOT EXISTS `ProductQuantity` ("
@@ -377,6 +410,52 @@ public class RdbDao extends InventoryDao {
 	}
 
 	private void insertProductContainer(ProductContainer pc) {
+		String name = pc.getName();
+		String insertStatement = "INSERT INTO ProductContainer VALUES(null, \"" + name + "\")";
+		Connection conn;
+		try {
+			conn = DriverManager.getConnection("jdbc:sqlite:" + dbFile);
+			Statement statement = conn.createStatement();
+			statement.executeUpdate(insertStatement);
+			ResultSet set = statement.getGeneratedKeys();
+			int key = -1;
+			while (set.next())
+				key = set.getInt(1);
+			if (pc instanceof StorageUnit) {
+				insertStatement = "INSERT INTO StorageUnit VALUES (" + key + ")";
+				statement.executeUpdate(insertStatement);
+				referenceToId.put(pc, key);
+			} else if (pc instanceof ProductGroup) {
+				insertProductQuantity(((ProductGroup) pc).getThreeMonthSupply());
 
+				Integer parentId = referenceToId.get(((ProductGroup) pc).getContainer());
+				insertStatement = "INSERT INTO ProductGroup VALUES(" + key + ", "
+						+ referenceToId.get(((ProductGroup) pc).getThreeMonthSupply()) + ", "
+						+ parentId + ")";
+				statement.executeUpdate(insertStatement);
+				referenceToId.put(pc, key);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
+
+	private void insertProductQuantity(ProductQuantity pq) {
+		try {
+			Connection conn = DriverManager.getConnection("jdbc:sqlite:" + dbFile);
+			Statement statement = conn.createStatement();
+			String insertStatement = "INSERT INTO ProductQuantity VALUES(null, "
+					+ pq.getQuantity() + ", " + unitToId.get(pq.getUnits().toDBString()) + ")";
+			statement.executeUpdate(insertStatement);
+			ResultSet set = statement.getGeneratedKeys();
+			int key = -1;
+			while (set.next())
+				key = set.getInt(1);
+
+			referenceToId.put(pq, key);
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
 	}
 }

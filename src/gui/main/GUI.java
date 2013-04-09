@@ -20,8 +20,6 @@ import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 import javax.swing.WindowConstants;
 
-import plugin.ProductIdentificationPluginManager;
-
 import model.HomeInventoryTracker;
 import model.ItemManager;
 import model.ProductContainerManager;
@@ -31,6 +29,7 @@ import model.persistence.factory.DaoFactory;
 import model.persistence.factory.RdbDaoFactory;
 import model.persistence.factory.SerializationDaoFactory;
 import model.report.ReportManager;
+import plugin.ProductIdentificationPluginManager;
 
 @SuppressWarnings("serial")
 public final class GUI extends JFrame implements IMainView {

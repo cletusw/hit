@@ -296,6 +296,10 @@ public enum Unit implements Serializable {
 		}
 	}
 
+	public String toDBString() {
+		return super.toString();
+	}
+
 	/**
 	 * Get the string representation of the Unit.
 	 * 
