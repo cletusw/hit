@@ -151,9 +151,11 @@ public class RdbDao extends InventoryDao {
 		statement.executeUpdate("DROP TABLE IF EXISTS `ProductGroup`");
 		statement.executeUpdate("CREATE  TABLE IF NOT EXISTS `ProductGroup` ("
 				+ "  `ProductContainer_id` INTEGER NOT NULL PRIMARY KEY ,"
-				+ "  `ProductQuantity_id` INTEGER NULL ,"
+				+ "  `ProductQuantity_id` INTEGER NULL ," + "  `parent` INTEGER NOT NULL ,"
 				+ "    FOREIGN KEY (`ProductQuantity_id` )"
 				+ "    REFERENCES `ProductQuantity` (`ProductQuantity_id` ),"
+				+ "    FOREIGN KEY (`parent` )"
+				+ "    REFERENCES `ProductContainer` (`ProductContainer_id` ),"
 				+ "    FOREIGN KEY (`ProductContainer_id` )"
 				+ "    REFERENCES `ProductContainer` (`ProductContainer_id` ) )");
 
