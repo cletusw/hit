@@ -501,10 +501,6 @@ public class InventoryController extends Controller implements IInventoryControl
 		if (targetContainer == null)
 			throw new NullPointerException("Target product container must have a tag.");
 
-		// note: the currently-selected ProductContainer is the source
-		// getSelectedProductContainerTag().moveIntoContainer(getSelectedItemTag(),
-		// targetContainer);
-
 		Item firstItem = (Item) itemData.getTag();
 		StorageUnit su = getProductContainerManager().getRootStorageUnitForChild(
 				targetContainer);
@@ -512,6 +508,8 @@ public class InventoryController extends Controller implements IInventoryControl
 				getSelectedProductContainerTag());
 		if (!su.equals(thisSu)) {
 			thisSu.moveIntoContainer(firstItem, su);
+		} else {
+			addProductToContainer(getView().getSelectedProduct(), containerData);
 		}
 	}
 

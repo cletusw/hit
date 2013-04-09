@@ -1,6 +1,5 @@
 package model.productIdentification;
 
-import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import common.util.IHttpClient;
@@ -38,16 +37,16 @@ public class UpcSearchApi implements ProductIdentificationPlugin {
 		JsonParser parser = new JsonParser();
 		JsonObject jObject = (JsonObject) parser.parse(content);
 
-		JsonElement result = jObject.get("itemname");
-		if (result == null)
-			return null;
-		else {
-			String stringResult = result.getAsString();
-			if (stringResult.length() > 0)
-				return result.getAsString();
-
-			return null;
+		if (jObject.get("itemname") != null
+				&& jObject.get("itemname").getAsString().length() > 0) {
+			return jObject.get("itemname").getAsString();
+		} else if (jObject.get("description") != null
+				&& jObject.get("description").getAsString().length() > 0) {
+			return jObject.get("description").getAsString();
 		}
+
+		// no valid response
+		return null;
 	}
 
 	@Override

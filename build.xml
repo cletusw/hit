@@ -20,6 +20,7 @@
 	<property name="dist" location="dist"/>
 	<property name="lib" location="lib"/>
 	<property name="doc" location="doc"/>
+	<property name="plugins" location="plugins"/>
 	
 	<property name="test-src" location="test-src"/>
 	<property name="test-build" location="test-build"/>
@@ -95,6 +96,12 @@
 	<path id="gson-classpath">
 		<fileset dir="${gson-home}">
 			<include name="gson-2.2.2.jar" />
+		</fileset>
+	</path>
+
+	<path id="plugins-classpath">
+		<fileset dir="${plugins}">
+			<include name="AmazonApiPlugin.jar" />
 		</fileset>
 	</path>
 
@@ -180,6 +187,7 @@
 			<classpath>
 				<pathelement location="${dist}/lib/inventory-tracker.jar"/>
 			</classpath>
+			<classpath refid="plugins-classpath" />
 		</java>
 	</target>
 	
@@ -193,6 +201,7 @@
 				<classpath>
 					<pathelement location="${dist}/lib/inventory-tracker.jar"/>
 				</classpath>
+				<classpath refid="plugins-classpath" />
 				<arg value="-sql"/>
 			</java>
 		</target>
@@ -289,6 +298,8 @@
 			<classpath refid="easymock-classpath" />
 			<classpath refid="itext-classpath" />
 			<classpath refid="sqlite-classpath" />
+			<classpath refid="gson-classpath" />
+			<classpath refid="plugins-classpath" />
 
 			<sysproperty key="net.sourceforge.cobertura.datafile"
 				value="${coverage-data-file}"/>
@@ -298,6 +309,7 @@
 			<batchtest fork="yes" todir="${test-reports}">
 				<fileset dir="${test-src}">
 					<include name="**/*.java"/>
+					<exclude name="**/builder/**/*.java"/>
 				</fileset>
 			</batchtest>
 		</junit>
