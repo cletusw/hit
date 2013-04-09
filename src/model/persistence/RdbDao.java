@@ -106,9 +106,10 @@ public class RdbDao extends InventoryDao {
 
 			results = statement.executeQuery("SELECT * FROM ProductContainer "
 					+ "INNER JOIN ProductGroup "
-					+ "ON ProductContainer.ProductContainer_id=ProductGroup.ProductGroup_id");
+					+ "ON ProductContainer.ProductContainer_id = "
+					+ "ProductGroup.ProductGroup_id");
 			while (results.next()) {
-				Integer id = results.getInt("ProductContainer_id");
+				Integer id = results.getInt("ProductGroup_id");
 				String name = results.getString("name");
 				Integer threeMonthSupplyId = results.getInt("ProductQuantity_id");
 				ProductQuantity threeMonthSupply = productQuantityIdToReference
@@ -193,13 +194,13 @@ public class RdbDao extends InventoryDao {
 
 		statement.executeUpdate("DROP TABLE IF EXISTS `ProductGroup`");
 		statement.executeUpdate("CREATE  TABLE IF NOT EXISTS `ProductGroup` ("
-				+ "  `ProductContainer_id` INTEGER NOT NULL PRIMARY KEY ,"
+				+ "  `ProductGroup_id` INTEGER NOT NULL PRIMARY KEY ,"
 				+ "  `ProductQuantity_id` INTEGER NULL ," + "  `parent` INTEGER NOT NULL ,"
 				+ "    FOREIGN KEY (`ProductQuantity_id` )"
 				+ "    REFERENCES `ProductQuantity` (`ProductQuantity_id` ),"
 				+ "    FOREIGN KEY (`parent` )"
 				+ "    REFERENCES `ProductContainer` (`ProductContainer_id` ),"
-				+ "    FOREIGN KEY (`ProductContainer_id` )"
+				+ "    FOREIGN KEY (`ProductGroup_id` )"
 				+ "    REFERENCES `ProductContainer` (`ProductContainer_id` ) )");
 
 		statement.executeUpdate("DROP TABLE IF EXISTS `StorageUnit`");
