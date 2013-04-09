@@ -8,6 +8,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
 import java.util.Observable;
 import java.util.Observer;
@@ -148,6 +149,22 @@ public class RdbDao extends InventoryDao implements Observer {
 				referenceToId.put(pg, id);
 			}
 
+			Map<Integer, Set<ProductContainer>> productToContainer = new HashMap<Integer, Set<ProductContainer>>();
+			results = statement.executeQuery("SELECT * FROM Product_has_ProductContainer");
+			while (results.next()) {
+				Integer productId = results.getInt("Product_id");
+				Integer containerId = results.getInt("ProductContainer_id");
+
+				ProductContainer container = productContainerIdToReference.get(containerId);
+
+				Set<ProductContainer> containers = productToContainer.get(productId);
+				if (containers == null)
+					containers = new HashSet<ProductContainer>();
+
+				containers.add(container);
+				productToContainer.put(productId, containers);
+			}
+
 			results = statement.executeQuery("SELECT * FROM Product");
 			while (results.next()) {
 				Integer id = results.getInt("Product_id");
@@ -159,23 +176,19 @@ public class RdbDao extends InventoryDao implements Observer {
 				Integer tms = results.getInt("threeMonthSupply");
 				ProductQuantity quantity = productQuantityIdToReference.get(quantityId);
 
+				Set<ProductContainer> containers = productToContainer.get(id);
+				ProductContainer[] containerArray = (ProductContainer[]) containers.toArray();
+
 				Product p = new Product(barcode, description, creationDate, shelfLife, tms,
-						quantity, hit.getProductManager());
+						quantity, containerArray[0], hit.getProductManager());
+
+				for (int i = 1; i < containerArray.length; i++) {
+					containerArray[i].add(p);
+					p.addContainer(containerArray[i]);
+				}
 
 				productIdToReference.put(id, p);
 				referenceToId.put(p, id);
-			}
-
-			results = statement.executeQuery("SELECT * FROM Product_has_ProductContainer");
-			while (results.next()) {
-				Integer productId = results.getInt("Product_id");
-				Integer containerId = results.getInt("ProductContainer_id");
-
-				Product product = productIdToReference.get(productId);
-				ProductContainer container = productContainerIdToReference.get(containerId);
-
-				product.addContainer(container);
-				container.add(product);
 			}
 
 			results = statement.executeQuery("SELECT * FROM Item");
@@ -406,7 +419,43 @@ public class RdbDao extends InventoryDao implements Observer {
 	}
 
 	private void insertProduct(Product p) {
+		long creationDate = p.getCreationDate().getTime();
+		String barcode = p.getBarcode();
+		String description = p.getDescription();
+		ProductQuantity pq = p.getProductQuantity();
+		int shelfLife = p.getShelfLife();
+		int tms = p.getThreeMonthSupply();
 
+		insertProductQuantity(pq);
+
+		int pqId = referenceToId.get(pq);
+
+		String insertStatement = "INSERT INTO Product VALUES(null, " + creationDate + ","
+				+ "\"" + barcode + "\"," + "\"" + description + "\"," + pqId + "," + shelfLife
+				+ "," + tms + ")";
+
+		try {
+			Connection conn = DriverManager.getConnection("jdbc:sqlite:" + dbFile);
+			Statement statement = conn.createStatement();
+			statement.executeUpdate(insertStatement);
+			ResultSet set = statement.getGeneratedKeys();
+			int key = -1;
+			while (set.next())
+				key = set.getInt(1);
+			referenceToId.put(p, key);
+
+			Set<ProductContainer> containers = p.getProductContainers();
+			if (containers.size() == 1)
+				for (ProductContainer pc : containers) {
+					Integer containerId = referenceToId.get(pc);
+					insertStatement = "INSERT INTO Product_has_ProductContainer VALUES(null,"
+							+ key + "," + containerId + ")";
+					statement.executeUpdate(insertStatement);
+				}
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
 	}
 
 	private void insertProductContainer(ProductContainer pc) {
