@@ -25,8 +25,12 @@ import common.NonEmptyString;
  * @invariant size != null
  * @invariant productContainer != null
  */
-@SuppressWarnings("serial")
 public class Product implements Comparable<Object>, Serializable, InventoryVisitable {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
 	/**
 	 * Determines whether the given string is a valid barcode.
 	 * 
@@ -576,7 +580,7 @@ public class Product implements Comparable<Object>, Serializable, InventoryVisit
 		}
 
 		productContainers.remove(pc);
-		manager.notifyObservers(new Action(this, ActionType.EDIT));
+		// manager.notifyObservers(new Action(this, ActionType.INVISIBLE_EDIT));
 	}
 
 	/**
@@ -598,7 +602,20 @@ public class Product implements Comparable<Object>, Serializable, InventoryVisit
 		}
 
 		items.remove(item);
-		manager.notifyObservers(new Action(this, ActionType.EDIT));
+		// manager.notifyObservers(new Action(this, ActionType.INVISIBLE_EDIT));
+	}
+
+	private void setBarcode(String barcode) {
+		this.barcode = new NonEmptyString(barcode);
+	}
+
+	private void setCreationDate(Date date) {
+		Date now = new Date();
+		if (!date.after(now)) {
+			creationDate = date;
+		} else {
+			throw new IllegalArgumentException("CreationDate cannot be in the future");
+		}
 	}
 
 	/**
@@ -612,7 +629,7 @@ public class Product implements Comparable<Object>, Serializable, InventoryVisit
 	 * @post true
 	 * 
 	 */
-	public void setDescription(String descr) {
+	private void setDescription(String descr) {
 		description = new NonEmptyString(descr);
 		if (manager != null)
 			manager.notifyObservers(new Action(this, ActionType.EDIT));
@@ -626,7 +643,7 @@ public class Product implements Comparable<Object>, Serializable, InventoryVisit
 	 * @throws IllegalStateException
 	 *             if the ProductQuantity is invalid
 	 */
-	public void setProductQuantity(ProductQuantity pq) {
+	private void setProductQuantity(ProductQuantity pq) {
 		if (!isValidProductQuantity(pq)) {
 			throw new IllegalArgumentException("Product quantity for product is invalid");
 		}
@@ -643,7 +660,7 @@ public class Product implements Comparable<Object>, Serializable, InventoryVisit
 	 * @pre shelfLife >= 0
 	 * @post this.shelfLife = shelfLife
 	 */
-	public void setShelfLife(int shelfLife) {
+	private void setShelfLife(int shelfLife) {
 		if (shelfLife < 0)
 			throw new IllegalArgumentException("ShelfLife must be non-negative");
 
@@ -660,28 +677,11 @@ public class Product implements Comparable<Object>, Serializable, InventoryVisit
 	 * @pre threeMonthSupply >= 0
 	 * @post this.threeMonthSupply = threeMonthSupply
 	 */
-	public void setThreeMonthSupply(int threeMonthSupply) {
+	private void setThreeMonthSupply(int threeMonthSupply) {
 		if (threeMonthSupply < 0)
 			throw new IllegalArgumentException("Three Month Supply must be non-negative");
 
 		this.threeMonthSupply = threeMonthSupply;
-		if (manager != null)
-			manager.notifyObservers(new Action(this, ActionType.EDIT));
-	}
-
-	private void setBarcode(String barcode) {
-		this.barcode = new NonEmptyString(barcode);
-		if (manager != null)
-			manager.notifyObservers(new Action(this, ActionType.EDIT));
-	}
-
-	private void setCreationDate(Date date) {
-		Date now = new Date();
-		if (!date.after(now)) {
-			creationDate = date;
-		} else {
-			throw new IllegalArgumentException("CreationDate cannot be in the future");
-		}
 		if (manager != null)
 			manager.notifyObservers(new Action(this, ActionType.EDIT));
 	}

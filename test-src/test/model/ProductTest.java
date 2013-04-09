@@ -78,7 +78,8 @@ public class ProductTest {
 
 	@Test(expected = IllegalArgumentException.class)
 	public void testInvalidProductQuantity() {
-		product.setProductQuantity(new ProductQuantity(3, Unit.COUNT));
+		new Product(validBarcode, validDescription, shelfLife, threeMonthSupply,
+				new ProductQuantity(3, Unit.COUNT), productManager);
 	}
 
 	@Test
@@ -100,7 +101,8 @@ public class ProductTest {
 		assertTrue(Product.isValidProductQuantity(new ProductQuantity(1, Unit.COUNT)));
 		assertFalse(Product.isValidProductQuantity(new ProductQuantity(3, Unit.COUNT)));
 		ProductQuantity pq = new ProductQuantity(15, Unit.LITERS);
-		product.setProductQuantity(pq);
+		product = new Product(validBarcode, validDescription, shelfLife, threeMonthSupply, pq,
+				productManager);
 		assertTrue(product.getProductQuantity().equals(pq));
 	}
 
@@ -161,29 +163,33 @@ public class ProductTest {
 
 	@Test(expected = IllegalArgumentException.class)
 	public void testSetIllegalShelfLife() {
-		product.setShelfLife(-1);
+		new Product(validBarcode, validDescription, -1, threeMonthSupply, size, productManager);
 	}
 
 	@Test(expected = IllegalArgumentException.class)
 	public void testSetIllegalThreeMonthSupply() {
-		product.setThreeMonthSupply(-1);
+		new Product(validBarcode, validDescription, shelfLife, -1, size, productManager);
 	}
 
 	@Test
 	public void testSetShelfLife() {
 		assertTrue(product.getShelfLife() == shelfLife);
-		product.setShelfLife(0);
+		product = new Product(validBarcode, validDescription, 0, threeMonthSupply, size,
+				productManager);
 		assertTrue(product.getShelfLife() == 0);
-		product.setShelfLife(100);
+		product = new Product(validBarcode, validDescription, 100, threeMonthSupply, size,
+				productManager);
 		assertTrue(product.getShelfLife() == 100);
 	}
 
 	@Test
 	public void testSetThreeMonthSupply() {
 		assertTrue(product.getThreeMonthSupply() == threeMonthSupply);
-		product.setThreeMonthSupply(0);
+		product = new Product(validBarcode, validDescription, shelfLife, 0, size,
+				productManager);
 		assertTrue(product.getThreeMonthSupply() == 0);
-		product.setThreeMonthSupply(5);
+		product = new Product(validBarcode, validDescription, shelfLife, 5, size,
+				productManager);
 		assertTrue(product.getThreeMonthSupply() == 5);
 	}
 }

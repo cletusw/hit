@@ -27,14 +27,16 @@ import common.NonEmptyString;
  * @invariant products != null
  * @invariant productGroups != null
  */
-@SuppressWarnings("serial")
 public abstract class ProductContainer implements Comparable<ProductContainer>, Serializable,
 		InventoryVisitable {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private NonEmptyString name;
 	private final Map<String, Item> items;
 	private final Map<String, Product> products;
 	private final Map<String, ProductGroup> productGroups;
-	// TODO: Implement this map for all descendant nodes
 	private final Map<Product, Set<Item>> productsToItems;
 	protected final ProductContainerManager manager;
 
@@ -63,6 +65,7 @@ public abstract class ProductContainer implements Comparable<ProductContainer>, 
 		products = new TreeMap<String, Product>();
 		productsToItems = new TreeMap<Product, Set<Item>>();
 		this.manager = manager;
+		// manage must be called by the subclass
 	}
 
 	@Override
@@ -120,6 +123,7 @@ public abstract class ProductContainer implements Comparable<ProductContainer>, 
 		if (canAddProduct(i.getProduct().getBarcode()))
 			add(i.getProduct());
 		registerItem(i);
+		// manager.notifyObservers(new Action(this, ActionType.INVISIBLE_EDIT));
 		return true;
 	}
 
@@ -146,6 +150,7 @@ public abstract class ProductContainer implements Comparable<ProductContainer>, 
 		productsToItems.put(p, new TreeSet<Item>());
 		if (!p.hasContainer(this))
 			p.addContainer(this);
+		// manager.notifyObservers(new Action(this, ActionType.INVISIBLE_EDIT));
 	}
 
 	/**
@@ -656,7 +661,7 @@ public abstract class ProductContainer implements Comparable<ProductContainer>, 
 		ProductContainer containerInTree = getContainerForProduct(product);
 		containerInTree.unregisterItem(item);
 		destination.registerItem(item);
-		manager.notifyObservers(new Action(this, ActionType.MOVE));
+		// manager.notifyObservers(new Action(this, ActionType.INVISIBLE_EDIT));
 	}
 
 	public Item remove(Item item, ItemManager manager) {
@@ -695,6 +700,7 @@ public abstract class ProductContainer implements Comparable<ProductContainer>, 
 			manager.unmanage(item);
 		else
 			manager.undoManage(item);
+		// manager.notifyObservers(new Action(this, ActionType.INVISIBLE_EDIT));
 		return item;
 	}
 
@@ -718,7 +724,9 @@ public abstract class ProductContainer implements Comparable<ProductContainer>, 
 					"Cannot remove product; product container still has items that refer to it");
 		productsToItems.remove(product);
 		product.removeContainer(this);
-		return products.remove(product.getBarcode());
+		Product removed = products.remove(product.getBarcode());
+		// manager.notifyObservers(new Action(this, ActionType.INVISIBLE_EDIT));
+		return removed;
 	}
 
 	/**
@@ -741,11 +749,11 @@ public abstract class ProductContainer implements Comparable<ProductContainer>, 
 
 		if (containsExactProductGroup(productGroup)) {
 			productGroups.remove(productGroup.getName());
+			// manager.notifyObservers(new Action(this, ActionType.INVISIBLE_EDIT));
 		} else if (hasChild(productGroup)) {
 			// remove nested product group
 			for (ProductGroup group : productGroups.values()) {
-				if (group.containsExactProductGroup(productGroup)
-						|| group.hasChild(productGroup)) {
+				if (group.hasChild(productGroup)) {
 					group.remove(productGroup);
 					return;
 				}
@@ -755,7 +763,6 @@ public abstract class ProductContainer implements Comparable<ProductContainer>, 
 			throw new RuntimeException(
 					"This Container doesn't have the given ProductContainer to remove");
 		}
-
 	}
 
 	/**
@@ -775,11 +782,13 @@ public abstract class ProductContainer implements Comparable<ProductContainer>, 
 		}
 
 		this.name = new NonEmptyString(name);
+		manager.notifyObservers(new Action(this, ActionType.EDIT));
 	}
 
 	public void updateChildProductGroup(String oldName, ProductGroup p) {
 		productGroups.remove(oldName);
 		productGroups.put(p.getName(), p);
+		// manager.notifyObservers(new Action(this, ActionType.INVISIBLE_EDIT));
 	}
 
 	/**
@@ -804,6 +813,7 @@ public abstract class ProductContainer implements Comparable<ProductContainer>, 
 					"Cannot add two product groups of the same name into a container");
 		productGroups.put(productGroup.getName(), productGroup);
 		productGroup.setContainer(this);
+		// manager.notifyObservers(new Action(this, ActionType.INVISIBLE_EDIT));
 	}
 
 	/**

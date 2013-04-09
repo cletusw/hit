@@ -8,8 +8,12 @@ package model;
  * 
  */
 
-@SuppressWarnings("serial")
 public class StorageUnit extends ProductContainer {
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 
 	/**
 	 * Constructor

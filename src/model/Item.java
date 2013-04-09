@@ -15,8 +15,12 @@ import model.visitor.InventoryVisitor;
  * @invariant entryDate != null
  * @invariant expirationDate != null
  */
-@SuppressWarnings("serial")
 public class Item implements Comparable<Object>, Serializable, InventoryVisitable {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
 	/**
 	 * Method that tests if a Date object is a valid entry date.
 	 * 

@@ -2,7 +2,7 @@ package model;
 
 public class Action {
 	public enum ActionType {
-		CREATE, EDIT, DELETE, MOVE
+		CREATE, EDIT, DELETE, MOVE, INVISIBLE_EDIT
 	}
 
 	private final Object object;

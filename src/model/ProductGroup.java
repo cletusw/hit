@@ -1,5 +1,7 @@
 package model;
 
+import model.Action.ActionType;
+
 /**
  * Product Group class. Inherits from ProductContainer.
  * 
@@ -8,8 +10,11 @@ package model;
  * 
  * @invariant container != null
  */
-@SuppressWarnings("serial")
 public class ProductGroup extends ProductContainer {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private ProductQuantity threeMonthSupply;
 	private ProductContainer container;
 	private Unit groupUnit;
@@ -30,9 +35,11 @@ public class ProductGroup extends ProductContainer {
 			ProductContainer parent, ProductContainerManager manager) {
 		super(pcName, manager);
 		container = parent;
-		container.add(this);
-		setThreeMonthSupply(tmSupply);
+		// We aren't using the setters here because they notify observers.
+		// We don't want to do that while we still have some uninitialized data.
+		threeMonthSupply = tmSupply;
 		this.groupUnit = groupUnit;
+		container.add(this);
 		manager.manage(this);
 	}
 
@@ -186,23 +193,6 @@ public class ProductGroup extends ProductContainer {
 		this.container = container;
 	}
 
-	/**
-	 * Sets this ProductGroup's three-month supply
-	 * 
-	 * @param threeMonthSupply
-	 *            - the new quantity for the three-month supply
-	 * 
-	 * @pre true
-	 * @post this.threeMonthSupply.equals(threeMonthSupply)
-	 */
-	public void setThreeMonthSupply(ProductQuantity threeMonthSupply) {
-		if (!isValidThreeMonthSupply(threeMonthSupply)) {
-			throw new IllegalStateException("Invalid Product Quantity for Product Group");
-		}
-		this.threeMonthSupply = threeMonthSupply;
-		groupUnit = threeMonthSupply.getUnits();
-	}
-
 	private ProductQuantity getCurrentSupplyRecursive(Unit unit) {
 		ProductQuantity sum = new ProductQuantity(0, unit);
 		for (Item item : getItems()) {
@@ -218,5 +208,22 @@ public class ProductGroup extends ProductContainer {
 		}
 
 		return sum;
+	}
+
+	/**
+	 * Sets this ProductGroup's three-month supply
+	 * 
+	 * @param threeMonthSupply
+	 *            - the new quantity for the three-month supply
+	 * 
+	 * @pre true
+	 * @post this.threeMonthSupply.equals(threeMonthSupply)
+	 */
+	private void setThreeMonthSupply(ProductQuantity threeMonthSupply) {
+		if (!isValidThreeMonthSupply(threeMonthSupply)) {
+			throw new IllegalStateException("Invalid Product Quantity for Product Group");
+		}
+		this.threeMonthSupply = threeMonthSupply;
+		groupUnit = threeMonthSupply.getUnits();
 	}
 }
