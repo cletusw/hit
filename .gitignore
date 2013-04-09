@@ -25,3 +25,4 @@ bin
 /hit-penguin.rar
 /images
 /Thumbs.db
+*.sqlite

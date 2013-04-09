@@ -1,5 +1,10 @@
 package model.persistence;
 
+import java.io.File;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.Observable;
 
 import model.HomeInventoryTracker;
@@ -12,6 +17,7 @@ import model.HomeInventoryTracker;
  * 
  */
 public class RdbDao extends InventoryDao {
+	private static final String dbFile = "inventory.sqlite";
 
 	@Override
 	public void applicationClose(HomeInventoryTracker hit) {
@@ -21,8 +27,26 @@ public class RdbDao extends InventoryDao {
 
 	@Override
 	public HomeInventoryTracker loadHomeInventoryTracker() {
-		// TODO Auto-generated method stub
-		return null;
+		File f = null;
+		try {
+			Class.forName("org.sqlite.JDBC");
+
+			f = new File(dbFile);
+			if (!f.exists()) {
+				createSchema();
+			}
+
+			Class.forName("org.sqlite.JDBC");
+			Connection connection = DriverManager.getConnection("jdbc:sqlite:" + dbFile);
+			// connection.create
+			return new HomeInventoryTracker();
+		} catch (Exception e) {
+			if (f != null) {
+				f.delete();
+			}
+			e.printStackTrace();
+			return new HomeInventoryTracker();
+		}
 	}
 
 	@Override
@@ -31,4 +55,79 @@ public class RdbDao extends InventoryDao {
 
 	}
 
+	private void createSchema() throws SQLException {
+		Connection connection = DriverManager.getConnection("jdbc:sqlite:" + dbFile);
+
+		Statement statement = connection.createStatement();
+		statement.setQueryTimeout(30);
+
+		statement.executeUpdate("DROP TABLE IF EXISTS `Unit`");
+		statement.executeUpdate("CREATE TABLE IF NOT EXISTS `Unit` (`Unit_id` INTEGER "
+				+ "NOT NULL PRIMARY KEY AUTOINCREMENT , `Unit_name` VARCHAR(45) NULL )");
+
+		statement.executeUpdate("DROP TABLE IF EXISTS `ProductQuantity`");
+		statement.executeUpdate("CREATE TABLE IF NOT EXISTS `ProductQuantity` ("
+				+ "`ProductQuantity_id` INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT ,"
+				+ "`quantity` FLOAT NULL ,`Unit_id` INTEGER NULL ,"
+				+ "FOREIGN KEY (`Unit_id` )" + "REFERENCES `Unit` (`Unit_id` ) )");
+
+		statement.executeUpdate("DROP TABLE IF EXISTS `Product`");
+		statement.executeUpdate("CREATE TABLE IF NOT EXISTS `Product` ("
+				+ "  `Product_id` INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT ,"
+				+ "  `creationDate` DATE NULL ," + "  `barcode` VARCHAR(15) NULL ,"
+				+ "  `description` TEXT NULL ," + "  `ProductQuantity_id` INTEGER NULL ,"
+				+ "  `shelfLife` INTEGER NULL ," + "  `threeMonthSupply` INTEGER NULL ,"
+				+ "    FOREIGN KEY (`ProductQuantity_id` )"
+				+ "    REFERENCES `ProductQuantity` (`ProductQuantity_id` ) )");
+
+		statement.executeUpdate("DROP TABLE IF EXISTS `ProductContainer`");
+		statement.executeUpdate("CREATE TABLE IF NOT EXISTS `ProductContainer` ("
+				+ "  `ProductContainer_id` INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT ,"
+				+ "  `name` TEXT NULL )");
+
+		statement.executeUpdate("DROP TABLE IF EXISTS `Product_has_ProductContainer`");
+		statement.executeUpdate("CREATE TABLE IF NOT EXISTS `Product_has_ProductContainer` ("
+				+ "  `Product_id` INTEGER NOT NULL ,"
+				+ "  `ProductContainer_id` INTEGER NOT NULL ,"
+				+ "  PRIMARY KEY (`Product_id`, `ProductContainer_id`) ,"
+				+ "    FOREIGN KEY (`Product_id` )"
+				+ "    REFERENCES `Product` (`Product_id` ),"
+				+ "    FOREIGN KEY (`ProductContainer_id` )"
+				+ "    REFERENCES `ProductContainer` (`ProductContainer_id` ) )");
+
+		statement.executeUpdate("DROP TABLE IF EXISTS `Item`");
+
+		statement.executeUpdate("CREATE TABLE IF NOT EXISTS `Item` ("
+				+ "  `Item_id` INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT ,"
+				+ "  `entryDate` DATE NULL ," + "  `exitTime` DATETIME NULL ,"
+				+ "  `barcode` VARCHAR(45) NULL ," + "  `expirationDate` DATE NULL ,"
+				+ "  `Product_id` INTEGER NULL ,"
+				+ "  `ProductContainer_id` INTEGER NOT NULL ,"
+				+ "    FOREIGN KEY (`Product_id` )"
+				+ "    REFERENCES `Product` (`Product_id` ),"
+				+ "    FOREIGN KEY (`ProductContainer_id` )"
+				+ "    REFERENCES `ProductContainer` (`ProductContainer_id` ) )");
+
+		statement.executeUpdate("DROP TABLE IF EXISTS `ProductGroup`");
+		statement.executeUpdate("CREATE  TABLE IF NOT EXISTS `ProductGroup` ("
+				+ "  `ProductContainer_id` INTEGER NOT NULL PRIMARY KEY ,"
+				+ "  `ProductQuantity_id` INTEGER NULL ,"
+				+ "    FOREIGN KEY (`ProductQuantity_id` )"
+				+ "    REFERENCES `ProductQuantity` (`ProductQuantity_id` ),"
+				+ "    FOREIGN KEY (`ProductContainer_id` )"
+				+ "    REFERENCES `ProductContainer` (`ProductContainer_id` ) )");
+
+		statement.executeUpdate("DROP TABLE IF EXISTS `StorageUnit`");
+		statement.executeUpdate("CREATE  TABLE IF NOT EXISTS `StorageUnit` ("
+				+ "  `StorageUnit_id` INTEGER NOT NULL PRIMARY KEY ,"
+				+ "    FOREIGN KEY (`StorageUnit_id` )"
+				+ "    REFERENCES `ProductContainer` (`ProductContainer_id` ) )");
+
+		statement.executeUpdate("DROP TABLE IF EXISTS `Report`");
+		statement.executeUpdate("CREATE  TABLE IF NOT EXISTS `Report` ("
+				+ "  `Report_id` INTEGER NOT NULL PRIMARY KEY ,"
+				+ "  `Report_runtime` DATETIME NULL )");
+
+		connection.close();
+	}
 }
