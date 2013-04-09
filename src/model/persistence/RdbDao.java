@@ -11,6 +11,8 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Observable;
 
+import model.Action;
+import model.Action.ActionType;
 import model.Barcode;
 import model.HomeInventoryTracker;
 import model.Item;
@@ -58,8 +60,7 @@ public class RdbDao extends InventoryDao {
 
 	@Override
 	public void applicationClose(HomeInventoryTracker hit) {
-		// TODO Auto-generated method stub
-
+		// Do nothing
 	}
 
 	@Override
@@ -241,7 +242,31 @@ public class RdbDao extends InventoryDao {
 
 	@Override
 	public void update(Observable arg0, Object arg1) {
-		// TODO Auto-generated method stub
+		Action action = (Action) arg1;
+		ActionType type = action.getAction();
+		Object obj = action.getObject();
+
+		switch (type) {
+		case CREATE:
+			if (obj instanceof Item)
+				insertItem((Item) obj);
+
+			if (obj instanceof Product)
+				insertProduct((Product) obj);
+
+			if (obj instanceof ProductContainer)
+				insertProductContainer((ProductContainer) obj);
+
+			break;
+		case DELETE:
+			break;
+		case EDIT:
+			break;
+		case INVISIBLE_EDIT:
+			break;
+		case MOVE:
+			break;
+		}
 
 	}
 
@@ -321,5 +346,37 @@ public class RdbDao extends InventoryDao {
 				+ "  `Report_runtime` DATETIME NULL )");
 
 		connection.close();
+	}
+
+	private void insertItem(Item i) {
+		try {
+			Connection connection = DriverManager.getConnection("jdbc:sqlite:" + dbFile);
+			Statement statement = connection.createStatement();
+
+			Long exitTime = 0l;
+			if (i.getExitTime() != null)
+				exitTime = i.getExitTime().getTime();
+			else
+				exitTime = null;
+
+			Integer productId = referenceToId.get(i.getProduct());
+			Integer containerId = referenceToId.get(i.getContainer());
+
+			String stmt = "INSERT INTO Item VALUES(null, " + i.getEntryDate().getTime() + ", "
+					+ exitTime + ", " + i.getBarcode() + ", "
+					+ i.getExpirationDate().getTime() + ", " + productId + ", " + containerId;
+
+			statement.executeUpdate(stmt);
+		} catch (SQLException ex) {
+			ex.printStackTrace();
+		}
+	}
+
+	private void insertProduct(Product p) {
+
+	}
+
+	private void insertProductContainer(ProductContainer pc) {
+
 	}
 }
