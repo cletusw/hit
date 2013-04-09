@@ -3,11 +3,19 @@ package model.persistence;
 import java.io.File;
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Observable;
 
 import model.HomeInventoryTracker;
+import model.Item;
+import model.Product;
+import model.ProductContainer;
+import model.ProductQuantity;
+import model.StorageUnit;
 
 /**
  * Observes the model and persists all changes made to it an a local MySQL database
@@ -19,6 +27,24 @@ import model.HomeInventoryTracker;
 public class RdbDao extends InventoryDao {
 	private static final String dbFile = "inventory.sqlite";
 
+	// Used when persisting to DB
+	private Map<Object, Integer> referenceToId;
+
+	// Used when loading from DB
+	private Map<Integer, Product> productIdToReference;
+	private Map<Integer, Item> itemIdToReference;
+	private Map<Integer, ProductContainer> productContainerIdToReference;
+	private Map<Integer, ProductQuantity> productQuantityIdToReference;
+
+	public RdbDao() {
+		referenceToId = new HashMap<Object, Integer>();
+
+		productIdToReference = new HashMap<Integer, Product>();
+		itemIdToReference = new HashMap<Integer, Item>();
+		productContainerIdToReference = new HashMap<Integer, ProductContainer>();
+		productQuantityIdToReference = new HashMap<Integer, ProductQuantity>();
+	}
+
 	@Override
 	public void applicationClose(HomeInventoryTracker hit) {
 		// TODO Auto-generated method stub
@@ -28,6 +54,8 @@ public class RdbDao extends InventoryDao {
 	@Override
 	public HomeInventoryTracker loadHomeInventoryTracker() {
 		File f = null;
+		HomeInventoryTracker hit = new HomeInventoryTracker();
+
 		try {
 			Class.forName("org.sqlite.JDBC");
 
@@ -38,8 +66,20 @@ public class RdbDao extends InventoryDao {
 
 			Class.forName("org.sqlite.JDBC");
 			Connection connection = DriverManager.getConnection("jdbc:sqlite:" + dbFile);
-			// connection.create
-			return new HomeInventoryTracker();
+			Statement statement = connection.createStatement();
+			ResultSet results = statement.executeQuery("SELECT * FROM ProductContainer "
+					+ "INNER JOIN StorageUnit "
+					+ "ON ProductContainer.ProductContainer_id=StorageUnit.StorageUnit_id");
+			while (results.next()) {
+				Integer id = results.getInt("ProductContainer_id");
+				String name = results.getString("name");
+
+				StorageUnit su = new StorageUnit(name, hit.getProductContainerManager());
+
+				productContainerIdToReference.put(id, su);
+				referenceToId.put(su, id);
+			}
+			return hit;
 		} catch (Exception e) {
 			if (f != null) {
 				f.delete();
