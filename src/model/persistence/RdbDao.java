@@ -54,6 +54,71 @@ public class RdbDao extends InventoryDao {
 
 	}
 
+	@Override
+	public HomeInventoryTracker loadHomeInventoryTracker() {
+		File f = null;
+		HomeInventoryTracker hit = new HomeInventoryTracker();
+
+		try {
+			Class.forName("org.sqlite.JDBC");
+
+			f = new File(dbFile);
+			if (!f.exists()) {
+				createSchema();
+			}
+
+			Class.forName("org.sqlite.JDBC");
+			Connection connection = DriverManager.getConnection("jdbc:sqlite:" + dbFile);
+			Statement statement = connection.createStatement();
+			ResultSet results = statement.executeQuery("SELECT * FROM ProductContainer "
+					+ "INNER JOIN StorageUnit "
+					+ "ON ProductContainer.ProductContainer_id=StorageUnit.StorageUnit_id");
+			while (results.next()) {
+				Integer id = results.getInt("ProductContainer_id");
+				String name = results.getString("name");
+
+				StorageUnit su = new StorageUnit(name, hit.getProductContainerManager());
+
+				productContainerIdToReference.put(id, su);
+				referenceToId.put(su, id);
+			}
+
+			results = statement.executeQuery("SELECT * FROM Unit");
+			while (results.next()) {
+				String unitName = results.getString("Unit_name");
+				Integer unitId = results.getInt("Unit_id");
+				Unit u = Unit.valueOf(unitName);
+				unitIdToReference.put(unitId, u);
+			}
+
+			results = statement.executeQuery("SELECT * FROM ProductQuantity");
+			while (results.next()) {
+				Integer pqId = results.getInt("ProductQuantity_id");
+				float q = results.getFloat("quantity");
+				Integer unitId = results.getInt("Unit_id");
+
+				Unit u = unitIdToReference.get(unitId);
+				ProductQuantity quantity = new ProductQuantity(0, u);
+				referenceToId.put(quantity, pqId);
+				productQuantityIdToReference.put(pqId, quantity);
+			}
+
+			return hit;
+		} catch (Exception e) {
+			if (f != null) {
+				f.delete();
+			}
+			e.printStackTrace();
+			return new HomeInventoryTracker();
+		}
+	}
+
+	@Override
+	public void update(Observable arg0, Object arg1) {
+		// TODO Auto-generated method stub
+
+	}
+
 	private void createSchema() throws SQLException {
 		Connection connection = DriverManager.getConnection("jdbc:sqlite:" + dbFile);
 
@@ -130,70 +195,5 @@ public class RdbDao extends InventoryDao {
 				+ "  `Report_runtime` DATETIME NULL )");
 
 		connection.close();
-	}
-
-	@Override
-	public HomeInventoryTracker loadHomeInventoryTracker() {
-		File f = null;
-		HomeInventoryTracker hit = new HomeInventoryTracker();
-
-		try {
-			Class.forName("org.sqlite.JDBC");
-
-			f = new File(dbFile);
-			if (!f.exists()) {
-				createSchema();
-			}
-
-			Class.forName("org.sqlite.JDBC");
-			Connection connection = DriverManager.getConnection("jdbc:sqlite:" + dbFile);
-			Statement statement = connection.createStatement();
-			ResultSet results = statement.executeQuery("SELECT * FROM ProductContainer "
-					+ "INNER JOIN StorageUnit "
-					+ "ON ProductContainer.ProductContainer_id=StorageUnit.StorageUnit_id");
-			while (results.next()) {
-				Integer id = results.getInt("ProductContainer_id");
-				String name = results.getString("name");
-
-				StorageUnit su = new StorageUnit(name, hit.getProductContainerManager());
-
-				productContainerIdToReference.put(id, su);
-				referenceToId.put(su, id);
-			}
-
-			results = statement.executeQuery("SELECT * FROM Unit");
-			while (results.next()) {
-				String unitName = results.getString("Unit_name");
-				Integer unitId = results.getInt("Unit_id");
-				Unit u = Unit.valueOf(unitName);
-				unitIdToReference.put(unitId, u);
-			}
-
-			results = statement.executeQuery("SELECT * FROM ProductQuantity");
-			while (results.next()) {
-				Integer pqId = results.getInt("ProductQuantity_id");
-				float q = results.getFloat("quantity");
-				Integer unitId = results.getInt("Unit_id");
-
-				Unit u = unitIdToReference.get(unitId);
-				ProductQuantity quantity = new ProductQuantity(0, u);
-				referenceToId.put(quantity, pqId);
-				productQuantityIdToReference.put(pqId, quantity);
-			}
-
-			return hit;
-		} catch (Exception e) {
-			if (f != null) {
-				f.delete();
-			}
-			e.printStackTrace();
-			return new HomeInventoryTracker();
-		}
-	}
-
-	@Override
-	public void update(Observable arg0, Object arg1) {
-		// TODO Auto-generated method stub
-
 	}
 }
