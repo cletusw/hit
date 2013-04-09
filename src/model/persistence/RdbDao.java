@@ -98,7 +98,7 @@ public class RdbDao extends InventoryDao {
 				Integer unitId = results.getInt("Unit_id");
 
 				Unit u = unitIdToReference.get(unitId);
-				ProductQuantity quantity = new ProductQuantity(0, u);
+				ProductQuantity quantity = new ProductQuantity(q, u);
 				referenceToId.put(quantity, pqId);
 				productQuantityIdToReference.put(pqId, quantity);
 			}
