@@ -9,20 +9,18 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-import plugin.ProductIdentificationPlugin;
-import plugin.UpcSearchApi;
+import plugin.ProductIdentificationPluginManager;
 
 import common.util.IHttpClient;
 
 public class UpcSearchApiTest extends EasyMockSupport {
 	private IHttpClient client;
-	private ProductIdentificationPlugin plugin;
+	private ProductIdentificationPluginManager manager;
 
 	@Before
 	public void setUp() throws Exception {
 		client = createMock(IHttpClient.class);
-		plugin = new UpcSearchApi();
-		plugin.setClient(client);
+		manager = new ProductIdentificationPluginManager("plugin.UpcSearchApi", client);
 	}
 
 	@After
@@ -38,7 +36,7 @@ public class UpcSearchApiTest extends EasyMockSupport {
 		expect(client.getHttpRequest((String) EasyMock.notNull())).andStubReturn(response);
 		replayAll();
 
-		String d = plugin.getDescriptionForProduct("035000053640");
+		String d = manager.getDescriptionForProduct("035000053640");
 		assertTrue(d.equals(description));
 	}
 
@@ -50,7 +48,7 @@ public class UpcSearchApiTest extends EasyMockSupport {
 		expect(client.getHttpRequest((String) EasyMock.notNull())).andStubReturn(response);
 		replayAll();
 
-		String d = plugin.getDescriptionForProduct("035000053640");
+		String d = manager.getDescriptionForProduct("035000053640");
 		assertTrue(d == null);
 	}
 
@@ -61,7 +59,7 @@ public class UpcSearchApiTest extends EasyMockSupport {
 		expect(client.getHttpRequest((String) EasyMock.notNull())).andStubReturn(response);
 		replayAll();
 
-		String d = plugin.getDescriptionForProduct("035000053640");
+		String d = manager.getDescriptionForProduct("035000053640");
 		assertTrue(d == null);
 	}
 
@@ -72,7 +70,7 @@ public class UpcSearchApiTest extends EasyMockSupport {
 		expect(client.getHttpRequest((String) EasyMock.notNull())).andStubReturn(response);
 		replayAll();
 
-		String d = plugin.getDescriptionForProduct("035000053640");
+		String d = manager.getDescriptionForProduct("035000053640");
 		assertTrue(d == null);
 	}
 }
