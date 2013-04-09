@@ -16,6 +16,7 @@ import model.Product;
 import model.ProductContainer;
 import model.ProductQuantity;
 import model.StorageUnit;
+import model.Unit;
 
 /**
  * Observes the model and persists all changes made to it an a local MySQL database
@@ -35,6 +36,7 @@ public class RdbDao extends InventoryDao {
 	private Map<Integer, Item> itemIdToReference;
 	private Map<Integer, ProductContainer> productContainerIdToReference;
 	private Map<Integer, ProductQuantity> productQuantityIdToReference;
+	private Map<Integer, Unit> unitIdToReference;
 
 	public RdbDao() {
 		referenceToId = new HashMap<Object, Integer>();
@@ -43,54 +45,11 @@ public class RdbDao extends InventoryDao {
 		itemIdToReference = new HashMap<Integer, Item>();
 		productContainerIdToReference = new HashMap<Integer, ProductContainer>();
 		productQuantityIdToReference = new HashMap<Integer, ProductQuantity>();
+		unitIdToReference = new HashMap<Integer, Unit>();
 	}
 
 	@Override
 	public void applicationClose(HomeInventoryTracker hit) {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public HomeInventoryTracker loadHomeInventoryTracker() {
-		File f = null;
-		HomeInventoryTracker hit = new HomeInventoryTracker();
-
-		try {
-			Class.forName("org.sqlite.JDBC");
-
-			f = new File(dbFile);
-			if (!f.exists()) {
-				createSchema();
-			}
-
-			Class.forName("org.sqlite.JDBC");
-			Connection connection = DriverManager.getConnection("jdbc:sqlite:" + dbFile);
-			Statement statement = connection.createStatement();
-			ResultSet results = statement.executeQuery("SELECT * FROM ProductContainer "
-					+ "INNER JOIN StorageUnit "
-					+ "ON ProductContainer.ProductContainer_id=StorageUnit.StorageUnit_id");
-			while (results.next()) {
-				Integer id = results.getInt("ProductContainer_id");
-				String name = results.getString("name");
-
-				StorageUnit su = new StorageUnit(name, hit.getProductContainerManager());
-
-				productContainerIdToReference.put(id, su);
-				referenceToId.put(su, id);
-			}
-			return hit;
-		} catch (Exception e) {
-			if (f != null) {
-				f.delete();
-			}
-			e.printStackTrace();
-			return new HomeInventoryTracker();
-		}
-	}
-
-	@Override
-	public void update(Observable arg0, Object arg1) {
 		// TODO Auto-generated method stub
 
 	}
@@ -171,5 +130,70 @@ public class RdbDao extends InventoryDao {
 				+ "  `Report_runtime` DATETIME NULL )");
 
 		connection.close();
+	}
+
+	@Override
+	public HomeInventoryTracker loadHomeInventoryTracker() {
+		File f = null;
+		HomeInventoryTracker hit = new HomeInventoryTracker();
+
+		try {
+			Class.forName("org.sqlite.JDBC");
+
+			f = new File(dbFile);
+			if (!f.exists()) {
+				createSchema();
+			}
+
+			Class.forName("org.sqlite.JDBC");
+			Connection connection = DriverManager.getConnection("jdbc:sqlite:" + dbFile);
+			Statement statement = connection.createStatement();
+			ResultSet results = statement.executeQuery("SELECT * FROM ProductContainer "
+					+ "INNER JOIN StorageUnit "
+					+ "ON ProductContainer.ProductContainer_id=StorageUnit.StorageUnit_id");
+			while (results.next()) {
+				Integer id = results.getInt("ProductContainer_id");
+				String name = results.getString("name");
+
+				StorageUnit su = new StorageUnit(name, hit.getProductContainerManager());
+
+				productContainerIdToReference.put(id, su);
+				referenceToId.put(su, id);
+			}
+
+			results = statement.executeQuery("SELECT * FROM Unit");
+			while (results.next()) {
+				String unitName = results.getString("Unit_name");
+				Integer unitId = results.getInt("Unit_id");
+				Unit u = Unit.valueOf(unitName);
+				unitIdToReference.put(unitId, u);
+			}
+
+			results = statement.executeQuery("SELECT * FROM ProductQuantity");
+			while (results.next()) {
+				Integer pqId = results.getInt("ProductQuantity_id");
+				float q = results.getFloat("quantity");
+				Integer unitId = results.getInt("Unit_id");
+
+				Unit u = unitIdToReference.get(unitId);
+				ProductQuantity quantity = new ProductQuantity(0, u);
+				referenceToId.put(quantity, pqId);
+				productQuantityIdToReference.put(pqId, quantity);
+			}
+
+			return hit;
+		} catch (Exception e) {
+			if (f != null) {
+				f.delete();
+			}
+			e.printStackTrace();
+			return new HomeInventoryTracker();
+		}
+	}
+
+	@Override
+	public void update(Observable arg0, Object arg1) {
+		// TODO Auto-generated method stub
+
 	}
 }
