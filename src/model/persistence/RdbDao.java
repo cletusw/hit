@@ -40,6 +40,7 @@ import model.report.RemovedItemsReport;
  */
 public class RdbDao extends InventoryDao implements Observer {
 	private static final String dbFile = "inventory.sqlite";
+	private Connection connection;
 
 	// Used when persisting to DB
 	private Map<Object, Integer> referenceToId;
@@ -94,7 +95,7 @@ public class RdbDao extends InventoryDao implements Observer {
 			}
 
 			Class.forName("org.sqlite.JDBC");
-			Connection connection = DriverManager.getConnection("jdbc:sqlite:" + dbFile);
+			connection = DriverManager.getConnection("jdbc:sqlite:" + dbFile);
 			Statement statement = connection.createStatement();
 			ResultSet results = statement.executeQuery("SELECT * FROM ProductContainer "
 					+ "INNER JOIN StorageUnit "
@@ -311,8 +312,6 @@ public class RdbDao extends InventoryDao implements Observer {
 	}
 
 	private void createSchema() throws SQLException {
-		Connection connection = DriverManager.getConnection("jdbc:sqlite:" + dbFile);
-
 		Statement statement = connection.createStatement();
 		statement.setQueryTimeout(30);
 
@@ -396,7 +395,6 @@ public class RdbDao extends InventoryDao implements Observer {
 
 	private void insertItem(Item i) {
 		try {
-			Connection connection = DriverManager.getConnection("jdbc:sqlite:" + dbFile);
 			Statement statement = connection.createStatement();
 
 			Long exitTime = 0l;
@@ -435,8 +433,7 @@ public class RdbDao extends InventoryDao implements Observer {
 				+ "," + tms + ")";
 
 		try {
-			Connection conn = DriverManager.getConnection("jdbc:sqlite:" + dbFile);
-			Statement statement = conn.createStatement();
+			Statement statement = connection.createStatement();
 			statement.executeUpdate(insertStatement);
 			ResultSet set = statement.getGeneratedKeys();
 			int key = -1;
@@ -461,10 +458,8 @@ public class RdbDao extends InventoryDao implements Observer {
 	private void insertProductContainer(ProductContainer pc) {
 		String name = pc.getName();
 		String insertStatement = "INSERT INTO ProductContainer VALUES(null, \"" + name + "\")";
-		Connection conn;
 		try {
-			conn = DriverManager.getConnection("jdbc:sqlite:" + dbFile);
-			Statement statement = conn.createStatement();
+			Statement statement = connection.createStatement();
 			statement.executeUpdate(insertStatement);
 			ResultSet set = statement.getGeneratedKeys();
 			int key = -1;
@@ -491,8 +486,7 @@ public class RdbDao extends InventoryDao implements Observer {
 
 	private void insertProductQuantity(ProductQuantity pq) {
 		try {
-			Connection conn = DriverManager.getConnection("jdbc:sqlite:" + dbFile);
-			Statement statement = conn.createStatement();
+			Statement statement = connection.createStatement();
 			String insertStatement = "INSERT INTO ProductQuantity VALUES(null, "
 					+ pq.getQuantity() + ", " + unitToId.get(pq.getUnits().toDBString()) + ")";
 			statement.executeUpdate(insertStatement);
