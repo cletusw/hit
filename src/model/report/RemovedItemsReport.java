@@ -1,7 +1,5 @@
 package model.report;
 
-import java.io.File;
-import java.io.IOException;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.Map;
@@ -76,13 +74,6 @@ public class RemovedItemsReport extends Report {
 						+ product.getSize().toString(), product.getBarcode(), ""
 						+ removedCount, "" + itemManager.getItemsByProduct(product).size()));
 			}
-		}
-
-		try {
-			File file = builder.print("removedItems");
-			java.awt.Desktop.getDesktop().open(file);
-		} catch (IOException e) {
-			e.printStackTrace();
 		}
 	}
 }
