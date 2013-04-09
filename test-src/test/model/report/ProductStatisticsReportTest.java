@@ -1,11 +1,7 @@
 package test.model.report;
 
-import static org.easymock.EasyMock.expect;
-import static org.junit.Assert.fail;
 import generators.ProductGenerator;
 
-import java.io.File;
-import java.io.IOException;
 import java.text.DecimalFormat;
 import java.util.Arrays;
 import java.util.Date;
@@ -22,17 +18,16 @@ import model.ItemManager;
 import model.Product;
 import model.ProductContainerManager;
 import model.ProductManager;
-import model.ProductQuantity;
 import model.StorageUnit;
-import model.Unit;
 import model.report.ProductStatisticsReport;
 import model.report.builder.ReportBuilder;
 
-import org.easymock.EasyMock;
 import org.easymock.EasyMockSupport;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+
+import builder.model.ProductBuilder;
 
 public class ProductStatisticsReportTest extends EasyMockSupport {
 
@@ -71,14 +66,6 @@ public class ProductStatisticsReportTest extends EasyMockSupport {
 
 		mockBuilder.startTable(productsHeaders(3));
 
-		try {
-			File newFile = new File("PSReport.pdf");
-			newFile.createNewFile();
-			expect(mockBuilder.print((String) EasyMock.notNull())).andReturn(newFile);
-		} catch (IOException e) {
-			fail("Exception thrown!");
-		}
-
 		replayAll();
 
 		report.construct(mockBuilder, 3);
@@ -97,8 +84,8 @@ public class ProductStatisticsReportTest extends EasyMockSupport {
 		int months = 3;
 		Date now = new Date();
 		Date date = new Date(now.getTime() - 5000);
-		Product product = new Product("Product", "Description", 3, 5, new ProductQuantity(1,
-				Unit.COUNT), productManager);
+		Product product = new ProductBuilder().productManager(productManager)
+				.threeMonthSupply(3).build();
 		Item item = new Item(product, new StorageUnit("SU", productContainerManager), date,
 				itemManager);
 		// public Product(String barcode, String description, int shelfLife, int tms,
@@ -155,10 +142,10 @@ public class ProductStatisticsReportTest extends EasyMockSupport {
 	}
 
 	/*
-	 * Creates some additional Items beyond the report’s time frame and removes them before the
+	 * Creates some additional Items beyond the reportï¿½s time frame and removes them before the
 	 * report period begins; checks that they are not included in the report
 	 * 
-	 * Creates Items beyond the report’s time frame and does not remove them, checks that they
+	 * Creates Items beyond the reportï¿½s time frame and does not remove them, checks that they
 	 * are included in the report
 	 * 
 	 * Chooses some subset of the included items to remove at random times during the reporting

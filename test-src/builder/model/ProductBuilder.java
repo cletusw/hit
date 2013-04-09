@@ -1,6 +1,9 @@
 package builder.model;
 
 import static org.easymock.EasyMock.createNiceMock;
+
+import java.util.Date;
+
 import model.Product;
 import model.ProductManager;
 import model.ProductQuantity;
@@ -15,6 +18,7 @@ public class ProductBuilder {
 	private ProductQuantity productQuantity = new ProductQuantity(1, Unit.COUNT);
 	private ProductManager productManager = createNiceMock(ProductManager.class);
 	private StorageUnit container = new StorageUnitBuilder().build();
+	private Date creationDate = new Date();
 
 	public ProductBuilder barcode(String barcode) {
 		this.barcode = barcode;
@@ -23,8 +27,14 @@ public class ProductBuilder {
 	}
 
 	public Product build() {
-		return new Product(barcode, description, shelfLife, threeMonthSupply, productQuantity,
-				container, productManager);
+		return new Product(barcode, description, creationDate, shelfLife, threeMonthSupply,
+				productQuantity, container, productManager);
+	}
+
+	public ProductBuilder creationDate(Date creationDate) {
+		this.creationDate = creationDate;
+
+		return this;
 	}
 
 	public ProductBuilder description(String description) {

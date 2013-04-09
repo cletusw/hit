@@ -4,12 +4,9 @@ import java.util.Date;
 
 import model.Product;
 import model.ProductManager;
-import model.ProductQuantity;
-import model.Unit;
+import builder.model.ProductBuilder;
 
 public class ProductGenerator {
-	private static int id = 0;
-
 	private final ProductManager manager;
 
 	public ProductGenerator(ProductManager productManager) {
@@ -44,9 +41,10 @@ public class ProductGenerator {
 		earliestDate.setMonth(currentMonth);
 		earliestDate.setYear(currentYear);
 		long millisEarliest = earliestDate.getTime();
-		Product product = new Product("" + id++, "" + id + "_Description", new Date(
-				(long) (Math.random() * (millisLatest - millisEarliest)) + millisEarliest), 0,
-				0, new ProductQuantity(1, Unit.COUNT), manager);
+		Product product = new ProductBuilder()
+				.creationDate(
+						new Date((long) (Math.random() * (millisLatest - millisEarliest))
+								+ millisEarliest)).productManager(manager).build();
 		return product;
 	}
 }
