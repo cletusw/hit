@@ -1,7 +1,5 @@
 package model.report;
 
-import java.io.File;
-import java.io.IOException;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -115,12 +113,6 @@ public class ProductStatisticsReport extends Report {
 			// CurrentAge: Average/Max
 			row.add(twoDForm.format(averageCurrentAge(product)) + "/" + maxCurrentAge(product));
 			builder.addTableRow(row);
-		}
-		try {
-			File file = builder.print(getFileName());
-			java.awt.Desktop.getDesktop().open(file);
-		} catch (IOException e) {
-			System.out.println("Not able to open!! " + getFileName());
 		}
 	}
 

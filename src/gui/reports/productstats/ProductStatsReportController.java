@@ -2,6 +2,10 @@ package gui.reports.productstats;
 
 import gui.common.Controller;
 import gui.common.IView;
+
+import java.io.File;
+import java.io.IOException;
+
 import model.report.ProductStatisticsReport;
 import model.report.builder.HtmlBuilder;
 import model.report.builder.PdfBuilder;
@@ -48,6 +52,12 @@ public class ProductStatsReportController extends Controller implements
 		}
 		ProductStatisticsReport report = getReportManager().getProductStatisticsReport();
 		report.construct(builder, Integer.parseInt(getView().getMonths()));
+		try {
+			File file = builder.print(report.getFileName());
+			java.awt.Desktop.getDesktop().open(file);
+		} catch (IOException e) {
+			System.out.println("Not able to open!! " + report.getFileName());
+		}
 	}
 
 	/**
