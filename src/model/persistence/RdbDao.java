@@ -14,6 +14,7 @@ import model.HomeInventoryTracker;
 import model.Item;
 import model.Product;
 import model.ProductContainer;
+import model.ProductGroup;
 import model.ProductQuantity;
 import model.StorageUnit;
 import model.Unit;
@@ -103,6 +104,24 @@ public class RdbDao extends InventoryDao {
 				productQuantityIdToReference.put(pqId, quantity);
 			}
 
+			results = statement.executeQuery("SELECT * FROM ProductContainer "
+					+ "INNER JOIN ProductGroup "
+					+ "ON ProductContainer.ProductContainer_id=ProductGroup.ProductGroup_id");
+			while (results.next()) {
+				Integer id = results.getInt("ProductContainer_id");
+				String name = results.getString("name");
+				Integer threeMonthSupplyId = results.getInt("ProductQuantity_id");
+				ProductQuantity threeMonthSupply = productQuantityIdToReference
+						.get(threeMonthSupplyId);
+				Integer parentId = results.getInt("parent");
+				ProductContainer parent = productContainerIdToReference.get(parentId);
+
+				ProductGroup pg = new ProductGroup(name, threeMonthSupply,
+						threeMonthSupply.getUnits(), parent, hit.getProductContainerManager());
+
+				productContainerIdToReference.put(id, pg);
+				referenceToId.put(pg, id);
+			}
 			return hit;
 		} catch (Exception e) {
 			if (f != null) {
