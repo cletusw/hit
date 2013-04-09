@@ -3,6 +3,8 @@ package gui.reports.removed;
 import gui.common.Controller;
 import gui.common.IView;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.Date;
 
 import model.report.RemovedItemsReport;
@@ -53,6 +55,13 @@ public class RemovedReportController extends Controller implements IRemovedRepor
 		}
 
 		report.construct(builder, sinceDate);
+
+		try {
+			File file = builder.print(report.getFileName());
+			java.awt.Desktop.getDesktop().open(file);
+		} catch (IOException e) {
+			System.out.println("Not able to open!! " + report.getFileName());
+		}
 	}
 
 	/**

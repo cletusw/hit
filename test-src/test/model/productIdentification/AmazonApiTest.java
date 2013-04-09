@@ -2,7 +2,6 @@ package test.model.productIdentification;
 
 import static org.easymock.EasyMock.expect;
 import static org.junit.Assert.assertTrue;
-import model.productIdentification.ProductIdentificationPluginManager;
 
 import org.easymock.EasyMock;
 import org.easymock.EasyMockSupport;
@@ -10,7 +9,9 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-import common.util.IHttpClient;
+import plugin.IHttpClient;
+import plugin.ProductIdentificationPluginManager;
+
 
 public class AmazonApiTest extends EasyMockSupport {
 
@@ -39,7 +40,7 @@ public class AmazonApiTest extends EasyMockSupport {
 		replayAll();
 
 		ProductIdentificationPluginManager manager = new ProductIdentificationPluginManager(
-				"model.productIdentification.AmazonApi", httpClient);
+				"plugin.AmazonApi", httpClient);
 		String desc = manager.getDescriptionForProduct("035000053640");
 		assertTrue(desc != null);
 		assertTrue(desc.equals("Ajax Cleaner Bonus Size, 28 Oz"));

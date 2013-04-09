@@ -1,6 +1,6 @@
-package model.productIdentification;
+package plugin;
 
-import common.util.IHttpClient;
+
 
 /**
  * Finds descriptions for Product objects

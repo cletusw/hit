@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.util.Date;
 
 import model.Action.ActionType;
+import model.persistence.InventoryDao;
 import model.visitor.InventoryVisitable;
 import model.visitor.InventoryVisitor;
 
@@ -319,6 +320,19 @@ public class Item implements Comparable<Object>, Serializable, InventoryVisitabl
 	}
 
 	/**
+	 * TO BE CALLED BY A DAO OBJECT ONLY!!!
+	 * 
+	 * @param exitDate
+	 * @param dao
+	 * @throws IllegalAccessException
+	 */
+	public void setExitDate(Date exitDate, InventoryDao dao) throws IllegalAccessException {
+		if (dao == null)
+			throw new IllegalAccessException("This must be called by a dao object");
+		exitTime = exitDate;
+	}
+
+	/**
 	 * Called when Product is edited to update the expiration date
 	 * 
 	 * @pre true
@@ -331,8 +345,22 @@ public class Item implements Comparable<Object>, Serializable, InventoryVisitabl
 			expirationDate = null;
 		else
 			expirationDate = new Date(d.getYear(), d.getMonth() + product.getShelfLife(),
-					d.getDate(), d.getHours(), d.getMinutes(), d.getSeconds());
+					d.getDate());
 		// TODO: Store the manager locally so we can do this:
 		manager.notifyObservers(new Action(this, ActionType.EDIT));
+	}
+
+	/**
+	 * TO BE CALLED BY A DAO OBJECT ONLY!!!
+	 * 
+	 * @param expDate
+	 * @param dao
+	 * @throws IllegalAccessException
+	 */
+	public void setExpirationDate(Date expDate, InventoryDao dao)
+			throws IllegalAccessException {
+		if (dao == null)
+			throw new IllegalAccessException("This must be called by a dao object");
+		expirationDate = expDate;
 	}
 }

@@ -1,7 +1,5 @@
 package model.report;
 
-import java.io.File;
-import java.io.IOException;
 import java.util.Collection;
 import java.util.Map;
 import java.util.TreeMap;
@@ -56,13 +54,6 @@ public class NoticesReport extends Report implements InventoryVisitor {
 
 		for (StorageUnit su : pcManager.getStorageUnits()) {
 			su.accept(this);
-		}
-
-		try {
-			File file = builder.print(getFileName());
-			java.awt.Desktop.getDesktop().open(file);
-		} catch (IOException e) {
-			System.out.println("Not able to open!! " + getFileName());
 		}
 
 		this.builder = null;

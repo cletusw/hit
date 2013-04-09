@@ -1,3 +1,4 @@
+package plugin;
 /**********************************************************************************************
  * Copyright 2009 Amazon.com, Inc. or its affiliates. All Rights Reserved.
  *
@@ -19,7 +20,6 @@
  *
  */
 
-package common.util;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;

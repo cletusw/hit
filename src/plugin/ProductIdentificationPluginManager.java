@@ -1,4 +1,4 @@
-package model.productIdentification;
+package plugin;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -10,8 +10,6 @@ import java.io.StringReader;
 import java.net.URL;
 import java.net.URLClassLoader;
 
-import common.util.HttpClient;
-import common.util.IHttpClient;
 
 /**
  * Initializes and maintains ProductIdentificationPlugins.

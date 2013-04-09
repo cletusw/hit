@@ -20,6 +20,8 @@ import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 import javax.swing.WindowConstants;
 
+import plugin.ProductIdentificationPluginManager;
+
 import model.HomeInventoryTracker;
 import model.ItemManager;
 import model.ProductContainerManager;
@@ -28,7 +30,6 @@ import model.persistence.InventoryDao;
 import model.persistence.factory.DaoFactory;
 import model.persistence.factory.RdbDaoFactory;
 import model.persistence.factory.SerializationDaoFactory;
-import model.productIdentification.ProductIdentificationPluginManager;
 import model.report.ReportManager;
 
 @SuppressWarnings("serial")

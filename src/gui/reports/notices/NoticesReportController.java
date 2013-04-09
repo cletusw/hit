@@ -2,6 +2,10 @@ package gui.reports.notices;
 
 import gui.common.Controller;
 import gui.common.IView;
+
+import java.io.File;
+import java.io.IOException;
+
 import model.report.NoticesReport;
 import model.report.builder.HtmlBuilder;
 import model.report.builder.PdfBuilder;
@@ -23,10 +27,6 @@ public class NoticesReportController extends Controller implements INoticesRepor
 		construct();
 	}
 
-	//
-	// Controller overrides
-	//
-
 	/**
 	 * This method is called when the user clicks the "OK" button in the notices report view.
 	 */
@@ -45,6 +45,21 @@ public class NoticesReportController extends Controller implements INoticesRepor
 		}
 		NoticesReport report = getReportManager().getNoticesReport();
 		report.construct(builder);
+
+		try {
+			File file = builder.print(report.getFileName());
+			java.awt.Desktop.getDesktop().open(file);
+		} catch (IOException e) {
+			System.out.println("Not able to open!! " + report.getFileName());
+		}
+	}
+
+	/**
+	 * This method is called when any of the fields in the notices report view is changed by
+	 * the user.
+	 */
+	@Override
+	public void valuesChanged() {
 	}
 
 	/**
@@ -72,10 +87,6 @@ public class NoticesReportController extends Controller implements INoticesRepor
 		return (INoticesReportView) super.getView();
 	}
 
-	//
-	// IExpiredReportController overrides
-	//
-
 	/**
 	 * Loads data into the controller's view.
 	 * 
@@ -85,14 +96,6 @@ public class NoticesReportController extends Controller implements INoticesRepor
 	 */
 	@Override
 	protected void loadValues() {
-	}
-
-	/**
-	 * This method is called when any of the fields in the notices report view is changed by
-	 * the user.
-	 */
-	@Override
-	public void valuesChanged() {
 	}
 
 }

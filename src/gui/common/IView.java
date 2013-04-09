@@ -1,9 +1,9 @@
 package gui.common;
 
+import plugin.ProductIdentificationPluginManager;
 import model.ItemManager;
 import model.ProductContainerManager;
 import model.ProductManager;
-import model.productIdentification.ProductIdentificationPluginManager;
 import model.report.ReportManager;
 
 /**

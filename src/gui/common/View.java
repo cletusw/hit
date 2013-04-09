@@ -13,10 +13,11 @@ import javax.swing.border.TitledBorder;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.TableColumn;
 
+import plugin.ProductIdentificationPluginManager;
+
 import model.ItemManager;
 import model.ProductContainerManager;
 import model.ProductManager;
-import model.productIdentification.ProductIdentificationPluginManager;
 import model.report.ReportManager;
 
 /**

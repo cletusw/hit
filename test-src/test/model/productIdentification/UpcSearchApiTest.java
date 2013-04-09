@@ -2,8 +2,6 @@ package test.model.productIdentification;
 
 import static org.easymock.EasyMock.expect;
 import static org.junit.Assert.assertTrue;
-import model.productIdentification.ProductIdentificationPlugin;
-import model.productIdentification.UpcSearchApi;
 
 import org.easymock.EasyMock;
 import org.easymock.EasyMockSupport;
@@ -11,17 +9,18 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-import common.util.IHttpClient;
+import plugin.IHttpClient;
+import plugin.ProductIdentificationPluginManager;
+
 
 public class UpcSearchApiTest extends EasyMockSupport {
 	private IHttpClient client;
-	private ProductIdentificationPlugin plugin;
+	private ProductIdentificationPluginManager manager;
 
 	@Before
 	public void setUp() throws Exception {
 		client = createMock(IHttpClient.class);
-		plugin = new UpcSearchApi();
-		plugin.setClient(client);
+		manager = new ProductIdentificationPluginManager("plugin.UpcSearchApi", client);
 	}
 
 	@After
@@ -37,7 +36,7 @@ public class UpcSearchApiTest extends EasyMockSupport {
 		expect(client.getHttpRequest((String) EasyMock.notNull())).andStubReturn(response);
 		replayAll();
 
-		String d = plugin.getDescriptionForProduct("035000053640");
+		String d = manager.getDescriptionForProduct("035000053640");
 		assertTrue(d.equals(description));
 	}
 
@@ -49,7 +48,7 @@ public class UpcSearchApiTest extends EasyMockSupport {
 		expect(client.getHttpRequest((String) EasyMock.notNull())).andStubReturn(response);
 		replayAll();
 
-		String d = plugin.getDescriptionForProduct("035000053640");
+		String d = manager.getDescriptionForProduct("035000053640");
 		assertTrue(d == null);
 	}
 
@@ -60,7 +59,7 @@ public class UpcSearchApiTest extends EasyMockSupport {
 		expect(client.getHttpRequest((String) EasyMock.notNull())).andStubReturn(response);
 		replayAll();
 
-		String d = plugin.getDescriptionForProduct("035000053640");
+		String d = manager.getDescriptionForProduct("035000053640");
 		assertTrue(d == null);
 	}
 
@@ -71,7 +70,7 @@ public class UpcSearchApiTest extends EasyMockSupport {
 		expect(client.getHttpRequest((String) EasyMock.notNull())).andStubReturn(response);
 		replayAll();
 
-		String d = plugin.getDescriptionForProduct("035000053640");
+		String d = manager.getDescriptionForProduct("035000053640");
 		assertTrue(d == null);
 	}
 }

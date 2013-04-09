@@ -1,4 +1,5 @@
-package model.productIdentification;
+package plugin;
+
 
 import java.io.IOException;
 import java.io.StringReader;
@@ -14,8 +15,6 @@ import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 import org.xml.sax.helpers.DefaultHandler;
 
-import common.util.IHttpClient;
-import common.util.SignedRequestsHelper;
 
 /**
  * Finds descriptions for Product objects using the Amazon Product Search API
