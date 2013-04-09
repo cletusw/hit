@@ -3,6 +3,7 @@ package model.persistence;
 import java.io.File;
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -177,14 +178,16 @@ public class RdbDao extends InventoryDao implements Observer {
 				ProductQuantity quantity = productQuantityIdToReference.get(quantityId);
 
 				Set<ProductContainer> containers = productToContainer.get(id);
-				ProductContainer[] containerArray = (ProductContainer[]) containers.toArray();
 
-				Product p = new Product(barcode, description, creationDate, shelfLife, tms,
-						quantity, containerArray[0], hit.getProductManager());
-
-				for (int i = 1; i < containerArray.length; i++) {
-					containerArray[i].add(p);
-					p.addContainer(containerArray[i]);
+				Product p = null;
+				for (ProductContainer pc : containers) {
+					if (p == null) {
+						p = new Product(barcode, description, creationDate, shelfLife, tms,
+								quantity, pc, hit.getProductManager());
+					} else {
+						pc.add(p);
+						p.addContainer(pc);
+					}
 				}
 
 				productIdToReference.put(id, p);
@@ -397,22 +400,28 @@ public class RdbDao extends InventoryDao implements Observer {
 	private void insertItem(Item i) {
 		try {
 			Connection connection = DriverManager.getConnection("jdbc:sqlite:" + dbFile);
-			Statement statement = connection.createStatement();
-
-			Long exitTime = 0l;
-			if (i.getExitTime() != null)
-				exitTime = i.getExitTime().getTime();
-			else
-				exitTime = null;
+			PreparedStatement statement = connection
+					.prepareStatement("INSERT INTO Item VALUES(null,?,?,?,?,?,?)");
 
 			Integer productId = referenceToId.get(i.getProduct());
 			Integer containerId = referenceToId.get(i.getContainer());
 
-			String stmt = "INSERT INTO Item VALUES(null, " + i.getEntryDate().getTime() + ", "
-					+ exitTime + ", " + i.getBarcode() + ", "
-					+ i.getExpirationDate().getTime() + ", " + productId + ", " + containerId;
+			statement.setLong(1, i.getEntryDate().getTime());
+			if (i.getExitTime() != null) {
+				statement.setLong(2, i.getExitTime().getTime());
+			} else {
+				statement.setNull(2, java.sql.Types.DATE);
+			}
+			statement.setString(3, i.getBarcode());
+			if (i.getExpirationDate() != null) {
+				statement.setLong(4, i.getExpirationDate().getTime());
+			} else {
+				statement.setNull(4, java.sql.Types.DATE);
+			}
+			statement.setInt(5, productId);
+			statement.setInt(6, containerId);
 
-			statement.executeUpdate(stmt);
+			statement.execute();
 		} catch (SQLException ex) {
 			ex.printStackTrace();
 		}
@@ -447,8 +456,8 @@ public class RdbDao extends InventoryDao implements Observer {
 			Set<ProductContainer> containers = p.getProductContainers();
 			for (ProductContainer pc : containers) {
 				Integer containerId = referenceToId.get(pc);
-				insertStatement = "INSERT INTO Product_has_ProductContainer VALUES(null,"
-						+ key + "," + containerId + ")";
+				insertStatement = "INSERT INTO Product_has_ProductContainer VALUES(" + key
+						+ "," + containerId + ")";
 				statement.executeUpdate(insertStatement);
 			}
 

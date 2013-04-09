@@ -81,6 +81,7 @@ public class Item implements Comparable<Object>, Serializable, InventoryVisitabl
 		this.product = product;
 		this.barcode = barcode;
 		this.manager = manager;
+		exitTime = null;
 		setEntryDate(entryDate);
 		setExpirationDate();
 		setContainer(container);
@@ -187,9 +188,6 @@ public class Item implements Comparable<Object>, Serializable, InventoryVisitabl
 	 * @post true
 	 */
 	public Date getExitTime() {
-		if (container != null) {
-			throw new IllegalStateException("Container container should be null");
-		}
 		return exitTime;
 	}
 
