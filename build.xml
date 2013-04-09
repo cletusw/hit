@@ -101,7 +101,7 @@
 
 	<path id="plugins-classpath">
 		<fileset dir="${plugins}">
-			<include name="AmazonApiPlugin.jar" />
+			<include name="**/*.jar" />
 		</fileset>
 	</path>
 
