@@ -859,6 +859,7 @@ public abstract class ProductContainer implements Comparable<ProductContainer>, 
 	 */
 	protected void registerItem(Item i) {
 		items.put(i.getBarcode(), i);
+		products.put(i.getProductBarcode(), i.getProduct());
 		i.setContainer(this);
 		i.getProduct().addItem(i);
 		Set<Item> newItemsForProduct;
