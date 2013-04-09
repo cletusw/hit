@@ -90,9 +90,11 @@ public abstract class InventoryListener {
 			} else {
 				items = container.getItemsForProduct(product);
 			}
-			for (Item item : items) {
-				ItemData id = DataWrapper.wrap(item);
-				itemsToDisplay.add(id);
+			if (items != null) {
+				for (Item item : items) {
+					ItemData id = DataWrapper.wrap(item);
+					itemsToDisplay.add(id);
+				}
 			}
 		}
 
@@ -140,8 +142,12 @@ public abstract class InventoryListener {
 			ProductContainer selected = (ProductContainer) selectedContainer.getTag();
 			if (selected != null) {
 				for (Product p : selected.getProducts()) {
-					int count = selected.getItemsForProduct(p).size();
-					productDataList.add(DataWrapper.wrap(p, count));
+					if (selected.getItemsForProduct(p) != null) {
+						int count = selected.getItemsForProduct(p).size();
+						productDataList.add(DataWrapper.wrap(p, count));
+					} else {
+						productDataList.add(DataWrapper.wrap(p, 0));
+					}
 				}
 				// Update contextView
 				ProductContainer currentContainer = (ProductContainer) selectedContainer
