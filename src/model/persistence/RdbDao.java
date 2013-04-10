@@ -671,9 +671,6 @@ public class RdbDao extends InventoryDao implements Observer {
 					oldContainers.add(container);
 			}
 
-			if (oldContainers.size() == 0)
-				return;
-
 			// remove all the containers that should still be there
 			for (ProductContainer container : newContainers) {
 				oldContainers.remove(container);
