@@ -92,14 +92,14 @@ public class ProductIdentificationPluginManager {
 				}
 
 				plugin.setClient(httpClient);
-				ProductIdentificationPluginWrapper currentWrapper = new ProductIdentificationPluginWrapper(
+				ProductIdentificationPluginWrapper cur = new ProductIdentificationPluginWrapper(
 						plugin);
 				if (root == null) {
-					root = currentWrapper;
+					root = cur;
 				} else {
-					previousWrapper.setSuccessor(currentWrapper);
+					previousWrapper.setSuccessor(cur);
 				}
-				previousWrapper = currentWrapper;
+				previousWrapper = cur;
 			}
 			pluginsBufferedReader.close();
 		} catch (IOException e) {

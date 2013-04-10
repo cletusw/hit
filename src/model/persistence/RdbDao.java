@@ -445,7 +445,8 @@ public class RdbDao extends InventoryDao implements Observer {
 		try {
 			Connection connection = DriverManager.getConnection("jdbc:sqlite:" + dbFile);
 			PreparedStatement statement = connection
-					.prepareStatement("DELETE FROM Product_has_ProductContainer WHERE Product_id=? AND ProductContainer_id=?");
+					.prepareStatement("DELETE FROM Product_has_ProductContainer "
+							+ "WHERE Product_id=? AND ProductContainer_id=?");
 
 			Integer productId = referenceToId.get(p);
 			// get all containers the model finds this product in
@@ -674,7 +675,8 @@ public class RdbDao extends InventoryDao implements Observer {
 			Connection connection = DriverManager.getConnection("jdbc:sqlite:" + dbFile);
 
 			PreparedStatement statement = connection
-					.prepareStatement("DELETE FROM Product_has_ProductContainer WHERE Product_id=? AND ProductContainer_id=?");
+					.prepareStatement("DELETE FROM Product_has_ProductContainer "
+							+ "WHERE Product_id=? AND ProductContainer_id=?");
 
 			Integer productId = referenceToId.get(product);
 
@@ -725,7 +727,8 @@ public class RdbDao extends InventoryDao implements Observer {
 				if (i.getContainer() != null) { // moved containers
 					statement = connection
 							.prepareStatement("UPDATE Item SET entryDate=?, exitTime=?,"
-									+ "barcode=?, expirationDate=?, Product_id=?, ProductContainer_id=?"
+									+ "barcode=?, expirationDate=?, "
+									+ "Product_id=?, ProductContainer_id=?"
 									+ "WHERE Item_id=?");
 
 					Integer containerId = referenceToId.get(i.getContainer());
@@ -792,7 +795,8 @@ public class RdbDao extends InventoryDao implements Observer {
 				PreparedStatement statement = connection
 						.prepareStatement("UPDATE Product SET creationDate=?,"
 								+ "description=?,"
-								+ "ProductQuantity_id=?, shelfLife=?, threeMonthSupply=? WHERE Product_id=?");
+								+ "ProductQuantity_id=?, shelfLife=?, threeMonthSupply=? "
+								+ "WHERE Product_id=?");
 
 				statement.setLong(1, p.getCreationDate().getTime());
 				statement.setString(2, p.getDescription());
@@ -826,7 +830,8 @@ public class RdbDao extends InventoryDao implements Observer {
 				for (ProductContainer newContainer : newContainers) {
 					Integer newContainerId = referenceToId.get(newContainer);
 					PreparedStatement insertStatement = connection
-							.prepareStatement("INSERT INTO Product_has_ProductContainer VALUES(?, ?)");
+							.prepareStatement("INSERT INTO Product_has_ProductContainer "
+									+ "VALUES(?, ?)");
 					insertStatement.setInt(1, productId);
 					insertStatement.setInt(2, newContainerId);
 					try {
@@ -852,7 +857,8 @@ public class RdbDao extends InventoryDao implements Observer {
 
 				// check if we need to update the product quantity
 				PreparedStatement statement = connection
-						.prepareStatement("UPDATE ProductContainer SET name=? WHERE ProductContainer_id=?");
+						.prepareStatement("UPDATE ProductContainer SET name=?"
+								+ " WHERE ProductContainer_id=?");
 				statement.setString(1, pc.getName());
 				statement.setInt(2, containerId);
 				statement.execute();
@@ -861,7 +867,8 @@ public class RdbDao extends InventoryDao implements Observer {
 					// modify ProductGroup
 					ProductGroup pg = (ProductGroup) pc;
 					PreparedStatement quantityStatement = connection
-							.prepareStatement("SELECT * FROM ProductGroup WHERE ProductGroup_id=?");
+							.prepareStatement("SELECT * FROM ProductGroup"
+									+ " WHERE ProductGroup_id=?");
 					quantityStatement.setInt(1, containerId);
 					quantityStatement.execute();
 					ResultSet quantityR = quantityStatement.getResultSet();
@@ -881,8 +888,9 @@ public class RdbDao extends InventoryDao implements Observer {
 
 					Integer parentId = referenceToId.get(pg.getContainer());
 
-					statement = connection
-							.prepareStatement("UPDATE ProductGroup SET ProductQuantity_id=?, parent=? WHERE ProductGroup_id=?");
+					statement = connection.prepareStatement("UPDATE ProductGroup"
+							+ " SET ProductQuantity_id=?, parent=?"
+							+ " WHERE ProductGroup_id=?");
 					statement.setInt(1, quantityId);
 					statement.setInt(2, parentId);
 					statement.setInt(3, containerId);
