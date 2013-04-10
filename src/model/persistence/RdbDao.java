@@ -482,6 +482,34 @@ public class RdbDao extends InventoryDao implements Observer {
 	}
 
 	private void deleteProductContainer(ProductContainer pc) {
+		Integer containerId = referenceToId.get(pc);
+		try {
+			Connection connection = DriverManager.getConnection("jdbc:sqlite:" + dbFile);
+			PreparedStatement statement = connection
+					.prepareStatement("DELETE FROM ProductContainer WHERE ProductContainer_id=?");
+			statement.setInt(1, containerId);
+			statement.execute();
+
+			if (pc instanceof StorageUnit) {
+				statement = connection
+						.prepareStatement("DELETE FROM StorageUnit WHERE StorageUnit_id=?");
+				statement.setInt(1, containerId);
+				statement.execute();
+			}
+
+			if (pc instanceof ProductGroup) {
+				statement = connection
+						.prepareStatement("DELETE FROM ProductGroup WHERE ProductGroup_id=?");
+				statement.setInt(1, containerId);
+				statement.execute();
+			}
+
+			referenceToId.remove(pc);
+			productContainerIdToReference.remove(containerId);
+		} catch (SQLException ex) {
+			ex.printStackTrace();
+		}
+
 	}
 
 	private void insertItem(Item i) {
