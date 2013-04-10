@@ -22,8 +22,8 @@ public class ProductGenerator {
 		int currentYear = now.getYear();
 		for (int i = 0; i < minMonths; i++) {
 			currentMonth--;
-			if (currentMonth == 0) {
-				currentMonth = 12;
+			if (currentMonth < 0) {
+				currentMonth = 11;
 				currentYear--;
 			}
 		}
@@ -32,8 +32,8 @@ public class ProductGenerator {
 		millisLatest = latestDate.getTime();
 		for (int i = minMonths; i < maxMonths; i++) {
 			currentMonth--;
-			if (currentMonth == 0) {
-				currentMonth = 12;
+			if (currentMonth < 0) {
+				currentMonth = 11;
 				currentYear--;
 			}
 		}

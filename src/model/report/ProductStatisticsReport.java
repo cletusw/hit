@@ -18,11 +18,11 @@ import model.report.builder.ReportBuilder;
 
 @SuppressWarnings("serial")
 public class ProductStatisticsReport extends Report {
-	private ItemManager itemManager;
-	private ProductManager productManager;
+	private final ItemManager itemManager;
+	private final ProductManager productManager;
 	private final long millisPerDay = 86400000;
 
-	private List<String> headers = Arrays.asList("Description", "Barcode", "Size",
+	private final List<String> headers = Arrays.asList("Description", "Barcode", "Size",
 			"3-Month Supply", "Supply: Cur/Avg", "Supply: Min/Max", "Supply Used/Added",
 			"Shelf Life", "Used Age: Avg/Max", "Cur Age: Avg/Max");
 
@@ -172,6 +172,7 @@ public class ProductStatisticsReport extends Report {
 	}
 
 	private double getAverageSupply(Product product, Date startDate) {
+
 		// yesterday's count
 		int current = getInitialCount(product, startDate);
 		double count = 0;
@@ -194,8 +195,12 @@ public class ProductStatisticsReport extends Report {
 			long days = getDaysDifference(lastChange, today) + 1; // for end of day
 			count += (days * current);
 		}
-
-		return count / (getDaysDifference(startDate, today) + 1);
+		double averageSupply = count / (getDaysDifference(startDate, today) + 1);
+		if (averageSupply > 0) {
+			System.out.println("Average Supply PSR: " + averageSupply + " "
+					+ startDate.toString());
+		}
+		return averageSupply;
 	}
 
 	private int getCurrentSupply(Product product) {

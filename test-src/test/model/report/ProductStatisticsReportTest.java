@@ -28,6 +28,9 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
+import builder.model.ItemBuilder;
+import builder.model.ProductBuilder;
+
 public class ProductStatisticsReportTest extends EasyMockSupport {
 	private static List<String> productsHeaders() {
 		return Arrays.asList("Description", "Barcode", "Size", "3-Month Supply",
@@ -82,9 +85,49 @@ public class ProductStatisticsReportTest extends EasyMockSupport {
 		verifyAll();
 	}
 
+	@Test
+	public void testGetAverageSupply() {
+		Date now = new Date();
+		int months = 3;
+		ReportBuilder mockBuilder = createMock(ReportBuilder.class);
+
+		// Expect:
+		mockBuilder.addDocumentTitle("Product Report (" + months + " Months)");
+
+		mockBuilder.startTable(productsHeaders());
+
+		// Test a product added just now with an item added at the same time
+		Product product = new ProductBuilder().creationDate(new Date(now.getTime() - 50000))
+				.productManager(productManager).build();
+		Item item = new ItemBuilder().entryDate(new Date(now.getTime() - 50000))
+				.manager(itemManager).build();
+
+		mockBuilder.addTableRow(asTableRow(product, months, 0 /* avgSupply */,
+				0 /* minSupply */, 0 /* maxSupply */, 0 /* usedSupply */, 0 /* addedSupply */,
+				0 /* avgUsedAge */, 0 /* maxUsedAge */, 0 /* curAvgAge */, 0 /* curMaxAge */));
+
+		// Test a product added two days ago with an item added at the same time
+		Product product2 = new ProductBuilder()
+				.creationDate(new Date(now.getTime() - 2 * millisPerDay))
+				.productManager(productManager).build();
+		Item item2 = new ItemBuilder().entryDate(product2.getCreationDate())
+				.manager(itemManager).build();
+
+		mockBuilder.addTableRow(asTableRow(product2, months, 1 /* avgSupply */,
+				1 /* minSupply */, 1 /* maxSupply */, 0 /* usedSupply */, 1 /* addedSupply */,
+				0 /* avgUsedAge */, 0 /* maxUsedAge */, 2 /* curAvgAge */, 2 /* curMaxAge */));
+
+		replayAll();
+
+		report.construct(mockBuilder, months);
+
+		verifyAll();
+	}
+
 	@SuppressWarnings("deprecation")
 	@Test
 	public void testOneProductOneItem() {
+		System.out.println("One product one item");
 		ProductContainerManager productContainerManager = new ConcreteProductContainerManager();
 		ProductStatisticsReport report = new ProductStatisticsReport(itemManager,
 				productManager);
@@ -105,14 +148,65 @@ public class ProductStatisticsReportTest extends EasyMockSupport {
 		verifyAll();
 	}
 
+	@SuppressWarnings("deprecation")
+	@Test
+	public void testOneProductZeroItems() {
+		ProductContainerManager productContainerManager = new ConcreteProductContainerManager();
+		ProductStatisticsReport report = new ProductStatisticsReport(itemManager,
+				productManager);
+		int months = 3;
+		Product product = productGenerator.createProductInDateRange(0, months);
+
+		// Expect:
+		mockBuilder.addDocumentTitle("Product Report (3 Months)");
+
+		mockBuilder.startTable(productsHeaders());
+		// d,b,pq,nms, curS/avS, minS/maxS, used/added, sl, usedAge:av/max, curAge:av/max
+		mockBuilder.addTableRow(asTableRow(product, months));
+		replayAll();
+
+		report.construct(mockBuilder, 3);
+
+		verifyAll();
+	}
+
+	@Test
+	public void testPreviouslyRemovedItemsNotIncluded() {
+		ProductGenerator productGenerator = new ProductGenerator(productManager);
+		int months = 3;
+		ReportBuilder mockBuilder = createMock(ReportBuilder.class);
+		Set<Product> productsInPeriod = new TreeSet<Product>();
+		for (int i = 0; i < 1000; i++) {
+			productsInPeriod.add(productGenerator.createProductInDateRange(0, months));
+		}
+
+		// Expect:
+		mockBuilder.addDocumentTitle("Product Report (" + months + " Months)");
+
+		mockBuilder.startTable(productsHeaders());
+
+		for (Product product : productsInPeriod)
+			mockBuilder.addTableRow(asTableRow(product, months));
+
+		replayAll();
+
+		report.construct(mockBuilder, months);
+
+		verifyAll();
+	}
+
 	@Test
 	public void testProductsIncluded100Months() {
 		ProductGenerator productGenerator = new ProductGenerator(productManager);
 		int months = 100;
 		ReportBuilder mockBuilder = createMock(ReportBuilder.class);
 		Set<Product> productsInPeriod = new TreeSet<Product>();
-		for (int i = 0; i < 100; i++) {
-			productsInPeriod.add(productGenerator.createProductInDateRange(0, months));
+		for (int i = 0; i < 1; i++) {
+			Product product = productGenerator.createProductInDateRange(0, months);
+			productsInPeriod.add(product);
+			int numberOfItems = (int) (Math.random() * 100);
+			for (int j = 0; j < numberOfItems; j++)
+				itemGenerator.createItemAtRandomTime(product);
 		}
 
 		// Expect:
@@ -186,7 +280,7 @@ public class ProductStatisticsReportTest extends EasyMockSupport {
 		int months = 99;
 		ReportBuilder mockBuilder = createMock(ReportBuilder.class);
 		Set<Product> productsInPeriod = new TreeSet<Product>();
-		for (int i = 0; i < 1; i++) {
+		for (int i = 0; i < 100; i++) {
 			productsInPeriod.add(productGenerator.createProductInDateRange(0, months));
 		}
 
@@ -241,7 +335,17 @@ public class ProductStatisticsReportTest extends EasyMockSupport {
 	private List<String> asTableRow(Product product, int months) {
 		Date now = new Date();
 		Date startDate = new Date(now.getTime());
-		startDate.setMonth(now.getMonth() - months);
+		int currentYear = startDate.getYear();
+		int currentMonth = startDate.getMonth();
+		for (int i = 0; i < months; i++) {
+			currentMonth--;
+			if (currentMonth < 0) {
+				currentMonth = 11;
+				currentYear--;
+			}
+		}
+		startDate.setMonth(currentMonth);
+		startDate.setMonth(currentYear);
 		DecimalFormat twoDForm = new DecimalFormat("#.##");
 		return Arrays.asList(
 				product.getDescription(),
@@ -249,7 +353,7 @@ public class ProductStatisticsReportTest extends EasyMockSupport {
 				product.getProductQuantity().toString(),
 				Integer.toString(product.getThreeMonthSupply()),
 				Integer.toString(product.getCurrentSupply()) + "/"
-						+ twoDForm.format(getAverageSupply(product, startDate)),
+						+ twoDForm.format(getAverageSupply(product, now)),
 				Integer.toString(getMinSupply(product, startDate)) + "/"
 						+ Integer.toString(getMaxSupply(product, startDate)),
 				"" + getUsedItemCount(product, startDate) + "/"
@@ -363,7 +467,12 @@ public class ProductStatisticsReportTest extends EasyMockSupport {
 			count += (days * current);
 		}
 
-		return count / (getDaysDifference(startDate, today) + 1);
+		double averageSupply = count / (getDaysDifference(startDate, today) + 1);
+		if (averageSupply > 0) {
+			System.out.println("Average Supply Test: " + averageSupply + " "
+					+ startDate.toString());
+		}
+		return averageSupply;
 	}
 
 	private int getCurrentSupply(Product product) {
