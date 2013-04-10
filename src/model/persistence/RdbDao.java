@@ -311,6 +311,8 @@ public class RdbDao extends InventoryDao implements Observer {
 				deleteProductContainer((ProductContainer) obj);
 			break;
 		case EDIT:
+			if (obj instanceof Item)
+				updateItem((Item) obj);
 			break;
 		case INVISIBLE_EDIT:
 			break;
