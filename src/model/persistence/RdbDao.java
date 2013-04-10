@@ -526,6 +526,28 @@ public class RdbDao extends InventoryDao implements Observer {
 	private void insertItem(Item i) {
 		try {
 			Connection connection = DriverManager.getConnection("jdbc:sqlite:" + dbFile);
+
+			PreparedStatement selectStmt = connection
+					.prepareStatement("SELECT * FROM Item WHERE barcode=?");
+			selectStmt.setString(1, i.getBarcode());
+			selectStmt.execute();
+			ResultSet results = selectStmt.getResultSet();
+			if (results.next()) {
+				Integer itemId = results.getInt(1);
+				results.close();
+				Integer pcId = referenceToId.get(i.getContainer());
+
+				PreparedStatement updateStatement = connection
+						.prepareStatement("UPDATE Item SET ProductContainer_id=?"
+								+ "WHERE Item_id=?");
+
+				updateStatement.setInt(1, pcId);
+				updateStatement.setInt(2, itemId);
+				updateStatement.execute();
+				return;
+			}
+			results.close();
+
 			PreparedStatement statement = connection
 					.prepareStatement("INSERT INTO Item VALUES(null,?,?,?,?,?,?)");
 
