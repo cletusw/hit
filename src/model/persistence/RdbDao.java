@@ -33,7 +33,6 @@ import model.report.NMonthSupplyReport;
 import model.report.NoticesReport;
 import model.report.ProductStatisticsReport;
 import model.report.RemovedItemsReport;
-import builder.model.ProductBuilder;
 
 /**
  * Observes the model and persists all changes made to it an a local MySQL database
@@ -183,15 +182,16 @@ public class RdbDao extends InventoryDao implements Observer {
 
 				Product p = null;
 				if (containers == null) {
-					p = new ProductBuilder().barcode(barcode).description(description)
-							.creationDate(creationDate).shelfLife(shelfLife)
-							.threeMonthSupply(tms).productQuantity(quantity)
-							.productManager(hit.getProductManager()).build();
+					ProductContainer container = new StorageUnit("INVALID",
+							hit.getProductContainerManager());
+					p = new Product(barcode, description, creationDate, shelfLife, tms,
+							quantity, container, hit.getProductManager());
 					// make sure to remove from default containers
 					for (ProductContainer pc : p.getProductContainers()) {
 						pc.remove(p);
 						p.removeContainer(pc);
 					}
+					hit.getProductContainerManager().unmanage(container);
 				} else {
 					for (ProductContainer pc : containers) {
 						if (p == null) {
