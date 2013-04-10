@@ -553,16 +553,15 @@ public class RdbDao extends InventoryDao implements Observer {
 		int shelfLife = p.getShelfLife();
 		int tms = p.getThreeMonthSupply();
 
-		insertProductQuantity(pq);
-
-		int pqId = referenceToId.get(pq);
-
-		String insertStatement = "INSERT INTO Product VALUES(null, " + creationDate + ","
-				+ "\"" + barcode + "\"," + "\"" + description + "\"," + pqId + "," + shelfLife
-				+ "," + tms + ")";
-
 		try {
 			Connection conn = DriverManager.getConnection("jdbc:sqlite:" + dbFile);
+			insertProductQuantity(pq, conn);
+
+			int pqId = referenceToId.get(pq);
+
+			String insertStatement = "INSERT INTO Product VALUES(null, " + creationDate + ","
+					+ "\"" + barcode + "\"," + "\"" + description + "\"," + pqId + ","
+					+ shelfLife + "," + tms + ")";
 			Statement statement = conn.createStatement();
 			statement.executeUpdate(insertStatement);
 			ResultSet set = statement.getGeneratedKeys();
@@ -602,7 +601,7 @@ public class RdbDao extends InventoryDao implements Observer {
 				referenceToId.put(pc, key);
 				productContainerIdToReference.put(key, pc);
 			} else if (pc instanceof ProductGroup) {
-				insertProductQuantity(((ProductGroup) pc).getThreeMonthSupply());
+				insertProductQuantity(((ProductGroup) pc).getThreeMonthSupply(), conn);
 
 				Integer parentId = referenceToId.get(((ProductGroup) pc).getContainer());
 				insertStatement = "INSERT INTO ProductGroup VALUES(" + key + ", "
@@ -617,9 +616,8 @@ public class RdbDao extends InventoryDao implements Observer {
 		}
 	}
 
-	private void insertProductQuantity(ProductQuantity pq) {
+	private void insertProductQuantity(ProductQuantity pq, Connection conn) {
 		try {
-			Connection conn = DriverManager.getConnection("jdbc:sqlite:" + dbFile);
 			Statement statement = conn.createStatement();
 			String insertStatement = "INSERT INTO ProductQuantity VALUES(null, "
 					+ pq.getQuantity() + ", " + unitToId.get(pq.getUnits().toDBString()) + ")";
@@ -705,7 +703,7 @@ public class RdbDao extends InventoryDao implements Observer {
 							&& quantity.getUnits() == p.getProductQuantity().getUnits()) {
 						// no change to product quantity
 					} else {
-						insertProductQuantity(p.getProductQuantity());
+						insertProductQuantity(p.getProductQuantity(), connection);
 						pqId = referenceToId.get(p.getProductQuantity());
 					}
 				}
@@ -777,14 +775,40 @@ public class RdbDao extends InventoryDao implements Observer {
 				statement.setString(1, pc.getName());
 				statement.setInt(2, containerId);
 				statement.execute();
-				ResultSet quantityResults = statement.getResultSet();
-				Integer pqId = null;
 
 				if (pc instanceof ProductGroup) {
 					// modify ProductGroup
+					ProductGroup pg = (ProductGroup) pc;
+					PreparedStatement quantityStatement = connection
+							.prepareStatement("SELECT * FROM ProductGroup WHERE ProductGroup_id=?");
+					quantityStatement.setInt(1, containerId);
+					quantityStatement.execute();
+					ResultSet quantityR = quantityStatement.getResultSet();
+					Integer quantityId = null;
+					while (quantityR.next()) {
+						quantityId = quantityR.getInt(2);
+						ProductQuantity quantity = productQuantityIdToReference
+								.get(quantityId);
+						if (quantity.getQuantity() == pg.getThreeMonthSupply().getQuantity()
+								&& quantity.getUnits() == pg.getThreeMonthSupply().getUnits()) {
+							// no change to product quantity
+						} else {
+							insertProductQuantity(pg.getThreeMonthSupply(), connection);
+							quantityId = referenceToId.get(pg.getThreeMonthSupply());
+						}
+					}
+
+					Integer parentId = referenceToId.get(pg.getContainer());
+
+					statement = connection
+							.prepareStatement("UPDATE ProductGroup SET ProductQuantity_id=?, parent=? WHERE ProductGroup_id=?");
+					statement.setInt(1, quantityId);
+					statement.setInt(2, parentId);
+					statement.setInt(3, containerId);
+					statement.execute();
 				}
 			} catch (SQLException ex) {
-
+				ex.printStackTrace();
 			}
 		} else {
 			System.out.println("Editing a nonexistant productcontainer " + pc.getName());
