@@ -174,7 +174,8 @@ public abstract class InventoryListener {
 						if (su.getItemsForProduct(p) != null)
 							count += su.getItemsForProduct(p).size();
 					}
-					productDataList.add(DataWrapper.wrap(p, count));
+					if (p.getProductContainers().size() > 0)
+						productDataList.add(DataWrapper.wrap(p, count));
 				}
 				view.setContextUnit("All");
 			}
