@@ -33,6 +33,7 @@ import model.report.NMonthSupplyReport;
 import model.report.NoticesReport;
 import model.report.ProductStatisticsReport;
 import model.report.RemovedItemsReport;
+import builder.model.ProductBuilder;
 
 /**
  * Observes the model and persists all changes made to it an a local MySQL database
@@ -181,16 +182,27 @@ public class RdbDao extends InventoryDao implements Observer {
 				Set<ProductContainer> containers = productToContainer.get(id);
 
 				Product p = null;
-				for (ProductContainer pc : containers) {
-					if (p == null) {
-						p = new Product(barcode, description, creationDate, shelfLife, tms,
-								quantity, pc, hit.getProductManager());
-					} else {
-						pc.add(p);
-						p.addContainer(pc);
+				if (containers == null) {
+					p = new ProductBuilder().barcode(barcode).description(description)
+							.creationDate(creationDate).shelfLife(shelfLife)
+							.threeMonthSupply(tms).productQuantity(quantity)
+							.productManager(hit.getProductManager()).build();
+					// make sure to remove from default containers
+					for (ProductContainer pc : p.getProductContainers()) {
+						pc.remove(p);
+						p.removeContainer(pc);
+					}
+				} else {
+					for (ProductContainer pc : containers) {
+						if (p == null) {
+							p = new Product(barcode, description, creationDate, shelfLife,
+									tms, quantity, pc, hit.getProductManager());
+						} else {
+							pc.add(p);
+							p.addContainer(pc);
+						}
 					}
 				}
-
 				productIdToReference.put(id, p);
 				referenceToId.put(p, id);
 			}
@@ -208,12 +220,19 @@ public class RdbDao extends InventoryDao implements Observer {
 				ProductContainer container = productContainerIdToReference.get(containerId);
 				Barcode code = new Barcode(barcode);
 
+				boolean removeProductFromContainer = !container.contains(product);
+
 				Item i = new Item(code, product, container, entryDate, hit.getItemManager());
 				i.setExpirationDate(expirationDate, this);
 
 				if (exitTime != null) {
 					container.remove(i, hit.getItemManager());
 					i.setExitDate(exitTime, this);
+				}
+
+				if (removeProductFromContainer) {
+					container.remove(product);
+					product.removeContainer(container);
 				}
 
 				itemIdToReference.put(itemId, i);
@@ -429,8 +448,12 @@ public class RdbDao extends InventoryDao implements Observer {
 			List<ProductContainer> oldContainers = new ArrayList<ProductContainer>();
 			while (rs.next()) {
 				ProductContainer container = productContainerIdToReference.get(rs.getInt(1));
-				oldContainers.add(container);
+				if (container != null)
+					oldContainers.add(container);
 			}
+
+			if (oldContainers.size() == 0)
+				return;
 
 			// remove all the containers that should still be there
 			for (ProductContainer container : newContainers) {
@@ -445,6 +468,14 @@ public class RdbDao extends InventoryDao implements Observer {
 			statement.setInt(2, containerId);
 
 			statement.execute();
+
+			// Check if the product has no more containers -- if so, remove it's row
+			/*
+			 * if (p.getProductContainers().size() == 0) { statement = connection
+			 * .prepareStatement("DELETE FROM Product WHERE Product_id=?"); statement.setInt(1,
+			 * productId); statement.execute(); referenceToId.remove(p);
+			 * productIdToReference.remove(productId); }
+			 */
 		} catch (SQLException ex) {
 			ex.printStackTrace();
 		}
@@ -538,6 +569,7 @@ public class RdbDao extends InventoryDao implements Observer {
 				insertStatement = "INSERT INTO StorageUnit VALUES (" + key + ")";
 				statement.executeUpdate(insertStatement);
 				referenceToId.put(pc, key);
+				productContainerIdToReference.put(key, pc);
 			} else if (pc instanceof ProductGroup) {
 				insertProductQuantity(((ProductGroup) pc).getThreeMonthSupply());
 
@@ -547,6 +579,7 @@ public class RdbDao extends InventoryDao implements Observer {
 						+ parentId + ")";
 				statement.executeUpdate(insertStatement);
 				referenceToId.put(pc, key);
+				productContainerIdToReference.put(key, pc);
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -566,6 +599,7 @@ public class RdbDao extends InventoryDao implements Observer {
 				key = set.getInt(1);
 
 			referenceToId.put(pq, key);
+			productQuantityIdToReference.put(key, pq);
 
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -674,7 +708,8 @@ public class RdbDao extends InventoryDao implements Observer {
 
 				// remove all the containers that should still be there
 				for (ProductContainer container : oldContainers) {
-					newContainers.remove(container);
+					if (container != null)
+						newContainers.remove(container);
 				}
 
 				// add the last newcontainer
@@ -684,6 +719,11 @@ public class RdbDao extends InventoryDao implements Observer {
 							.prepareStatement("INSERT INTO Product_has_ProductContainer VALUES(?, ?)");
 					insertStatement.setInt(1, productId);
 					insertStatement.setInt(2, newContainerId);
+					try {
+						insertStatement.execute();
+					} catch (SQLException ex) {// link already exists
+						System.out.println("p_id=" + productId + " pc_id=" + newContainerId);
+					}
 				}
 
 			} catch (SQLException ex) {
