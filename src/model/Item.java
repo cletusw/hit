@@ -48,6 +48,7 @@ public class Item implements Comparable<Object>, Serializable, InventoryVisitabl
 	private Date exitTime;
 	private final ItemManager manager;
 	private ProductContainer container;
+	private boolean notify = false;
 
 	/**
 	 * Constructs a new Item with the specified barcode, product, and container.
@@ -87,6 +88,7 @@ public class Item implements Comparable<Object>, Serializable, InventoryVisitabl
 		setContainer(container);
 		container.add(this);
 		manager.manage(this);
+		notify = true;
 	}
 
 	/**
@@ -284,7 +286,9 @@ public class Item implements Comparable<Object>, Serializable, InventoryVisitabl
 	public void setContainer(ProductContainer productContainer) {
 		// productContainer can be null if the item has been removed from the system.
 		container = productContainer;
-		manager.notifyObservers(new Action(this, ActionType.EDIT));
+		if (notify) {
+			manager.notifyObservers(new Action(this, ActionType.EDIT));
+		}
 	}
 
 	/**
@@ -344,8 +348,10 @@ public class Item implements Comparable<Object>, Serializable, InventoryVisitabl
 		else
 			expirationDate = new Date(d.getYear(), d.getMonth() + product.getShelfLife(),
 					d.getDate());
-		// TODO: Store the manager locally so we can do this:
-		manager.notifyObservers(new Action(this, ActionType.EDIT));
+
+		if (notify) {
+			manager.notifyObservers(new Action(this, ActionType.EDIT));
+		}
 	}
 
 	/**
