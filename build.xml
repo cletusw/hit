@@ -310,6 +310,7 @@
 				<fileset dir="${test-src}">
 					<include name="**/*.java"/>
 					<exclude name="**/builder/**/*.java"/>
+					<exclude name="**/generators/**/*.java"/>
 				</fileset>
 			</batchtest>
 		</junit>
