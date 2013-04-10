@@ -337,6 +337,9 @@ public class RdbDao extends InventoryDao implements Observer {
 
 			if (obj instanceof Product)
 				updateProduct((Product) obj);
+
+			if (obj instanceof ProductContainer)
+				updateProductContainer((ProductContainer) obj);
 			break;
 		case INVISIBLE_EDIT:
 			break;
@@ -759,6 +762,32 @@ public class RdbDao extends InventoryDao implements Observer {
 			}
 		} else {
 			System.out.println("Tried to update nonexistant Product " + p.getDescription());
+		}
+	}
+
+	private void updateProductContainer(ProductContainer pc) {
+		Integer containerId = referenceToId.get(pc);
+		if (containerId != null) {
+			try {
+				Connection connection = DriverManager.getConnection("jdbc:sqlite:" + dbFile);
+
+				// check if we need to update the product quantity
+				PreparedStatement statement = connection
+						.prepareStatement("UPDATE ProductContainer SET name=? WHERE ProductContainer_id=?");
+				statement.setString(1, pc.getName());
+				statement.setInt(2, containerId);
+				statement.execute();
+				ResultSet quantityResults = statement.getResultSet();
+				Integer pqId = null;
+
+				if (pc instanceof ProductGroup) {
+					// modify ProductGroup
+				}
+			} catch (SQLException ex) {
+
+			}
+		} else {
+			System.out.println("Editing a nonexistant productcontainer " + pc.getName());
 		}
 	}
 }
