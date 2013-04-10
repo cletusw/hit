@@ -3,12 +3,15 @@ package model.persistence;
 import java.io.File;
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
 import java.util.Observable;
 import java.util.Observer;
@@ -30,6 +33,7 @@ import model.report.NMonthSupplyReport;
 import model.report.NoticesReport;
 import model.report.ProductStatisticsReport;
 import model.report.RemovedItemsReport;
+import builder.model.ProductBuilder;
 
 /**
  * Observes the model and persists all changes made to it an a local MySQL database
@@ -40,7 +44,6 @@ import model.report.RemovedItemsReport;
  */
 public class RdbDao extends InventoryDao implements Observer {
 	private static final String dbFile = "inventory.sqlite";
-	private Connection connection;
 
 	// Used when persisting to DB
 	private Map<Object, Integer> referenceToId;
@@ -78,7 +81,6 @@ public class RdbDao extends InventoryDao implements Observer {
 
 	@Override
 	public void applicationClose(HomeInventoryTracker hit) {
-		// update the report last runtime???
 	}
 
 	@Override
@@ -95,7 +97,7 @@ public class RdbDao extends InventoryDao implements Observer {
 			}
 
 			Class.forName("org.sqlite.JDBC");
-			connection = DriverManager.getConnection("jdbc:sqlite:" + dbFile);
+			Connection connection = DriverManager.getConnection("jdbc:sqlite:" + dbFile);
 			Statement statement = connection.createStatement();
 			ResultSet results = statement.executeQuery("SELECT * FROM ProductContainer "
 					+ "INNER JOIN StorageUnit "
@@ -178,16 +180,29 @@ public class RdbDao extends InventoryDao implements Observer {
 				ProductQuantity quantity = productQuantityIdToReference.get(quantityId);
 
 				Set<ProductContainer> containers = productToContainer.get(id);
-				ProductContainer[] containerArray = (ProductContainer[]) containers.toArray();
 
-				Product p = new Product(barcode, description, creationDate, shelfLife, tms,
-						quantity, containerArray[0], hit.getProductManager());
-
-				for (int i = 1; i < containerArray.length; i++) {
-					containerArray[i].add(p);
-					p.addContainer(containerArray[i]);
+				Product p = null;
+				if (containers == null) {
+					p = new ProductBuilder().barcode(barcode).description(description)
+							.creationDate(creationDate).shelfLife(shelfLife)
+							.threeMonthSupply(tms).productQuantity(quantity)
+							.productManager(hit.getProductManager()).build();
+					// make sure to remove from default containers
+					for (ProductContainer pc : p.getProductContainers()) {
+						pc.remove(p);
+						p.removeContainer(pc);
+					}
+				} else {
+					for (ProductContainer pc : containers) {
+						if (p == null) {
+							p = new Product(barcode, description, creationDate, shelfLife,
+									tms, quantity, pc, hit.getProductManager());
+						} else {
+							pc.add(p);
+							p.addContainer(pc);
+						}
+					}
 				}
-
 				productIdToReference.put(id, p);
 				referenceToId.put(p, id);
 			}
@@ -205,12 +220,19 @@ public class RdbDao extends InventoryDao implements Observer {
 				ProductContainer container = productContainerIdToReference.get(containerId);
 				Barcode code = new Barcode(barcode);
 
+				boolean removeProductFromContainer = !container.contains(product);
+
 				Item i = new Item(code, product, container, entryDate, hit.getItemManager());
 				i.setExpirationDate(expirationDate, this);
 
 				if (exitTime != null) {
 					container.remove(i, hit.getItemManager());
 					i.setExitDate(exitTime, this);
+				}
+
+				if (removeProductFromContainer) {
+					container.remove(product);
+					product.removeContainer(container);
 				}
 
 				itemIdToReference.put(itemId, i);
@@ -300,8 +322,21 @@ public class RdbDao extends InventoryDao implements Observer {
 
 			break;
 		case DELETE:
+			if (obj instanceof Item)
+				updateItem((Item) obj); // don't delete the item, just update the row.
+
+			if (obj instanceof Product)
+				deleteProduct((Product) obj);
+
+			if (obj instanceof ProductContainer)
+				deleteProductContainer((ProductContainer) obj);
 			break;
 		case EDIT:
+			if (obj instanceof Item)
+				updateItem((Item) obj);
+
+			if (obj instanceof Product)
+				updateProduct((Product) obj);
 			break;
 		case INVISIBLE_EDIT:
 			break;
@@ -312,6 +347,8 @@ public class RdbDao extends InventoryDao implements Observer {
 	}
 
 	private void createSchema() throws SQLException {
+		Connection connection = DriverManager.getConnection("jdbc:sqlite:" + dbFile);
+
 		Statement statement = connection.createStatement();
 		statement.setQueryTimeout(30);
 
@@ -393,24 +430,85 @@ public class RdbDao extends InventoryDao implements Observer {
 		connection.close();
 	}
 
+	private void deleteProduct(Product p) {
+		try {
+			Connection connection = DriverManager.getConnection("jdbc:sqlite:" + dbFile);
+			PreparedStatement statement = connection
+					.prepareStatement("DELETE FROM Product_has_ProductContainer WHERE Product_id=? AND ProductContainer_id=?");
+
+			Integer productId = referenceToId.get(p);
+			// get all containers the model finds this product in
+			Set<ProductContainer> newContainers = p.getProductContainers();
+
+			// get all containers the db finds this product in
+			PreparedStatement st = connection
+					.prepareStatement("SELECT * FROM Product_has_ProductContainer");
+			st.execute();
+			ResultSet rs = st.getResultSet();
+			List<ProductContainer> oldContainers = new ArrayList<ProductContainer>();
+			while (rs.next()) {
+				ProductContainer container = productContainerIdToReference.get(rs.getInt(1));
+				if (container != null)
+					oldContainers.add(container);
+			}
+
+			if (oldContainers.size() == 0)
+				return;
+
+			// remove all the containers that should still be there
+			for (ProductContainer container : newContainers) {
+				oldContainers.remove(container);
+			}
+
+			// get the only one left -- that's the one to remove
+			ProductContainer containerToRemove = oldContainers.get(0);
+			Integer containerId = referenceToId.get(containerToRemove);
+
+			statement.setInt(1, productId);
+			statement.setInt(2, containerId);
+
+			statement.execute();
+
+			// Check if the product has no more containers -- if so, remove it's row
+			/*
+			 * if (p.getProductContainers().size() == 0) { statement = connection
+			 * .prepareStatement("DELETE FROM Product WHERE Product_id=?"); statement.setInt(1,
+			 * productId); statement.execute(); referenceToId.remove(p);
+			 * productIdToReference.remove(productId); }
+			 */
+		} catch (SQLException ex) {
+			ex.printStackTrace();
+		}
+	}
+
+	private void deleteProductContainer(ProductContainer pc) {
+	}
+
 	private void insertItem(Item i) {
 		try {
-			Statement statement = connection.createStatement();
-
-			Long exitTime = 0l;
-			if (i.getExitTime() != null)
-				exitTime = i.getExitTime().getTime();
-			else
-				exitTime = null;
+			Connection connection = DriverManager.getConnection("jdbc:sqlite:" + dbFile);
+			PreparedStatement statement = connection
+					.prepareStatement("INSERT INTO Item VALUES(null,?,?,?,?,?,?)");
 
 			Integer productId = referenceToId.get(i.getProduct());
 			Integer containerId = referenceToId.get(i.getContainer());
 
-			String stmt = "INSERT INTO Item VALUES(null, " + i.getEntryDate().getTime() + ", "
-					+ exitTime + ", " + i.getBarcode() + ", "
-					+ i.getExpirationDate().getTime() + ", " + productId + ", " + containerId;
+			statement.setLong(1, i.getEntryDate().getTime());
+			if (i.getExitTime() != null) {
+				statement.setLong(2, i.getExitTime().getTime());
+			} else {
+				statement.setNull(2, java.sql.Types.DATE);
+			}
+			statement.setString(3, i.getBarcode());
+			if (i.getExpirationDate() != null) {
+				statement.setLong(4, i.getExpirationDate().getTime());
+			} else {
+				statement.setNull(4, java.sql.Types.DATE);
+			}
+			statement.setInt(5, productId);
+			statement.setInt(6, containerId);
 
-			statement.executeUpdate(stmt);
+			statement.execute();
 		} catch (SQLException ex) {
 			ex.printStackTrace();
 		}
@@ -433,7 +531,8 @@ public class RdbDao extends InventoryDao implements Observer {
 				+ "," + tms + ")";
 
 		try {
-			Statement statement = connection.createStatement();
+			Connection conn = DriverManager.getConnection("jdbc:sqlite:" + dbFile);
+			Statement statement = conn.createStatement();
 			statement.executeUpdate(insertStatement);
 			ResultSet set = statement.getGeneratedKeys();
 			int key = -1;
@@ -442,13 +541,12 @@ public class RdbDao extends InventoryDao implements Observer {
 			referenceToId.put(p, key);
 
 			Set<ProductContainer> containers = p.getProductContainers();
-			if (containers.size() == 1)
-				for (ProductContainer pc : containers) {
-					Integer containerId = referenceToId.get(pc);
-					insertStatement = "INSERT INTO Product_has_ProductContainer VALUES(null,"
-							+ key + "," + containerId + ")";
-					statement.executeUpdate(insertStatement);
-				}
+			for (ProductContainer pc : containers) {
+				Integer containerId = referenceToId.get(pc);
+				insertStatement = "INSERT INTO Product_has_ProductContainer VALUES(" + key
+						+ "," + containerId + ")";
+				statement.executeUpdate(insertStatement);
+			}
 
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -458,8 +556,10 @@ public class RdbDao extends InventoryDao implements Observer {
 	private void insertProductContainer(ProductContainer pc) {
 		String name = pc.getName();
 		String insertStatement = "INSERT INTO ProductContainer VALUES(null, \"" + name + "\")";
+		Connection conn;
 		try {
-			Statement statement = connection.createStatement();
+			conn = DriverManager.getConnection("jdbc:sqlite:" + dbFile);
+			Statement statement = conn.createStatement();
 			statement.executeUpdate(insertStatement);
 			ResultSet set = statement.getGeneratedKeys();
 			int key = -1;
@@ -469,6 +569,7 @@ public class RdbDao extends InventoryDao implements Observer {
 				insertStatement = "INSERT INTO StorageUnit VALUES (" + key + ")";
 				statement.executeUpdate(insertStatement);
 				referenceToId.put(pc, key);
+				productContainerIdToReference.put(key, pc);
 			} else if (pc instanceof ProductGroup) {
 				insertProductQuantity(((ProductGroup) pc).getThreeMonthSupply());
 
@@ -478,6 +579,7 @@ public class RdbDao extends InventoryDao implements Observer {
 						+ parentId + ")";
 				statement.executeUpdate(insertStatement);
 				referenceToId.put(pc, key);
+				productContainerIdToReference.put(key, pc);
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -486,7 +588,8 @@ public class RdbDao extends InventoryDao implements Observer {
 
 	private void insertProductQuantity(ProductQuantity pq) {
 		try {
-			Statement statement = connection.createStatement();
+			Connection conn = DriverManager.getConnection("jdbc:sqlite:" + dbFile);
+			Statement statement = conn.createStatement();
 			String insertStatement = "INSERT INTO ProductQuantity VALUES(null, "
 					+ pq.getQuantity() + ", " + unitToId.get(pq.getUnits().toDBString()) + ")";
 			statement.executeUpdate(insertStatement);
@@ -496,9 +599,138 @@ public class RdbDao extends InventoryDao implements Observer {
 				key = set.getInt(1);
 
 			referenceToId.put(pq, key);
+			productQuantityIdToReference.put(key, pq);
 
 		} catch (SQLException e) {
 			e.printStackTrace();
+		}
+	}
+
+	private void updateItem(Item i) {
+		Integer itemId = referenceToId.get(i);
+		if (itemId != null) {
+			try {
+				Connection connection = DriverManager.getConnection("jdbc:sqlite:" + dbFile);
+				PreparedStatement statement;
+				if (i.getContainer() != null) { // moved containers
+					statement = connection
+							.prepareStatement("UPDATE Item SET entryDate=?, exitTime=?,"
+									+ "barcode=?, expirationDate=?, Product_id=?, ProductContainer_id=?"
+									+ "WHERE Item_id=?");
+
+					Integer containerId = referenceToId.get(i.getContainer());
+					statement.setInt(6, containerId);
+					statement.setInt(7, itemId);
+				} else { // removed -- update everything but leave the reference to container
+					statement = connection
+							.prepareStatement("UPDATE Item SET entryDate=?, exitTime=?,"
+									+ "barcode=?, expirationDate=?, Product_id=?"
+									+ "WHERE Item_id=?");
+					statement.setInt(6, itemId);
+				}
+
+				Integer productId = referenceToId.get(i.getProduct());
+
+				statement.setLong(1, i.getEntryDate().getTime());
+				if (i.getExitTime() != null) {
+					statement.setLong(2, i.getExitTime().getTime());
+				} else {
+					statement.setNull(2, java.sql.Types.DATE);
+				}
+				statement.setString(3, i.getBarcode());
+				if (i.getExpirationDate() != null) {
+					statement.setLong(4, i.getExpirationDate().getTime());
+				} else {
+					statement.setNull(4, java.sql.Types.DATE);
+				}
+				statement.setInt(5, productId);
+
+				statement.execute();
+			} catch (SQLException ex) {
+				ex.printStackTrace();
+			}
+		} else {
+			System.out.println("Tried to edit nonexistant Item " + i.getBarcode());
+		}
+	}
+
+	private void updateProduct(Product p) {
+		Integer productId = referenceToId.get(p);
+		if (productId != null) {
+			try {
+				Connection connection = DriverManager.getConnection("jdbc:sqlite:" + dbFile);
+
+				// check if we need to update the product quantity
+				PreparedStatement quantityStatement = connection
+						.prepareStatement("SELECT * FROM Product WHERE Product_id=?");
+				quantityStatement.setInt(1, productId);
+				quantityStatement.execute();
+				ResultSet quantityResults = quantityStatement.getResultSet();
+				Integer pqId = null;
+				while (quantityResults.next()) {
+					pqId = quantityResults.getInt(5);
+					ProductQuantity quantity = productQuantityIdToReference.get(pqId);
+					if (quantity.getQuantity() == p.getProductQuantity().getQuantity()
+							&& quantity.getUnits() == p.getProductQuantity().getUnits()) {
+						// no change to product quantity
+					} else {
+						insertProductQuantity(p.getProductQuantity());
+						pqId = referenceToId.get(p.getProductQuantity());
+					}
+				}
+
+				PreparedStatement statement = connection
+						.prepareStatement("UPDATE Product SET creationDate=?,"
+								+ "description=?,"
+								+ "ProductQuantity_id=?, shelfLife=?, threeMonthSupply=? WHERE Product_id=?");
+
+				statement.setLong(1, p.getCreationDate().getTime());
+				statement.setString(2, p.getDescription());
+				statement.setInt(3, pqId);
+				statement.setInt(4, p.getShelfLife());
+				statement.setInt(5, p.getThreeMonthSupply());
+				statement.setInt(6, productId);
+				statement.execute();
+
+				// update products in product containers
+				PreparedStatement st = connection
+						.prepareStatement("SELECT * FROM Product_has_ProductContainer");
+				st.execute();
+				ResultSet rs = st.getResultSet();
+				List<ProductContainer> oldContainers = new ArrayList<ProductContainer>();
+				while (rs.next()) {
+					ProductContainer container = productContainerIdToReference.get(rs
+							.getInt(1));
+					oldContainers.add(container);
+				}
+
+				Set<ProductContainer> newContainers = p.getProductContainers();
+
+				// remove all the containers that should still be there
+				for (ProductContainer container : oldContainers) {
+					if (container != null)
+						newContainers.remove(container);
+				}
+
+				// add the last newcontainer
+				for (ProductContainer newContainer : newContainers) {
+					Integer newContainerId = referenceToId.get(newContainer);
+					PreparedStatement insertStatement = connection
+							.prepareStatement("INSERT INTO Product_has_ProductContainer VALUES(?, ?)");
+					insertStatement.setInt(1, productId);
+					insertStatement.setInt(2, newContainerId);
+					try {
+						insertStatement.execute();
+					} catch (SQLException ex) {// link already exists
+						System.out.println("p_id=" + productId + " pc_id=" + newContainerId);
+					}
+				}
+
+			} catch (SQLException ex) {
+				ex.printStackTrace();
+			}
+		} else {
+			System.out.println("Tried to update nonexistant Product " + p.getDescription());
 		}
 	}
 }

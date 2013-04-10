@@ -188,6 +188,7 @@
 				<pathelement location="${dist}/lib/inventory-tracker.jar"/>
 			</classpath>
 			<classpath refid="plugins-classpath" />
+			<classpath refid="gson-classpath" />
 		</java>
 	</target>
 	
@@ -310,6 +311,7 @@
 				<fileset dir="${test-src}">
 					<include name="**/*.java"/>
 					<exclude name="**/builder/**/*.java"/>
+					<exclude name="**/generators/**/*.java"/>
 				</fileset>
 			</batchtest>
 		</junit>
