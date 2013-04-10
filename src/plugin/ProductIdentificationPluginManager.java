@@ -53,7 +53,11 @@ public class ProductIdentificationPluginManager {
 	 * @post true
 	 */
 	public String getDescriptionForProduct(String productBarcode) {
-		return root.getDescriptionForProduct(productBarcode);
+		if (root != null) {
+			return root.getDescriptionForProduct(productBarcode);
+		} else {
+			return null;
+		}
 	}
 
 	/**
