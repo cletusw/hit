@@ -203,6 +203,7 @@
 					<pathelement location="${dist}/lib/inventory-tracker.jar"/>
 				</classpath>
 				<classpath refid="plugins-classpath" />
+				<classpath refid="gson-classpath" />
 				<arg value="-sql"/>
 			</java>
 		</target>
