@@ -344,6 +344,14 @@ public class RdbDao extends InventoryDao implements Observer {
 		case INVISIBLE_EDIT:
 			break;
 		case MOVE:
+			if (obj instanceof Item)
+				moveItem((Item) obj);
+
+			if (obj instanceof Product)
+				moveProduct((Product) obj);
+
+			if (obj instanceof ProductContainer)
+				moveProductContainer((ProductContainer) obj);
 			break;
 		}
 
@@ -633,6 +641,60 @@ public class RdbDao extends InventoryDao implements Observer {
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
+	}
+
+	private void moveItem(Item item) {
+		System.out.println(item);
+	}
+
+	private void moveProduct(Product product) {
+		try {
+			Connection connection = DriverManager.getConnection("jdbc:sqlite:" + dbFile);
+
+			PreparedStatement statement = connection
+					.prepareStatement("DELETE FROM Product_has_ProductContainer WHERE Product_id=? AND ProductContainer_id=?");
+
+			Integer productId = referenceToId.get(product);
+
+			// get all containers the model finds this product in
+			Set<ProductContainer> newContainers = product.getProductContainers();
+
+			// get all containers the db finds this product in
+			PreparedStatement st = connection
+					.prepareStatement("SELECT * FROM Product_has_ProductContainer");
+			st.execute();
+			ResultSet rs = st.getResultSet();
+			List<ProductContainer> oldContainers = new ArrayList<ProductContainer>();
+			while (rs.next()) {
+				ProductContainer container = productContainerIdToReference.get(rs.getInt(1));
+				if (container != null)
+					oldContainers.add(container);
+			}
+
+			if (oldContainers.size() == 0)
+				return;
+
+			// remove all the containers that should still be there
+			for (ProductContainer container : newContainers) {
+				oldContainers.remove(container);
+			}
+
+			// get the only one left -- that's the one to remove
+			ProductContainer containerToRemove = oldContainers.get(0);
+			Integer containerId = referenceToId.get(containerToRemove);
+
+			statement.setInt(1, productId);
+			statement.setInt(2, containerId);
+
+			statement.execute();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		System.out.println(product);
+	}
+
+	private void moveProductContainer(ProductContainer pc) {
+		System.out.println(pc);
 	}
 
 	private void updateItem(Item i) {
