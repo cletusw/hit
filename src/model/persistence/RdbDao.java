@@ -78,7 +78,6 @@ public class RdbDao extends InventoryDao implements Observer {
 
 	@Override
 	public void applicationClose(HomeInventoryTracker hit) {
-		// update the report last runtime???
 	}
 
 	@Override
@@ -302,6 +301,14 @@ public class RdbDao extends InventoryDao implements Observer {
 
 			break;
 		case DELETE:
+			if (obj instanceof Item)
+				updateItem((Item) obj); // don't delete the item, just update the row.
+
+			if (obj instanceof Product)
+				deleteProduct((Product) obj);
+
+			if (obj instanceof ProductContainer)
+				deleteProductContainer((ProductContainer) obj);
 			break;
 		case EDIT:
 			break;
@@ -395,6 +402,14 @@ public class RdbDao extends InventoryDao implements Observer {
 				+ "  `Report_runtime` DATETIME NULL )");
 
 		connection.close();
+	}
+
+	private void deleteProduct(Product p) {
+
+	}
+
+	private void deleteProductContainer(ProductContainer pc) {
+
 	}
 
 	private void insertItem(Item i) {
@@ -515,4 +530,49 @@ public class RdbDao extends InventoryDao implements Observer {
 			e.printStackTrace();
 		}
 	}
+
+	private void updateItem(Item i) {
+		Integer itemId = referenceToId.get(i);
+		try {
+			Connection connection = DriverManager.getConnection("jdbc:sqlite:" + dbFile);
+			PreparedStatement statement;
+			if (i.getContainer() != null) { // moved containers
+				statement = connection
+						.prepareStatement("UPDATE Item SET entryDate=?, exitTime=?,"
+								+ "barcode=?, expirationDate=?, Product_id=?, ProductContainer_id=?"
+								+ "WHERE Item_id=?");
+
+				Integer containerId = referenceToId.get(i.getContainer());
+				statement.setInt(6, containerId);
+				statement.setInt(7, itemId);
+			} else { // removed -- update everything but leave the reference to container
+				statement = connection
+						.prepareStatement("UPDATE Item SET entryDate=?, exitTime=?,"
+								+ "barcode=?, expirationDate=?, Product_id=?"
+								+ "WHERE Item_id=?");
+				statement.setInt(6, itemId);
+			}
+
+			Integer productId = referenceToId.get(i.getProduct());
+
+			statement.setLong(1, i.getEntryDate().getTime());
+			if (i.getExitTime() != null) {
+				statement.setLong(2, i.getExitTime().getTime());
+			} else {
+				statement.setNull(2, java.sql.Types.DATE);
+			}
+			statement.setString(3, i.getBarcode());
+			if (i.getExpirationDate() != null) {
+				statement.setLong(4, i.getExpirationDate().getTime());
+			} else {
+				statement.setNull(4, java.sql.Types.DATE);
+			}
+			statement.setInt(5, productId);
+
+			statement.execute();
+		} catch (SQLException ex) {
+			ex.printStackTrace();
+		}
+	}
+
 }
