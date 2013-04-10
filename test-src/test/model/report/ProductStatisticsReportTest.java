@@ -345,7 +345,7 @@ public class ProductStatisticsReportTest extends EasyMockSupport {
 			}
 		}
 		startDate.setMonth(currentMonth);
-		startDate.setMonth(currentYear);
+		startDate.setYear(currentYear);
 		DecimalFormat twoDForm = new DecimalFormat("#.##");
 		return Arrays.asList(
 				product.getDescription(),
@@ -353,7 +353,7 @@ public class ProductStatisticsReportTest extends EasyMockSupport {
 				product.getProductQuantity().toString(),
 				Integer.toString(product.getThreeMonthSupply()),
 				Integer.toString(product.getCurrentSupply()) + "/"
-						+ twoDForm.format(getAverageSupply(product, now)),
+						+ twoDForm.format(getAverageSupply(product, startDate)),
 				Integer.toString(getMinSupply(product, startDate)) + "/"
 						+ Integer.toString(getMaxSupply(product, startDate)),
 				"" + getUsedItemCount(product, startDate) + "/"

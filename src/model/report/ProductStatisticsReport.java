@@ -60,7 +60,18 @@ public class ProductStatisticsReport extends Report {
 	public void construct(ReportBuilder builder, int months) {
 		updateLastRunTime();
 		Date startPeriod = new Date();
-		startPeriod.setMonth(startPeriod.getMonth() - months);
+		// startPeriod.setMonth(startPeriod.getMonth() - months);
+		int currentYear = startPeriod.getYear();
+		int currentMonth = startPeriod.getMonth();
+		for (int i = 0; i < months; i++) {
+			currentMonth--;
+			if (currentMonth < 0) {
+				currentMonth = 11;
+				currentYear--;
+			}
+		}
+		startPeriod.setMonth(currentMonth);
+		startPeriod.setYear(currentYear);
 
 		builder.addDocumentTitle("Product Report (" + months + " Months)");
 		builder.startTable(headers);
