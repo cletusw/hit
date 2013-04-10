@@ -7,9 +7,11 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
 import java.util.Observable;
 import java.util.Observer;
@@ -313,6 +315,9 @@ public class RdbDao extends InventoryDao implements Observer {
 		case EDIT:
 			if (obj instanceof Item)
 				updateItem((Item) obj);
+
+			if (obj instanceof Product)
+				updateProduct((Product) obj);
 			break;
 		case INVISIBLE_EDIT:
 			break;
@@ -407,11 +412,45 @@ public class RdbDao extends InventoryDao implements Observer {
 	}
 
 	private void deleteProduct(Product p) {
+		try {
+			Connection connection = DriverManager.getConnection("jdbc:sqlite:" + dbFile);
+			PreparedStatement statement = connection
+					.prepareStatement("DELETE FROM Product_has_ProductContainer WHERE Product_id=? AND ProductContainer_id=?");
 
+			Integer productId = referenceToId.get(p);
+			// get all containers the model finds this product in
+			Set<ProductContainer> newContainers = p.getProductContainers();
+
+			// get all containers the db finds this product in
+			PreparedStatement st = connection
+					.prepareStatement("SELECT * FROM Product_has_ProductContainer");
+			st.execute();
+			ResultSet rs = st.getResultSet();
+			List<ProductContainer> oldContainers = new ArrayList<ProductContainer>();
+			while (rs.next()) {
+				ProductContainer container = productContainerIdToReference.get(rs.getInt(1));
+				oldContainers.add(container);
+			}
+
+			// remove all the containers that should still be there
+			for (ProductContainer container : newContainers) {
+				oldContainers.remove(container);
+			}
+
+			// get the only one left -- that's the one to remove
+			ProductContainer containerToRemove = oldContainers.get(0);
+			Integer containerId = referenceToId.get(containerToRemove);
+
+			statement.setInt(1, productId);
+			statement.setInt(2, containerId);
+
+			statement.execute();
+		} catch (SQLException ex) {
+			ex.printStackTrace();
+		}
 	}
 
 	private void deleteProductContainer(ProductContainer pc) {
-
 	}
 
 	private void insertItem(Item i) {
@@ -535,46 +574,123 @@ public class RdbDao extends InventoryDao implements Observer {
 
 	private void updateItem(Item i) {
 		Integer itemId = referenceToId.get(i);
-		try {
-			Connection connection = DriverManager.getConnection("jdbc:sqlite:" + dbFile);
-			PreparedStatement statement;
-			if (i.getContainer() != null) { // moved containers
-				statement = connection
-						.prepareStatement("UPDATE Item SET entryDate=?, exitTime=?,"
-								+ "barcode=?, expirationDate=?, Product_id=?, ProductContainer_id=?"
-								+ "WHERE Item_id=?");
+		if (itemId != null) {
+			try {
+				Connection connection = DriverManager.getConnection("jdbc:sqlite:" + dbFile);
+				PreparedStatement statement;
+				if (i.getContainer() != null) { // moved containers
+					statement = connection
+							.prepareStatement("UPDATE Item SET entryDate=?, exitTime=?,"
+									+ "barcode=?, expirationDate=?, Product_id=?, ProductContainer_id=?"
+									+ "WHERE Item_id=?");
 
-				Integer containerId = referenceToId.get(i.getContainer());
-				statement.setInt(6, containerId);
-				statement.setInt(7, itemId);
-			} else { // removed -- update everything but leave the reference to container
-				statement = connection
-						.prepareStatement("UPDATE Item SET entryDate=?, exitTime=?,"
-								+ "barcode=?, expirationDate=?, Product_id=?"
-								+ "WHERE Item_id=?");
-				statement.setInt(6, itemId);
+					Integer containerId = referenceToId.get(i.getContainer());
+					statement.setInt(6, containerId);
+					statement.setInt(7, itemId);
+				} else { // removed -- update everything but leave the reference to container
+					statement = connection
+							.prepareStatement("UPDATE Item SET entryDate=?, exitTime=?,"
+									+ "barcode=?, expirationDate=?, Product_id=?"
+									+ "WHERE Item_id=?");
+					statement.setInt(6, itemId);
+				}
+
+				Integer productId = referenceToId.get(i.getProduct());
+
+				statement.setLong(1, i.getEntryDate().getTime());
+				if (i.getExitTime() != null) {
+					statement.setLong(2, i.getExitTime().getTime());
+				} else {
+					statement.setNull(2, java.sql.Types.DATE);
+				}
+				statement.setString(3, i.getBarcode());
+				if (i.getExpirationDate() != null) {
+					statement.setLong(4, i.getExpirationDate().getTime());
+				} else {
+					statement.setNull(4, java.sql.Types.DATE);
+				}
+				statement.setInt(5, productId);
+
+				statement.execute();
+			} catch (SQLException ex) {
+				ex.printStackTrace();
 			}
-
-			Integer productId = referenceToId.get(i.getProduct());
-
-			statement.setLong(1, i.getEntryDate().getTime());
-			if (i.getExitTime() != null) {
-				statement.setLong(2, i.getExitTime().getTime());
-			} else {
-				statement.setNull(2, java.sql.Types.DATE);
-			}
-			statement.setString(3, i.getBarcode());
-			if (i.getExpirationDate() != null) {
-				statement.setLong(4, i.getExpirationDate().getTime());
-			} else {
-				statement.setNull(4, java.sql.Types.DATE);
-			}
-			statement.setInt(5, productId);
-
-			statement.execute();
-		} catch (SQLException ex) {
-			ex.printStackTrace();
+		} else {
+			System.out.println("Tried to edit nonexistant Item " + i.getBarcode());
 		}
 	}
 
+	private void updateProduct(Product p) {
+		Integer productId = referenceToId.get(p);
+		if (productId != null) {
+			try {
+				Connection connection = DriverManager.getConnection("jdbc:sqlite:" + dbFile);
+
+				// check if we need to update the product quantity
+				PreparedStatement quantityStatement = connection
+						.prepareStatement("SELECT * FROM Product WHERE Product_id=?");
+				quantityStatement.setInt(1, productId);
+				quantityStatement.execute();
+				ResultSet quantityResults = quantityStatement.getResultSet();
+				Integer pqId = null;
+				while (quantityResults.next()) {
+					pqId = quantityResults.getInt(5);
+					ProductQuantity quantity = productQuantityIdToReference.get(pqId);
+					if (quantity.getQuantity() == p.getProductQuantity().getQuantity()
+							&& quantity.getUnits() == p.getProductQuantity().getUnits()) {
+						// no change to product quantity
+					} else {
+						insertProductQuantity(p.getProductQuantity());
+						pqId = referenceToId.get(p.getProductQuantity());
+					}
+				}
+
+				PreparedStatement statement = connection
+						.prepareStatement("UPDATE Product SET creationDate=?,"
+								+ "description=?,"
+								+ "ProductQuantity_id=?, shelfLife=?, threeMonthSupply=? WHERE Product_id=?");
+
+				statement.setLong(1, p.getCreationDate().getTime());
+				statement.setString(2, p.getDescription());
+				statement.setInt(3, pqId);
+				statement.setInt(4, p.getShelfLife());
+				statement.setInt(5, p.getThreeMonthSupply());
+				statement.setInt(6, productId);
+				statement.execute();
+
+				// update products in product containers
+				PreparedStatement st = connection
+						.prepareStatement("SELECT * FROM Product_has_ProductContainer");
+				st.execute();
+				ResultSet rs = st.getResultSet();
+				List<ProductContainer> oldContainers = new ArrayList<ProductContainer>();
+				while (rs.next()) {
+					ProductContainer container = productContainerIdToReference.get(rs
+							.getInt(1));
+					oldContainers.add(container);
+				}
+
+				Set<ProductContainer> newContainers = p.getProductContainers();
+
+				// remove all the containers that should still be there
+				for (ProductContainer container : oldContainers) {
+					newContainers.remove(container);
+				}
+
+				// add the last newcontainer
+				for (ProductContainer newContainer : newContainers) {
+					Integer newContainerId = referenceToId.get(newContainer);
+					PreparedStatement insertStatement = connection
+							.prepareStatement("INSERT INTO Product_has_ProductContainer VALUES(?, ?)");
+					insertStatement.setInt(1, productId);
+					insertStatement.setInt(2, newContainerId);
+				}
+
+			} catch (SQLException ex) {
+				ex.printStackTrace();
+			}
+		} else {
+			System.out.println("Tried to update nonexistant Product " + p.getDescription());
+		}
+	}
 }
