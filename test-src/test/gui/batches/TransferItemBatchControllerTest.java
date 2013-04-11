@@ -37,13 +37,14 @@ public class TransferItemBatchControllerTest extends EasyMockSupport {
 		ITransferItemBatchView mockView = createNiceMock(ITransferItemBatchView.class);
 		ItemManager mockItemManager = createNiceMock(ItemManager.class);
 
-		TransferItemBatchController controller = new TransferItemBatchController(mockView,
-				DataWrapper.wrap(destination));
-
+		expect(mockView.getUseScanner()).andStubReturn(true);
 		expect(mockView.getBarcode()).andStubReturn(item1.getBarcode());
 		expect(mockView.getItemManager()).andStubReturn(mockItemManager);
 		expect(mockItemManager.getItemByItemBarcode(item1.getBarcode())).andStubReturn(item1);
 		replayAll();
+
+		TransferItemBatchController controller = new TransferItemBatchController(mockView,
+				DataWrapper.wrap(destination));
 
 		assertTrue(source.contains(item1));
 		assertFalse(destination.contains(item1));
