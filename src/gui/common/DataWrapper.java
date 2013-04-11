@@ -90,6 +90,10 @@ public class DataWrapper {
 		ProductContainerData productContainerData = new ProductContainerData(
 				productContainer.getName());
 
+		for (ProductContainer childContainer : productContainer.getProductGroups()) {
+			productContainerData.addChild(wrap(childContainer));
+		}
+
 		productContainerData.setTag(productContainer);
 
 		return productContainerData;
