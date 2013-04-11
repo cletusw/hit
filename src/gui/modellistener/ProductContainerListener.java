@@ -73,6 +73,8 @@ public class ProductContainerListener extends InventoryListener implements Obser
 			view.insertProductContainer(parent, newData,
 					parent.getSortedIndex(newData.getName()));
 			view.selectProductContainer(newData);
+			updateProducts(true);
+			updateItems(true);
 			showContext((ProductContainer) pc);
 			return;
 		} else if (type.equals(ActionType.EDIT)) {
