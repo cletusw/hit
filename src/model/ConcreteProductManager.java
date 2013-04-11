@@ -162,10 +162,10 @@ public class ConcreteProductManager extends ObservableWithPublicNotify implement
 		if (product == null) {
 			throw new IllegalArgumentException("Null Product product");
 		}
-
-		products.remove(product);
-		barcodesToProducts.remove(product.getBarcode());
-
+		// Don't ever delete products from system???
+		/*
+		 * products.remove(product); barcodesToProducts.remove(product.getBarcode());
+		 */
 		notifyObservers(new Action(product, ActionType.DELETE));
 	}
 }
