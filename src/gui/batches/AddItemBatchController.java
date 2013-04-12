@@ -337,7 +337,6 @@ public class AddItemBatchController extends Controller implements IAddItemBatchC
 	protected void enableComponents() {
 		getView().enableUndo(undoManager.canUndo());
 		getView().enableRedo(undoManager.canRedo());
-		System.out.println(getView().getUseScanner());
 		boolean isValidCount = true;
 		try {
 			int count = Integer.parseInt(getView().getCount());
