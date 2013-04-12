@@ -1,6 +1,5 @@
 package test.model;
 
-import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 import model.ConcreteProductManager;
 import model.Product;
@@ -29,8 +28,7 @@ public class ConcreteProductManagerTest {
 	@Test
 	public void testUnmanage() {
 		manager.unmanage(product);
-		assertFalse(manager.contains(product));
-		assertFalse(manager.getByBarcode(product.getBarcode()) == product);
+		assertTrue(manager.contains(product));
+		assertTrue(manager.getByBarcode(product.getBarcode()) == product);
 	}
-
 }

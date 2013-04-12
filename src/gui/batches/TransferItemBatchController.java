@@ -147,6 +147,7 @@ public class TransferItemBatchController extends Controller implements
 	 */
 	@Override
 	public void useScannerChanged() {
+		enableComponents();
 	}
 
 	private void refreshItems() {
@@ -213,6 +214,8 @@ public class TransferItemBatchController extends Controller implements
 	protected void enableComponents() {
 		getView().enableRedo(undoManager.canRedo());
 		getView().enableUndo(undoManager.canUndo());
+		getView().enableItemAction(
+				!getView().getUseScanner() && getView().getBarcode().length() > 0);
 	}
 
 	/**

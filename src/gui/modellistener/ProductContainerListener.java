@@ -1,10 +1,12 @@
 package gui.modellistener;
 
+import gui.common.DataWrapper;
 import gui.inventory.IInventoryView;
 import gui.inventory.ProductContainerData;
 
 import java.util.Observable;
 import java.util.Observer;
+import java.util.Set;
 
 import model.Action;
 import model.Action.ActionType;
@@ -71,10 +73,32 @@ public class ProductContainerListener extends InventoryListener implements Obser
 			view.insertProductContainer(parent, newData,
 					parent.getSortedIndex(newData.getName()));
 			view.selectProductContainer(newData);
+			updateProducts(true);
+			updateItems(true);
+			showContext((ProductContainer) pc);
+			return;
 		} else if (type.equals(ActionType.EDIT)) {
 			ProductContainerData data = view.getSelectedProductContainer();
 			ProductContainer container = (ProductContainer) action.getObject();
-			view.renameProductContainer(data, container.getName(), 0);
+			if (container instanceof StorageUnit) {
+				ProductContainerData realRootData = new ProductContainerData();
+				realRootData.setName("");
+				Set<StorageUnit> storageUnits = view.getProductContainerManager()
+						.getStorageUnits();
+				for (StorageUnit su : storageUnits) {
+					if (su != container)
+						realRootData.addChild(DataWrapper.wrap(su));
+				}
+				view.renameProductContainer(data, container.getName(),
+						realRootData.getSortedIndex(data.getName()));
+			} else if (container instanceof ProductGroup) {
+				ProductContainer parent = ((ProductGroup) container).getContainer();
+				ProductContainerData parentData = DataWrapper.wrap(parent);
+				int sortIndex = parentData.getSortedIndex(data.getName());
+				if (sortIndex >= parentData.getChildCount())
+					sortIndex--;
+				view.renameProductContainer(data, container.getName(), sortIndex);
+			}
 			view.selectProductContainer(data);
 		} else if (type.equals(ActionType.DELETE)) {
 			ProductContainerData data = view.getSelectedProductContainer();

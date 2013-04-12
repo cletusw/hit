@@ -71,9 +71,9 @@ public class DataWrapper {
 		productData.setBarcode(product.getBarcode());
 		productData.setCount(Integer.toString(count));
 		productData.setDescription(product.getDescription());
-		productData.setShelfLife(Integer.toString(product.getShelfLife()));
+		productData.setShelfLife(Integer.toString(product.getShelfLife()) + " months");
 		productData.setSize(product.getSize().toString());
-		productData.setSupply(Integer.toString(product.getThreeMonthSupply()));
+		productData.setSupply(Integer.toString(product.getThreeMonthSupply()) + " count");
 		productData.setTag(product);
 
 		return productData;
@@ -89,6 +89,10 @@ public class DataWrapper {
 	public static ProductContainerData wrap(ProductContainer productContainer) {
 		ProductContainerData productContainerData = new ProductContainerData(
 				productContainer.getName());
+
+		for (ProductContainer childContainer : productContainer.getProductGroups()) {
+			productContainerData.addChild(wrap(childContainer));
+		}
 
 		productContainerData.setTag(productContainer);
 
