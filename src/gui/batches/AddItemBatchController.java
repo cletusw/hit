@@ -211,6 +211,7 @@ public class AddItemBatchController extends Controller implements IAddItemBatchC
 	public void useScannerChanged() {
 		if (getView().getUseScanner()) {
 			getView().setBarcode("");
+			getView().enableItemAction(false);
 		}
 	}
 
@@ -336,6 +337,7 @@ public class AddItemBatchController extends Controller implements IAddItemBatchC
 	protected void enableComponents() {
 		getView().enableUndo(undoManager.canUndo());
 		getView().enableRedo(undoManager.canRedo());
+		System.out.println(getView().getUseScanner());
 		boolean isValidCount = true;
 		try {
 			int count = Integer.parseInt(getView().getCount());
@@ -347,7 +349,7 @@ public class AddItemBatchController extends Controller implements IAddItemBatchC
 			isValidCount = false;
 		}
 		getView().enableItemAction(
-				Product.isValidBarcode(getView().getBarcode()) && isValidCount);
+				Product.isValidBarcode(getView().getBarcode()) && isValidCount && !getView().getUseScanner());
 	}
 
 	/**
