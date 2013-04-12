@@ -130,6 +130,7 @@ public class Product implements Comparable<Object>, Serializable, InventoryVisit
 
 	private final ProductManager manager;
 	private ProductQuantity productQuantity;
+	private boolean notify;
 
 	/**
 	 * Constructs a Product using the given barcode, description, shelfLife, creationDate,
@@ -166,6 +167,7 @@ public class Product implements Comparable<Object>, Serializable, InventoryVisit
 	 */
 	public Product(String barcode, String description, Date creationDate, int shelfLife,
 			int tms, ProductQuantity pq, ProductContainer container, ProductManager manager) {
+		notify = false;
 		setBarcode(barcode);
 		this.description = new NonEmptyString(description);
 		setCreationDate(creationDate);
@@ -178,6 +180,7 @@ public class Product implements Comparable<Object>, Serializable, InventoryVisit
 		if (container.canAddProduct(barcode))
 			container.add(this);
 		this.manager.manage(this);
+		notify = true;
 	}
 
 	/**
@@ -633,8 +636,6 @@ public class Product implements Comparable<Object>, Serializable, InventoryVisit
 	 */
 	private void setDescription(String descr) {
 		description = new NonEmptyString(descr);
-		if (manager != null)
-			manager.notifyObservers(new Action(this, ActionType.EDIT));
 	}
 
 	/**
@@ -650,8 +651,6 @@ public class Product implements Comparable<Object>, Serializable, InventoryVisit
 			throw new IllegalArgumentException("Product quantity for product is invalid");
 		}
 		productQuantity = pq;
-		if (manager != null)
-			manager.notifyObservers(new Action(this, ActionType.EDIT));
 	}
 
 	/**
@@ -667,8 +666,6 @@ public class Product implements Comparable<Object>, Serializable, InventoryVisit
 			throw new IllegalArgumentException("ShelfLife must be non-negative");
 
 		this.shelfLife = shelfLife;
-		if (manager != null)
-			manager.notifyObservers(new Action(this, ActionType.EDIT));
 	}
 
 	/**
@@ -684,7 +681,5 @@ public class Product implements Comparable<Object>, Serializable, InventoryVisit
 			throw new IllegalArgumentException("Three Month Supply must be non-negative");
 
 		this.threeMonthSupply = threeMonthSupply;
-		if (manager != null)
-			manager.notifyObservers(new Action(this, ActionType.EDIT));
 	}
 }
