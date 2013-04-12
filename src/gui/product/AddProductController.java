@@ -17,9 +17,13 @@ public class AddProductController extends Controller implements IAddProductContr
 	private class ProductIdentificationThread extends Thread {
 		@Override
 		public void run() {
+			getView().enableOK(false);
 			getView().setDescription("Auto-identifying product, please wait...");
 			getView().enableDescription(false);
-			getView().enableOK(false);
+			getView().enableSizeUnit(false);
+			getView().enableSizeValue(false);
+			getView().enableShelfLife(false);
+			getView().enableSupply(false);
 
 			String description = getView().getProductIdentificationPluginManager()
 					.getDescriptionForProduct(barcode);
