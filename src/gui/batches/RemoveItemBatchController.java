@@ -39,17 +39,20 @@ public class RemoveItemBatchController extends Controller implements
 
 		@Override
 		public void run() {
-			if (getView().getUseScanner() && getView().getBarcode().length() > 0)
+			if (getView().getUseScanner() && getView().getBarcode().length() > 0) {
 				removeItem();
+				getView().setBarcode("");
+				enableComponents();
+			}
 		}
 	}
 
-	private Timer timer;
+	private final Timer timer;
 	private RemoveItemTask removeItemTask;
 
-	private UndoManager manager;
-	private Map<Product, ArrayList<Item>> removedItems;
-	private Map<Item, String> itemsPCnames;
+	private final UndoManager manager;
+	private final Map<Product, ArrayList<Item>> removedItems;
+	private final Map<Item, String> itemsPCnames;
 
 	/**
 	 * Constructor.
@@ -69,6 +72,7 @@ public class RemoveItemBatchController extends Controller implements
 		itemsPCnames = new TreeMap<Item, String>();
 
 		construct();
+		enableComponents();
 	}
 
 	/**
@@ -154,6 +158,7 @@ public class RemoveItemBatchController extends Controller implements
 		if (getItemManager().getItemByItemBarcode(view.getBarcode()) == null) {
 			view.displayErrorMessage("This item doesn't exist.");
 			view.setBarcode("");
+			enableComponents();
 			return;
 		}
 
@@ -164,6 +169,7 @@ public class RemoveItemBatchController extends Controller implements
 		((ConcreteItemManager) getItemManager()).notifyObservers(new Action(item,
 				ActionType.DELETE));
 
+		view.setBarcode("");
 		enableComponents();
 	}
 
@@ -285,6 +291,8 @@ public class RemoveItemBatchController extends Controller implements
 	 */
 	@Override
 	public void useScannerChanged() {
+		setTimer();
+		enableComponents();
 	}
 
 	private void setTimer() {
@@ -322,7 +330,8 @@ public class RemoveItemBatchController extends Controller implements
 	 */
 	@Override
 	protected void enableComponents() {
-		getView().enableItemAction(!getView().getBarcode().equals(""));
+		getView().enableItemAction(
+				!(getView().getBarcode().equals("")) && !getView().getUseScanner());
 
 		getView().enableRedo(manager.canRedo());
 		getView().enableUndo(manager.canUndo());
