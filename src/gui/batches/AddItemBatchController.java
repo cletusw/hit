@@ -210,8 +210,9 @@ public class AddItemBatchController extends Controller implements IAddItemBatchC
 	@Override
 	public void useScannerChanged() {
 		if (getView().getUseScanner()) {
-			getView().setBarcode("");
 			getView().enableItemAction(false);
+			if (getView().getBarcode().length() > 0)
+				setTimer();
 		}
 	}
 
@@ -348,7 +349,8 @@ public class AddItemBatchController extends Controller implements IAddItemBatchC
 			isValidCount = false;
 		}
 		getView().enableItemAction(
-				Product.isValidBarcode(getView().getBarcode()) && isValidCount && !getView().getUseScanner());
+				Product.isValidBarcode(getView().getBarcode()) && isValidCount
+						&& !getView().getUseScanner());
 	}
 
 	/**
