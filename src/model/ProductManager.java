@@ -31,4 +31,6 @@ public interface ProductManager {
 	public void unmanage(Product product);
 
 	void addObserver(Observer o);
+
+	void delete(Product product);
 }
