@@ -58,6 +58,6 @@ public class AddProduct implements Command, Serializable {
 			container.remove(product);
 		}
 		if (product.getProductContainers().isEmpty())
-			productManager.unmanage(product);
+			productManager.delete(product);
 	}
 }
