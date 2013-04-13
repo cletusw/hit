@@ -47,6 +47,22 @@ public final class DateUtils {
 		return removeTimeFromDate(new Date());
 	}
 
+	public static Date dateMinusMonths(Date date, int months) {
+		int year = date.getYear();
+		int month = date.getMonth();
+		for (int i = 0; i < months; i++) {
+			month--;
+			if (month < 0) {
+				month = 11;
+				year--;
+			}
+		}
+		Date newDate = new Date(date.getTime());
+		newDate.setMonth(month);
+		newDate.setYear(year);
+		return newDate;
+	}
+
 	/**
 	 * Returns the earliest date supported by the product.
 	 * 

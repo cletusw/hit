@@ -1,5 +1,6 @@
 package test.model.report;
 
+import static org.junit.Assert.assertTrue;
 import generators.ItemGenerator;
 import generators.ProductGenerator;
 
@@ -20,6 +21,7 @@ import model.ItemManager;
 import model.Product;
 import model.ProductContainerManager;
 import model.ProductManager;
+import model.persistence.SerializationDao;
 import model.report.ProductStatisticsReport;
 import model.report.builder.ReportBuilder;
 
@@ -30,6 +32,8 @@ import org.junit.Test;
 
 import builder.model.ItemBuilder;
 import builder.model.ProductBuilder;
+
+import common.util.DateUtils;
 
 public class ProductStatisticsReportTest extends EasyMockSupport {
 	private static List<String> productsHeaders() {
@@ -62,6 +66,13 @@ public class ProductStatisticsReportTest extends EasyMockSupport {
 
 	@After
 	public void tearDown() throws Exception {
+		hit = null;
+		itemManager = null;
+		productManager = null;
+		report = null;
+		mockBuilder = null;
+		itemGenerator = null;
+		productGenerator = null;
 	}
 
 	/*
@@ -106,17 +117,6 @@ public class ProductStatisticsReportTest extends EasyMockSupport {
 				0 /* minSupply */, 0 /* maxSupply */, 0 /* usedSupply */, 0 /* addedSupply */,
 				0 /* avgUsedAge */, 0 /* maxUsedAge */, 0 /* curAvgAge */, 0 /* curMaxAge */));
 
-		// Test a product added two days ago with an item added at the same time
-		Product product2 = new ProductBuilder()
-				.creationDate(new Date(now.getTime() - 2 * millisPerDay))
-				.productManager(productManager).build();
-		Item item2 = new ItemBuilder().entryDate(product2.getCreationDate())
-				.manager(itemManager).build();
-
-		mockBuilder.addTableRow(asTableRow(product2, months, 1 /* avgSupply */,
-				1 /* minSupply */, 1 /* maxSupply */, 0 /* usedSupply */, 1 /* addedSupply */,
-				0 /* avgUsedAge */, 0 /* maxUsedAge */, 2 /* curAvgAge */, 2 /* curMaxAge */));
-
 		replayAll();
 
 		report.construct(mockBuilder, months);
@@ -124,29 +124,113 @@ public class ProductStatisticsReportTest extends EasyMockSupport {
 		verifyAll();
 	}
 
-	@SuppressWarnings("deprecation")
 	@Test
-	public void testOneProductOneItem() {
-		System.out.println("One product one item");
-		ProductContainerManager productContainerManager = new ConcreteProductContainerManager();
-		ProductStatisticsReport report = new ProductStatisticsReport(itemManager,
-				productManager);
-		int months = 3;
-		Product product = productGenerator.createProductInDateRange(0, months);
-		Item item = itemGenerator.createItemAtRandomTime(product);
+	public void testGetInitialCount() {
+		Date now = new Date();
+		Date periodStart = new Date(now.getTime() - 90 * millisPerDay);
 
-		// Expect:
-		mockBuilder.addDocumentTitle("Product Report (3 Months)");
+		// Test a product added just now with an item added at the same time
+		Product product = new ProductBuilder()
+				.creationDate(DateUtils.dateMinusMonths(periodStart, 3))
+				.productManager(productManager).build();
+		int addedBeforePeriod = 10; // (int) (Math.random() * 100);
+		int addedAndRemovedBeforePeriod = (int) (Math.random() * 100);
+		int addedDuringPeriod = (int) (Math.random() * 100);
+		int addedAndRemovedDuringPeriod = (int) (Math.random() * 100);
+		int addedBeforeButRemovedDuringPeriod = (int) (Math.random() * 100);
+		int averageInPeriod = 0;
+		int initialCount = 0;
+		// assertTrue(getAverageSupply(product, periodStart) == averageInPeriod);
+		assertTrue(getInitialCount(product, periodStart) == initialCount);
+		for (int i = 0; i < addedBeforePeriod; i++) {
+			Item item = new ItemBuilder()
+					.product(product)
+					.entryDate(
+							new Date(
+									periodStart.getTime()
+											- (int) (Math.random() * (millisPerDay + 1) * 90 + 5 * millisPerDay)))
+					.manager(itemManager).build();
+			itemManager.manage(item);
+		}
+		// System.out.println("Initial count : " + getInitialCount(product, periodStart));
+		assertTrue(getInitialCount(product, periodStart) == addedBeforePeriod);
+		for (int i = 0; i < addedAndRemovedBeforePeriod; i++) {
+			Item item = new ItemBuilder()
+					.product(product)
+					.entryDate(
+							new Date(periodStart.getTime()
+									- (int) (Math.random() * millisPerDay * 90)))
+					.manager(itemManager).build();
+			itemManager.manage(item);
+			itemManager.unmanage(item);
+			try {
+				item.setExitDate(new Date((int) (Math.random()
+						* (periodStart.getTime() - item.getEntryDate().getTime()) + item
+						.getEntryDate().getTime())), new SerializationDao());
+			} catch (IllegalAccessException e) {
+				e.printStackTrace();
+			}
+		}
+		assertTrue(getInitialCount(product, periodStart) == addedBeforePeriod);
+		for (int i = 0; i < addedBeforeButRemovedDuringPeriod; i++) {
+			Item item = new ItemBuilder()
+					.product(product)
+					.entryDate(
+							new Date(periodStart.getTime()
+									- (int) (Math.random() * millisPerDay * 90)))
+					.manager(itemManager).build();
+			itemManager.manage(item);
+			itemManager.unmanage(item);
+			try {
+				item.setExitDate(
+						new Date((int) (Math.random()
+								* (now.getTime() - periodStart.getTime()) + periodStart
+								.getTime())), new SerializationDao());
+			} catch (IllegalAccessException e) {
+				e.printStackTrace();
+			}
+		}
+		assertTrue(getInitialCount(product, periodStart) == addedBeforePeriod);
 
-		mockBuilder.startTable(productsHeaders());
-		// d,b,pq,nms, curS/avS, minS/maxS, used/added, sl, usedAge:av/max, curAge:av/max
-		mockBuilder.addTableRow(asTableRow(product, months));
-		replayAll();
-
-		report.construct(mockBuilder, 3);
-
-		verifyAll();
+		/*
+		 * for (int i = 0; i < addedDuringPeriod; i++) { Item item = new ItemBuilder()
+		 * .product(product) .entryDate( new Date((int) (Math.random() (now.getTime() -
+		 * periodStart.getTime()) + periodStart .getTime()))).manager(itemManager).build();
+		 * itemManager.manage(item); } assertTrue(getInitialCount(product, periodStart) ==
+		 * addedBeforePeriod);
+		 */
+		/*
+		 * for (int i = 0; i < addedAndRemovedDuringPeriod; i++) { Item item = new
+		 * ItemBuilder() .product(product) .entryDate( new Date((int) (Math.random()
+		 * (now.getTime() - periodStart.getTime()) + periodStart
+		 * .getTime()))).manager(itemManager).build(); itemManager.manage(item);
+		 * itemManager.unmanage(item); try { item.setExitDate(new Date((int) (Math.random()
+		 * (now.getTime() - item.getEntryDate().getTime()) + item .getEntryDate().getTime())),
+		 * new SerializationDao()); } catch (IllegalAccessException e) { e.printStackTrace(); }
+		 * } assertTrue(getInitialCount(product, periodStart) == addedBeforePeriod);
+		 */
 	}
+
+	/*
+	 * @SuppressWarnings("deprecation")
+	 * 
+	 * @Test public void testOneProductOneItem() { System.out.println("One product one item");
+	 * ProductContainerManager productContainerManager = new ConcreteProductContainerManager();
+	 * ProductStatisticsReport report = new ProductStatisticsReport(itemManager,
+	 * productManager); int months = 3; Product product =
+	 * productGenerator.createProductInDateRange(0, months); Item item =
+	 * itemGenerator.createItemAtRandomTime(product);
+	 * 
+	 * // Expect: mockBuilder.addDocumentTitle("Product Report (3 Months)");
+	 * 
+	 * mockBuilder.startTable(productsHeaders()); // d,b,pq,nms, curS/avS, minS/maxS,
+	 * used/added, sl, usedAge:av/max, curAge:av/max
+	 * mockBuilder.addTableRow(asTableRow(product, months)); replayAll();
+	 * 
+	 * report.construct(mockBuilder, 3);
+	 * 
+	 * verifyAll(); }
+	 */
 
 	@SuppressWarnings("deprecation")
 	@Test
@@ -195,34 +279,28 @@ public class ProductStatisticsReportTest extends EasyMockSupport {
 		verifyAll();
 	}
 
-	@Test
-	public void testProductsIncluded100Months() {
-		ProductGenerator productGenerator = new ProductGenerator(productManager);
-		int months = 100;
-		ReportBuilder mockBuilder = createMock(ReportBuilder.class);
-		Set<Product> productsInPeriod = new TreeSet<Product>();
-		for (int i = 0; i < 1; i++) {
-			Product product = productGenerator.createProductInDateRange(0, months);
-			productsInPeriod.add(product);
-			int numberOfItems = (int) (Math.random() * 100);
-			for (int j = 0; j < numberOfItems; j++)
-				itemGenerator.createItemAtRandomTime(product);
-		}
-
-		// Expect:
-		mockBuilder.addDocumentTitle("Product Report (" + months + " Months)");
-
-		mockBuilder.startTable(productsHeaders());
-
-		for (Product product : productsInPeriod)
-			mockBuilder.addTableRow(asTableRow(product, months));
-
-		replayAll();
-
-		report.construct(mockBuilder, months);
-
-		verifyAll();
-	}
+	/*
+	 * @Test public void testProductsIncluded100Months() { ProductGenerator productGenerator =
+	 * new ProductGenerator(productManager); int months = 100; ReportBuilder mockBuilder =
+	 * createMock(ReportBuilder.class); Set<Product> productsInPeriod = new TreeSet<Product>();
+	 * for (int i = 0; i < 1; i++) { Product product =
+	 * productGenerator.createProductInDateRange(0, months); productsInPeriod.add(product); int
+	 * numberOfItems = (int) (Math.random() * 100); for (int j = 0; j < numberOfItems; j++)
+	 * itemGenerator.createItemAtRandomTime(product); }
+	 * 
+	 * // Expect: mockBuilder.addDocumentTitle("Product Report (" + months + " Months)");
+	 * 
+	 * mockBuilder.startTable(productsHeaders());
+	 * 
+	 * for (Product product : productsInPeriod) mockBuilder.addTableRow(asTableRow(product,
+	 * months));
+	 * 
+	 * replayAll();
+	 * 
+	 * report.construct(mockBuilder, months);
+	 * 
+	 * verifyAll(); }
+	 */
 
 	@Test
 	public void testProductsIncluded12Months() {
@@ -528,7 +606,7 @@ public class ProductStatisticsReportTest extends EasyMockSupport {
 	}
 
 	/**
-	 * get yesterday's total
+	 * get the total for a given start date
 	 * 
 	 * @param product
 	 * @param startPeriod
