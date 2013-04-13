@@ -585,7 +585,7 @@ public class Product implements Comparable<Object>, Serializable, InventoryVisit
 		}
 
 		productContainers.remove(pc);
-		// manager.notifyObservers(new Action(this, ActionType.INVISIBLE_EDIT));
+		manager.notifyObservers(new Action(this, ActionType.INVISIBLE_EDIT));
 	}
 
 	/**

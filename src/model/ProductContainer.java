@@ -725,7 +725,7 @@ public abstract class ProductContainer implements Comparable<ProductContainer>, 
 		productsToItems.remove(product);
 		product.removeContainer(this);
 		Product removed = products.remove(product.getBarcode());
-		// manager.notifyObservers(new Action(this, ActionType.INVISIBLE_EDIT));
+		manager.notifyObservers(new Action(this, ActionType.INVISIBLE_EDIT));
 		return removed;
 	}
 

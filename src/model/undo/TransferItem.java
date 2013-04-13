@@ -14,6 +14,7 @@ public class TransferItem implements Command {
 	private final Item transferredItem;
 	private final ProductContainer source;
 	private final ProductContainer destination;
+	private final boolean addedProduct;
 
 	/**
 	 * Constructs a TransferItem command with the given dependencies.
@@ -34,6 +35,7 @@ public class TransferItem implements Command {
 		transferredItem = toTransfer;
 		this.source = source;
 		this.destination = destination;
+		addedProduct = !destination.contains(toTransfer.getProduct());
 	}
 
 	/**
@@ -68,5 +70,7 @@ public class TransferItem implements Command {
 	@Override
 	public void undo() {
 		destination.moveIntoContainer(transferredItem, source);
+		if (addedProduct)
+			destination.remove(transferredItem.getProduct());
 	}
 }
