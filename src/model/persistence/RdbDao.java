@@ -767,6 +767,7 @@ public class RdbDao extends InventoryDao implements Observer {
 				Connection connection = DriverManager.getConnection("jdbc:sqlite:" + dbFile);
 				PreparedStatement statement;
 				if (i.getContainer() != null) { // moved containers
+					i.getProduct().addContainerNoNotify(i.getContainer());
 					statement = connection
 							.prepareStatement("UPDATE Item SET entryDate=?, exitTime=?,"
 									+ "barcode=?, expirationDate=?, "

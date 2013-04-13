@@ -105,8 +105,11 @@ public class AddItemBatchController extends Controller implements IAddItemBatchC
 
 		AddProduct addProduct = (AddProduct) productManager.getPendingProductCommand();
 		if (addProduct == null) {
-			if (product == null) // User hit "Cancel" in AddProductView; do nothing
+			if (product == null) {// User hit "Cancel" in AddProductView; do nothing
+				getView().setBarcode("");
 				return;
+			}
+			
 			/*
 			 * addProduct = new AddProduct(product.getBarcode(), product.getDescription(),
 			 * product.getShelfLife(), product.getThreeMonthSupply(), product

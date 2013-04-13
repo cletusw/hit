@@ -234,14 +234,20 @@ public class Product implements Comparable<Object>, Serializable, InventoryVisit
 	 * 
 	 */
 	public void addContainer(ProductContainer pc) {
+		addContainerNoNotify(pc);
+		manager.notifyObservers(new Action(this, ActionType.EDIT));
+	}
+
+	public void addContainerNoNotify(ProductContainer pc) {
 		if (pc == null) {
 			throw new NullPointerException("Null ProductContainer pc");
 		}
-		if (productContainers.contains(pc))
-			throw new IllegalArgumentException(
-					"Duplicate Product Container in Product's parents");
+		if (productContainers.contains(pc)) {
+			// throw new IllegalArgumentException(
+			// "Duplicate Product Container in Product's parents");
+			return;
+		}
 		productContainers.add(pc);
-		manager.notifyObservers(new Action(this, ActionType.EDIT));
 	}
 
 	/**
@@ -561,12 +567,12 @@ public class Product implements Comparable<Object>, Serializable, InventoryVisit
 					newContainer.add(item);
 					itemManager.remanage(item);
 				}
+				manager.notifyObservers(new Action(this, ActionType.MOVE));
 			}
 		} else {
 			// the Product doesn't already exist in the subtree, so we'll just add it here
 			newContainer.add(this);
 		}
-		manager.notifyObservers(new Action(this, ActionType.MOVE));
 	}
 
 	/**
