@@ -65,6 +65,25 @@ public class ConcreteProductManager extends ObservableWithPublicNotify implement
 	}
 
 	/**
+	 * This method does all the work of unmanaging the product as well as removing it
+	 * completely from the model.
+	 * 
+	 * @param product
+	 *            Product to remove
+	 */
+	@Override
+	public void delete(Product product) {
+		if (product == null) {
+			throw new IllegalArgumentException("Null Product product");
+		}
+
+		products.remove(product);
+		barcodesToProducts.remove(product.getBarcode());
+		notifyObservers(new Action(product, ActionType.DELETE));
+		notifyObservers(new Action(product, ActionType.DEEP_DELETE));
+	}
+
+	/**
 	 * Looks up a product by the given barcode
 	 * 
 	 * @param barcode

@@ -207,6 +207,8 @@ public class ConcreteItemManager extends ObservableWithPublicNotify implements I
 
 		item.remove();
 		notifyObservers(new Action(item, ActionType.DELETE));
+		notifyObservers(new Action(item, ActionType.DEEP_DELETE));
+
 	}
 
 	/**
