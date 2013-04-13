@@ -58,27 +58,6 @@ public class ExpiredItemsReport extends Report implements InventoryVisitor {
 			su.accept(this);
 		}
 
-		Collections.sort(items, new Comparator<Item>() {
-
-			@Override
-			public int compare(Item o1, Item o2) {
-				// compare by container name
-				int comparison = o1.getContainer().getName()
-						.compareTo(o2.getContainer().getName());
-				if (comparison != 0)
-					return comparison;
-
-				// compare by product description
-				comparison = o1.getProduct().getDescription()
-						.compareTo(o2.getProduct().getDescription());
-				if (comparison != 0)
-					return comparison;
-
-				// compare by entry date
-				return o1.getEntryDate().compareTo(o2.getEntryDate());
-			}
-		});
-
 		for (Item item : items) {
 			builder.addTableRow(Arrays.asList(item.getProduct().getDescription(),
 					item.getStorageUnitName(), item.getProductGroupName(),
@@ -109,11 +88,11 @@ public class ExpiredItemsReport extends Report implements InventoryVisitor {
 			throw new NullPointerException("Null Item item");
 		}
 
-		Date expDate = item.getExpirationDate();
-
-		if (expDate != null && expDate.before(new Date())) {
-			items.add(item);
-		}
+		/*
+		 * Date expDate = item.getExpirationDate();
+		 * 
+		 * if (expDate != null && expDate.before(new Date())) { items.add(item); }
+		 */
 	}
 
 	/**
@@ -157,6 +136,33 @@ public class ExpiredItemsReport extends Report implements InventoryVisitor {
 			throw new NullPointerException("Null ProductContainer productContainer");
 		}
 
-		// Do nothing
+		List<Item> expItems = new ArrayList<Item>();
+		for (Item item : productContainer.getItems()) {
+			Date expDate = item.getExpirationDate();
+
+			if (expDate != null && expDate.before(new Date())) {
+				expItems.add(item);
+			}
+		}
+
+		// sort the local items
+		Collections.sort(expItems, new Comparator<Item>() {
+
+			@Override
+			public int compare(Item o1, Item o2) {
+				int comparison = o1.getProduct().getDescription()
+						.compareTo(o2.getProduct().getDescription());
+				if (comparison != 0)
+					return comparison;
+
+				// compare by entry date
+				return o1.getEntryDate().compareTo(o2.getEntryDate());
+			}
+		});
+		// add the local items to items
+
+		for (Item item : expItems) {
+			items.add(item);
+		}
 	}
 }
