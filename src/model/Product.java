@@ -234,6 +234,11 @@ public class Product implements Comparable<Object>, Serializable, InventoryVisit
 	 * 
 	 */
 	public void addContainer(ProductContainer pc) {
+		addContainerNoNotify(pc);
+		manager.notifyObservers(new Action(this, ActionType.EDIT));
+	}
+
+	public void addContainerNoNotify(ProductContainer pc) {
 		if (pc == null) {
 			throw new NullPointerException("Null ProductContainer pc");
 		}
@@ -243,7 +248,6 @@ public class Product implements Comparable<Object>, Serializable, InventoryVisit
 			return;
 		}
 		productContainers.add(pc);
-		manager.notifyObservers(new Action(this, ActionType.EDIT));
 	}
 
 	/**
