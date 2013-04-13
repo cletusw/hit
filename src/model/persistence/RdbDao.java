@@ -353,6 +353,15 @@ public class RdbDao extends InventoryDao implements Observer {
 			if (obj instanceof ProductContainer)
 				moveProductContainer((ProductContainer) obj);
 			break;
+		case DEEP_DELETE:
+			if (obj instanceof Item)
+				deleteItem((Item) obj);
+
+			if (obj instanceof Product)
+				deepDeleteProduct((Product) obj);
+
+			if (obj instanceof ProductContainer)
+				throw new IllegalArgumentException("Cannot deep delete a product container");
 		}
 
 	}
@@ -441,6 +450,39 @@ public class RdbDao extends InventoryDao implements Observer {
 		connection.close();
 	}
 
+	private void deepDeleteProduct(Product p) {
+		try {
+			Connection connection = DriverManager.getConnection("jdbc:sqlite:" + dbFile);
+			PreparedStatement statement = connection
+					.prepareStatement("DELETE FROM Product_has_ProductContainer "
+							+ "WHERE Product_id=?");
+
+			Integer productId = referenceToId.get(p);
+			statement.setInt(1, productId);
+			statement.execute();
+
+			statement = connection.prepareStatement("DELETE FROM Product WHERE Product_id=?");
+			statement.setInt(1, productId);
+			statement.execute();
+
+		} catch (SQLException ex) {
+			ex.printStackTrace();
+		}
+	}
+
+	private void deleteItem(Item i) {
+		try {
+			Connection connection = DriverManager.getConnection("jdbc:sqlite:" + dbFile);
+			PreparedStatement statement = connection
+					.prepareStatement("DELETE FROM Item WHERE Item_id=?");
+			Integer itemId = referenceToId.get(i);
+			statement.setInt(1, itemId);
+			statement.execute();
+		} catch (SQLException ex) {
+			ex.printStackTrace();
+		}
+	}
+
 	private void deleteProduct(Product p) {
 		try {
 			Connection connection = DriverManager.getConnection("jdbc:sqlite:" + dbFile);
@@ -481,13 +523,6 @@ public class RdbDao extends InventoryDao implements Observer {
 
 			statement.execute();
 
-			// Check if the product has no more containers -- if so, remove it's row
-			/*
-			 * if (p.getProductContainers().size() == 0) { statement = connection
-			 * .prepareStatement("DELETE FROM Product WHERE Product_id=?"); statement.setInt(1,
-			 * productId); statement.execute(); referenceToId.remove(p);
-			 * productIdToReference.remove(productId); }
-			 */
 		} catch (SQLException ex) {
 			ex.printStackTrace();
 		}
@@ -571,6 +606,13 @@ public class RdbDao extends InventoryDao implements Observer {
 			statement.setInt(6, containerId);
 
 			statement.execute();
+
+			ResultSet set = statement.getGeneratedKeys();
+			int key = -1;
+			while (set.next())
+				key = set.getInt(1);
+			referenceToId.put(i, key);
+
 		} catch (SQLException ex) {
 			ex.printStackTrace();
 		}
